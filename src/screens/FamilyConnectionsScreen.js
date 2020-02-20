@@ -1,6 +1,9 @@
 // This is your main screen for Family Connections
 
+// Default react imports
 import React, { Component, useState, useEffect } from "react";
+
+// RN component imports
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,14 +19,6 @@ import {
   Alert,
   TouchableOpacity
 } from "react-native";
-import { connect } from "react-redux";
-import {
-  getCaseData,
-  getUserCases,
-  setUserCreds,
-  setModalVisible,
-  authChecker
-} from "../store/actions";
 import {
   ListItem,
   Image,
@@ -32,18 +27,38 @@ import {
   CheckBox,
   Divider
 } from "react-native-elements";
-import { MaterialIcons } from "@expo/vector-icons";
+
+// redux
+import { connect } from "react-redux";
+import {
+  getCaseData,
+  getUserCases,
+  setUserCreds,
+  setModalVisible,
+  authChecker
+} from "../store/actions";
+
+
+// constants = like a config variable
 import constants from "../helpers/constants";
+
+// local component imports
 import CaseViewScreen from "./CaseViewScreen.js";
 import ConnectionsLogin from "../components/Authentication/ConnectionsLogin";
 import Loader from "../components/Loader/Loader";
+
+// 3rd party imports like icons & scroll functionality
 import ScrollToTop from "../UI/ScrollToTop";
 import { Ionicons } from "@expo/vector-icons";
 import { RadioButton } from "react-native-paper";
+import { MaterialIcons } from "@expo/vector-icons";
 
+// placeholder image for non-logged in users?
 const placeholderImg = require("../../assets/profile_placeholder.png");
+// unicode arrow
 const leftArrow = "\u2190";
 
+// this is like a local "store" -- used to initialize some state values, accessed in [state] hook
 const FamilyConnectionsScreen = props => {
   const initialState = {
     searchKeywords: "",
@@ -55,7 +70,7 @@ const FamilyConnectionsScreen = props => {
       male: false,
       female: false,
       unspecified: false,
-      zero_five: false,
+      zero_five: false, // these are age groups, possibly not yet implemented in filters
       six_nine: false,
       ten_thirteen: false,
       fourteen_eighteen: false,
@@ -66,16 +81,18 @@ const FamilyConnectionsScreen = props => {
       updated: false,
     },
     caseVisible: false,
-    addCaseModalVisible: true,
+    addCaseModalVisible: true, // cannot currently add case to app, state not needed?
     pk: ""
   };
-  const [state, setState] = useState(initialState);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [options, setOptions] = useState({ x: 0, y: 0, animated: true });
-  const [sort, setSort] = useState("Full Name");
-  const [rtn, setRtn] = useState('RETURN')
 
-  const genderAssignment = gender => {
+  // STATE HOOKS
+  const [state, setState] = useState(initialState);
+  const [isScrolling, setIsScrolling] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
+  const [options, setOptions] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
+  const [sort, setSort] = useState("Full Name"); // sort results of Family Connections, can be changed to several other values
+  const [rtn, setRtn] = useState('RETURN') // ❓ MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
+
+  const genderAssignment = gender => { // also exists in the CaseView component
     if (gender === "M") {
       return "Male";
     } else if (gender === "F") {
@@ -87,7 +104,7 @@ const FamilyConnectionsScreen = props => {
     }
   };
 
-  const goToTop = () => {
+  const goToTop = () => { // exists in multiple components
     scroll.scrollTo(options);
   };
 
@@ -95,7 +112,7 @@ const FamilyConnectionsScreen = props => {
     // if (!props.results[0]) {
     props.authChecker();
     props.getUserCases();
-    Platform.OS === 'android' ? setRtn('') : null
+    Platform.OS === 'android' ? setRtn('') : null // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
     // }
   }, [props.loadingUser]);
 
