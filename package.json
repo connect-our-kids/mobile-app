@@ -10,10 +10,6 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "2.1.0",
-    "@types/jest": "^24.9.0",
-    "@types/node": "^13.5.2",
-    "@types/react-dom": "^16.9.4",
-    "@types/react": "^16.9.0",
     "axios": "^0.19.0",
     "expo": "^36.0.0",
     "expo-cli": "^3.4.1",
@@ -57,13 +53,17 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "typescript": "^3.7.2",
     "yup": "^0.27.0"
   },
   "private": true,
   "devDependencies": {
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.5.2",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.4",
     "babel-preset-expo": "^8.0.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-react": "^7.17.0"
+    "eslint-plugin-react": "^7.17.0",
+    "typescript": "^3.7.2"
   }
 }
