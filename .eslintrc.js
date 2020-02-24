@@ -228,23 +228,51 @@ module.exports = {
     ],
 
     /***************************************
-      plugin:react-native
+      node-ish
+    ***************************************/
+    
+    'no-use-before-define': [
+      'warn',
+    ],
+    '@typescript-eslint/no-use-before-define': [
+      'warn',
+    ],
+
+    /***************************************
+      react
+    ***************************************/
+
+    'no-use-before-define': [
+      'warn',
+    ],
+    'react/display-name': [
+      'warn',
+    ],
+    'react/prop-types': [
+      'off',
+    ],
+    'react/jsx-filename-extension': [
+      'off',
+    ],
+
+    /***************************************
+      react-native
     ***************************************/
 
     'react-native/no-unused-styles': [
-      'error',
+      'warn',
     ],
     'react-native/split-platform-components': [
-      'error',
+      'warn',
     ],
     'react-native/no-inline-styles': [
-      'error',
+      'warn',
     ],
     'react-native/no-color-literals': [
-      'error',
+      'warn',
     ],
     'react-native/no-raw-text': [
-      'error',
+      'warn',
     ],
   },
 
