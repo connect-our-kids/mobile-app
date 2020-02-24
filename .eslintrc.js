@@ -213,7 +213,7 @@ module.exports = {
     /* operators */
 
     'eqeqeq': [
-      'error', 'always',
+      'warn', 'always',
     ],
     'no-mixed-operators': [
       'error',
