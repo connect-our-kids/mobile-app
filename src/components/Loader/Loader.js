@@ -7,7 +7,7 @@ const Loader = () => {
             style={{
                 width: '100%',
                 flexDirection: 'row',
-                justifyContent: 'center'
+                justifyContent: 'center',
             }}
         >
             <Image

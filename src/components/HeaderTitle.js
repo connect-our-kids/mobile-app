@@ -5,7 +5,7 @@ import {
     Image,
     Platform,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from 'react-native';
 import logoImg from '../../assets/logo.png';
 // import constants from '../helpers/constants';
@@ -43,11 +43,11 @@ const HeaderTitle = ({ title, navigation, email }) => (
 //   }
 // });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return { email: state.auth.user ? state.auth.user.email : null };
 };
 
 export default connect(
     mapStateToProps,
-    {}
+    {},
 )(HeaderTitle);

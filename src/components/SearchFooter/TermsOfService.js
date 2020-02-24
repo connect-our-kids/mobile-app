@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { View, Text,
-    TouchableWithoutFeedback, StyleSheet, Image, Platform, ScrollView } from 'react-native'
-import logo from '../../../assets/logoSmall.png'
+    TouchableWithoutFeedback, StyleSheet, Image, Platform, ScrollView } from 'react-native';
+import logo from '../../../assets/logoSmall.png';
 import constants from '../../helpers/constants';
-import { sendEvent } from '../../helpers/createEvent'
+import { sendEvent } from '../../helpers/createEvent';
 
 const TermsOfService = (props) => {
     return <ScrollView style={styles.container}>
@@ -151,9 +151,9 @@ const TermsOfService = (props) => {
         the Connect Our Kids LLC Online Privacy Policy
             <TouchableWithoutFeedback
                 onPress={() => {
-                    sendEvent(props.isLoggedIn ? props.user.email : 'anonymous@unknown.org', 'click', 'privacy')
-                    props.controlModal('terms', false)
-                    props.controlModal('privacy', true)
+                    sendEvent(props.isLoggedIn ? props.user.email : 'anonymous@unknown.org', 'click', 'privacy');
+                    props.controlModal('terms', false);
+                    props.controlModal('privacy', true);
                 }
                 }
             >
@@ -1000,40 +1000,40 @@ const TermsOfService = (props) => {
                 <Text style={[ styles.close, styles.mb ]}>❌</Text>
             </TouchableWithoutFeedback>
         </View>
-    </ScrollView>
+    </ScrollView>;
 
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         padding: 10,
-        marginTop: Platform.OS === 'ios' ? 30 : 15
+        marginTop: Platform.OS === 'ios' ? 30 : 15,
     },
     text: {
-        paddingBottom: 20
+        paddingBottom: 20,
     },
     linkText: {
-        color: constants.highlightColor
+        color: constants.highlightColor,
     },
     logo: {
-        width: 100
+        width: 100,
     },
     mb: {
-        marginBottom: 20
+        marginBottom: 20,
     },
     close: {
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 5,
-        marginBottom: 40
+        marginBottom: 40,
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
-})
+        justifyContent: 'space-between',
+    },
+});
 
-export default TermsOfService
+export default TermsOfService;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Feather } from "@expo/vector-icons";
+import React, { useState, useEffect } from 'react';
+import { Feather } from '@expo/vector-icons';
 import {
     Text,
     View,
@@ -10,33 +10,33 @@ import {
     Platform,
     ScrollView,
     Modal,
-    BackHandler
-} from "react-native";
-import constants from "../helpers/constants";
-import { ListItem, SearchBar, CheckBox } from "react-native-elements";
-import { getCaseData, clearCaseData } from "../store/actions/caseData";
+    BackHandler,
+} from 'react-native';
+import constants from '../helpers/constants';
+import { ListItem, SearchBar, CheckBox } from 'react-native-elements';
+import { getCaseData, clearCaseData } from '../store/actions/caseData';
 import {
     getCaseConnections,
-    clearCaseConnections
-} from "../store/actions/caseConnections";
+    clearCaseConnections,
+} from '../store/actions/caseConnections';
 
-import { connect } from "react-redux";
-import Loader from "../components/Loader/Loader";
-import CaseListComponent from "../components/CaseListComponent";
-import { MaterialIcons } from "@expo/vector-icons";
-import ScrollToTop from "../UI/ScrollToTop";
-import { RadioButton } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
-const leftArrow = "\u2190";
-const placeholderImg = require("../../assets/profile_placeholder.png");
+import { connect } from 'react-redux';
+import Loader from '../components/Loader/Loader';
+import CaseListComponent from '../components/CaseListComponent';
+import { MaterialIcons } from '@expo/vector-icons';
+import ScrollToTop from '../UI/ScrollToTop';
+import { RadioButton } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
+const leftArrow = '\u2190';
+const placeholderImg = require('../../assets/profile_placeholder.png');
 
 export function CaseViewScreen(props) {
     let filteredCases = props.caseConnections;
 
     const [ descriptionVisible, setDescriptionVisible ] = useState(false);
     const [ isScrolling, setIsScrolling ] = useState(false);
-    const [ sort, setSort ] = useState("Full Name");
-    const [ searchKeywords, setSearchKeywords ] = useState("");
+    const [ sort, setSort ] = useState('Full Name');
+    const [ searchKeywords, setSearchKeywords ] = useState('');
     const [ filtersSelected, setFiltersSelected ] = useState({
         0: false,
         1: false,
@@ -51,32 +51,32 @@ export function CaseViewScreen(props) {
         last: false,
         DOB: false,
         created: false,
-        updated: false
+        updated: false,
     });
-    const [ rtn, setRtn ] = useState('RETURN')
+    const [ rtn, setRtn ] = useState('RETURN');
 
     // on load get case data and case connections through redux
     useEffect(() => {
-        props.getCaseData(props.navigation.getParam("pk"));
-        props.getCaseConnections(props.navigation.getParam("pk"));
-        Platform.OS === 'android' ? setRtn('') : null
+        props.getCaseData(props.navigation.getParam('pk'));
+        props.getCaseConnections(props.navigation.getParam('pk'));
+        Platform.OS === 'android' ? setRtn('') : null;
     }, [ false ]);
 
     let caseData = props.caseData;
 
-    const handleKeywordChange = e => {
+    const handleKeywordChange = (e) => {
         setSearchKeywords(e);
     };
 
-    const genderAssignment = gender => {
-        if (gender === "M") {
-            return "Male";
+    const genderAssignment = (gender) => {
+        if (gender === 'M') {
+            return 'Male';
         }
-        else if (gender === "F") {
-            return "Female";
+        else if (gender === 'F') {
+            return 'Female';
         }
-        else if (gender === "O") {
-            return "Unspecified Gender";
+        else if (gender === 'O') {
+            return 'Unspecified Gender';
         }
         else {
             return null;
@@ -167,42 +167,42 @@ export function CaseViewScreen(props) {
         else {
             // remove everyone without a status
             let noStatus = props.caseConnections.filter(
-                connection => !connection.person.status
+                (connection) => !connection.person.status,
             );
 
             // people with statuses only
             let filteredList = props.caseConnections.filter(
-                connection => connection.person.status
+                (connection) => connection.person.status,
             );
 
             if (!filtersSelected[1]) {
                 // if filter1 not selected, remove everyone with filter1
                 filteredList = filteredList.filter(
-                    connection => connection.person.status.name !== "Family Candidate"
+                    (connection) => connection.person.status.name !== 'Family Candidate',
                 );
             }
             if (!filtersSelected[2]) {
                 // if filter2 not selected, remove everyone with filter2
                 filteredList = filteredList.filter(
-                    connection => connection.person.status.name !== "Highlight"
+                    (connection) => connection.person.status.name !== 'Highlight',
                 );
             }
             if (!filtersSelected[3]) {
                 // if filter3 not selected, remove everyone with filter3
                 filteredList = filteredList.filter(
-                    connection => connection.person.status.name !== "No-Go"
+                    (connection) => connection.person.status.name !== 'No-Go',
                 );
             }
             if (!filtersSelected[4]) {
                 // if filter4 not selected, remove everyone with filter4
                 filteredList = filteredList.filter(
-                    connection => connection.person.status.name !== "Of Interest"
+                    (connection) => connection.person.status.name !== 'Of Interest',
                 );
             }
             if (!filtersSelected[5]) {
                 // if filter5 not selected, remove everyone with filter5
                 filteredList = filteredList.filter(
-                    connection => connection.person.status.name !== "Support Candidate"
+                    (connection) => connection.person.status.name !== 'Support Candidate',
                 );
             }
             if (filtersSelected[0]) {
@@ -214,29 +214,29 @@ export function CaseViewScreen(props) {
         }
     };
 
-    const genderFilter = arr => {
+    const genderFilter = (arr) => {
     // ------GENDER FILTER functionality------
         if (!filtersSelected[6] && !filtersSelected[7] && !filtersSelected[8]) {
             return arr;
         }
         else {
             if (!filtersSelected[6]) {
-                arr = arr.filter(c => c.person.gender !== "M");
+                arr = arr.filter((c) => c.person.gender !== 'M');
             }
 
             if (!filtersSelected[7]) {
-                arr = arr.filter(c => c.person.gender !== "F");
+                arr = arr.filter((c) => c.person.gender !== 'F');
             }
 
             if (!filtersSelected[8]) {
-                arr = arr.filter(c => c.person.gender !== "O");
+                arr = arr.filter((c) => c.person.gender !== 'O');
             }
             return arr;
         }
     };
 
     // ------SEARCHBAR functionality - filters by case first_name or last_name---------
-    let SearchedConnections = filteredConnections().filter(result => {
+    let SearchedConnections = filteredConnections().filter((result) => {
         return (
             result.person.full_name
                 .toLowerCase()
@@ -253,20 +253,20 @@ export function CaseViewScreen(props) {
             {isScrolling ? (
                 <ScrollToTop
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         zIndex: 1000,
                         bottom: 15,
-                        right: 46
+                        right: 46,
                     }}
                     onPress={goToTop}
                 />
             ) : null}
             <ScrollView
                 scrollsToTop
-                ref={a => {
+                ref={(a) => {
                     scroll = a;
                 }}
-                onScroll={e => {
+                onScroll={(e) => {
                     if (e.nativeEvent.contentOffset.y <= 250) {
                         setIsScrolling(false);
                     }
@@ -284,22 +284,22 @@ export function CaseViewScreen(props) {
                         subtitle={
                             <View>
                                 {caseData.gender ? (
-                                    <Text style={{ color: "#434245" }}>
+                                    <Text style={{ color: '#434245' }}>
                                         {genderAssignment(caseData.gender)}
                                     </Text>
                                 ) : null}
                                 {caseData.birthday ? (
-                                    <Text style={{ color: "#434245" }}>
+                                    <Text style={{ color: '#434245' }}>
                     Date of Birth: {caseData.birthday.raw}
                                     </Text>
                                 ) : null}
                                 {caseData.address && caseData.address.formatted ? (
-                                    <Text style={{ color: "#434245" }}>
+                                    <Text style={{ color: '#434245' }}>
                                         {caseData.address.formatted}
                                     </Text>
                                 ) : null}
                                 {caseData.foster_care ? (
-                                    <Text style={{ color: "#434245" }}>
+                                    <Text style={{ color: '#434245' }}>
                     Initiation: {caseData.foster_care}
                                     </Text>
                                 ) : null}
@@ -311,7 +311,7 @@ export function CaseViewScreen(props) {
                                     height: 80,
                                     width: 80,
                                     borderRadius: 40,
-                                    overflow: "hidden"
+                                    overflow: 'hidden',
                                 }}
                             >
                                 {caseData.picture ? (
@@ -321,7 +321,7 @@ export function CaseViewScreen(props) {
                                             height: 80,
                                             width: 80,
                                             borderRadius: 40,
-                                            overflow: "hidden"
+                                            overflow: 'hidden',
                                         }}
                                         defaultSource={placeholderImg}
                                     />
@@ -332,7 +332,7 @@ export function CaseViewScreen(props) {
                                             height: 80,
                                             width: 80,
                                             borderRadius: 40,
-                                            overflow: "hidden"
+                                            overflow: 'hidden',
                                         }}
                                         defaultSource={placeholderImg}
                                     />
@@ -343,39 +343,39 @@ export function CaseViewScreen(props) {
                 </View>
                 <View
                     style={{
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        width: "100%",
-                        alignItems: "center"
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        width: '100%',
+                        alignItems: 'center',
                     }}
                 >
                     {/* search Functionality */}
                     <View
                         style={{
-                            flexDirection: "column",
-                            width: "95%",
-                            minHeight: 350
+                            flexDirection: 'column',
+                            width: '95%',
+                            minHeight: 350,
                         }}
                     >
                         <View
                             style={{
-                                width: "100%",
+                                width: '100%',
                                 height: 36,
                                 borderTopLeftRadius: 4,
                                 borderTopRightRadius: 4,
-                                backgroundColor: "#0279AC",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                flexDirection: "row"
+                                backgroundColor: '#0279AC',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'row',
                             }}
                         >
                             <View>
                                 <Text
                                     style={{
-                                        width: "100%",
+                                        width: '100%',
                                         padding: 5,
                                         fontSize: 17.5,
-                                        color: "#FFFFFF"
+                                        color: '#FFFFFF',
                                     }}
                                 >
                   Connections
@@ -384,19 +384,19 @@ export function CaseViewScreen(props) {
                         </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                alignContent: "center",
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'flex-start',
+                                alignContent: 'center',
                                 borderBottomWidth: 0.5,
-                                borderBottomColor: "#babab9"
+                                borderBottomColor: '#babab9',
                             }}
                         >
                             <SearchBar
                                 inputStyle={{ fontSize: 16 }}
                                 inputContainerStyle={{
-                                    backgroundColor: "#FAFAFA",
-                                    height: 45.62
+                                    backgroundColor: '#FAFAFA',
+                                    height: 45.62,
                                 }}
                                 placeholder="Search Name..."
                                 placeholderTextColor="#8D8383"
@@ -416,8 +416,8 @@ export function CaseViewScreen(props) {
                             >
                                 <View
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "center"
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
                                     }}
                                 >
                                     <MaterialIcons name="filter-list" color="black" size={32} />
@@ -433,9 +433,9 @@ export function CaseViewScreen(props) {
                   return (
                       <CaseListComponent
                           pressed={() => {
-                              props.navigation.navigate("ConnectionsView", {
+                              props.navigation.navigate('ConnectionsView', {
                                   connectionData: connection,
-                                  childName: caseData.full_name
+                                  childName: caseData.full_name,
                               });
                               setIsScrolling(false);
                           }}
@@ -455,9 +455,9 @@ export function CaseViewScreen(props) {
                 >
                     <View
                         style={{
-                            backgroundColor: "#fff",
+                            backgroundColor: '#fff',
                             height: Platform.OS == 'android' ? 20 : 52,
-                            justifyContent: "center"
+                            justifyContent: 'center',
                         }}
                     >
 
@@ -473,14 +473,14 @@ export function CaseViewScreen(props) {
                                 padding: 10,
                                 fontSize: 18,
                                 paddingBottom: Platform.OS === 'android' ? -20 : 0,
-                                color: "#0F6580",
-                                marginTop: Platform.OS === 'android' ? -37 : 0
+                                color: '#0F6580',
+                                marginTop: Platform.OS === 'android' ? -37 : 0,
                             }}
                         >
                             <Text
                                 style={{
                                     fontSize: Platform.OS === 'android' ? 45 : 20,
-                                    margin: Platform.OS === 'android' ? -2 : 0
+                                    margin: Platform.OS === 'android' ? -2 : 0,
                                 }}
                             >{leftArrow}
                             </Text>
@@ -497,44 +497,44 @@ export function CaseViewScreen(props) {
                             style={{
                                 marginTop: 10,
                                 flex: 1,
-                                width: "100%",
-                                height: "100%",
-                                alignSelf: "flex-start"
+                                width: '100%',
+                                height: '100%',
+                                alignSelf: 'flex-start',
                             }}
                         >
                             <Text
                                 style={{
                                     fontFamily: constants.lotoFamily,
-                                    color: "rgba(24, 23, 21, 0.5)",
+                                    color: 'rgba(24, 23, 21, 0.5)',
                                     marginLeft: 10,
                                     marginTop: Platform.OS === 'android' ? 0 : 20,
                                     marginBottom: 5,
                                     fontSize: 14,
-                                    fontWeight: "800",
-                                    textAlign: "left"
+                                    fontWeight: '800',
+                                    textAlign: 'left',
                                 }}
                             >
                 PERSON STATUS
                             </Text>
                             <View
                                 style={{
-                                    borderBottomColor: "rgba(24, 23, 21, 0.3)",
+                                    borderBottomColor: 'rgba(24, 23, 21, 0.3)',
                                     borderBottomWidth: 0.5,
                                     marginBottom: 10,
-                                    marginHorizontal: 10
+                                    marginHorizontal: 10,
                                 }}
                             ></View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="Not available"
                                     textStyle={styles.checkboxes}
@@ -543,33 +543,33 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            0: !filtersSelected[0]
+                                            0: !filtersSelected[0],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "rgba(24, 23, 21, 0.5)",
+                                        backgroundColor: 'rgba(24, 23, 21, 0.5)',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="Family candidate"
                                     textStyle={styles.checkboxes}
@@ -578,33 +578,33 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            1: !filtersSelected[1]
+                                            1: !filtersSelected[1],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "#9DE36B",
+                                        backgroundColor: '#9DE36B',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="Highlight"
                                     textStyle={styles.checkboxes}
@@ -613,33 +613,33 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            2: !filtersSelected[2]
+                                            2: !filtersSelected[2],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "#F8E358",
+                                        backgroundColor: '#F8E358',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="No-go"
                                     textStyle={styles.checkboxes}
@@ -648,33 +648,33 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            3: !filtersSelected[3]
+                                            3: !filtersSelected[3],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "#DE4A4C",
+                                        backgroundColor: '#DE4A4C',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="Of interest"
                                     textStyle={styles.checkboxes}
@@ -683,33 +683,33 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            4: !filtersSelected[4]
+                                            4: !filtersSelected[4],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "#8656B6",
+                                        backgroundColor: '#8656B6',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
                                 <CheckBox
                                     containerStyle={{
-                                        backgroundColor: "white",
-                                        borderColor: "white"
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
                                     }}
                                     title="Support candidate"
                                     textStyle={styles.checkboxes}
@@ -718,19 +718,19 @@ export function CaseViewScreen(props) {
                                     onPress={() =>
                                         setFiltersSelected({
                                             ...filtersSelected,
-                                            5: !filtersSelected[5]
+                                            5: !filtersSelected[5],
                                         })
                                     }
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: "#60C1E9",
+                                        backgroundColor: '#60C1E9',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: "#fff",
-                                        borderRadius: 100
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
                                     }}
                                 />
                             </View>
@@ -738,29 +738,29 @@ export function CaseViewScreen(props) {
                             <Text
                                 style={{
                                     fontFamily: constants.lotoFamily,
-                                    color: "rgba(24, 23, 21, 0.5)",
+                                    color: 'rgba(24, 23, 21, 0.5)',
                                     marginLeft: 10,
                                     marginTop: 20,
                                     marginBottom: 5,
                                     fontSize: 14,
-                                    fontWeight: "800",
-                                    textAlign: "left"
+                                    fontWeight: '800',
+                                    textAlign: 'left',
                                 }}
                             >
                 GENDER
                             </Text>
                             <View
                                 style={{
-                                    borderBottomColor: "rgba(24, 23, 21, 0.3)",
+                                    borderBottomColor: 'rgba(24, 23, 21, 0.3)',
                                     borderBottomWidth: 0.5,
                                     marginBottom: 10,
-                                    marginHorizontal: 10
+                                    marginHorizontal: 10,
                                 }}
                             ></View>
                             <CheckBox
                                 containerStyle={{
-                                    backgroundColor: "white",
-                                    borderColor: "white"
+                                    backgroundColor: 'white',
+                                    borderColor: 'white',
                                 }}
                                 title="Male"
                                 textStyle={styles.checkboxes}
@@ -773,14 +773,14 @@ export function CaseViewScreen(props) {
                                 onPress={() => {
                                     setFiltersSelected({
                                         ...filtersSelected,
-                                        6: !filtersSelected[6]
+                                        6: !filtersSelected[6],
                                     });
                                 }}
                             />
                             <CheckBox
                                 containerStyle={{
-                                    backgroundColor: "white",
-                                    borderColor: "white"
+                                    backgroundColor: 'white',
+                                    borderColor: 'white',
                                 }}
                                 title="Female"
                                 textStyle={styles.checkboxes}
@@ -789,14 +789,14 @@ export function CaseViewScreen(props) {
                                 onPress={() =>
                                     setFiltersSelected({
                                         ...filtersSelected,
-                                        7: !filtersSelected[7]
+                                        7: !filtersSelected[7],
                                     })
                                 }
                             />
                             <CheckBox
                                 containerStyle={{
-                                    backgroundColor: "white",
-                                    borderColor: "white"
+                                    backgroundColor: 'white',
+                                    borderColor: 'white',
                                 }}
                                 title="Unspecified"
                                 textStyle={styles.checkboxes}
@@ -805,7 +805,7 @@ export function CaseViewScreen(props) {
                                 onPress={() =>
                                     setFiltersSelected({
                                         ...filtersSelected,
-                                        8: !filtersSelected[8]
+                                        8: !filtersSelected[8],
                                     })
                                 }
                             />
@@ -813,47 +813,47 @@ export function CaseViewScreen(props) {
                             <Text
                                 style={{
                                     fontFamily: constants.lotoFamily,
-                                    color: "rgba(24, 23, 21, 0.5)",
+                                    color: 'rgba(24, 23, 21, 0.5)',
                                     marginLeft: 10,
                                     marginTop: 20,
                                     marginBottom: 5,
                                     fontSize: 14,
-                                    fontWeight: "800",
-                                    textAlign: "left"
+                                    fontWeight: '800',
+                                    textAlign: 'left',
                                 }}
                             >
                 SORT BY
                             </Text>
                             <View
                                 style={{
-                                    borderBottomColor: "rgba(24, 23, 21, 0.3)",
+                                    borderBottomColor: 'rgba(24, 23, 21, 0.3)',
                                     borderBottomWidth: 0.5,
                                     marginBottom: 10,
-                                    marginHorizontal: 10
+                                    marginHorizontal: 10,
                                 }}
                             ></View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     marginLeft: 10,
-                                    marginVertical: 10
+                                    marginVertical: 10,
                                 }}
                             >
                                 <RadioButton
                                     value="Full Name"
-                                    status={sort === "Full Name" ? "checked" : "unchecked"}
+                                    status={sort === 'Full Name' ? 'checked' : 'unchecked'}
                                     color="#0279ac"
                                     checked={filtersSelected.name}
                                     onPress={() => {
-                                        setSort("Full Name");
+                                        setSort('Full Name');
                                         setFiltersSelected({
                                             ...filtersSelected,
                                             name: !filtersSelected.name,
                                             last: false,
                                             DOB: false,
                                             created: false,
-                                            updated: false
+                                            updated: false,
                                         });
                                     }}
                                 />
@@ -861,26 +861,26 @@ export function CaseViewScreen(props) {
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     marginLeft: 10,
-                                    marginVertical: 10
+                                    marginVertical: 10,
                                 }}
                             >
                                 <RadioButton
                                     value="Last Name"
-                                    status={sort === "Last Name" ? "checked" : "unchecked"}
+                                    status={sort === 'Last Name' ? 'checked' : 'unchecked'}
                                     color="#0279ac"
                                     checked={filtersSelected.last}
                                     onPress={() => {
-                                        setSort("Last Name");
+                                        setSort('Last Name');
                                         setFiltersSelected({
                                             ...filtersSelected,
                                             name: false,
                                             last: !filtersSelected.last,
                                             DOB: false,
                                             created: false,
-                                            updated: false
+                                            updated: false,
                                         });
                                     }}
                                 />
@@ -888,26 +888,26 @@ export function CaseViewScreen(props) {
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     marginLeft: 10,
-                                    marginVertical: 10
+                                    marginVertical: 10,
                                 }}
                             >
                                 <RadioButton
                                     value="Date Created"
-                                    status={sort === "Date Created" ? "checked" : "unchecked"}
+                                    status={sort === 'Date Created' ? 'checked' : 'unchecked'}
                                     color="#0279ac"
                                     checked={filtersSelected.created}
                                     onPress={() => {
-                                        setSort("Date Created");
+                                        setSort('Date Created');
                                         setFiltersSelected({
                                             ...filtersSelected,
                                             name: false,
                                             last: false,
                                             DOB: false,
                                             created: !filtersSelected.created,
-                                            updated: false
+                                            updated: false,
                                         });
                                     }}
                                 />
@@ -915,27 +915,27 @@ export function CaseViewScreen(props) {
                             </View>
                             <View
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     marginLeft: 10,
                                     marginVertical: 10,
-                                    marginBottom: 100
+                                    marginBottom: 100,
                                 }}
                             >
                                 <RadioButton
                                     value="Last Updated"
-                                    status={sort === "Last Updated" ? "checked" : "unchecked"}
+                                    status={sort === 'Last Updated' ? 'checked' : 'unchecked'}
                                     color="#0279ac"
                                     checked={filtersSelected.updated}
                                     onPress={() => {
-                                        setSort("Last Updated");
+                                        setSort('Last Updated');
                                         setFiltersSelected({
                                             ...filtersSelected,
                                             name: false,
                                             last: false,
                                             DOB: false,
                                             created: false,
-                                            updated: !filtersSelected.updated
+                                            updated: !filtersSelected.updated,
                                         });
                                     }}
                                 />
@@ -952,62 +952,62 @@ export function CaseViewScreen(props) {
 
 const styles = StyleSheet.create({
     tabs: {
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-around"
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
 
     selected: {
         backgroundColor: constants.highlightColor,
-        color: "white",
+        color: 'white',
         borderWidth: 1,
         borderColor: constants.highlightColor,
         borderRadius: 4,
-        overflow: "hidden"
+        overflow: 'hidden',
     },
 
     tab: {
         padding: 10,
-        fontSize: 16
+        fontSize: 16,
     },
     searchBar: {
-        marginHorizontal: Platform.OS === "ios" ? 5 : 5,
-        width: "75%",
-        backgroundColor: Platform.OS === "ios" ? "white" : "white"
+        marginHorizontal: Platform.OS === 'ios' ? 5 : 5,
+        width: '75%',
+        backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
     },
     imageStyles: { width: 225, height: 90 },
-    iconStyles: { fontSize: 40, color: "#000", paddingRight: 20 },
+    iconStyles: { fontSize: 40, color: '#000', paddingRight: 20 },
     filters: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        alignSelf: "stretch"
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'stretch',
     },
     filter: {
         height: 26,
         width: 26,
         borderRadius: 13,
-        overflow: "hidden",
+        overflow: 'hidden',
         marginLeft: 10,
-        marginRight: 10
+        marginRight: 10,
     },
     descriptionModalItems: {
-        flexDirection: "row",
+        flexDirection: 'row',
         height: 50,
-        alignItems: "center"
+        alignItems: 'center',
     },
     checkboxes: {
         fontSize: 18,
-        fontWeight: "normal"
-    }
+        fontWeight: 'normal',
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { caseData, isLoadingCaseData, caseDataError } = state.caseData;
     const {
         caseConnections,
         isLoadingConnections,
-        connectionsError
+        connectionsError,
     } = state.caseConnections;
     const details = state.details;
     return {
@@ -1025,5 +1025,5 @@ export default connect(mapStateToProps, {
     getCaseData,
     clearCaseData,
     getCaseConnections,
-    clearCaseConnections
+    clearCaseConnections,
 })(CaseViewScreen);

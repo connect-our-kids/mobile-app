@@ -8,7 +8,7 @@ import {
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
     setUserCreds,
-    authChecker
+    authChecker,
 } from '../store/actions';
 import authHelpers from '../helpers/authHelpers';
 import headerConfig from '../helpers/headerConfig';
@@ -17,9 +17,9 @@ import headerConfig from '../helpers/headerConfig';
 const AuthenticationView = (props) => {
 
     useEffect(() => {
-        props.authChecker()
+        props.authChecker();
 
-    }, [ props.loadingUser ])
+    }, [ props.loadingUser ]);
 
     return (
         <View style={styles.registerContainer}>
@@ -34,7 +34,7 @@ const AuthenticationView = (props) => {
                 onLogin={() =>
                     authHelpers.handleLogin(
                         authHelpers._loginWithAuth0,
-                        props.setUserCreds
+                        props.setUserCreds,
                     )
                 }
             />
@@ -46,29 +46,29 @@ const AuthenticationView = (props) => {
                 />
             )}
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     registerContainer: {
         flex: 1,
-    }
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const {
         modalVisible,
         videoAgree,
         videoVisible,
     } = state.auth;
-    const { idToken, loadingUser } = state.auth
+    const { idToken, loadingUser } = state.auth;
 
     return {
         modalVisible,
         videoAgree,
         videoVisible,
         idToken,
-        loadingUser
+        loadingUser,
     };
 };
 
@@ -79,6 +79,6 @@ export default connect(
         setAgreeModalVisible,
         setVideoPlayerModalVisible,
         setUserCreds,
-        authChecker
-    }
+        authChecker,
+    },
 )(AuthenticationView);

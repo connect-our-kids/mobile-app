@@ -16,7 +16,7 @@ import constants from '../helpers/constants';
 import MainText from '../UI/MainText';
 import ScreenContainer from '../UI/ScreenContainer';
 
-const TermsOfServiceScreen = props => {
+const TermsOfServiceScreen = (props) => {
     return (
         <ScreenContainer>
             <SafeAreaView>
@@ -29,19 +29,19 @@ const TermsOfServiceScreen = props => {
                 </ScrollView>
             </SafeAreaView>
         </ScreenContainer >
-    )
-}
+    );
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(TermsOfServiceScreen);
 
 

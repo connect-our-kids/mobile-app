@@ -10,7 +10,7 @@ const PersonRow = ({ handlePress, item }) => {
                 shadowOffset: { width: 0, height: 0 },
                 shadowColor: 'transparent',
                 shadowOpacity: 0,
-                borderColor: 'transparent'
+                borderColor: 'transparent',
             }}
         >
             <CardItem button onPress={handlePress}>
@@ -24,8 +24,8 @@ const PersonRow = ({ handlePress, item }) => {
 
 const styles = StyleSheet.create({
     rowContainer: {
-        flexDirection: 'row'
-    }
+        flexDirection: 'row',
+    },
 });
 
 export default PersonRow;

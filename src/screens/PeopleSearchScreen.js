@@ -6,7 +6,7 @@ import {
     View,
     TouchableHighlight,
     StatusBar,
-    Modal
+    Modal,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -18,7 +18,7 @@ import {
     setAgreeModalVisible,
     setUserCreds,
     setVideoPlayerModalVisible,
-    getInfo
+    getInfo,
 } from '../store/actions';
 
 import { Container } from 'native-base';
@@ -50,23 +50,23 @@ class PeopleSearchScreen extends React.Component {
       videoPlayerOpen: false,
       modalVisible: false,
       terms: false,
-      privacy: false
+      privacy: false,
   };
 
-  handleEncodeURI = person => {
+  handleEncodeURI = (person) => {
       return encodeURI(JSON.stringify(person));
   };
 
   handleSearchRequest = async (person, searchType, searchInput) => {
-      const accessToken = await SecureStore.getItemAsync('cok_access_token')
-      const idToken = await SecureStore.getItemAsync('cok_id_token')
+      const accessToken = await SecureStore.getItemAsync('cok_access_token');
+      const idToken = await SecureStore.getItemAsync('cok_id_token');
       const {
       // accessToken,
           fetchSearchResult,
           // idToken,
           isLoggedIn,
           navigation,
-          user
+          user,
       } = this.props;
 
       const body = {};
@@ -90,17 +90,17 @@ class PeopleSearchScreen extends React.Component {
       fetchSearchResult(
           body,
           () => navigation.navigate('SearchResult'),
-          user ? user.email : null
+          user ? user.email : null,
       );
   };
 
-  handleNavigateToResult = async searchPointer => {
+  handleNavigateToResult = async (searchPointer) => {
       const { person } = this.state;
       if (!person) {
           await this.handlePersonRequest(searchPointer);
       }
       await this.props.navigation.navigate('SearchResult', {
-          person: person
+          person: person,
       });
   };
 
@@ -109,7 +109,7 @@ class PeopleSearchScreen extends React.Component {
       sendEvent(
           this.props.isLoggedIn ? this.props.user.email : 'anonymous@unknown.org',
           'open',
-          'introduction-video'
+          'introduction-video',
       );
   };
 
@@ -118,7 +118,7 @@ class PeopleSearchScreen extends React.Component {
       sendEvent(
           this.props.isLoggedIn ? this.props.user.email : 'anonymous@unknown.org',
           'close',
-          'introduction-video'
+          'introduction-video',
       );
   };
 
@@ -182,7 +182,7 @@ class PeopleSearchScreen extends React.Component {
                       onLogin={() =>
                           authHelpers.handleLogin(
                               authHelpers._loginWithAuth0,
-                              this.props.setUserCreds
+                              this.props.setUserCreds,
                           )
                       }
                   />
@@ -224,7 +224,7 @@ class PeopleSearchScreen extends React.Component {
                                                   item={item}
                                                   handlePress={() =>
                                                       this.props.navigation.navigate('SearchResult', {
-                                                          searchPointer: item['@search_pointer_hash']
+                                                          searchPointer: item['@search_pointer_hash'],
                                                       })
                                                   }
                                               />
@@ -246,7 +246,7 @@ class PeopleSearchScreen extends React.Component {
                                   <TouchableHighlight
                                       style={[
                                           styles.videoButton,
-                                          { borderColor: 'red', marginTop: 5, marginBottom: 20 }
+                                          { borderColor: 'red', marginTop: 5, marginBottom: 20 },
                                       ]}
                                       onPress={this.closeVideo}
                                   >
@@ -280,13 +280,13 @@ class PeopleSearchScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        margin: 5
+        margin: 5,
     },
     intro: {
         paddingTop: 20,
         paddingLeft: 10,
         fontFamily: constants.fontFamily,
-        fontSize: 18
+        fontSize: 18,
     },
     link: {
         color: `${constants.highlightColor}`,
@@ -294,13 +294,13 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: 'rgb(216,236,240)',
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
     },
     matchesText: {
         fontSize: 20,
         color: `${constants.highlightColor}`,
         marginBottom: 20,
-        marginLeft: 10
+        marginLeft: 10,
     },
     videoButton: {
         alignItems: 'center',
@@ -311,23 +311,23 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderRadius: 5,
         marginLeft: 17,
-        marginRight: 17
+        marginRight: 17,
     },
     videoButtonText: {
         color: '#0279AC',
         fontWeight: 'bold',
-        textTransform: 'uppercase'
-    }
+        textTransform: 'uppercase',
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const {
         error,
         isFetching,
         person,
         possiblePersons,
         data,
-        query
+        query,
     } = state.people;
     const {
     // accessToken,
@@ -336,7 +336,7 @@ const mapStateToProps = state => {
         user,
         modalVisible,
         videoAgree,
-        videoVisible
+        videoVisible,
     } = state.auth;
     return {
     // accessToken,
@@ -353,7 +353,7 @@ const mapStateToProps = state => {
         info: state.confirmationModal.info,
         queryType: state.confirmationModal.queryType,
         data,
-        query
+        query,
     };
 };
 
@@ -367,6 +367,6 @@ export default connect(
         setAgreeModalVisible,
         setUserCreds,
         setVideoPlayerModalVisible,
-        getInfo
-    }
+        getInfo,
+    },
 )(PeopleSearchScreen);

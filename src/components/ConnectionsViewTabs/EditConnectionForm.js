@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import axios from 'axios';
 import {
     Text,
     View,
@@ -11,17 +11,17 @@ import {
     TextInput,
     // CheckBox,
     Platform,
-    DatePickerAndroid
-} from "react-native";
-import { CheckBox } from "react-native-elements";
-import { Picker } from "react-native-picker-dropdown";
-import { getDetails } from "../../store/actions/connectionData";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { connect } from "react-redux";
-import * as SecureStore from "expo-secure-store";
-import Intl from "intl";
-import getEnvVars from "../../../environment";
-import * as yup from "yup";
+    DatePickerAndroid,
+} from 'react-native';
+import { CheckBox } from 'react-native-elements';
+import { Picker } from 'react-native-picker-dropdown';
+import { getDetails } from '../../store/actions/connectionData';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
+import Intl from 'intl';
+import getEnvVars from '../../../environment';
+import * as yup from 'yup';
 import { Appearance } from 'react-native-appearance';
 
 const { familyConnectionsURL } = getEnvVars();
@@ -43,16 +43,16 @@ let schema = yup.object().shape({
             zip: yup
                 .number()
                 .positive()
-                .integer()
-        })
+                .integer(),
+        }),
     ),
     telephones: yup
         .array()
         .of(
             yup.object({
                 telephone: yup.string().min(10),
-                is_verified: yup.boolean()
-            })
+                is_verified: yup.boolean(),
+            }),
         )
         .required(),
     emails: yup
@@ -63,8 +63,8 @@ let schema = yup.object().shape({
                     .string()
                     .email()
                     .required(),
-                is_verified: yup.boolean()
-            })
+                is_verified: yup.boolean(),
+            }),
         )
         .required(),
     job_title: yup.string().nullable(),
@@ -81,30 +81,30 @@ let schema = yup.object().shape({
     linkedin: yup
         .string()
         .url()
-        .nullable()
+        .nullable(),
 });
 
 function EditConnectionForm(props) {
-    const [ token, setToken ] = useState("");
+    const [ token, setToken ] = useState('');
     const [ formData, setFormData ] = useState(props.details);
     const [ error, setError ] = useState(false);
     const [ formErrors, setFormErrors ] = useState({});
     const [ showCal, setShowCal ] = useState(false);
 
-    SecureStore.getItemAsync("cok_access_token")
-        .then(res => {
+    SecureStore.getItemAsync('cok_access_token')
+        .then((res) => {
             setToken(res);
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(err);
         });
 
     function handleChange(name, value, options = {}) {
-        setFormData(formData => {
+        setFormData((formData) => {
             let copy = { ...formData };
 
-            if ("index" in options) {copy[name][options.index][options.subname] = value;}
-            else {copy[name] = value;}
+            if ('index' in options) {copy[name][options.index][options.subname] = value}
+            else {copy[name] = value}
 
             return copy;
         });
@@ -116,13 +116,13 @@ function EditConnectionForm(props) {
 
         let fieldErrors = {};
 
-        if (err.includes("[")) {
-            let newErr = err.split("[");
+        if (err.includes('[')) {
+            let newErr = err.split('[');
             let name = newErr[0];
-            let errTemplate = newErr[1].split("]");
+            let errTemplate = newErr[1].split(']');
             let errIndex = errTemplate[0]; // index of error 3
             let errDetail = errTemplate[1].slice(1); // message of error
-            let errType = errTemplate[1].split(" ")[0].slice(1);
+            let errType = errTemplate[1].split(' ')[0].slice(1);
 
             fieldErrors[name] = [];
             fieldErrors[name][errIndex] = {};
@@ -130,10 +130,10 @@ function EditConnectionForm(props) {
             return fieldErrors;
         }
         else {
-            fieldErrors[err.split(" ")[0]] = err
-                .split(" ")
+            fieldErrors[err.split(' ')[0]] = err
+                .split(' ')
                 .slice(1)
-                .join(" ");
+                .join(' ');
             return fieldErrors;
         }
     }
@@ -143,14 +143,14 @@ function EditConnectionForm(props) {
         setFormErrors({});
         schema
             .validate(formData, { abortEarly: false })
-            .then(valid => {
+            .then((valid) => {
                 // checks the formData with Yup schema, if it passes errors are cleared and save function is run
                 setFormErrors({});
                 save();
             })
-            .catch(error => {
+            .catch((error) => {
                 let errObj = {};
-                error.errors.forEach(err => {
+                error.errors.forEach((err) => {
                     errObj = { ...errObj, ...errorValidatorFormatter(err) };
                 });
                 setFormErrors(errObj);
@@ -159,7 +159,7 @@ function EditConnectionForm(props) {
 
     function save() {
         const form = new FormData();
-        form.append("person", JSON.stringify(formData));
+        form.append('person', JSON.stringify(formData));
 
         axios
             .patch(
@@ -167,16 +167,16 @@ function EditConnectionForm(props) {
                 form,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
             )
-            .then(res => {
+            .then((res) => {
                 props.setEdit(false);
                 props.getDetails(props.id);
             })
-            .catch(err => {
-                console.log("Unable to edit person", err);
+            .catch((err) => {
+                console.log('Unable to edit person', err);
                 setError(true);
             });
     }
@@ -187,36 +187,36 @@ function EditConnectionForm(props) {
     }
 
     function handleNew(name) {
-        setFormData(formData => {
+        setFormData((formData) => {
             let shape;
             switch (name) {
-            case "addresses":
+            case 'addresses':
                 shape = {
-                    country: "",
-                    country_code: "",
-                    formatted: "",
+                    country: '',
+                    country_code: '',
+                    formatted: '',
                     is_verified: false,
                     latitude: 0,
-                    locality: "",
+                    locality: '',
                     longitude: 0,
-                    postal_code: "",
-                    raw: "",
-                    route: "",
-                    state: "",
-                    state_code: "",
-                    street_number: ""
+                    postal_code: '',
+                    raw: '',
+                    route: '',
+                    state: '',
+                    state_code: '',
+                    street_number: '',
                 };
                 break;
-            case "emails":
-                shape = { email: "", is_verified: false };
+            case 'emails':
+                shape = { email: '', is_verified: false };
                 break;
-            case "telephones":
-                shape = { telephone: "", is_verified: false };
+            case 'telephones':
+                shape = { telephone: '', is_verified: false };
                 break;
             }
             return {
                 ...formData,
-                [name]: [ ...formData[name], shape ]
+                [name]: [ ...formData[name], shape ],
             };
         });
     }
@@ -224,7 +224,7 @@ function EditConnectionForm(props) {
     function deleteField(name, id) {
         setFormData({
             ...formData,
-            [name]: formData[name].filter((element, index) => id !== index)
+            [name]: formData[name].filter((element, index) => id !== index),
         });
     }
 
@@ -261,8 +261,8 @@ function EditConnectionForm(props) {
                 day,
                 month,
                 year,
-                raw: month + "/" + day + "/" + year
-            }
+                raw: month + '/' + day + '/' + year,
+            },
         });
     }
 
@@ -271,8 +271,8 @@ function EditConnectionForm(props) {
             <View style={styles.header}>
                 <Text
                     style={{
-                        color: "rgba(24, 23, 21, 0.5)",
-                        fontWeight: "bold"
+                        color: 'rgba(24, 23, 21, 0.5)',
+                        fontWeight: 'bold',
                     }}
                 >
           INFORMATION
@@ -282,32 +282,32 @@ function EditConnectionForm(props) {
             <Text>First Name</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["first_name"]}
+                value={formData['first_name']}
                 placeholder="First Name"
-                onChangeText={text => handleChange("first_name", text)}
+                onChangeText={(text) => handleChange('first_name', text)}
             />
 
             <Text>Middle Name</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["middle_name"]}
+                value={formData['middle_name']}
                 placeholder="Middle Name"
-                onChangeText={text => handleChange("middle_name", text)}
+                onChangeText={(text) => handleChange('middle_name', text)}
             />
 
             <Text>Last Name</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["last_name"]}
+                value={formData['last_name']}
                 placeholder="Last Name"
-                onChangeText={text => handleChange("last_name", text)}
+                onChangeText={(text) => handleChange('last_name', text)}
             />
 
             <Text>Suffix</Text>
             <View style={styles.picker}>
                 <Picker
                     selectedValue={formData.suffix}
-                    onValueChange={suffix => handleChange("suffix", suffix)}
+                    onValueChange={(suffix) => handleChange('suffix', suffix)}
                     textStyle={styles.pickerText}
                 >
                     <Picker.Item label="Suffix" value="" />
@@ -321,13 +321,13 @@ function EditConnectionForm(props) {
             </View>
 
             <View style={styles.dob_gen}>
-                <View style={styles["dob_gen_item"]}>
+                <View style={styles['dob_gen_item']}>
                     <Text style={{ marginBottom: 10 }}>Date of Birth</Text>
 
                     {/* Date picker: touchable is styled to match text inputs but triggers picker modal via hook */}
                     <TouchableOpacity style={styles.datePicker} onPress={showDatePicker}>
                         <Text style={styles.dateText}>
-                            {formData.birthday ? formData.birthday.raw : ""}
+                            {formData.birthday ? formData.birthday.raw : ''}
                         </Text>
                     </TouchableOpacity>
 
@@ -343,12 +343,12 @@ function EditConnectionForm(props) {
                     />
                 </View>
 
-                <View style={styles["dob_gen_item"]}>
+                <View style={styles['dob_gen_item']}>
                     <Text>Gender</Text>
                     <View style={styles.picker}>
                         <Picker
-                            selectedValue={formData["gender"]}
-                            onValueChange={gender => handleChange("gender", gender)}
+                            selectedValue={formData['gender']}
+                            onValueChange={(gender) => handleChange('gender', gender)}
                             textStyle={styles.pickerText}
                         >
                             <Picker.Item label="male" value="M" />
@@ -359,11 +359,11 @@ function EditConnectionForm(props) {
                 </View>
             </View>
 
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{ marginRight: 10 }}>Deceased</Text>
                 <CheckBox
                     checked={formData.deceased}
-                    onIconPress={e => handleChange("deceased", !formData.deceased)}
+                    onIconPress={(e) => handleChange('deceased', !formData.deceased)}
                 />
             </View>
 
@@ -378,7 +378,7 @@ function EditConnectionForm(props) {
                         <View style={styles.delButtonRow}>
                             <TouchableOpacity
                                 style={styles.delButton}
-                                onPress={() => deleteField("addresses", i)}
+                                onPress={() => deleteField('addresses', i)}
                             >
                                 <Text style={styles.buttonText}>-</Text>
                             </TouchableOpacity>
@@ -394,10 +394,10 @@ function EditConnectionForm(props) {
                                         : null
                                 }
                                 placeholder="Street Address"
-                                onChange={route =>
-                                    handleChange("addresses", route, {
+                                onChange={(route) =>
+                                    handleChange('addresses', route, {
                                         index: i,
-                                        subname: "route"
+                                        subname: 'route',
                                     })
                                 }
                             />
@@ -409,10 +409,10 @@ function EditConnectionForm(props) {
                                 style={styles.textInputLong}
                                 value={val.locality}
                                 placeholder="City"
-                                onChange={locality =>
-                                    handleChange("addresses", locality, {
+                                onChange={(locality) =>
+                                    handleChange('addresses', locality, {
                                         index: i,
-                                        subname: "locality"
+                                        subname: 'locality',
                                     })
                                 }
                             />
@@ -425,10 +425,10 @@ function EditConnectionForm(props) {
                                     style={styles.textInputShort}
                                     value={val.state}
                                     placeholder="State"
-                                    onChange={state =>
-                                        handleChange("addresses", state, {
+                                    onChange={(state) =>
+                                        handleChange('addresses', state, {
                                             index: i,
-                                            subname: "state"
+                                            subname: 'state',
                                         })
                                     }
                                 />
@@ -438,12 +438,12 @@ function EditConnectionForm(props) {
 
                                 <TextInput
                                     style={styles.textInputShort}
-                                    value={val["postal_code"]}
+                                    value={val['postal_code']}
                                     placeholder="Zip Code"
-                                    onChange={postal_code =>
-                                        handleChange("addresses", postal_code, {
+                                    onChange={(postal_code) =>
+                                        handleChange('addresses', postal_code, {
                                             index: i,
-                                            subname: "postal_code"
+                                            subname: 'postal_code',
                                         })
                                     }
                                 />
@@ -456,10 +456,10 @@ function EditConnectionForm(props) {
                                 style={styles.textInputLong}
                                 value={val.country}
                                 placeholder="Country"
-                                onChange={country =>
-                                    handleChange("addresses", country, {
+                                onChange={(country) =>
+                                    handleChange('addresses', country, {
                                         index: i,
-                                        subname: "country"
+                                        subname: 'country',
                                     })
                                 }
                             />
@@ -475,7 +475,7 @@ function EditConnectionForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={e => handleNew("addresses")}
+                    onPress={(e) => handleNew('addresses')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -491,16 +491,16 @@ function EditConnectionForm(props) {
                 <>
                     <View
                         style={{
-                            flexDirection: "row",
-                            alignItems: "center",
+                            flexDirection: 'row',
+                            alignItems: 'center',
                             marginTop: 10,
-                            marginBottom: 20
+                            marginBottom: 20,
                         }}
                     >
                         <View style={styles.delTelButtonRow}>
                             <TouchableOpacity
                                 style={styles.delButton}
-                                onPress={() => deleteField("telephones", i)}
+                                onPress={() => deleteField('telephones', i)}
                             >
                                 <Text style={styles.buttonText}>-</Text>
                             </TouchableOpacity>
@@ -511,10 +511,10 @@ function EditConnectionForm(props) {
                             key={i}
                             value={val.telephone}
                             placeholder="000-000-0000"
-                            onChange={telephone =>
-                                handleChange("telephones", telephone, {
+                            onChange={(telephone) =>
+                                handleChange('telephones', telephone, {
                                     index: i,
-                                    subname: "telephone"
+                                    subname: 'telephone',
                                 })
                             }
                         />
@@ -530,7 +530,7 @@ function EditConnectionForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={e => handleNew("telephones")}
+                    onPress={(e) => handleNew('telephones')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -543,11 +543,11 @@ function EditConnectionForm(props) {
         && formData.emails.map((val, i) => {
             return (
                 <>
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: 'row' }}>
                         <View style={styles.delButtonRow}>
                             <TouchableOpacity
                                 style={styles.delButton}
-                                onPress={() => deleteField("emails", i)}
+                                onPress={() => deleteField('emails', i)}
                             >
                                 <Text style={styles.buttonText}>-</Text>
                             </TouchableOpacity>
@@ -558,10 +558,10 @@ function EditConnectionForm(props) {
                             key={i}
                             value={val.email}
                             placeholder="name@mail.com"
-                            onChange={email =>
-                                handleChange("emails", email, {
+                            onChange={(email) =>
+                                handleChange('emails', email, {
                                     index: i,
-                                    subname: "email"
+                                    subname: 'email',
                                 })
                             }
                         />
@@ -576,7 +576,7 @@ function EditConnectionForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={e => handleNew("emails")}
+                    onPress={(e) => handleNew('emails')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -588,25 +588,25 @@ function EditConnectionForm(props) {
             <Text style={{ marginTop: 10 }}>Job Title</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["job_title"]}
-                onChangeText={text => handleChange("job_title", text)}
+                value={formData['job_title']}
+                onChangeText={(text) => handleChange('job_title', text)}
                 placeholder="Job Title"
             />
 
             <Text>Employer</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["employer"]}
-                onChangeText={text => handleChange("employer", text)}
+                value={formData['employer']}
+                onChangeText={(text) => handleChange('employer', text)}
                 placeholder="Company Name"
             />
 
             <Text>Salary Range</Text>
             <View style={styles.picker}>
                 <Picker
-                    selectedValue={formData["salary_range"]}
+                    selectedValue={formData['salary_range']}
                     textStyle={styles.pickerText}
-                    onValueChange={salary => handleChange("salary_range", salary)}
+                    onValueChange={(salary) => handleChange('salary_range', salary)}
                 >
                     <Picker.Item label="Salary Range" value={1} />
                     <Picker.Item label="<$40,000" value={2} />
@@ -625,8 +625,8 @@ function EditConnectionForm(props) {
             <Text>Facebook</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["facebook"]}
-                onChangeText={text => handleChange("facebook", text)}
+                value={formData['facebook']}
+                onChangeText={(text) => handleChange('facebook', text)}
                 placeholder="Facebook"
             />
             <Text style={styles.errorText}>{formErrors.facebook}</Text>
@@ -634,8 +634,8 @@ function EditConnectionForm(props) {
             <Text>Twitter</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["twitter"]}
-                onChangeText={text => handleChange("twitter", text)}
+                value={formData['twitter']}
+                onChangeText={(text) => handleChange('twitter', text)}
                 placeholder="Twitter"
             />
             <Text style={styles.errorText}>{formErrors.facebook}</Text>
@@ -643,15 +643,15 @@ function EditConnectionForm(props) {
             <Text>LinkedIn</Text>
             <TextInput
                 style={styles.textInput}
-                value={formData["linkedin"]}
-                onChangeText={text => handleChange("linkedin", text)}
+                value={formData['linkedin']}
+                onChangeText={(text) => handleChange('linkedin', text)}
                 placeholder="LinkedIn"
             />
             <Text style={styles.errorText}>{formErrors.facebook}</Text>
 
             {error ? (
                 <View style={styles.errorBox}>
-                    <Text style={{ color: "#fff", alignSelf: "center" }}>
+                    <Text style={{ color: '#fff', alignSelf: 'center' }}>
             Unable to Update Connection
                     </Text>
                 </View>
@@ -659,10 +659,10 @@ function EditConnectionForm(props) {
 
             <View
                 style={{
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    marginBottom: 15
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginBottom: 15,
                 }}
             >
                 <TouchableOpacity onPress={handleCancel}>
@@ -680,200 +680,200 @@ function EditConnectionForm(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: "90%"
+        width: '90%',
     //    marginHorizontal: 10 /// used to be 90% width
     },
     header: {
         marginTop: 50,
         marginBottom: 30,
-        borderBottomColor: "rgba(24, 23, 21, 0.3)",
+        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
         borderBottomWidth: 0.5,
-        fontSize: 2.3
+        fontSize: 2.3,
     },
     textInput: {
-        width: "100%",
-        color: "#444444",
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        width: '100%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,
         marginTop: 10, // /// used to be margin
-        marginBottom: 20
+        marginBottom: 20,
     },
     textInputLong: {
-        width: "80%",
-        color: "#444444",
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        width: '80%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderBottomWidth: 1,
         padding: 10,
-        marginTop: 5
+        marginTop: 5,
     },
     textInputShort: {
-        width: "40%",
-        color: "#444444",
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        width: '40%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderBottomWidth: 1,
         padding: 10,
-        marginTop: 5
+        marginTop: 5,
     },
     textInputTel: {
-        width: "80%",
+        width: '80%',
         fontSize: 18,
-        color: "#444444",
+        color: '#444444',
         paddingBottom: 10,
-        marginTop: 5
+        marginTop: 5,
     },
     textInputEmail: {
-        width: "70%",
-        color: "#444444",
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        width: '70%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,
         marginTop: 10, // /// used to be margin
-        marginBottom: 20
+        marginBottom: 20,
     },
     doubleField: {
-        width: "90%",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
+        width: '90%',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
         marginLeft: -10,
-        marginBottom: 20
+        marginBottom: 20,
     },
     picker: {
-        color: "#444444",
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderWidth: 1,
         borderRadius: 5,
         marginTop: 10,
         marginBottom: 20,
-        paddingVertical: Platform.OS === "ios" ? 16 : 4,
-        paddingHorizontal: Platform.OS === "ios" ? 10.5 : 0
+        paddingVertical: Platform.OS === 'ios' ? 16 : 4,
+        paddingHorizontal: Platform.OS === 'ios' ? 10.5 : 0,
     },
     pickerText: {
-        fontSize: Platform.OS === "ios" ? 14 : null,
-        paddingTop: Platform.OS === "ios" ? 2.5 : null,
-        color: "#444444"
+        fontSize: Platform.OS === 'ios' ? 14 : null,
+        paddingTop: Platform.OS === 'ios' ? 2.5 : null,
+        color: '#444444',
     },
     dob_gen: {
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginVertical: 5
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 5,
     // height on iOS
     // ActionSheet
     },
     dob_gen_item: {
-        width: "45%"
+        width: '45%',
     },
     datePicker: {
-        borderColor: "rgba(24, 23, 21, 0.5)",
+        borderColor: 'rgba(24, 23, 21, 0.5)',
         borderWidth: 1,
         borderRadius: 5,
-        justifyContent: "center",
+        justifyContent: 'center',
         paddingHorizontal: 15,
-        paddingVertical: Platform.OS === "ios" ? 16.3 : 20,
-        height: Platform.OS === "ios" ? 49 : 60
+        paddingVertical: Platform.OS === 'ios' ? 16.3 : 20,
+        height: Platform.OS === 'ios' ? 49 : 60,
     },
     addButton: {
-        backgroundColor: "#0279AC",
+        backgroundColor: '#0279AC',
         borderRadius: 20,
         height: 30,
         width: 30,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 10,
         marginBottom: 10,
         paddingBottom: 2,
-        paddingLeft: 1
+        paddingLeft: 1,
     },
     delButton: {
-        backgroundColor: "#DB272A",
+        backgroundColor: '#DB272A',
         borderRadius: 20,
         height: 30,
         width: 30,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 10,
         marginBottom: 10,
         paddingBottom: 2,
-        paddingLeft: 1
+        paddingLeft: 1,
     },
     addButtonRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginVertical: 15
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 15,
     },
     delButtonRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        width: "30%"
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '30%',
     },
     delTelButtonRow: {
-        flexDirection: "row",
-        alignItems: "flex-end",
-        width: "30%"
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        width: '30%',
     },
     buttonText: {
-        color: "white",
-        fontSize: 20
+        color: 'white',
+        fontSize: 20,
     },
     addressInfo: {
-        width: "80%",
-        flexDirection: "row",
-        justifyContent: "space-between"
+        width: '80%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     addressDetail: {
-        width: "55%"
+        width: '55%',
     },
     saveButton: {
         width: 150,
         marginVertical: 15,
         // marginHorizontal: 10,
         padding: 15,
-        backgroundColor: "#0279AC",
-        color: "#fff",
+        backgroundColor: '#0279AC',
+        color: '#fff',
         borderRadius: 5,
         fontSize: 20,
-        textAlign: "center",
-        fontWeight: "bold"
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
     cancelButton: {
         width: 150,
         marginVertical: 15,
         // marginHorizontal: 10,
         padding: 14,
-        backgroundColor: "#fff",
-        color: "#0279AC",
-        borderColor: "#0279AC",
+        backgroundColor: '#fff',
+        color: '#0279AC',
+        borderColor: '#0279AC',
         borderWidth: 1,
         borderRadius: 5,
         fontSize: 20,
-        textAlign: "center"
+        textAlign: 'center',
     },
     errorBox: {
-        justifyContent: "center",
-        backgroundColor: "#ff9494",
+        justifyContent: 'center',
+        backgroundColor: '#ff9494',
         borderRadius: 5,
         padding: 10,
         marginHorizontal: 10,
-        marginVertical: 15
+        marginVertical: 15,
     },
     errorText: {
-        color: "#DB272A"
+        color: '#DB272A',
     },
     hr: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomWidth: 0.5,
-        borderBottomColor: "rgba(24, 23, 21, 0.3)",
+        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
         marginTop: 5,
-        marginBottom: 12
+        marginBottom: 12,
     },
-    buttonLbl: { fontSize: 16, paddingBottom: 12 }
+    buttonLbl: { fontSize: 16, paddingBottom: 12 },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {};
 };
 

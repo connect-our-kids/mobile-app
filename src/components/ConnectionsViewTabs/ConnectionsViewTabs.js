@@ -16,42 +16,42 @@ import {
     Image,
     Linking,
 } from 'react-native';
-import { ListItem, Button, Avatar } from "react-native-elements";
+import { ListItem, Button, Avatar } from 'react-native-elements';
 import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import moment from "moment";
+import moment from 'moment';
 
-const placeholderImg = require('../../../assets/profile_placeholder.png')
+const placeholderImg = require('../../../assets/profile_placeholder.png');
 
 export const Engagement = (props) => {
 
     const getDataIcon = () => {
         if (props.engagement.data_type === 'N') {
-            return <MaterialIcons name='note-add' size={16} color='#0F6580' />
+            return <MaterialIcons name='note-add' size={16} color='#0F6580' />;
         }
         else if (props.engagement.data_type === 'E') {
-            return <MaterialCommunityIcons name='email-plus' size={16} color='#0F6580' />
+            return <MaterialCommunityIcons name='email-plus' size={16} color='#0F6580' />;
         }
         else if (props.engagement.data_type === 'C') {
-            return <MaterialCommunityIcons name='phone-plus' size={16} color='#0F6580' />
+            return <MaterialCommunityIcons name='phone-plus' size={16} color='#0F6580' />;
         }
         else if (props.engagement.data_type === 'R') {
-            return <MaterialCommunityIcons name='reminder' size={16} color='#0F6580' />
+            return <MaterialCommunityIcons name='reminder' size={16} color='#0F6580' />;
         }
         else if (props.engagement.data_type === 'D') {
-            return 'Document'
+            return 'Document';
         }
         else {
-            return props.engagement.data_type
+            return props.engagement.data_type;
         }
-    }
+    };
 
     return (
         <View
             style={{
                 flexDirection: 'row',
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                marginBottom: 20
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                marginBottom: 20,
             }}
             key={props.engagement.pk}
         >
@@ -79,34 +79,34 @@ export const Engagement = (props) => {
         <Text style={{color: 'gray'}}>{moment(props.engagement.created_at).format('MMM Do YYYY, h:mm a')}</Text>
       </View> */}
         </View>
-    )
-}
+    );
+};
 
 export const Documents = (props) => {
 
     const docIcon = (name) => {
         if (name.slice(-3) === 'pdf') {
-            return <AntDesign name="pdffile1" size={34} />
+            return <AntDesign name="pdffile1" size={34} />;
         }
         else if (name.slice(-3) === 'jpg') {
-            return <AntDesign name="picture" size={34} />
+            return <AntDesign name="picture" size={34} />;
         }
         else if (name.slice(-4) === 'jpeg') {
-            return <AntDesign name="picture" size={34} />
+            return <AntDesign name="picture" size={34} />;
         }
         else if (name.slice(-3) === 'png') {
-            return <AntDesign name="picture" size={34} />
+            return <AntDesign name="picture" size={34} />;
         }
         else {
-            return <Entypo name="attachment" size={34} />
+            return <Entypo name="attachment" size={34} />;
         }
-    }
+    };
 
     return (
         <View>
             <ListItem
                 title={props.document.title}
-                titleStyle={{ color: "#5A6064" }}
+                titleStyle={{ color: '#5A6064' }}
                 leftIcon={docIcon(props.document.original_file_name)}
                 topDivider={true}
                 onPress={() => Linking.openURL(props.document.attachment)}
@@ -119,5 +119,5 @@ export const Documents = (props) => {
                 chevron
             />
         </View>
-    )
-}
+    );
+};

@@ -5,7 +5,7 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    Platform
+    Platform,
 } from 'react-native';
 import { Button } from 'native-base';
 import constants from '../../helpers/constants';
@@ -13,12 +13,12 @@ import { Input } from 'native-base';
 
 class FamilyConnectionsModal extends Component {
   state = {
-      email: ''
+      email: '',
   };
 
-  handleInput = text => {
+  handleInput = (text) => {
       this.setState({
-          email: text
+          email: text,
       });
   };
 
@@ -51,7 +51,7 @@ class FamilyConnectionsModal extends Component {
                   {!this.props.email && (
                       <Input
                           style={styles.textInput}
-                          onChangeText={text => this.handleInput(text)}
+                          onChangeText={(text) => this.handleInput(text)}
                           placeholder="sample@email.com"
                           value={this.state.email}
                       />
@@ -88,51 +88,51 @@ const styles = StyleSheet.create({
         alignItems: 'baseline',
         flexDirection: 'row',
         width: Dimensions.get('window').width,
-        marginTop: Platform.OS === 'ios' ? 40 : null
+        marginTop: Platform.OS === 'ios' ? 40 : null,
     },
     yesButton: {
         backgroundColor: constants.highlightColor,
-        marginBottom: 10
+        marginBottom: 10,
     },
     noButton: {
         backgroundColor: '#6C757D',
-        marginBottom: 10
+        marginBottom: 10,
     },
     close: {
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
     closeBtn: {
         padding: 5,
-        color: '#000'
+        color: '#000',
     },
     btnText: {
-        color: '#fff'
+        color: '#fff',
     },
     modalHeaderStyle: {
         color: constants.highlightColor,
         fontSize: 20,
-        fontFamily: constants.fontFamily
+        fontFamily: constants.fontFamily,
     },
     modalTextStyle: {
         fontFamily: constants.fontFamily,
         paddingHorizontal: 20,
         fontSize: 18,
-        lineHeight: 25
+        lineHeight: 25,
     },
     buttonContainer: {
         padding: 20,
         borderTopColor: constants.highlightColor,
         borderTopWidth: 1,
         marginTop: 20,
-        height: 210
+        height: 210,
     },
     textInput: {
         borderColor: '#64aab8',
         borderWidth: 1,
         borderStyle: 'solid',
         width: '100%',
-        marginBottom: 10
-    }
+        marginBottom: 10,
+    },
 });
 
 export default FamilyConnectionsModal;

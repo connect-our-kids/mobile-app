@@ -20,11 +20,11 @@ class AboutScreen extends Component {
 
   render() {
       function getYear() {
-          const year = new Date()
-          return year.getFullYear()
+          const year = new Date();
+          return year.getFullYear();
       }
 
-      const version = appJSON.expo.version
+      const version = appJSON.expo.version;
 
       return (
           <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
@@ -42,7 +42,7 @@ class AboutScreen extends Component {
                               color: constants.highlightColor,
                               fontSize: 14,
                               marginBottom: 15,
-                              fontWeight: 'bold'
+                              fontWeight: 'bold',
                           }}
                       >
             Video not loading?<Text style={{ textDecorationLine: 'underline', fontWeight: 'bold' }}>Tap here.</Text></Text>
@@ -62,7 +62,7 @@ class AboutScreen extends Component {
                               flexDirection: 'column',
                               justifyContent: 'center',
                               textAlign: 'center',
-                              color: "#AAA9AD",
+                              color: '#AAA9AD',
                           }}
                       >
                           {`Copyright ${getYear()} © Connect Our Kids.\nAll Rights Reserved.`}
@@ -74,14 +74,14 @@ class AboutScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(AboutScreen);

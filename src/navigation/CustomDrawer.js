@@ -3,21 +3,21 @@ import {
     TouchableOpacity,
     View,
     Linking,
-    Animated
-} from 'react-native'
-import { Divider } from 'react-native-elements'
+    Animated,
+} from 'react-native';
+import { Divider } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { logOut, authChecker, clearUserCases } from '../store/actions';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 const CustomDrawer = (props) => {
 
     useEffect(() => {
         // if (props.loadingUser) {
-        props.authChecker()
+        props.authChecker();
         // }
-    }, [ props.loadingUser ])
+    }, [ props.loadingUser ]);
 
     return (
         <Animated.View style={styles.container}>
@@ -63,7 +63,7 @@ const CustomDrawer = (props) => {
                 <Divider style={styles.divider} />
             </View>
 
-            <View style={[ styles.half, { justifyContent: "center", alignItems: "center" } ]}>
+            <View style={[ styles.half, { justifyContent: 'center', alignItems: 'center' } ]}>
                 {/* // conditional based on whether user is logged in */}
                 {props.isLoggedIn && props.idToken
                     ? <>
@@ -71,8 +71,8 @@ const CustomDrawer = (props) => {
 
                         <TouchableOpacity
                             onPress={() => {
-                                props.logOut()
-                                props.clearUserCases()
+                                props.logOut();
+                                props.clearUserCases();
                             }}
                         >
                             <View style={styles.logout}>
@@ -84,64 +84,64 @@ const CustomDrawer = (props) => {
 
             </View>
         </Animated.View>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 10,
-        justifyContent: "flex-start"
+        justifyContent: 'flex-start',
     },
     half: {
-        height: "50%"
+        height: '50%',
     },
     linkBox: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginLeft: 30
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginLeft: 30,
     },
     arrow: {
-        color: "rgba(24, 23, 21, 0.3)",
-        marginRight: 40
+        color: 'rgba(24, 23, 21, 0.3)',
+        marginRight: 40,
     },
     text: {
         color: '#444444',
         fontSize: 18,
         paddingBottom: 15,
-        paddingTop: 15
+        paddingTop: 15,
     },
     withBorder: {
-        borderColor: "rgba(24, 23, 21, 0.1)",
+        borderColor: 'rgba(24, 23, 21, 0.1)',
         borderBottomWidth: 1,
     },
     divider: {
         height: 1,
-        width: "100%",
-        backgroundColor: "rgba(24, 23, 21, 0.1)"
+        width: '100%',
+        backgroundColor: 'rgba(24, 23, 21, 0.1)',
     },
     logout: {
-        borderColor: "#0279AC",
+        borderColor: '#0279AC',
         borderWidth: 1,
         borderRadius: 10,
         width: 160,
         height: 45,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     logoutText: {
-        color: "#0279AC"
-    }
+        color: '#0279AC',
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const {
         user,
         isLoggedIn,
         authToken,
         idToken,
-        loadingUser
+        loadingUser,
     } = state.auth;
 
     return {
@@ -149,7 +149,7 @@ const mapStateToProps = state => {
         isLoggedIn,
         authToken,
         idToken,
-        loadingUser
+        loadingUser,
     };
 };
 
@@ -158,6 +158,6 @@ export default connect(
     {
         logOut,
         authChecker,
-        clearUserCases
-    }
+        clearUserCases,
+    },
 )(CustomDrawer);

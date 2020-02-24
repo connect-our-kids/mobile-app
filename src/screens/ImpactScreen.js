@@ -39,14 +39,14 @@ class ImpactScreen extends Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(ImpactScreen);

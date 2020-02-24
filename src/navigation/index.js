@@ -1,18 +1,18 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState } from 'react';
 import {
     TouchableWithoutFeedback,
     View,
     Image,
     Text,
-    TouchableOpacity
-} from 'react-native'
+    TouchableOpacity,
+} from 'react-native';
 import { Linking } from 'expo';
 import {
     createAppContainer,
-    createSwitchNavigator
+    createSwitchNavigator,
 } from 'react-navigation';
 import { createDrawerNavigator, DrawerActions, DrawerItems } from 'react-navigation-drawer';
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {
     createStackNavigator,
 } from 'react-navigation-stack';
@@ -29,12 +29,12 @@ import constants from '../helpers/constants';
 import AuthenticationView from '../screens/AuthenticationScreen';
 import CaseViewScreen from '../screens/CaseViewScreen';
 import ConnectionsView from '../screens/ConnectionsView';
-import AddEngagementForm from '../components/ConnectionsViewTabs/AddEngagementForm'
-import AddDocForm from '../components/ConnectionsViewTabs/AddDocForm'
+import AddEngagementForm from '../components/ConnectionsViewTabs/AddEngagementForm';
+import AddDocForm from '../components/ConnectionsViewTabs/AddDocForm';
 import logoImg from '../../assets/logo.png';
-import CustomDrawer from './CustomDrawer'
-import { connect } from "react-redux";
-import { store } from '../store/store'
+import CustomDrawer from './CustomDrawer';
+import { connect } from 'react-redux';
+import { store } from '../store/store';
 
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
 // If you add new screens into the app, you'll need to add them into the appropriate stacks below in order for React Navigation to know how to route the user.
@@ -60,14 +60,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
             defaultNavigationOptions: {
                 headerStyle: {
                     height: constants.headerHeight,
-                    backgroundColor: constants.highlightColor
-                }
+                    backgroundColor: constants.highlightColor,
+                },
             },
             navigationOptions: {
                 headerStyle: {
                     backgroundColor: 'white',
                     height: 52,
-                    color: 'black'
+                    color: 'black',
 
                 },
                 headerLeft:
@@ -77,8 +77,8 @@ const FamilyConnectionsNavigator = createStackNavigator(
                   style={{ width: 225, height: 90 }}
                   resizeMode="contain"
               />
-          )
-            }
+          ),
+            },
         },
         CaseView: {
             screen: CaseViewScreen,
@@ -87,14 +87,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
                 return {
                     headerStyle: {
                         backgroundColor: 'white',
-                        height: 52
+                        height: 52,
                     },
                     headerLeft:
             (<TouchableOpacity
                 underlayColor="lightgray"
                 style={{ padding: 7.5 }}
                 onPressIn={() => {
-                    navigation.goBack()
+                    navigation.goBack();
                 }}
             >
                 <Text
@@ -103,14 +103,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
                         paddingBottom: 10,
                         marginLeft: 5,
                         fontSize: 20,
-                        color: '#0F6580'
+                        color: '#0F6580',
                     }}
                 >
                     {leftArrow} ALL CASES
                 </Text>
-            </TouchableOpacity>)
-                }
-            }
+            </TouchableOpacity>),
+                };
+            },
         },
         ConnectionsView: {
             screen: ConnectionsView,
@@ -119,14 +119,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
                 return {
                     headerStyle: {
                         backgroundColor: 'white',
-                        height: 52
+                        height: 52,
                     },
                     headerLeft:
             (<TouchableOpacity
                 underlayColor="lightgray"
-                style={{ padding: 7.5, display: 'flex', }}
+                style={{ padding: 7.5, display: 'flex' }}
                 onPressIn={() => {
-                    navigation.goBack()
+                    navigation.goBack();
                 }}
             >
                 <Text
@@ -135,16 +135,16 @@ const FamilyConnectionsNavigator = createStackNavigator(
                         paddingBottom: 10,
                         marginLeft: 5,
                         fontSize: 27,
-                        color: '#8b8b89'
+                        color: '#8b8b89',
                     }}
                 >
                     {leftArrow}
                 </Text>
                 {/* <Text>Edit Details</Text> */}
                 {/* if details true show edit, if not don't */}
-            </TouchableOpacity>)
-                }
-            }
+            </TouchableOpacity>),
+                };
+            },
         },
         EngagementForm: {
             screen: AddEngagementForm,
@@ -152,14 +152,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
             defaultNavigationOptions: {
                 headerStyle: {
                     height: constants.headerHeight,
-                    backgroundColor: constants.highlightColor
-                }
+                    backgroundColor: constants.highlightColor,
+                },
             },
             navigationOptions: ({ navigation }) => {
                 return {
                     headerStyle: {
                         backgroundColor: 'white',
-                        height: 52
+                        height: 52,
                     },
                     headerLeft:
             (<TouchableOpacity
@@ -168,7 +168,7 @@ const FamilyConnectionsNavigator = createStackNavigator(
                     height: 64,
                     marginLeft: 10,
                     marginBottom: 15,
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
                 }}
             >
                 <Ionicons
@@ -176,12 +176,12 @@ const FamilyConnectionsNavigator = createStackNavigator(
                     size={32}
                     color="#AAA9AD"
                     onPress={() => {
-                        navigation.goBack()
+                        navigation.goBack();
                     }}
                 />
-            </TouchableOpacity>)
-                }
-            }
+            </TouchableOpacity>),
+                };
+            },
         },
         DocumentForm: {
             screen: AddDocForm,
@@ -189,14 +189,14 @@ const FamilyConnectionsNavigator = createStackNavigator(
             defaultNavigationOptions: {
                 headerStyle: {
                     height: constants.headerHeight,
-                    backgroundColor: constants.highlightColor
-                }
+                    backgroundColor: constants.highlightColor,
+                },
             },
             navigationOptions: ({ navigation }) => {
                 return {
                     headerStyle: {
                         backgroundColor: 'white',
-                        height: 52
+                        height: 52,
                     },
                     headerLeft:
             (<TouchableOpacity
@@ -205,7 +205,7 @@ const FamilyConnectionsNavigator = createStackNavigator(
                     height: 64,
                     marginLeft: 10,
                     marginBottom: 15,
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
                 }}
             >
                 <Ionicons
@@ -213,12 +213,12 @@ const FamilyConnectionsNavigator = createStackNavigator(
                     size={32}
                     color="#AAA9AD"
                     onPress={() => {
-                        navigation.goBack()
+                        navigation.goBack();
                     }}
                 />
-            </TouchableOpacity>)
-                }
-            }
+            </TouchableOpacity>),
+                };
+            },
         },
     },
 );
@@ -231,20 +231,20 @@ const PeopleSearchNavigator = createStackNavigator(
             defaultNavigationOptions: {
                 headerStyle: {
                     height: constants.headerHeight,
-                    backgroundColor: constants.highlightColor
-                }
+                    backgroundColor: constants.highlightColor,
+                },
             },
             navigationOptions: {
                 headerStyle: {
                     backgroundColor: 'white',
-                    height: 52
+                    height: 52,
                 },
                 headerLeft:
           (<Image
               source={logoImg}
               style={{ width: 225, height: 90 }}
               resizeMode="contain"
-          />)
+          />),
             },
         },
         SearchResult: {
@@ -253,9 +253,9 @@ const PeopleSearchNavigator = createStackNavigator(
             defaultNavigationOptions: {
                 headerStyle: {
                     height: constants.headerHeight,
-                    backgroundColor: constants.highlightColor
-                }
-            }
+                    backgroundColor: constants.highlightColor,
+                },
+            },
         },
     },
 );
@@ -269,20 +269,20 @@ const CustomDrawerNavigator = createStackNavigator({
             headerStyle: {
                 height: constants.headerHeight,
                 backgroundColor: constants.highlightColor,
-            }
+            },
         },
         navigationOptions: {
             headerStyle: {
                 backgroundColor: 'white',
-                height: 52
+                height: 52,
             },
             headerLeft:
         (<Image
             source={logoImg}
             style={{ width: 225, height: 90 }}
             resizeMode="contain"
-        />)
-        }
+        />),
+        },
     },
     MyAccount: {
         screen: AuthenticationView,
@@ -291,7 +291,7 @@ const CustomDrawerNavigator = createStackNavigator({
             headerStyle: {
                 height: constants.headerHeight,
                 backgroundColor: constants.highlightColor,
-            }
+            },
         },
         navigationOptions: ({ navigation }) => {
             return {
@@ -306,7 +306,7 @@ const CustomDrawerNavigator = createStackNavigator({
                   height: 64,
                   marginLeft: 10,
                   marginBottom: 15,
-                  justifyContent: 'flex-end'
+                  justifyContent: 'flex-end',
               }}
           >
               <Ionicons
@@ -314,7 +314,7 @@ const CustomDrawerNavigator = createStackNavigator({
                   size={32}
                   color="#AAA9AD"
                   onPress={() => {
-                      navigation.goBack()
+                      navigation.goBack();
                   }}
               />
           </TouchableOpacity>),
@@ -323,9 +323,9 @@ const CustomDrawerNavigator = createStackNavigator({
               source={logoImg}
               style={{ width: 225, height: 90 }}
               resizeMode="contain"
-          />)
-            }
-        }
+          />),
+            };
+        },
     },
     About: {
         screen: AboutScreen,
@@ -333,15 +333,15 @@ const CustomDrawerNavigator = createStackNavigator({
         defaultNavigationOptions: {
             headerStyle: {
                 height: constants.headerHeight,
-                backgroundColor: constants.highlightColor
-            }
+                backgroundColor: constants.highlightColor,
+            },
         },
         navigationOptions: ({ navigation }) => {
 
             return {
                 headerStyle: {
                     backgroundColor: 'white',
-                    height: 52
+                    height: 52,
                 },
                 headerLeft:
           (<TouchableOpacity
@@ -350,7 +350,7 @@ const CustomDrawerNavigator = createStackNavigator({
                   height: 64,
                   marginLeft: 10,
                   marginBottom: 15,
-                  justifyContent: 'flex-end'
+                  justifyContent: 'flex-end',
               }}
           >
               <Ionicons
@@ -358,7 +358,7 @@ const CustomDrawerNavigator = createStackNavigator({
                   size={32}
                   color="#AAA9AD"
                   onPress={() => {
-                      navigation.goBack()
+                      navigation.goBack();
                   }}
               />
           </TouchableOpacity>),
@@ -367,11 +367,11 @@ const CustomDrawerNavigator = createStackNavigator({
               source={logoImg}
               style={{ width: 225, height: 90 }}
               resizeMode="contain"
-          />)
-            }
-        }
+          />),
+            };
+        },
     },
-})
+});
 
 // BottomNavigator determines the items/icons that show on the very bottom of the app.
 // 'People Search', 'Family Connections', and 'More'
@@ -385,7 +385,7 @@ const BottomNavigator = createBottomTabNavigator(
                     <View
                         style={{
                             borderTop: 1,
-                            borderColor: "blue"
+                            borderColor: 'blue',
                         }}
                     >
                         <Ionicons
@@ -394,7 +394,7 @@ const BottomNavigator = createBottomTabNavigator(
                             color={tintColor}
                         />
                     </View>
-                )
+                ),
             },
         },
 
@@ -407,7 +407,7 @@ const BottomNavigator = createBottomTabNavigator(
                         name="md-people"
                         size={36}
                         color={tintColor} />
-                )
+                ),
             },
         },
 
@@ -437,11 +437,11 @@ const BottomNavigator = createBottomTabNavigator(
                 paddingTop: 3,
                 paddingBottom: 3,
                 justifyContent: 'space-between',
-                width: '100%'
-            }
-        }
-    }
-)
+                width: '100%',
+            },
+        },
+    },
+);
 
 const AppBottomSwitchNavigator = createSwitchNavigator({
     FamilyConnections: { screen: BottomNavigator },
@@ -456,4 +456,4 @@ const AppContainer = createAppContainer(AppBottomSwitchNavigator);
 // });
 
 // export default connect(mapStateToProps,{})(AppContainer);
-export default AppContainer
+export default AppContainer;

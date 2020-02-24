@@ -6,7 +6,7 @@ import {
     View,
     TouchableHighlight,
     Modal,
-    StatusBar
+    StatusBar,
 } from 'react-native';
 
 import { Container, Button } from 'native-base';
@@ -21,7 +21,7 @@ import {
     setUserCreds,
     setVideoPlayerModalVisible,
     showModal,
-    getInfo
+    getInfo,
 } from '../store/actions';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
@@ -43,13 +43,13 @@ class SearchResultScreen extends React.Component {
       type: '',
       address: '',
       info: '',
-      index: null
+      index: null,
   };
 
 
   toggleModal = () => {
       this.setState({
-          modalVisible: !this.state.modalVisible
+          modalVisible: !this.state.modalVisible,
       });
   };
 
@@ -61,7 +61,7 @@ class SearchResultScreen extends React.Component {
           idToken,
           isLoggedIn,
           person,
-          resetPerson
+          resetPerson,
       } = this.props;
 
 
@@ -102,7 +102,7 @@ class SearchResultScreen extends React.Component {
           requestObject['idToken'] = this.props.idToken;
           this.props.fetchPerson(
               JSON.stringify(requestObject),
-              this.props.user ? this.props.user.email : null
+              this.props.user ? this.props.user.email : null,
           );
           this.setState({ requestObject: {} });
       }
@@ -156,7 +156,7 @@ class SearchResultScreen extends React.Component {
                   onLogin={() =>
                       authHelpers.handleLogin(
                           authHelpers._loginWithAuth0,
-                          this.props.setUserCreds
+                          this.props.setUserCreds,
                       )
                   }
               />
@@ -209,53 +209,53 @@ class SearchResultScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        margin: 5
+        margin: 5,
     },
     loginContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     header: {
         flexDirection: 'row',
         textAlign: 'center',
         justifyContent: 'space-between',
-        marginBottom: 25
+        marginBottom: 25,
     },
 
     intro: {
         padding: 10,
 
         fontFamily: constants.fontFamily,
-        fontSize: 18
+        fontSize: 18,
     },
 
     textInput: {
         borderColor: '#64aab8',
         borderWidth: 1,
         borderStyle: 'solid',
-        flex: 2
+        flex: 2,
     },
 
     textInputSmall: {
-        flex: 1
+        flex: 1,
     },
     nameInput: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     button: {
         margin: 10,
         padding: 10,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
 
     tab: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 
     buttonText: {
         color: '#0279AC',
-        fontWeight: '500'
+        fontWeight: '500',
     },
 
     link: {
@@ -264,16 +264,16 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: 'rgb(216,236,240)',
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
     },
     matchesText: {
         fontSize: 20,
         color: '#508DB3',
-        marginBottom: 20
-    }
+        marginBottom: 20,
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { error, isFetching, person, possiblePersons } = state.people;
     const {
         accessToken,
@@ -282,7 +282,7 @@ const mapStateToProps = state => {
         user,
         modalVisible,
         videoAgree,
-        videoVisible
+        videoVisible,
     } = state.auth;
     return {
         accessToken,
@@ -296,7 +296,7 @@ const mapStateToProps = state => {
         modalVisible,
         videoAgree,
         videoVisible,
-        getInfo: state.confirmationModal.info
+        getInfo: state.confirmationModal.info,
     };
 };
 
@@ -311,6 +311,6 @@ export default connect(
         setUserCreds,
         setVideoPlayerModalVisible,
         showModal,
-        getInfo
-    }
+        getInfo,
+    },
 )(SearchResultScreen);

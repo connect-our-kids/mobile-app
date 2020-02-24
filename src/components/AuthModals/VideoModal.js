@@ -5,12 +5,12 @@ import {
     StyleSheet,
     Dimensions,
     WebView,
-    Platform
+    Platform,
 } from 'react-native';
 import { Button } from 'native-base';
 import constants from '../../helpers/constants';
 
-const VideoModal = props => {
+const VideoModal = (props) => {
     return (
         <>
             <View style={styles.videoWrapper}>
@@ -19,7 +19,7 @@ const VideoModal = props => {
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     source={{
-                        uri: 'https://www.youtube.com/embed/04V1mNZxNE0'
+                        uri: 'https://www.youtube.com/embed/04V1mNZxNE0',
                     }}
                 />
                 <Button
@@ -50,7 +50,7 @@ const VideoModal = props => {
 const styles = StyleSheet.create({
     videoWrapper: {
         height: 300,
-        margin: 30
+        margin: 30,
     },
     headerContainer: {
         borderBottomColor: constants.highlightColor,
@@ -59,51 +59,51 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginBottom: 20,
         flexDirection: 'row',
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
     },
     yesButton: {
         backgroundColor: constants.highlightColor,
-        marginBottom: 10
+        marginBottom: 10,
     },
     noButton: {
         backgroundColor: constants.highlightColor,
-        marginBottom: 10
+        marginBottom: 10,
     },
     close: {
         backgroundColor: 'red',
-        width: '100%'
+        width: '100%',
     },
     closeBtn: {
-        padding: 5
+        padding: 5,
     },
     btnText: {
-        color: '#fff'
+        color: '#fff',
     },
     modalHeaderStyle: {
         color: constants.highlightColor,
         fontSize: 20,
-        fontFamily: constants.fontFamily
+        fontFamily: constants.fontFamily,
     },
     modalTextStyle: {
         fontFamily: constants.fontFamily,
         paddingHorizontal: 20,
         fontSize: 18,
-        lineHeight: 25
+        lineHeight: 25,
     },
     logo: {
         width: Dimensions.get('window').width - 40,
-        height: 100
+        height: 100,
     },
     buttonContainer: {
         padding: 20,
         borderTopColor: constants.highlightColor,
         borderTopWidth: 1,
-        marginTop: 20
+        marginTop: 20,
     },
     WebViewContainer: {
         marginTop: Platform.OS == 'ios' ? 20 : 0,
-        marginBottom: 30
-    }
+        marginBottom: 30,
+    },
 });
 
 export default VideoModal;

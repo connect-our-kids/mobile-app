@@ -1,14 +1,14 @@
 import {
     SAVING_RECENT_SEARCHES,
     SET_RECENT_SEARCHES,
-    STOP_SAVING_RECENT_SEARCHES
+    STOP_SAVING_RECENT_SEARCHES,
 } from '../actions/actionTypes';
 
 const intialState = {
     isSavingRecentSearches: false,
     recentSearches: [],
     recentSearchCapacity: 3,
-    recentSearchesLoaded: false
+    recentSearchesLoaded: false,
 };
 
 export const recentSearchesReducer = (state = intialState, action) => {
@@ -17,17 +17,17 @@ export const recentSearchesReducer = (state = intialState, action) => {
         return {
             ...state,
             recentSearches: [ ...action.payload ],
-            recentSearchesLoaded: true
+            recentSearchesLoaded: true,
         };
     case SAVING_RECENT_SEARCHES:
         return {
             ...state,
-            isSavingRecentSearches: true
+            isSavingRecentSearches: true,
         };
     case STOP_SAVING_RECENT_SEARCHES:
         return {
             ...state,
-            isSavingRecentSearches: false
+            isSavingRecentSearches: false,
         };
     default:
         return state;

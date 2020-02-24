@@ -15,7 +15,7 @@ async function saveToRecentSearches(newSearch) {
         storageSearches.put(newSearch);
         await AsyncStorage.setItem(
             'recentSearchesCache',
-            JSON.stringify(storageSearches)
+            JSON.stringify(storageSearches),
         );
     }
     catch (error) {

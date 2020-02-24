@@ -1,7 +1,7 @@
 // This is your main screen for Family Connections
 
 // Default react imports
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from 'react';
 
 // RN component imports
 import {
@@ -17,54 +17,54 @@ import {
     Platform,
     TouchableHighlight,
     Alert,
-    TouchableOpacity
-} from "react-native";
+    TouchableOpacity,
+} from 'react-native';
 import {
     ListItem,
     Image,
     SearchBar,
     Button,
     CheckBox,
-    Divider
-} from "react-native-elements";
+    Divider,
+} from 'react-native-elements';
 
 // redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
     getCaseData,
     getUserCases,
     setUserCreds,
     setModalVisible,
-    authChecker
-} from "../store/actions";
+    authChecker,
+} from '../store/actions';
 
 
 // constants = like a config variable
-import constants from "../helpers/constants";
+import constants from '../helpers/constants';
 
 // local component imports
-import CaseViewScreen from "./CaseViewScreen.js";
-import ConnectionsLogin from "../components/Authentication/ConnectionsLogin";
-import Loader from "../components/Loader/Loader";
+import CaseViewScreen from './CaseViewScreen.js';
+import ConnectionsLogin from '../components/Authentication/ConnectionsLogin';
+import Loader from '../components/Loader/Loader';
 
 // 3rd party imports like icons & scroll functionality
-import ScrollToTop from "../UI/ScrollToTop";
-import { Ionicons } from "@expo/vector-icons";
-import { RadioButton } from "react-native-paper";
-import { MaterialIcons } from "@expo/vector-icons";
+import ScrollToTop from '../UI/ScrollToTop';
+import { Ionicons } from '@expo/vector-icons';
+import { RadioButton } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 
 // placeholder image for non-logged in users?
-const placeholderImg = require("../../assets/profile_placeholder.png");
+const placeholderImg = require('../../assets/profile_placeholder.png');
 // unicode arrow
-const leftArrow = "\u2190";
+const leftArrow = '\u2190';
 
 // this is like a local "store" -- used to initialize some state values, accessed in [state] hook
-const FamilyConnectionsScreen = props => {
+const FamilyConnectionsScreen = (props) => {
     const initialState = {
-        searchKeywords: "",
-        gender: "Gender",
-        ageRange: "Age Range",
-        sortBy: "Sort By",
+        searchKeywords: '',
+        gender: 'Gender',
+        ageRange: 'Age Range',
+        sortBy: 'Sort By',
         modalVisible: false,
         filters: {
             male: false,
@@ -82,25 +82,25 @@ const FamilyConnectionsScreen = props => {
         },
         caseVisible: false,
         addCaseModalVisible: true, // cannot currently add case to app, state not needed?
-        pk: ""
+        pk: '',
     };
 
     // STATE HOOKS
     const [ state, setState ] = useState(initialState);
     const [ isScrolling, setIsScrolling ] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
     const [ options, setOptions ] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
-    const [ sort, setSort ] = useState("Full Name"); // sort results of Family Connections, can be changed to several other values
-    const [ rtn, setRtn ] = useState('RETURN') // ❓ MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
+    const [ sort, setSort ] = useState('Full Name'); // sort results of Family Connections, can be changed to several other values
+    const [ rtn, setRtn ] = useState('RETURN'); // ❓ MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
 
-    const genderAssignment = gender => { // also exists in the CaseView component
-        if (gender === "M") {
-            return "Male";
+    const genderAssignment = (gender) => { // also exists in the CaseView component
+        if (gender === 'M') {
+            return 'Male';
         }
-        else if (gender === "F") {
-            return "Female";
+        else if (gender === 'F') {
+            return 'Female';
         }
-        else if (gender === "O") {
-            return "Unspecified Gender";
+        else if (gender === 'O') {
+            return 'Unspecified Gender';
         }
         else {
             return null;
@@ -115,26 +115,26 @@ const FamilyConnectionsScreen = props => {
     // if (!props.results[0]) {
         props.authChecker();
         props.getUserCases();
-        Platform.OS === 'android' ? setRtn('') : null // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
+        Platform.OS === 'android' ? setRtn('') : null; // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
     // }
     }, [ props.loadingUser ]);
 
-    const setModalVisible = visible => {
+    const setModalVisible = (visible) => {
         setState({ ...state, modalVisible: visible });
     };
 
-    const setAddCaseModalVisible = visible => {
+    const setAddCaseModalVisible = (visible) => {
         setState({ ...state, addCaseModalVisible: visible });
     };
 
-    const setCaseVisible = visible => {
+    const setCaseVisible = (visible) => {
         setState({ ...state, caseVisible: visible });
     };
 
-    const handleKeywordChange = event => {
+    const handleKeywordChange = (event) => {
         setState({
             ...state,
-            searchKeywords: event
+            searchKeywords: event,
         });
     };
 
@@ -150,13 +150,13 @@ const FamilyConnectionsScreen = props => {
     }
     else {
         if (!state.filters.male) {
-            filteredCases = filteredCases.filter(c => c.gender !== "M");
+            filteredCases = filteredCases.filter((c) => c.gender !== 'M');
         } // if male is not selected -- remove all males
         if (!state.filters.female) {
-            filteredCases = filteredCases.filter(c => c.gender !== "F");
+            filteredCases = filteredCases.filter((c) => c.gender !== 'F');
         }
         if (!state.filters.unspecified) {
-            filteredCases = filteredCases.filter(c => c.gender !== "O");
+            filteredCases = filteredCases.filter((c) => c.gender !== 'O');
         }
     }
 
@@ -228,7 +228,7 @@ const FamilyConnectionsScreen = props => {
     }
 
     // ------SEARCHBAR functionality - filters by case first_name or last_name---------
-    let SearchedCases = filteredCases.filter(result => {
+    let SearchedCases = filteredCases.filter((result) => {
         return (
             result.full_name
                 .toLowerCase()
@@ -242,17 +242,17 @@ const FamilyConnectionsScreen = props => {
         <SafeAreaView>
             <View
                 style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    alignContent: "center",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    alignContent: 'center',
                     borderBottomWidth: 0.5,
-                    borderBottomColor: "#babab9"
+                    borderBottomColor: '#babab9',
                 }}
             >
                 <SearchBar
                     inputStyle={{ fontSize: 16 }}
-                    inputContainerStyle={{ backgroundColor: "#FAFAFA", height: 45.62 }}
+                    inputContainerStyle={{ backgroundColor: '#FAFAFA', height: 45.62 }}
                     placeholder="Search Name..."
                     placeholderTextColor="#8D8383"
                     // lightTheme
@@ -269,7 +269,7 @@ const FamilyConnectionsScreen = props => {
                         setModalVisible(true);
                     }}
                 >
-                    <View style={{ alignItems: "center", flexDirection: "row" }}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                         <MaterialIcons name="filter-list" color="black" size={32} />
                         <Text style={{ fontSize: 16 }}>Filter</Text>
                     </View>
@@ -284,8 +284,8 @@ const FamilyConnectionsScreen = props => {
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View
-                    style={{ backgroundColor: "#fff",
-                        justifyContent: "center",
+                    style={{ backgroundColor: '#fff',
+                        justifyContent: 'center',
                         height: Platform.OS == 'android' ? 20 : 52 }}
                 >
                 </View>
@@ -302,14 +302,14 @@ const FamilyConnectionsScreen = props => {
                             paddingBottom: Platform.OS == 'android' ? 0 : 30,
                             fontSize: 18,
                             paddingTop: 0,
-                            color: "#0F6580",
-                            marginTop: Platform.OS === 'android' ? -37 : 0
+                            color: '#0F6580',
+                            marginTop: Platform.OS === 'android' ? -37 : 0,
                         }}
                     >
                         <Text
                             style={{
                                 fontSize: Platform.OS === 'android' ? 45 : 20,
-                                margin: Platform.OS === 'android' ? -50 : 0
+                                margin: Platform.OS === 'android' ? -50 : 0,
                             }}
                         >{leftArrow}
                         </Text>
@@ -333,9 +333,9 @@ const FamilyConnectionsScreen = props => {
                         style={{
                             // marginTop: 10,
                             flex: 1,
-                            width: "100%",
-                            height: "100%",
-                            alignSelf: "flex-start"
+                            width: '100%',
+                            height: '100%',
+                            alignSelf: 'flex-start',
                         }}
                     >
 
@@ -343,40 +343,40 @@ const FamilyConnectionsScreen = props => {
                         <Text
                             style={{
                                 fontFamily: constants.lotoFamily,
-                                color: "rgba(24, 23, 21, 0.5)",
+                                color: 'rgba(24, 23, 21, 0.5)',
                                 marginLeft: 10,
                                 // marginTop: 20,
                                 marginBottom: 5,
                                 fontSize: 14,
-                                fontWeight: "800",
-                                textAlign: "left"
+                                fontWeight: '800',
+                                textAlign: 'left',
                             }}
                         >
               SORT BY
                         </Text>
                         <View
                             style={{
-                                borderBottomColor: "rgba(24, 23, 21, 0.3)",
+                                borderBottomColor: 'rgba(24, 23, 21, 0.3)',
                                 borderBottomWidth: 0.5,
                                 marginBottom: 10,
-                                marginHorizontal: 10
+                                marginHorizontal: 10,
                             }}
                         />
                         <View
                             style={{
-                                flexDirection: "row",
-                                alignItems: "center",
+                                flexDirection: 'row',
+                                alignItems: 'center',
                                 marginLeft: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
                             }}
                         >
                             <RadioButton
                                 value="Full Name"
-                                status= {sort === "Full Name" ? "checked" : "unchecked"}
+                                status= {sort === 'Full Name' ? 'checked' : 'unchecked'}
                                 color="#0279ac"
                                 checked={state.filters.name}
                                 onPress={() => {
-                                    setSort("Full Name");
+                                    setSort('Full Name');
                                     setState({
                                         ...state,
                                         filters: {
@@ -385,9 +385,9 @@ const FamilyConnectionsScreen = props => {
                                             last: false,
                                             DOB: false,
                                             created: false,
-                                            updated: false
-                                        }
-                                    })
+                                            updated: false,
+                                        },
+                                    });
                                 }
                                 }
                             />
@@ -395,19 +395,19 @@ const FamilyConnectionsScreen = props => {
                         </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                                alignItems: "center",
+                                flexDirection: 'row',
+                                alignItems: 'center',
                                 marginLeft: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
                             }}
                         >
                             <RadioButton
                                 value="Last Name"
-                                status= {sort === "Last Name" ? "checked" : "unchecked"}
+                                status= {sort === 'Last Name' ? 'checked' : 'unchecked'}
                                 color="#0279ac"
                                 checked={state.filters.last}
                                 onPress={() => {
-                                    setSort("Last Name");
+                                    setSort('Last Name');
                                     setState({
                                         ...state,
                                         filters: {
@@ -416,9 +416,9 @@ const FamilyConnectionsScreen = props => {
                                             last: !state.filters.last,
                                             DOB: false,
                                             created: false,
-                                            updated: false
-                                        }
-                                    })
+                                            updated: false,
+                                        },
+                                    });
                                 }
                                 }
                             />
@@ -426,19 +426,19 @@ const FamilyConnectionsScreen = props => {
                         </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                                alignItems: "center",
+                                flexDirection: 'row',
+                                alignItems: 'center',
                                 marginLeft: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
                             }}
                         >
                             <RadioButton
                                 value="Date Created"
-                                status={sort === "Date Created" ? "checked" : "unchecked"}
+                                status={sort === 'Date Created' ? 'checked' : 'unchecked'}
                                 color="#0279ac"
                                 checked={state.filters.created}
                                 onPress={() => {
-                                    setSort("Date Created");
+                                    setSort('Date Created');
                                     setState({
                                         ...state,
                                         filters: {
@@ -447,9 +447,9 @@ const FamilyConnectionsScreen = props => {
                                             last: false,
                                             DOB: false,
                                             created: !state.filters.created,
-                                            updated: false
-                                        }
-                                    })
+                                            updated: false,
+                                        },
+                                    });
                                 }
                                 }
                             />
@@ -457,19 +457,19 @@ const FamilyConnectionsScreen = props => {
                         </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                                alignItems: "center",
+                                flexDirection: 'row',
+                                alignItems: 'center',
                                 marginLeft: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
                             }}
                         >
                             <RadioButton
                                 value="Last Updated"
-                                status={sort === "Last Updated" ? "checked" : "unchecked"}
+                                status={sort === 'Last Updated' ? 'checked' : 'unchecked'}
                                 color="#0279ac"
                                 checked={state.filters.updated}
                                 onPress={() => {
-                                    setSort("Last Updated");
+                                    setSort('Last Updated');
                                     setState({
                                         ...state,
                                         filters: {
@@ -478,9 +478,9 @@ const FamilyConnectionsScreen = props => {
                                             last: false,
                                             DOB: false,
                                             created: false,
-                                            updated: !state.filters.updated
-                                        }
-                                    })
+                                            updated: !state.filters.updated,
+                                        },
+                                    });
                                 }
                                 }
                             />
@@ -490,29 +490,29 @@ const FamilyConnectionsScreen = props => {
                         <Text
                             style={{
                                 fontFamily: constants.lotoFamily,
-                                color: "rgba(24, 23, 21, 0.5)",
+                                color: 'rgba(24, 23, 21, 0.5)',
                                 marginLeft: 10,
                                 marginTop: 20,
                                 marginBottom: 5,
                                 fontSize: 14,
-                                fontWeight: "800",
-                                textAlign: "left"
+                                fontWeight: '800',
+                                textAlign: 'left',
                             }}
                         >
               GENDER
                         </Text>
                         <View
                             style={{
-                                borderBottomColor: "rgba(24, 23, 21, 0.3)",
+                                borderBottomColor: 'rgba(24, 23, 21, 0.3)',
                                 borderBottomWidth: 0.5,
                                 marginBottom: 10,
-                                marginHorizontal: 10
+                                marginHorizontal: 10,
                             }}
                         />
                         <CheckBox
                             containerStyle={{
-                                backgroundColor: "white",
-                                borderColor: "white"
+                                backgroundColor: 'white',
+                                borderColor: 'white',
                             }}
                             title="Male"
                             textStyle={{ ...styles.checkboxes }}
@@ -524,15 +524,15 @@ const FamilyConnectionsScreen = props => {
                                     ...state,
                                     filters: {
                                         ...state.filters,
-                                        male: !state.filters.male
-                                    }
+                                        male: !state.filters.male,
+                                    },
                                 })
                             }
                         />
                         <CheckBox
                             containerStyle={{
-                                backgroundColor: "white",
-                                borderColor: "white"
+                                backgroundColor: 'white',
+                                borderColor: 'white',
                             }}
                             title="Female"
                             textStyle={{ ...styles.checkboxes }}
@@ -544,16 +544,16 @@ const FamilyConnectionsScreen = props => {
                                     ...state,
                                     filters: {
                                         ...state.filters,
-                                        female: !state.filters.female
-                                    }
+                                        female: !state.filters.female,
+                                    },
                                 })
                             }
                         />
                         <CheckBox
                             containerStyle={{
-                                backgroundColor: "white",
-                                borderColor: "white",
-                                marginBottom: 100
+                                backgroundColor: 'white',
+                                borderColor: 'white',
+                                marginBottom: 100,
                             }}
                             title="Unspecified"
                             textStyle={{ ...styles.checkboxes }}
@@ -565,8 +565,8 @@ const FamilyConnectionsScreen = props => {
                                     ...state,
                                     filters: {
                                         ...state.filters,
-                                        unspecified: !state.filters.unspecified
-                                    }
+                                        unspecified: !state.filters.unspecified,
+                                    },
                                 })
                             }
                         />
@@ -574,10 +574,10 @@ const FamilyConnectionsScreen = props => {
                 </ScrollView>
                 <View
                     style={{
-                        alignContent: "center",
-                        alignSelf: "center",
+                        alignContent: 'center',
+                        alignSelf: 'center',
                         width: 100,
-                        fontSize: 80
+                        fontSize: 80,
                     }}
                 >
                 </View>
@@ -591,19 +591,19 @@ const FamilyConnectionsScreen = props => {
                     {isScrolling ? (
                         <ScrollToTop
                             style={{
-                                position: "absolute",
+                                position: 'absolute',
                                 zIndex: 1000,
                                 bottom: constants.headerHeight,
-                                right: 46
+                                right: 46,
                             }}
                             onPress={() => goToTop()}
                         />
                     ) : null}
                     <ScrollView
-                        ref={a => (scroll = a)}
+                        ref={(a) => (scroll = a)}
                         contentInset={{ bottom: constants.headerHeight }}
                         scrollsToTop
-                        onScroll={e => {
+                        onScroll={(e) => {
                             if (e.nativeEvent.contentOffset.y <= 250) {
                                 setIsScrolling(false);
                             }
@@ -621,18 +621,18 @@ const FamilyConnectionsScreen = props => {
                                 <ListItem
                                     key={index}
                                     title={result.full_name}
-                                    titleStyle={{ color: "#5A6064" }}
+                                    titleStyle={{ color: '#5A6064' }}
                                     subtitle={`${genderAssignment(result.gender)}${
-                                        result.birthday ? "\nBirth: " + result.birthday.raw : ""
+                                        result.birthday ? '\nBirth: ' + result.birthday.raw : ''
                                     }`}
-                                    subtitleStyle={{ color: "#9FABB3" }}
+                                    subtitleStyle={{ color: '#9FABB3' }}
                                     leftAvatar={
                                         <View
                                             style={{
                                                 height: 50,
                                                 width: 50,
                                                 borderRadius: 25,
-                                                overflow: "hidden"
+                                                overflow: 'hidden',
                                             }}
                                         >
                                             <Image
@@ -645,7 +645,7 @@ const FamilyConnectionsScreen = props => {
                                                     height: 50,
                                                     width: 50,
                                                     borderRadius: 25,
-                                                    overflow: "hidden"
+                                                    overflow: 'hidden',
                                                 }}
                                             />
                                         </View>
@@ -653,9 +653,9 @@ const FamilyConnectionsScreen = props => {
                                     to
                                     pDivider={true}
                                     onPress={() => {
-                                        props.navigation.navigate("CaseView", {
+                                        props.navigation.navigate('CaseView', {
                                             pk: result.pk,
-                                            caseData: result
+                                            caseData: result,
                                         });
                                         setIsScrolling(false);
                                     }}
@@ -678,28 +678,28 @@ const styles = StyleSheet.create({
     searchBar: {
         marginRight: 5,
         marginLeft: 5,
-        width: "75%",
-        backgroundColor: Platform.OS === "ios" ? "white" : "white"
+        width: '75%',
+        backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
     },
     filterButton: {
-        width: Platform.OS === "ios" ? 70 : 70,
-        marginVertical: Platform.OS === "ios" ? 20 : 20,
-        maxHeight: Platform.OS === "ios" ? 40 : 40
+        width: Platform.OS === 'ios' ? 70 : 70,
+        marginVertical: Platform.OS === 'ios' ? 20 : 20,
+        maxHeight: Platform.OS === 'ios' ? 40 : 40,
     },
     isLoading: {
-        textAlign: "center",
+        textAlign: 'center',
         fontSize: 20,
         flex: 1,
         marginTop: 240,
-        color: "black"
+        color: 'black',
     },
     checkboxes: {
         fontSize: 18,
-        fontWeight: "normal"
-    }
+        fontWeight: 'normal',
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { caseData } = state.caseData;
     const { results, isLoadingCases, caseDataError } = state.userCases;
     const { accessToken, loadingUser } = state.auth;
@@ -710,7 +710,7 @@ const mapStateToProps = state => {
         accessToken,
         isLoadingCases,
         caseDataError,
-        loadingUser
+        loadingUser,
     };
 };
 
@@ -719,5 +719,5 @@ export default connect(mapStateToProps, {
     getCaseData,
     setUserCreds,
     setModalVisible,
-    authChecker
+    authChecker,
 })(FamilyConnectionsScreen);

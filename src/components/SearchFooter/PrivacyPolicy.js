@@ -6,11 +6,11 @@ import {
     StyleSheet,
     ScrollView,
     Image,
-    Platform
+    Platform,
 } from 'react-native';
 import logo from '../../../assets/logoSmall.png';
 
-const PrivacyPolicy = props => {
+const PrivacyPolicy = (props) => {
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -221,26 +221,26 @@ const PrivacyPolicy = props => {
 styles = StyleSheet.create({
     container: {
         padding: 10,
-        marginTop: Platform.OS === 'ios' ? 30 : 15
+        marginTop: Platform.OS === 'ios' ? 30 : 15,
     },
     text: {
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     mb: {
-        marginBottom: 20
+        marginBottom: 20,
     },
     close: {
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 5,
-        marginBottom: 40
+        marginBottom: 40,
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
+        justifyContent: 'space-between',
+    },
 });
 export default PrivacyPolicy;

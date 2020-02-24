@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Linking,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import { Button } from 'native-base';
 import constants from '../../helpers/constants';
@@ -18,9 +18,9 @@ export const ConfirmationModal = ({
     navigation,
     setData,
     user,
-    index
+    index,
 }) => {
-    const handlePressDirections = data => {
+    const handlePressDirections = (data) => {
         let daddr = data;
         if (Platform.OS === 'ios') {
             Linking.openURL(`http://maps.apple.com/?daddr=${daddr}`);
@@ -117,10 +117,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_email_send',
                                     null,
-                                    options
+                                    options,
                                 );
                                 Linking.openURL(`mailto:${data.address}`);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'phone') {
@@ -130,10 +130,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_phone_call',
                                     null,
-                                    options
+                                    options,
                                 );
                                 Linking.openURL(`tel:${data.number}`);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'address') {
@@ -143,10 +143,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_address_view',
                                     null,
-                                    options
+                                    options,
                                 );
                                 handlePressDirections(data);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'address404') {
@@ -156,10 +156,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_address_view',
                                     null,
-                                    options
+                                    options,
                                 );
                                 handlePressDirections(data);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'url') {
@@ -169,10 +169,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_url_view',
                                     null,
-                                    options
+                                    options,
                                 );
                                 Linking.openURL(`${data.url}`);
-                                toggleModal()
+                                toggleModal();
                             }
                             if (type === 'name') {
                                 let options = createOptions(null, 'relationship', index);
@@ -181,10 +181,10 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_possible_person',
                                     null,
-                                    options
+                                    options,
                                 );
                                 Linking.openURL(`${data}`);
-                                toggleModal()
+                                toggleModal();
                             }
                         }}
                     >
@@ -223,11 +223,11 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_email_search',
                                     null,
-                                    options
+                                    options,
                                 );
                                 navigation.goBack();
                                 setData(info, type);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'phone') {
@@ -238,11 +238,11 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_phone_search',
                                     null,
-                                    options
+                                    options,
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'address') {
@@ -253,11 +253,11 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_address_search',
                                     null,
-                                    options
+                                    options,
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'url') {
@@ -268,11 +268,11 @@ export const ConfirmationModal = ({
                                     'click',
                                     'person_url_search',
                                     null,
-                                    options
+                                    options,
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
-                                toggleModal()
+                                toggleModal();
                             }
 
                             if (type === 'name') {
@@ -283,11 +283,11 @@ export const ConfirmationModal = ({
                                     'click',
                                     'possible_person',
                                     null,
-                                    options
+                                    options,
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
-                                toggleModal()
+                                toggleModal();
                             }
                         }}
                     >
@@ -306,49 +306,49 @@ const options = StyleSheet.create({
         paddingBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: 'grey',
-        width: '100%'
+        width: '100%',
     },
 
     container: {
         marginTop: 70,
         flex: 1,
-        padding: 20
+        padding: 20,
     },
 
     header: {
         fontSize: 23,
         justifyContent: 'center',
         color: '#508DB3',
-        fontFamily: constants.fontFamily
+        fontFamily: constants.fontFamily,
     },
 
     question: {
         margin: 30,
         fontSize: 17,
         justifyContent: 'center',
-        fontFamily: constants.fontFamily
+        fontFamily: constants.fontFamily,
     },
 
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        marginTop: 15
+        marginTop: 15,
     },
 
     button: {
         paddingRight: 15,
-        paddingLeft: 15
+        paddingLeft: 15,
     },
 
     blueButton: {
         margin: 10,
         padding: 10,
-        backgroundColor: '#508DB3'
+        backgroundColor: '#508DB3',
     },
 
     greyButton: {
         backgroundColor: 'grey',
         margin: 10,
-        padding: 10
-    }
+        padding: 10,
+    },
 });

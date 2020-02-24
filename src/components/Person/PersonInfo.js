@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     container: {
         padding: 20,
         alignItems: 'center',
-        flexDirection: 'column'
-    }
+        flexDirection: 'column',
+    },
 });
 
 export default PersonInfo;

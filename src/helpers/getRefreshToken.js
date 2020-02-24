@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store'
+import * as SecureStore from 'expo-secure-store';
 import getEnvVars from '../../environment.tsx';
 // import { verifier, challenge } from './auth0Verifiers';
 import Constants from 'expo-constants';
@@ -25,18 +25,18 @@ const getRefreshToken = async () => {
         grant_type: 'authorization_code',
     // code: code,
     // device: device,
-    }
+    };
 
     axios
         .post('https://connectourkids.auth0.com/oauth/token', refreshParams)
-        .then(async res => {
+        .then(async (res) => {
             await SecureStore.setItemAsync('cok_refresh_token', res.data.refresh_token);
             // SecureStore.setItemAsync('cok_access_token', JSON.stringify(res.data.access_token)),
             await SecureStore.setItemAsync('cok_id_token', res.data.id_token);
 
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
 
-}
+};
 
 export default getRefreshToken;

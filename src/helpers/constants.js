@@ -14,6 +14,6 @@ export default {
     recentSearchesMaxSize: 3,
     aboutURI: 'https://www.youtube.com/embed/eMivJgf7RNA',
     familyConnectionsURI: 'https://www.youtube.com/embed/eMivJgf7RNA',
-    peopleSearchURI: 'https://www.youtube.com/embed/36OwzSMHHk8'
+    peopleSearchURI: 'https://www.youtube.com/embed/36OwzSMHHk8',
 };
 

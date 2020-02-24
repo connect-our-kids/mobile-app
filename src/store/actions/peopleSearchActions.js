@@ -8,7 +8,7 @@ import {
     FETCH_SEARCH_RESULT_FAILURE,
     RESET_PERSON,
     RESET_STATE,
-    SAVING_RECENT_SEARCHES
+    SAVING_RECENT_SEARCHES,
 } from './actionTypes';
 
 import getEnvVars from '../../../environment';
@@ -17,37 +17,37 @@ import { sendEvent, createOptions } from './../../helpers/createEvent';
 
 const { peopleSearchURL } = getEnvVars();
 
-export const fetchPerson = (body, email) => dispatch => {
+export const fetchPerson = (body, email) => (dispatch) => {
     dispatch({ type: FETCH_PERSON });
     axios
         .post(`${peopleSearchURL}`, body)
-        .then(res => {
+        .then((res) => {
             dispatch({
                 type: FETCH_PERSON_SUCCESS,
-                payload: res.data.person
+                payload: res.data.person,
             });
             options = createOptions(0, null, null);
             sendEvent(email, 'search', 'person', 'success', options);
         })
-        .catch(err => {
+        .catch((err) => {
             dispatch({ type: FETCH_PERSON_FAILURE, payload: err });
             sendEvent(email, 'search', 'person', 'failed');
         });
 };
 
-export const fetchSearchResult = (body, cb, email) => dispatch => {
-    console.log('fetchSearchResult ', body, 'cb ', cb, 'email ', email)
+export const fetchSearchResult = (body, cb, email) => (dispatch) => {
+    console.log('fetchSearchResult ', body, 'cb ', cb, 'email ', email);
     dispatch({ type: FETCH_SEARCH_RESULT });
     let isPerson = false;
     let options;
     axios
         .post(`${peopleSearchURL}`, body.requestObject)
-        .then(res => {
+        .then((res) => {
             if (res.data.possible_persons) {
                 options = createOptions(res.data.possible_persons.length, null, null);
                 dispatch({
                     type: FETCH_PEOPLE_SUCCESS,
-                    payload: res.data.possible_persons
+                    payload: res.data.possible_persons,
                 });
                 sendEvent(email, 'search', 'person', 'success', options);
                 // SAVE TO RECENT SEARCH
@@ -55,7 +55,7 @@ export const fetchSearchResult = (body, cb, email) => dispatch => {
                     saveToRecentSearches({
                         searchType: body.searchType,
                         searchInput: body.searchInput,
-                        data: res.data.possible_persons
+                        data: res.data.possible_persons,
                     });
                     dispatch({ type: SAVING_RECENT_SEARCHES });
                 }
@@ -65,7 +65,7 @@ export const fetchSearchResult = (body, cb, email) => dispatch => {
                 isPerson = true;
                 dispatch({
                     type: FETCH_PERSON_SUCCESS,
-                    payload: res.data.person
+                    payload: res.data.person,
                 });
                 sendEvent(email, 'search', 'person', 'success', options);
                 // SAVE TO RECENT SEARCH
@@ -73,7 +73,7 @@ export const fetchSearchResult = (body, cb, email) => dispatch => {
                     saveToRecentSearches({
                         searchType: body.searchType,
                         searchInput: body.searchInput,
-                        data: res.data.person
+                        data: res.data.person,
                     });
                     dispatch({ type: SAVING_RECENT_SEARCHES });
                 }
@@ -86,7 +86,7 @@ export const fetchSearchResult = (body, cb, email) => dispatch => {
                     type: FETCH_SEARCH_RESULT_FAILURE,
                     data: res.data.query,
                     query: res.data.query,
-                    payload: true
+                    payload: true,
                 });
                 sendEvent(email, 'search', 'person', 'success', options);
             }
@@ -96,7 +96,7 @@ export const fetchSearchResult = (body, cb, email) => dispatch => {
                 cb();
             }
         })
-        .catch(err => {
+        .catch((err) => {
             dispatch({ type: FETCH_SEARCH_RESULT_FAILURE, payload: err });
             sendEvent(email, 'search', 'person', 'failed');
         });
@@ -110,9 +110,9 @@ export const resetState = () => {
     return { type: RESET_STATE };
 };
 
-export const sendSearchErrorMessage = errorObject => {
+export const sendSearchErrorMessage = (errorObject) => {
     return {
         type: FETCH_SEARCH_RESULT_FAILURE,
-        payload: errorObject
+        payload: errorObject,
     };
 };

@@ -4,7 +4,7 @@ import {
     Text,
     StatusBar,
     StyleSheet,
-    Linking
+    Linking,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
@@ -16,7 +16,7 @@ import constants from '../helpers/constants';
 import MainText from '../UI/MainText';
 import ScreenContainer from '../UI/ScreenContainer';
 
-const SupportScreen = props => {
+const SupportScreen = (props) => {
     return (
         <ScreenContainer>
             <SafeAreaView>
@@ -33,7 +33,7 @@ const SupportScreen = props => {
             </SafeAreaView>
         </ScreenContainer >
     );
-}
+};
 
 const styles = StyleSheet.create({
     style: {
@@ -43,24 +43,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
     },
     text: {
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
-        color: '#baadad'
-    }
-})
+        color: '#baadad',
+    },
+});
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(SupportScreen);

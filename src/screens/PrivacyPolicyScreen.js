@@ -10,7 +10,7 @@ import MainText from '../UI/MainText';
 import ScreenContainer from '../UI/ScreenContainer';
 import authHelpers from '../helpers/authHelpers';
 
-const PrivacyPolicyScreen = props => {
+const PrivacyPolicyScreen = (props) => {
     return (
         <ScreenContainer>
             <SafeAreaView>
@@ -24,18 +24,18 @@ const PrivacyPolicyScreen = props => {
             </SafeAreaView>
         </ScreenContainer >
     );
-}
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(PrivacyPolicyScreen);
 
 

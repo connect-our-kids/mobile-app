@@ -1,4 +1,4 @@
-export const isName = name => {
+export const isName = (name) => {
     if (name.length) {
         let numberOfWords = name.trim().split(' ').length;
         let isNumberOfWordsTwoOrThree = numberOfWords === 2 || numberOfWords === 3;
@@ -9,7 +9,7 @@ export const isName = name => {
     return false;
 };
 
-export const isEmail = email => {
+export const isEmail = (email) => {
     if (email.length) {
         let isValidEmail = email.trim().split('@').length;
         return isValidEmail === 2;
@@ -17,7 +17,7 @@ export const isEmail = email => {
     return false;
 };
 
-export const isCityState = citystate => {
+export const isCityState = (citystate) => {
     if (citystate.length) {
         let isValidCityState = citystate.trim().split(' ').length;
         return isValidCityState === 2;
@@ -25,7 +25,7 @@ export const isCityState = citystate => {
     return false;
 };
 
-export const isAddress = address => {
+export const isAddress = (address) => {
     if (address.length) {
         let isValidAddress = address.trim().split(' ').length;
         return isValidAddress > 3;
@@ -34,7 +34,7 @@ export const isAddress = address => {
 };
 
 
-export const isPhone = phone => {
+export const isPhone = (phone) => {
     if (phone.length) {
         let numbersOnly = phone.replace(/[^0-9]+/g, '');
 
@@ -44,7 +44,7 @@ export const isPhone = phone => {
 };
 
 
-export const isUrl = url => {
+export const isUrl = (url) => {
     if (url.length) {
         const pattern = new RegExp(
             '^(https?:\\/\\/)?' // protocol
@@ -53,7 +53,7 @@ export const isUrl = url => {
       + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
       + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
         + '(\\#[-a-z\\d_]*)?$',
-            'i'
+            'i',
         ); // fragment locator
         return !!pattern.test(url);
     }

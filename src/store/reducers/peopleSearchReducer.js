@@ -8,7 +8,7 @@ import {
     RESET_PERSON,
     RESET_STATE,
     POPULATE_SEARCH_RESULTS,
-    POPULATE_PERSON
+    POPULATE_PERSON,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -24,21 +24,21 @@ export const peopleSearchReducer = (state = initialState, action) => {
     case FETCH_SEARCH_RESULT:
         return {
             ...state,
-            isFetching: true
+            isFetching: true,
         };
     case FETCH_PEOPLE_SUCCESS:
         return {
             ...state,
             isFetching: false,
             possiblePersons: [ ...action.payload ],
-            error: null
+            error: null,
         };
     case FETCH_PERSON_SUCCESS:
         return {
             ...state,
             isFetching: false,
             person: { ...action.payload },
-            error: null
+            error: null,
         };
     case FETCH_PERSON_FAILURE:
     case FETCH_SEARCH_RESULT_FAILURE:
@@ -48,24 +48,24 @@ export const peopleSearchReducer = (state = initialState, action) => {
             person: null,
             possiblePersons: [],
             data: action.data,
-            query: action.query
+            query: action.query,
         };
     case RESET_PERSON:
         return {
             ...state,
-            person: null
+            person: null,
         };
     case RESET_STATE:
         return initialState;
     case POPULATE_SEARCH_RESULTS:
         return {
             ...state,
-            possiblePersons: [ ...action.payload ]
+            possiblePersons: [ ...action.payload ],
         };
     case POPULATE_PERSON:
         return {
             ...state,
-            person: { ...action.payload }
+            person: { ...action.payload },
         };
     default:
         return state;

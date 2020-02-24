@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store'
+import * as SecureStore from 'expo-secure-store';
 import getEnvVars from '../../environment.tsx';
 
 const { auth0ClientId } = getEnvVars();
@@ -15,21 +15,21 @@ const getNewAccessToken = async () => {
         // client_secret: '', GET CLIENT SECRET FROM TRAVIS
         grant_type: 'refresh_token',
         response_type: 'token',
-        refresh_token: refresh_token
-    }
+        refresh_token: refresh_token,
+    };
 
     axios
         .post('https://connectourkids.auth0.com/oauth/token', newAccessParams)
-        .then(async res => {
+        .then(async (res) => {
             await SecureStore.setItemAsync('cok_access_token', res.data.access_token);
             await SecureStore.setItemAsync('cok_id_token', res.data.id_token);
 
             return res.data;
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
 
-    const cok_access_token = await SecureStore.getItemAsync('cok_access_token')
+    const cok_access_token = await SecureStore.getItemAsync('cok_access_token');
 
-}
+};
 
 export default getNewAccessToken;

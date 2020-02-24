@@ -19,24 +19,24 @@ const NavigationButton = ({ handlePress, subTitleText, style, titleText }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        padding: 20
+        padding: 20,
     },
     mainText: {
         fontFamily: constants.fontFamily,
         fontSize: 18,
         lineHeight: 26,
-        marginBottom: 5
+        marginBottom: 5,
     },
     videoText: {
         color: constants.highlightColor,
         fontWeight: 'bold',
-        marginBottom: 5
+        marginBottom: 5,
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 25
+        marginBottom: 25,
     },
 
     button: {
@@ -44,34 +44,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 10,
     },
     primaryBtn: {
-        backgroundColor: constants.highlightColor
+        backgroundColor: constants.highlightColor,
     },
     primaryBtnText: {
         fontSize: 12,
         textTransform: 'uppercase',
         fontWeight: 'bold',
         color: constants.highlightColor,
-        flex: 1
+        flex: 1,
     },
     buttonText: {
         color: constants.highlightColor,
         fontSize: 12,
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
     },
     lightBtn: {
-        color: '#fff'
+        color: '#fff',
     },
     lastBtn: {
-        marginBottom: 50
+        marginBottom: 50,
     },
     textInput: {
         borderColor: 'black',
         borderWidth: 1,
-        borderStyle: 'solid'
-    }
+        borderStyle: 'solid',
+    },
 });
 
 export default NavigationButton;

@@ -4,13 +4,13 @@ import {
     Text,
     StyleSheet,
     Linking,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
 import constants from '../../helpers/constants';
 import { sendEvent } from '../../helpers/createEvent';
 
-const SearchFooter = props => {
+const SearchFooter = (props) => {
     return (
         <View style={styles.footerContainer}>
             <TouchableWithoutFeedback
@@ -28,7 +28,7 @@ const SearchFooter = props => {
                         sendEvent(
                             props.isLoggedIn ? props.user.email : 'anonymous@unknown.org',
                             'click',
-                            'terms'
+                            'terms',
                         );
                         props.openModal();
                         props.controlModal('terms', true);
@@ -43,7 +43,7 @@ const SearchFooter = props => {
                         sendEvent(
                             props.isLoggedIn ? props.user.email : 'anonymous@unknown.org',
                             'click',
-                            'privacy'
+                            'privacy',
                         );
                         props.openModal();
                         props.controlModal('terms', false);
@@ -56,7 +56,7 @@ const SearchFooter = props => {
                     style={styles.fullwidth}
                     onPress={() =>
                         Linking.openURL(
-                            'mailto:support@connectourkids.org?subject=People%20Search%20Help'
+                            'mailto:support@connectourkids.org?subject=People%20Search%20Help',
                         )
                     }
                 >
@@ -75,27 +75,27 @@ const styles = StyleSheet.create({
         marginTop: 50,
         width: '100%',
         backgroundColor: '#f6f6f6',
-        flex: 1
+        flex: 1,
     },
     footerLink: {
         color: constants.highlightColor,
         fontFamily: constants.fontFamily,
         borderBottomWidth: 1,
         borderBottomColor: constants.highlightColor,
-        fontSize: 12
+        fontSize: 12,
     },
     fullwidth: {
-        width: '100%'
+        width: '100%',
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        alignSelf: 'flex-end'
-    }
+        alignSelf: 'flex-end',
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn, user } = state.auth;
     return { isLoggedIn, user };
 };

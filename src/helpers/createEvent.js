@@ -10,7 +10,7 @@ const { eventTrackingURL } = getEnvVars();
 // urlIndex: 0
 // relationshipIndex: 0
 
-export const sendUserInfo = emailAddress => {
+export const sendUserInfo = (emailAddress) => {
     axios.post(eventTrackingURL, { emailAddress });
 };
 
@@ -19,7 +19,7 @@ export const sendEvent = (
     verb,
     noun,
     outcome = null,
-    options = null
+    options = null,
 ) => {
     if (emailAddress === null) {
         emailAddress = 'anonymous@unknown.org';
@@ -40,10 +40,10 @@ export const sendEvent = (
 
     return axios
         .post(eventTrackingURL, JSON.stringify(bodyObject))
-        .then(res => {
+        .then((res) => {
             return res;
         })
-        .catch(err => {
+        .catch((err) => {
             console.error('Event Tracking Error: ', err);
             return err;
         });

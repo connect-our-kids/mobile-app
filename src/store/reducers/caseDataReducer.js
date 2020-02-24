@@ -2,13 +2,13 @@ import {
     GET_CASE_DATA_START,
     GET_CASE_DATA_SUCCESS,
     GET_CASE_DATA_FAILURE,
-    CLEAR_CASE_DATA
-} from "../actions/caseData";
+    CLEAR_CASE_DATA,
+} from '../actions/caseData';
 
 const initialState = {
     caseData: {},
     isLoadingCaseData: false,
-    caseDataError: ""
+    caseDataError: '',
 };
 
 export const getCaseDataReducer = (state = initialState, action) => {
@@ -17,7 +17,7 @@ export const getCaseDataReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingCaseData: true,
-            caseDataError: ""
+            caseDataError: '',
         };
 
     case GET_CASE_DATA_SUCCESS:
@@ -25,21 +25,21 @@ export const getCaseDataReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingCaseData: false,
-            caseData: { ...action.payload }
+            caseData: { ...action.payload },
         };
 
     case GET_CASE_DATA_FAILURE:
         return {
             ...state,
             isLoadingCaseData: false,
-            caseDataError: "Error loading case data. Please try again later."
+            caseDataError: 'Error loading case data. Please try again later.',
         };
 
     case CLEAR_CASE_DATA:
         return {
             ...state,
-            caseData: {}
-        }
+            caseData: {},
+        };
 
     default:
         return state;

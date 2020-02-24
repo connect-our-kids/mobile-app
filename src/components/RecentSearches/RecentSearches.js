@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Button } from 'native-base';
@@ -13,7 +13,7 @@ import {
     populatePerson,
     populateSearchResults,
     setRecentSearches,
-    stopSavingRecentSearches
+    stopSavingRecentSearches,
 } from '../../store/actions';
 import constants from '../../helpers/constants';
 
@@ -59,7 +59,7 @@ class RecentSearches extends Component {
       }
   };
 
-  displayRecentSearch = data => {
+  displayRecentSearch = (data) => {
       if (!data.length) {
       // If a person
           this.props.populatePerson(data);
@@ -115,44 +115,44 @@ class RecentSearches extends Component {
 
 const styles = StyleSheet.create({
     recentSearchesText: {
-        fontFamily: `${constants.lotoFamily}`
+        fontFamily: `${constants.lotoFamily}`,
     },
     recentSearchButton: {
         marginBottom: 10,
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     recentSearchButtonText: {
         fontSize: 20,
         color: '#0279AC',
-        fontFamily: `${constants.lotoFamily}`
+        fontFamily: `${constants.lotoFamily}`,
     },
     clearButton: {
         padding: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     clearButtonText: {
-        color: '#fff'
+        color: '#fff',
 
     },
     noRecentSearchesText: {
         color: '#0279AC',
-        fontFamily: `${constants.fontFamily}`
-    }
+        fontFamily: `${constants.fontFamily}`,
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const {
         isSavingRecentSearches,
         recentSearches,
-        recentSearchesLoaded
+        recentSearchesLoaded,
     } = state.recentSearches;
 
     return {
         isSavingRecentSearches,
         recentSearches,
-        recentSearchesLoaded
+        recentSearchesLoaded,
     };
 };
 
@@ -162,6 +162,6 @@ export default connect(
         populatePerson,
         populateSearchResults,
         setRecentSearches,
-        stopSavingRecentSearches
-    }
+        stopSavingRecentSearches,
+    },
 )(RecentSearches);

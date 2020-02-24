@@ -4,7 +4,7 @@ export const getInfo = (key, type) => {
     return { type: GET_INFO, payload: { key: key, queryType: type } };
 };
 
-export const showModal = visible => {
+export const showModal = (visible) => {
     return { type: MODAL_VISIBLE, payload: visible };
 };
 

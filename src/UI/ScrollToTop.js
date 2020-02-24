@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import constants from '../helpers/constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const chevron = require('../../assets/chevron.png')
+const chevron = require('../../assets/chevron.png');
 
 const ScrollToTop = (props) => {
     // by spreading props and styles in an array, we can pass it custom styles to override or add to these base styles when we use this component
@@ -15,7 +15,7 @@ const ScrollToTop = (props) => {
             <View style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
                 <Image source={chevron} style={{ height: 15, width: 20, marginBottom: -5 }} />
                 <Image source={chevron} style={{ height: 15, width: 20, marginBottom: 2 }} />
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         zIndex: 1000,
         bottom: constants.headerHeight,
         right: 46,
-    }
-})
+    },
+});
 
 export default ScrollToTop;

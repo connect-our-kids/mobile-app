@@ -1,6 +1,6 @@
-export const createConnectionsEvent = email => {
+export const createConnectionsEvent = (email) => {
     return {
         email,
-        event: 'request-familyconnections'
+        event: 'request-familyconnections',
     };
 };

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Text, View, TouchableHighlight, StyleSheet } from "react-native";
-import constants from "../helpers/constants";
-import { ListItem, Button } from "react-native-elements";
-import { Engagement, Participants, Highlights } from "../components/CaseViewTabs";
+import React, { useState } from 'react';
+import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import constants from '../helpers/constants';
+import { ListItem, Button } from 'react-native-elements';
+import { Engagement, Participants, Highlights } from '../components/CaseViewTabs';
 
 export default function CaseViewScreen(props) {
 
     const [ tabs, setTabs ] = useState({
         engagement: true,
         participants: false,
-        highlights: false
-    })
+        highlights: false,
+    });
 
     const styles = StyleSheet.create({
 
@@ -27,9 +27,9 @@ export default function CaseViewScreen(props) {
 
         tab: {
             padding: 10,
-            fontSize: 16
-        }
-    })
+            fontSize: 16,
+        },
+    });
 
 
     let caseData = props.caseData;
@@ -38,8 +38,8 @@ export default function CaseViewScreen(props) {
             <View
                 style={{
                     marginVertical: 200,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
                 <Text>{caseData.full_name}</Text>
@@ -47,17 +47,17 @@ export default function CaseViewScreen(props) {
                     <ListItem leftAvatar={{ source: { uri: caseData.picture || placeholderImg } }} />
                     <Text>Gender: {caseData.gender}</Text>
                     <Text>Date of Birth: {caseData.birthday.raw}</Text>
-                    <Text>Residence: {caseData.address && caseData.address.formatted ? caseData.address.formatted : "no address available"}</Text>
+                    <Text>Residence: {caseData.address && caseData.address.formatted ? caseData.address.formatted : 'no address available'}</Text>
                     <Text>Initiation:{caseData.foster_care}</Text>
                 </View>
                 <View
                     style={{
-                        alignContent: "center",
+                        alignContent: 'center',
                         marginVertical: 60,
                         marginHorizontal: 30,
                         fontSize: 80,
-                        fontWeight: "bold",
-                        paddingTop: -10
+                        fontWeight: 'bold',
+                        paddingTop: -10,
                     }}
                 >
                     <TouchableHighlight>
@@ -92,7 +92,7 @@ export default function CaseViewScreen(props) {
                 style={{ alignItems: 'center' }}
                 onPress={
                     () => {
-                        props.setCaseVisible()
+                        props.setCaseVisible();
                     }}
             >
                 <Text style={{
@@ -100,7 +100,7 @@ export default function CaseViewScreen(props) {
                     borderRadius: 4,
                     borderWidth: 1,
                     borderColor: `${constants.highlightColor}`,
-                    color: `${constants.highlightColor}`
+                    color: `${constants.highlightColor}`,
                 }}>Close Case</Text>
             </TouchableHighlight>
         </View>

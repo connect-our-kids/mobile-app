@@ -5,12 +5,12 @@ import {
     View,
     StyleSheet,
     Linking,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 import { Button } from 'native-base';
 import constants from '../../helpers/constants';
 
-const SocialWorkerModal = props => {
+const SocialWorkerModal = (props) => {
     return (
         <>
             <View style={styles.headerContainer}>
@@ -67,43 +67,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'baseline',
         flexDirection: 'row',
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
     },
     yesButton: {
         backgroundColor: constants.highlightColor,
-        marginBottom: 10
+        marginBottom: 10,
     },
     noButton: {
         backgroundColor: '#6C757D',
-        marginBottom: 10
+        marginBottom: 10,
     },
     close: {
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
     closeBtn: {
         padding: 5,
-        color: '#000'
+        color: '#000',
     },
     btnText: {
-        color: '#fff'
+        color: '#fff',
     },
     modalHeaderStyle: {
         color: constants.highlightColor,
         fontSize: 20,
-        fontFamily: constants.lotoFamily
+        fontFamily: constants.lotoFamily,
     },
     modalTextStyle: {
         fontFamily: constants.lotoFamily,
         paddingHorizontal: 20,
         fontSize: 18,
-        lineHeight: 25
+        lineHeight: 25,
     },
     buttonContainer: {
         padding: 20,
         borderTopColor: '#0279AC',
         borderTopWidth: 1,
-        marginTop: 20
-    }
+        marginTop: 20,
+    },
 });
 
 export default SocialWorkerModal;

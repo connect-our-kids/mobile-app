@@ -4,11 +4,11 @@ import {
     Image,
     Platform,
     TouchableWithoutFeedback,
-    StyleSheet
+    StyleSheet,
 } from 'react-native';
 import React from 'react';
 import { sendEvent } from '../helpers/createEvent';
-import constants from '../helpers/constants'
+import constants from '../helpers/constants';
 
 export default (headerConfig = (title, navigation, email) => {
 
@@ -17,7 +17,7 @@ export default (headerConfig = (title, navigation, email) => {
     // headerTitle: <HeaderTitle title={title} navigation={navigation} />,
         headerStyle: {
             backgroundColor: 'white',
-            height: 52
+            height: 52,
         },
         headerLeft:
       Platform.OS === 'ios' ? (
@@ -68,6 +68,6 @@ export default (headerConfig = (title, navigation, email) => {
 
 const styles = StyleSheet.create({
     imageStyles: { width: 225, height: 90 },
-    iconStyles: { fontSize: 40, color: '#000', paddingRight: 20 }
+    iconStyles: { fontSize: 40, color: '#000', paddingRight: 20 },
 });
 

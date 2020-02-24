@@ -13,20 +13,20 @@ import {
     GET_DETAILS_SUCCESS,
     GET_DETAILS_FAILURE,
     CLEAR_DETAILS,
-    SET_DETAILS
-} from "../actions/connectionData";
+    SET_DETAILS,
+} from '../actions/connectionData';
 
 const initialState = {
     engagements: [],
     isLoadingEngagements: false,
-    engagementsError: "",
+    engagementsError: '',
     documents: [],
     isLoadingDocuments: false,
-    documentsError: "",
+    documentsError: '',
     details: {},
     isLoadingDetails: false,
-    detailsError: "",
-    detailsTab: false
+    detailsError: '',
+    detailsTab: false,
 };
 
 export const connectionReducer = (state = initialState, action) => {
@@ -35,33 +35,33 @@ export const connectionReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingEngagements: true,
-            engagementsError: ""
+            engagementsError: '',
         };
 
     case GET_ENGAGEMENTS_SUCCESS:
         return {
             ...state,
             isLoadingEngagements: false,
-            engagements: action.payload
+            engagements: action.payload,
         };
 
     case GET_ENGAGEMENTS_FAILURE:
         return {
             ...state,
             isLoadingConnections: false,
-            engagementsError: "Error loading engagements data. Please try again later."
+            engagementsError: 'Error loading engagements data. Please try again later.',
         };
 
     case CLEAR_ENGAGEMENTS:
         return {
-            engagements: []
-        }
+            engagements: [],
+        };
 
     case GET_DOCUMENTS_START:
         return {
             ...state,
             isLoadingDocuments: true,
-            documentsError: ""
+            documentsError: '',
         };
 
     case GET_DOCUMENTS_SUCCESS:
@@ -69,52 +69,52 @@ export const connectionReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingDocuments: false,
-            documents: action.payload
+            documents: action.payload,
         };
 
     case GET_DOCUMENTS_FAILURE:
         return {
             ...state,
             isLoadingDocuments: false,
-            documentsError: "Error loading documents. Please try again later."
+            documentsError: 'Error loading documents. Please try again later.',
         };
 
     case CLEAR_DOCUMENTS:
         return {
-            documents: []
+            documents: [],
         };
 
     case GET_DETAILS_START:
         return {
             ...state,
             isLoadingDetails: true,
-            detailsError: ""
+            detailsError: '',
         };
 
     case GET_DETAILS_SUCCESS:
         return {
             ...state,
             isLoadingDetails: false,
-            details: { ...action.payload[0] }
+            details: { ...action.payload[0] },
         };
 
     case GET_DETAILS_FAILURE:
         return {
             ...state,
             isLoadingDetails: false,
-            detailsError: "Error loading details data. Please try again later."
+            detailsError: 'Error loading details data. Please try again later.',
         };
 
     case CLEAR_DETAILS:
         return {
-            details: {}
-        }
+            details: {},
+        };
     case SET_DETAILS:
         return {
             ...state,
             isLoadingDetails: false,
-            detailsTab: action.payload
-        }
+            detailsTab: action.payload,
+        };
     default:
         return state;
     }

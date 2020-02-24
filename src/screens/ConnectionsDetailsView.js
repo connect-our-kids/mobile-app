@@ -9,7 +9,7 @@ import {
     Linking,
     Platform,
     Modal,
-    Image
+    Image,
 } from 'react-native';
 import EditConnectionForm from '../components/ConnectionsViewTabs/EditConnectionForm';
 
@@ -23,7 +23,7 @@ export default function ConnectionsDetailsView({ details, id }) {
             display: 'flex',
             justifyContent: 'flex-start',
             width: '90%',
-            margin: 0
+            margin: 0,
         },
         header: {
             marginTop: 1,
@@ -32,7 +32,7 @@ export default function ConnectionsDetailsView({ details, id }) {
             borderBottomColor: 'rgba(24, 23, 21, 0.3)',
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
         },
         headerText: {
             color: '#a1a1a1',
@@ -50,7 +50,7 @@ export default function ConnectionsDetailsView({ details, id }) {
         labelText: {
             width: '25%',
             marginBottom: 25,
-            color: '#444444'
+            color: '#444444',
 
         },
         contentText: {
@@ -60,7 +60,7 @@ export default function ConnectionsDetailsView({ details, id }) {
             flexDirection: 'column',
             textAlign: 'left',
             marginLeft: 35,
-            color: '#444444'
+            color: '#444444',
             // textAlign: 'left',
         },
         linkText: {
@@ -69,74 +69,74 @@ export default function ConnectionsDetailsView({ details, id }) {
             flexDirection: 'column',
             textAlign: 'left',
             marginLeft: 35,
-            color: '#0279AC'
+            color: '#0279AC',
         },
         addressDiv: {
-            width: "100%",
+            width: '100%',
             // display: 'flex',
             flexDirection: 'column',
             flexWrap: 'wrap',
             marginLeft: 17,
-            color: '#444444'
+            color: '#444444',
 
         },
         phoneDiv: {
-            width: "100%",
+            width: '100%',
             // display: 'flex',
             flexDirection: 'column',
             flexWrap: 'wrap',
             color: '#444444',
-            marginBottom: 10
+            marginBottom: 10,
 
         },
         addPad: {
             padding: '5%',
             paddingTop: 2,
-            color: '#444444'
+            color: '#444444',
         },
         edit: {
             color: '#0279AC',
             paddingTop: 20,
             paddingRight: 5,
-            textAlign: 'right'
-        }
-    })
+            textAlign: 'right',
+        },
+    });
 
 
     const salaryRange = (num) => {
         switch (num) {
         case 2:
-            return "<$40,000"
+            return '<$40,000';
         case 3:
-            return "$40,001-$80,000"
+            return '$40,001-$80,000';
         case 4:
-            return "$81,001-$120,000"
+            return '$81,001-$120,000';
         case 5:
-            return "$120,001-$160,000"
+            return '$120,001-$160,000';
         case 6:
-            return "$160,001-$200,000"
+            return '$160,001-$200,000';
         case 7:
-            return "$200,000+"
+            return '$200,000+';
         default:
-            return ""
+            return '';
         }
-    }
+    };
 
     const teleFormat = (phoneNumber) => {
-        let phoneNumberArr = phoneNumber.split('')
+        let phoneNumberArr = phoneNumber.split('');
         if (phoneNumberArr.length === 10) {
-            return `(${phoneNumberArr.slice(0, 3).join('')}) ${phoneNumberArr.slice(3, 6).join('')}-${phoneNumberArr.slice(6, 10).join('')}`
+            return `(${phoneNumberArr.slice(0, 3).join('')}) ${phoneNumberArr.slice(3, 6).join('')}-${phoneNumberArr.slice(6, 10).join('')}`;
         }
         else if (phoneNumberArr.length === 11) {
-            return `${phoneNumberArr[0]}(${phoneNumberArr.slice(1, 4).join('')}) ${phoneNumberArr.slice(4, 7).join('')}-${phoneNumberArr.slice(7, 11).join('')}`
+            return `${phoneNumberArr[0]}(${phoneNumberArr.slice(1, 4).join('')}) ${phoneNumberArr.slice(4, 7).join('')}-${phoneNumberArr.slice(7, 11).join('')}`;
         }
         else {return phoneNumber}
-    }
+    };
     return (
         edit === false
             ? <View style={styles.rootView}>
                 <Text style={styles.edit} onPress={() => {
-                    setEdit(!edit)
+                    setEdit(!edit);
                 }}>Edit</Text>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>INFORMATION</Text>
@@ -203,7 +203,7 @@ export default function ConnectionsDetailsView({ details, id }) {
                                             <Text key={index}
                                                 style={styles.linkText}
                                                 onPress={() => {
-                                                    Platform.OS === 'android' ? Linking.openURL(`tel: ${telephoneObj.telephone}`) : Linking.openURL(`tel:// ${telephoneObj.telephone}`) // might need a promise then catch
+                                                    Platform.OS === 'android' ? Linking.openURL(`tel: ${telephoneObj.telephone}`) : Linking.openURL(`tel:// ${telephoneObj.telephone}`); // might need a promise then catch
                                                 }}
                                             >
                                                 {teleFormat(telephoneObj.telephone)}
@@ -260,6 +260,6 @@ export default function ConnectionsDetailsView({ details, id }) {
                 <View style={{ height: 60 }} />
             </View>
             : <EditConnectionForm details={details} id={id} setEdit={setEdit} />
-    )
+    );
 
 }

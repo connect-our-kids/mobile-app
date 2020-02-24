@@ -35,7 +35,7 @@ const loggedIn = {
     // closeVideo: 'close-introduction-video', // Need to add link to open modal PeopleSearchScreen
     // openVideo: 'open-introduction-video', // Need to add link to open modal PeopleSearchScreen
     // successfulSearch: 'search-person-success',
-    servedChild: 'served-child-success' // Need to add link to open modal serving new child?
+    servedChild: 'served-child-success', // Need to add link to open modal serving new child?
 };
 
 const optionTypes = {
@@ -44,7 +44,7 @@ const optionTypes = {
     phoneIndex,
     addressIndex,
     urlIndex,
-    relationshipIndex
+    relationshipIndex,
 };
 
 // =====================================================================================
@@ -113,7 +113,7 @@ requestHeaders = {
     referer:
     'https://dev.search.connectourkids.org/search;m=steve%20smith;t=name',
     ['user-agent']:
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
 };
 
 // SHORT HEADER
@@ -124,7 +124,7 @@ requestHeaders = {
     Referer:
     'https://dev.search.connectourkids.org/search;m=steve%20smith;t=name',
     ['User-Agent']:
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
 };
 
 // =====================================================================================
@@ -135,42 +135,42 @@ requestHeaders = {
 // FULL HEADER
 requestPayload = {
     event: 'click-sign-up',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING I AM NOT A SOCIAL WORKER EVENT
 // SHORT HEADER
 requestPayload = {
     event: 'click-i-am-not-a-social-worker',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING YES I WORK WITH FOSTER KIDS
 // SHORT HEADER
 requestPayload = {
     event: 'click-yes-i-am-a-social-worker',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING DO NOT WATCH VIDEO
 // SHORT HEADER
 requestPayload = {
     event: 'click-do-not-watch-video',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING SHOW ME THE VIDEO
 // SHORT HEADER
 requestPayload = {
     event: 'click-watch-video',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING TAKE ME TO SIGN UP
 // FULL HEADER
 requestPayload = {
     event: 'click-post-watch-video-sign-up',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLOSING VIDEO MODAL EARLY EVENT
@@ -178,7 +178,7 @@ requestPayload = {
 // FULL HEADER
 requestPayload = {
     event: 'close-introduction-video',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING WATCH A 2 MINUTE QUICK INTRODUCTION VIDEO
@@ -186,14 +186,14 @@ requestPayload = {
 // FULL HEADER
 requestPayload = {
     event: 'open-introduction-video',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // CLICKING LOGO EVENT
 // FULL HEADER
 requestPayload = {
     event: 'click-logo',
-    emailAddress: 'anonymous@unknown.org'
+    emailAddress: 'anonymous@unknown.org',
 };
 
 // NAME SEARCH EVENT FROM FORM (PRODUCING LIST OF MULTIPLE RESULTS)
@@ -203,8 +203,8 @@ requestPayload = {
     event: 'search-person-success',
     options: {
         possibleMatches: 16,
-        personMatch: false
-    }
+        personMatch: false,
+    },
 };
 
 // CLICKING ON A SEARCH RESULT
@@ -213,8 +213,8 @@ requestPayload = {
     emailAddress: 'anonymous@unknown.org',
     event: 'click-possible_person',
     options: {
-        possiblePersonIndex: 0
-    }
+        possiblePersonIndex: 0,
+    },
 };
 
 // NAME SEARCH EVENT FROM FORM (PRODUCING SINGLE RESULT)
@@ -224,8 +224,8 @@ requestPayload = {
     event: 'search-person-success',
     options: {
         possibleMatches: 0,
-        personMatch: true
-    }
+        personMatch: true,
+    },
 };
 
 // SEARCH PERSON FAILED EVENT
@@ -235,8 +235,8 @@ requestPayload = {
     event: 'search-person-success',
     options: {
         possibleMatches: 0,
-        personMatch: true
-    }
+        personMatch: true,
+    },
 };
 
 // =====================================================================================
@@ -246,42 +246,42 @@ requestPayload = {
 // REENTERING APP FROM LOGIN
 // FULL HEADER
 requestPayload = {
-    emailAddress: 'rytwalker@gmail.com'
+    emailAddress: 'rytwalker@gmail.com',
 };
 
 // CLICK LOGOUT EVENT
 // SHORT HEADER
 requestPayload = {
     event: 'click-logout',
-    emailAddress: 'rytwalker@gmail.com'
+    emailAddress: 'rytwalker@gmail.com',
 };
 
 // CLICKING SERVING A NEW CHILD MODALS BACK TO SEARCH BUTTON
 // FULL HEADER
 requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
-    event: 'served-child-success'
+    event: 'served-child-success',
 };
 
 // CLICKING LOGO EVENT
 // FULL HEADER
 requestPayload = {
     event: 'click-logo',
-    emailAddress: 'rytwalker@gmail.com'
+    emailAddress: 'rytwalker@gmail.com',
 };
 
 // CLICKING WATCH A 2 MINUTE QUICK INTRODUCTION VIDEO
 // FULL HEADER
 requestPayload = {
     event: 'open-introduction-video',
-    emailAddress: 'rytwalker@gmail.com'
+    emailAddress: 'rytwalker@gmail.com',
 };
 
 // CLOSING THE INTRODUCTORY VIDEO
 // FULL HEADER
 requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
-    event: 'close-introduction-video'
+    event: 'close-introduction-video',
 };
 
 // SEARCHING BY NAME SUCCESS EVENT (MULTIPLE MATCHES)
@@ -291,8 +291,8 @@ requestPayload = {
     event: 'search-person-success',
     options: {
         possibleMatches: 17,
-        personMatch: false
-    }
+        personMatch: false,
+    },
 };
 
 // POSSIBLE PERSON SEARCH SUCCESS EVENT (SINGLE PERSON)
@@ -302,8 +302,8 @@ requestPayload = {
     event: 'search-person-success',
     options: {
         possibleMatches: 0,
-        personMatch: true
-    }
+        personMatch: true,
+    },
 };
 
 // CLICKING POSSIBLE PERSON EVENT FROM LIST
@@ -312,8 +312,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-possible_person',
     options: {
-        possiblePersonIndex: 0
-    }
+        possiblePersonIndex: 0,
+    },
 };
 
 // CLICKING PERSON EMAIL SEARCH
@@ -322,8 +322,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_email_search',
     options: {
-        emailIndex: 0
-    }
+        emailIndex: 0,
+    },
 };
 
 // CLICKING PERSON EMAIL SEND
@@ -332,8 +332,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_email_send',
     options: {
-        emailIndex: 0
-    }
+        emailIndex: 0,
+    },
 };
 
 // CLICKING PERSON PHONE SEARCH
@@ -342,8 +342,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_phone_search',
     options: {
-        phoneIndex: 0
-    }
+        phoneIndex: 0,
+    },
 };
 
 // CLICKING CALL THIS NUMBER FROM MODAL AFTER PRESSING A PHONE NUMBER LINK
@@ -352,8 +352,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_phone_call',
     options: {
-        phoneIndex: 0
-    }
+        phoneIndex: 0,
+    },
 };
 
 // CLICKING PERFORM SEARCH ON ADDRESS FROM MODAL AFTER CLICKING ADDRESS LINK
@@ -362,8 +362,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_address_search',
     options: {
-        addressIndex: 0
-    }
+        addressIndex: 0,
+    },
 };
 
 // CLICKING VIEW ON MAP FROM MODAL AFTER CLICKING ADDRESS LINK
@@ -372,8 +372,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_address_view',
     options: {
-        addressIndex: 2
-    }
+        addressIndex: 2,
+    },
 };
 
 // CLICKING PERFORM A SEARCH FROM MODAL WHEN CLICKING A URL LINK
@@ -382,8 +382,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_url_search',
     options: {
-        urlIndex: 0
-    }
+        urlIndex: 0,
+    },
 };
 
 // CLICKING VIEW THE URL FROM MODAL WHEN CLICKING A URL LINK
@@ -392,8 +392,8 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-person_url_view',
     options: {
-        urlIndex: 0
-    }
+        urlIndex: 0,
+    },
 };
 
 // CLICKING A RELATIONSHIP LINK FROM SINGLE PERSON RESULTS
@@ -402,6 +402,6 @@ requestPayload = {
     emailAddress: 'rytwalker@gmail.com',
     event: 'click-relationship',
     options: {
-        relationshipIndex: 0
-    }
+        relationshipIndex: 0,
+    },
 };

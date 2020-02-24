@@ -2,13 +2,13 @@ import {
     GET_CASE_CONNECTIONS_START,
     GET_CASE_CONNECTIONS_SUCCESS,
     GET_CASE_CONNECTIONS_FAILURE,
-    CLEAR_CASE_CONNECTIONS
-} from "../actions/caseConnections.js";
+    CLEAR_CASE_CONNECTIONS,
+} from '../actions/caseConnections.js';
 
 const initialState = {
     caseConnections: [],
     isLoadingConnections: false,
-    connectionsError: ""
+    connectionsError: '',
 };
 
 export const getCaseConnectionsReducer = (state = initialState, action) => {
@@ -17,7 +17,7 @@ export const getCaseConnectionsReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingConnections: true,
-            connectionsError: ""
+            connectionsError: '',
         };
 
     case GET_CASE_CONNECTIONS_SUCCESS:
@@ -25,21 +25,21 @@ export const getCaseConnectionsReducer = (state = initialState, action) => {
         return {
             ...state,
             isLoadingConnections: false,
-            caseConnections: action.payload
+            caseConnections: action.payload,
         };
 
     case GET_CASE_CONNECTIONS_FAILURE:
         return {
             ...state,
             isLoadingConnections: false,
-            connectionsError: "Error loading case connections. Please try again later."
+            connectionsError: 'Error loading case connections. Please try again later.',
         };
 
     case CLEAR_CASE_CONNECTIONS:
         return {
             ...state,
-            caseConnections: []
-        }
+            caseConnections: [],
+        };
 
     default:
         return state;

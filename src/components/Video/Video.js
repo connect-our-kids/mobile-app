@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '100%',
         height: 300,
-        marginBottom: 10
+        marginBottom: 10,
     },
     WebViewContainer: {
-        marginTop: Platform.OS == 'ios' ? 20 : 0
-    }
+        marginTop: Platform.OS == 'ios' ? 20 : 0,
+    },
 });
 
 export default Video;

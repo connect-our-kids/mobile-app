@@ -4,21 +4,21 @@ import jwtDecode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
 import Constants from 'expo-constants';
-import getRefreshToken from './getRefreshToken'
-import getNewAccessToken from './getNewAccessToken'
-import AuthSessionCustom from "./AuthSessionCustom";
+import getRefreshToken from './getRefreshToken';
+import getNewAccessToken from './getNewAccessToken';
+import AuthSessionCustom from './AuthSessionCustom';
 // import { verifier, challenge } from './auth0Verifiers'
 import { Platform } from 'react-native';
 
 const { auth0Domain, auth0Audience, auth0ClientId, auth0RedirectScheme } = getEnvVars();
 
-const toQueryString = params => {
+const toQueryString = (params) => {
     return (
         '?'
     + Object.entries(params)
         .map(
             ([ key, value ]) =>
-                `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+                `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
         )
         .join('&')
     );
@@ -64,7 +64,7 @@ const initialLogin = async () => {
         nonce: 'nonce', // ideally, this will be a random value
     });
 
-    console.log("Send the following URL to Travis");
+    console.log('Send the following URL to Travis');
     console.log(AuthSession.getRedirectUrl());
     const authUrl = `https://${auth0Domain}/authorize` + queryParams;
 
@@ -74,7 +74,7 @@ const initialLogin = async () => {
     const response = Platform.OS != 'ios' ? await AuthSession.startAsync({ authUrl: authUrl }) : await AuthSessionCustom.startAsync({ authUrl: authUrl });
 
 
-    console.log("startAsync Response");
+    console.log('startAsync Response');
     console.log(response);
 
     if (response.error) {
@@ -82,20 +82,20 @@ const initialLogin = async () => {
         return;
     }
     // if user cancels login process, terminate method
-    else if (response.type === 'dismiss') {return;}
+    else if (response.type === 'dismiss') {return}
     // assume success
 
     // SET THE TIME TOKEN EXPIRES IN EXPO SECURE STORE
     // Set each token to the expo secure store. These are accessed all throughout the application AND in almost every Redux Action
-    const expiresAt = response.expires_in * 1000 + new Date().getTime();
+    const expiresAt = (response.expires_in * 1000) + new Date().getTime();
     await setItem('expiresAt', expiresAt);
-    await SecureStore.setItemAsync('cok_auth_code', response.params.code)
-    await SecureStore.setItemAsync('cok_id_token', response.params.id_token)
-    await SecureStore.setItemAsync('cok_access_token', response.params.access_token)
-}
+    await SecureStore.setItemAsync('cok_auth_code', response.params.code);
+    await SecureStore.setItemAsync('cok_id_token', response.params.id_token);
+    await SecureStore.setItemAsync('cok_access_token', response.params.access_token);
+};
 
 export default {
     toQueryString,
     setItem,
-    handleLogin
+    handleLogin,
 };

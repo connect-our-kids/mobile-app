@@ -24,7 +24,7 @@ const PersonInfoHeader = ({ item, listItem = false }) => {
     }
 
     if (item.addresses && listItem) {
-        item.addresses.forEach(address => {
+        item.addresses.forEach((address) => {
             allAddresses += `${address.city}, ${address.state} `;
         });
     }
@@ -35,7 +35,7 @@ const PersonInfoHeader = ({ item, listItem = false }) => {
                 <Image
                     style={styles.rowImage}
                     source={{
-                        uri: uri
+                        uri: uri,
                     }}
                 />
             </Col>

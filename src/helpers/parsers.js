@@ -7,7 +7,7 @@ function isStateWithTwoWords(state) {
         'carolina',
         'dakota',
         'island',
-        'virginia'
+        'virginia',
     ]);
     return statesWithTwoWords.has(state.toLowerCase());
 }
@@ -22,7 +22,7 @@ function isZipCode(zip) {
     return zip.replace(/[^0-9]+/g, '').length === 5;
 }
 
-export const parseAddress = address => {
+export const parseAddress = (address) => {
     addressObj = {};
     const splitAddress = address
         .trim()
@@ -65,7 +65,7 @@ export const parseAddress = address => {
     return addressObj;
 };
 
-export const parseCityState = cityState => {
+export const parseCityState = (cityState) => {
     let splitAddress = cityState.trim().split(' ');
     if (splitAddress.length > 1) {
         let state = splitAddress.pop();
@@ -79,18 +79,18 @@ export const parseCityState = cityState => {
         let city = splitAddress.join(' ').replace(/,/g, '');
         return {
             state: state,
-            city: city
+            city: city,
         };
     }
 };
 
-export const parseName = name => {
+export const parseName = (name) => {
     let splitName = name
         .trim()
         .replace(/,/g, '')
         .split(' ');
     if (splitName.length === 1) {
-        return { first: splitName[0] }
+        return { first: splitName[0] };
     }
     else if (splitName.length === 2) {
         return { first: splitName[0], last: splitName[1] };
@@ -99,7 +99,7 @@ export const parseName = name => {
         return {
             first: splitName[0],
             middle: splitName[2],
-            last: splitName[1]
+            last: splitName[1],
         };
     }
 };

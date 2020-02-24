@@ -16,7 +16,7 @@ const PersonInfoRow = ({
     showConModal,
     navigation,
     setData,
-    resetState
+    resetState,
 }) => {
     if (item[itemKey]) {
         handlePressDirections = (data, postalCode, city) => {
@@ -33,7 +33,7 @@ const PersonInfoRow = ({
         };
 
         let handleShowConModal = (key, index) => {
-            if (!isLoggedIn) {startRegister();}
+            if (!isLoggedIn) {startRegister()}
 
             if (isLoggedIn && itemKey === 'emails') {
                 const type = 'email';
@@ -172,7 +172,7 @@ const PersonInfoRow = ({
         return null;
     }
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     const { modalVisible } = state.confirmationModal;
     return { isLoggedIn, modalVisible };
@@ -180,5 +180,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { resetState, showModal }
+    { resetState, showModal },
 )(PersonInfoRow);

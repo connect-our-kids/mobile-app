@@ -15,7 +15,7 @@ class LRUCache {
 
     moveToHead(cacheItem) {
         const filteredOut = this.cacheOrder.filter(
-            item => item.searchInput !== cacheItem.searchInput
+            (item) => item.searchInput !== cacheItem.searchInput,
         );
         this.cacheOrder = [ cacheItem, ...filteredOut ];
     }

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import {
     getInfo,
     stopSearchMe,
-    sendSearchErrorMessage
+    sendSearchErrorMessage,
 } from '../../store/actions';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -31,7 +31,7 @@ class SearchForm extends Component {
       address: '',
       phone: '',
       url: '',
-      tabPage: 0
+      tabPage: 0,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -47,8 +47,8 @@ class SearchForm extends Component {
       this.setState({
           ...this.state,
           [name]: text,
-          tabPage: tabPages[name]
-      })
+          tabPage: tabPages[name],
+      });
   }
 
   handleFormSubmit = () => {
@@ -56,9 +56,9 @@ class SearchForm extends Component {
       let inputValue;
       let formattedObject = null;
 
-      const unusedKeys = [ 'firstName', 'lastName', 'city', 'state' ]
+      const unusedKeys = [ 'firstName', 'lastName', 'city', 'state' ];
 
-      console.log('this is the state ', this.state)
+      console.log('this is the state ', this.state);
 
       const inputObj = this.findInputWithLength();
 
@@ -107,7 +107,7 @@ class SearchForm extends Component {
           formattedObject = this.formatRequestObject(inputValue, 'url');
       }
       if (unusedKeys.includes(inputKey)) {
-          null
+          null;
       }
       else {
           console.log('your input is not valid');
@@ -160,7 +160,7 @@ class SearchForm extends Component {
       case 'email':
           person.emails = [];
           person.emails.push({
-              address: inputValue
+              address: inputValue,
           });
           break;
       case 'address':
@@ -172,14 +172,14 @@ class SearchForm extends Component {
       case 'phone':
           person.phones = [];
           person.phones.push({
-              number: inputValue.replace(/[^0-9]+/g, '')
+              number: inputValue.replace(/[^0-9]+/g, ''),
           });
           break;
 
       case 'url':
           person.urls = [];
           person.urls.push({
-              url: inputValue
+              url: inputValue,
           });
           break;
 
@@ -200,7 +200,7 @@ class SearchForm extends Component {
           email: '',
           address: '',
           phone: '',
-          url: ''
+          url: '',
       });
   };
 
@@ -234,14 +234,14 @@ class SearchForm extends Component {
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
                                   value={this.state.firstName}
-                                  onChangeText={text => this.changeHandler('firstName', text)}
+                                  onChangeText={(text) => this.changeHandler('firstName', text)}
                               />
                               <Input
                                   placeholder="e.g. Smith"
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
                                   value={this.state.lastName}
-                                  onChangeText={text => this.changeHandler('lastName', text)}
+                                  onChangeText={(text) => this.changeHandler('lastName', text)}
                               />
 
                           </View>
@@ -257,7 +257,7 @@ class SearchForm extends Component {
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
                                   value={this.state.city}
-                                  onChangeText={text => this.changeHandler('city', text)}
+                                  onChangeText={(text) => this.changeHandler('city', text)}
                               />
 
 
@@ -266,7 +266,7 @@ class SearchForm extends Component {
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
                                   value={this.state.state}
-                                  onChangeText={text => this.changeHandler('state', text)}
+                                  onChangeText={(text) => this.changeHandler('state', text)}
                               />
                           </View>
                       </View>
@@ -285,10 +285,10 @@ class SearchForm extends Component {
                               placeholder="Search email..."
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
-                              inputContainerStyle={{ backgroundColor: "#fff" }}
+                              inputContainerStyle={{ backgroundColor: '#fff' }}
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.email}
-                              onChangeText={text => this.changeHandler('email', text)}
+                              onChangeText={(text) => this.changeHandler('email', text)}
                               lightTheme="true"
                           />
                       </View>
@@ -306,10 +306,10 @@ class SearchForm extends Component {
                               placeholder="Search address..."
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
-                              inputContainerStyle={{ backgroundColor: "#fff" }}
+                              inputContainerStyle={{ backgroundColor: '#fff' }}
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.address}
-                              onChangeText={text => this.changeHandler('address', text)}
+                              onChangeText={(text) => this.changeHandler('address', text)}
                               lightTheme="true"
                           />
                       </View>
@@ -327,10 +327,10 @@ class SearchForm extends Component {
                               placeholder="Search phone number..."
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
-                              inputContainerStyle={{ backgroundColor: "#fff" }}
+                              inputContainerStyle={{ backgroundColor: '#fff' }}
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.phone}
-                              onChangeText={text => this.changeHandler('phone', text)}
+                              onChangeText={(text) => this.changeHandler('phone', text)}
                               lightTheme="true"
                           />
                       </View>
@@ -348,10 +348,10 @@ class SearchForm extends Component {
                               placeholder="Search URL..."
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
-                              inputContainerStyle={{ backgroundColor: "#fff" }}
+                              inputContainerStyle={{ backgroundColor: '#fff' }}
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.url}
-                              onChangeText={text => this.changeHandler('url', text)}
+                              onChangeText={(text) => this.changeHandler('url', text)}
                               lightTheme="true"
                           />
                       </View>
@@ -370,8 +370,8 @@ class SearchForm extends Component {
                           address: this.state.address,
                           phone: this.state.phone,
                           url: this.state.url,
-                          tabPage: this.state.tabPage || 0
-                      }, () => this.handleFormSubmit())
+                          tabPage: this.state.tabPage || 0,
+                      }, () => this.handleFormSubmit());
                   }}>
                       <Text style={styles.buttonText}> Search </Text>
                   </Button>
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
         width: '45%',
         marginRight: 12,
         marginLeft: 12,
-        color: 'black'
+        color: 'black',
     },
     textInputWide: {
         borderColor: 'rgba(24,23,21,.5)',
@@ -418,14 +418,14 @@ const styles = StyleSheet.create({
         marginTop: 45,
         marginRight: 12,
         marginLeft: 12,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 
     textInputSmall: {
-        flex: 1
+        flex: 1,
     },
     nameInput: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
 
     button: {
@@ -435,15 +435,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#0279AC',
         width: '58%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     tab: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 
     buttonText: {
-        color: 'white'
+        color: 'white',
     },
 
     link: {
@@ -452,12 +452,12 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: `${constants.highlightColor}`,
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
     },
     matchesText: {
         fontSize: 20,
         color: `${constants.highlightColor}`,
-        marginBottom: 20
+        marginBottom: 20,
     },
     greyButton: {
         backgroundColor: 'white',
@@ -468,14 +468,14 @@ const styles = StyleSheet.create({
         borderColor: '#0279AC',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#0279AC'
+        color: '#0279AC',
 
 
     },
     activeTextStyle: {
         color: '#0279AC',
         fontFamily: constants.lotoFamily,
-        fontSize: 16
+        fontSize: 16,
     },
     textStyle: {
         color: '#18171568',
@@ -484,28 +484,28 @@ const styles = StyleSheet.create({
     },
     nameInputFullWidth: {
         width: '100%',
-        height: '100%'
+        height: '100%',
     },
     peopleSearch: {
         flexDirection: 'row',
         paddingTop: '5%',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: '5%'
+        paddingBottom: '5%',
 
-    }
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { info, queryType, searchMe } = state.confirmationModal;
     return {
         info,
         queryType,
-        searchMe
+        searchMe,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { getInfo, stopSearchMe, sendSearchErrorMessage }
+    { getInfo, stopSearchMe, sendSearchErrorMessage },
 )(SearchForm);
