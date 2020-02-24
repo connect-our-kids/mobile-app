@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './src/store/store';
 import * as Font from 'expo-font';
@@ -8,26 +8,26 @@ import { StatusBar } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 
 export default function App() {
-  let [state,setState] = useState( { fontLoaded: false });
+    const [ state, setState ] = useState({ fontLoaded: false });
 
-  useEffect(()=>{
-    Font.loadAsync({
-      [constants.fontFamily]: require('./assets/fonts/Lato-Light.ttf'),
-      [constants.headerFont]: require('./assets/fonts/Futura-Medium.otf'),
-      [constants.lotoFamily]: require('./assets/fonts/Lato-Light.ttf')
-    }).then(res=>{
-      setState({ fontLoaded: true });
-    })
-  })
+    useEffect (() => {
+        Font.loadAsync ({
+            [constants.fontFamily]: require('./assets/fonts/Lato-Light.ttf'),
+            [constants.headerFont]: require('./assets/fonts/Futura-Medium.otf'),
+            [constants.lotoFamily]: require('./assets/fonts/Lato-Light.ttf'),
+        }).then((res) => {
+            setState({ fontLoaded: true });
+        });
+    });
 
-  return ( 
-    <AppearanceProvider>
-    {state.fontLoaded ?
-    <Provider store={store}>
-      <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
-      <Navigator />
-    </Provider> : null}
-    </AppearanceProvider>
-  ) 
-  
+    return (
+        <AppearanceProvider>
+            {state.fontLoaded
+                ? <Provider store={store}>
+                    <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
+                    <Navigator />
+                </Provider> : null}
+        </AppearanceProvider>
+    );
+
 }
