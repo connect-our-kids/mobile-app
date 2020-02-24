@@ -230,6 +230,9 @@ module.exports = {
 
     /* scoping */
     
+    'no-unused-vars': [
+      'warn',
+    ],
     'no-var': [
       'warn',
     ],
