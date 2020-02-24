@@ -13,19 +13,19 @@ module.exports = {
 
   'plugins': [
     'import',
-    'jsx-a11y',
+    /* 'jsx-a11y', */
     'react',
     'react-native',
-    'react-native-a11y',
+    /* 'react-native-a11y', */
     '@typescript-eslint',
   ],
   'extends': [
     'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:jsx-a11y/recommended',
+    /* 'plugin:jsx-a11y/recommended', */
     'plugin:react/recommended',
-    'plugin:react-native-a11y/recommended',
+    /* 'plugin:react-native-a11y/recommended', */
   ],
   'parserOptions': {
     'ecmaFeatures': {
