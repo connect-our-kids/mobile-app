@@ -27,6 +27,7 @@ module.exports = {
     'plugin:react/recommended',
     /* 'plugin:react-native-a11y/recommended', */
   ],
+  'parser': 'babel-eslint',
   'parserOptions': {
     'ecmaFeatures': {
       'jsx': true,

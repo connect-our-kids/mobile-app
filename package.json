@@ -64,6 +64,7 @@
     "@types/react-native": "^0.61.16",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
+    "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^8.0.0",
     "eslint": "^6.8.0",
     "eslint-nibble": "^5.1.0",
