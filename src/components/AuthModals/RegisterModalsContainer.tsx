@@ -50,21 +50,21 @@ const RegisterModalsContainer = (props) => {
 
 const styles = StyleSheet.create({
     marginTop: {
-        marginTop: 22
+        marginTop: 22,
     },
     logo: {
         width: Dimensions.get('window').width - 40,
-        height: 100
+        height: 100,
     },
     button: {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: constants.highlightColor
+        backgroundColor: constants.highlightColor,
     },
     btnText: {
-        color: '#fff'
-    }
+        color: '#fff',
+    },
 });
 
 export default RegisterModalsContainer;

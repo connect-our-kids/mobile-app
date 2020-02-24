@@ -6,7 +6,7 @@ import {
     SET_VIDEO_PLAYER_VISIBLE,
     SET_LOGGED_IN_STATUS,
     SET_ACCESS_TOKEN,
-    SET_ID_TOKEN
+    SET_ID_TOKEN,
 } from '../actions/actionTypes';
 import * as SecureStore from 'expo-secure-store';
 import { clearUserCases } from './userCasesReducer';
@@ -21,7 +21,7 @@ const initialState = {
     idToken: null,
     modalVisible: false,
     videoAgree: false,
-    videoVisible: false
+    videoVisible: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -35,7 +35,7 @@ export const authReducer = (state = initialState, action) => {
             idToken: action.auth0Data.id_token,
             expiresIn: action.auth0Data.expires_in,
             error: null,
-            loadingUser: true
+            loadingUser: true,
         };
     case SET_ID_TOKEN:
         return {
@@ -43,37 +43,37 @@ export const authReducer = (state = initialState, action) => {
             // isLoggedIn: true,
             idToken: action.payload,
         // loadingUser: true
-        }
+        };
     case SET_ACCESS_TOKEN:
         return {
             ...state,
             // isLoggedIn: true,
             accessToken: action.payload,
         // loadingUser: true
-        }
+        };
     case SET_LOGGED_IN_STATUS:
         return {
             ...state,
             isLoggedIn: action.payload,
-            loadingUser: false
-        }
+            loadingUser: false,
+        };
     case SET_MODAL_VISIBLE:
         return {
             ...state,
             modalVisible: action.payload,
             videoAgree: false,
-            videoVisible: false
+            videoVisible: false,
         };
     case SET_VIDEO_AGREE_VISIBLE:
         return {
             ...state,
-            videoAgree: true
+            videoAgree: true,
         };
     case SET_VIDEO_PLAYER_VISIBLE:
         return {
             ...state,
             videoAgree: false,
-            videoVisible: true
+            videoVisible: true,
         };
     case LOG_OUT:
         SecureStore.deleteItemAsync('cok_access_token');

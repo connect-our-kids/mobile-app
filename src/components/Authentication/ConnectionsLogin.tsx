@@ -25,7 +25,7 @@ const ConnectionsLogin = (props) => {
                         onPress={() =>
                             authHelpers.handleLogin(
                                 authHelpers._loginWithAuth0,
-                                props.setUserCreds
+                                props.setUserCreds,
                             )}>
                         <Text style={styles.btnText}>Login</Text>
                     </Button>
@@ -41,21 +41,21 @@ const ConnectionsLogin = (props) => {
                 </View>
             </View>
         </ScreenContainer>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     logInBtns: {
         flexDirection: 'row',
         flex: 1,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
     },
     logOutText: {
-        color: '#fff'
+        color: '#fff',
     },
     linkContainer: {
         justifyContent: 'space-between',
-        flex: 1
+        flex: 1,
     },
     buttonStyle: {
         flex: 1,
@@ -63,18 +63,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#0279AC'
+        backgroundColor: '#0279AC',
     },
     btnText: {
-        color: '#fff'
+        color: '#fff',
     },
     button: {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'column',
         // justifyContent: 'center',
-        marginBottom: 10
-    }
+        marginBottom: 10,
+    },
 });
 
 

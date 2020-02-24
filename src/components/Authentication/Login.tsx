@@ -10,7 +10,7 @@ import NavigationButton from '../../UI/NavigationButton';
 import ScreenContainer from '../../UI/ScreenContainer';
 import MainText from '../../UI/MainText';
 
-const Login = props => {
+const Login = (props) => {
     return (
         <View style={{ width: '100%' }}>
             <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: 15, paddingBottom: 15 }}>
@@ -19,7 +19,7 @@ const Login = props => {
                         rounded
                         size="large"
                         source={{
-                            uri: props.idToken.picture
+                            uri: props.idToken.picture,
                         }}
                     /> : null}
                 <Text>
@@ -44,7 +44,7 @@ const Login = props => {
               <View style={{
                   width: '100%',
                   borderBottomColor: '#E5E4E2',
-                  borderBottomWidth: 1
+                  borderBottomWidth: 1,
               }}>
                   <Text style={styles.text}>
                       {props.isLoggedIn && props.idToken && props.idToken.given_name
@@ -55,7 +55,7 @@ const Login = props => {
               <View style={{
                   width: '100%',
                   borderBottomColor: '#E5E4E2',
-                  borderBottomWidth: 1
+                  borderBottomWidth: 1,
               }}>
                   <Text style={styles.text}>
                       {props.isLoggedIn && props.idToken && props.idToken.family_name
@@ -66,7 +66,7 @@ const Login = props => {
               <View style={{
                   width: '100%',
                   borderBottomColor: '#E5E4E2',
-                  borderBottomWidth: 1
+                  borderBottomWidth: 1,
               }}>
                   <Text style={styles.text}>
                       {props.isLoggedIn && props.idToken && props.idToken.name
@@ -83,8 +83,8 @@ const Login = props => {
                             <Button
                                 style={[ styles.button, { backgroundColor: 'red', alignItems: 'center', justifyContent: 'center' } ]}
                                 onPress={() => {
-                                    props.idToken && props.idToken.email ? props.logOut(props.idToken.email) : props.logOut()
-                                    props.clearUserCases()
+                                    props.idToken && props.idToken.email ? props.logOut(props.idToken.email) : props.logOut();
+                                    props.clearUserCases();
                                 }}
                                 block
                             >
@@ -126,14 +126,14 @@ const styles = StyleSheet.create({
     logInBtns: {
         flexDirection: 'row',
         flex: 1,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
     },
     logOutText: {
-        color: '#fff'
+        color: '#fff',
     },
     linkContainer: {
         justifyContent: 'space-between',
-        flex: 1
+        flex: 1,
     },
     buttonStyle: {
         flex: 1,
@@ -141,16 +141,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#0279AC'
+        backgroundColor: '#0279AC',
     },
     btnText: {
-        color: '#fff'
+        color: '#fff',
     },
     button: {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'column',
-        marginBottom: 10
+        marginBottom: 10,
     },
     text: {
     // marginHorizontal: 5,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         fontSize: 15,
 
-    }
+    },
 });
 
 export default Login;

@@ -8,32 +8,32 @@ import {
     Button,
     Linking,
     Modal,
-    Image
+    Image,
 } from 'react-native';
 import {
     Divider,
-    ListItem
+    ListItem,
 } from 'react-native-elements';
-import constants from "../helpers/constants";
-import { connect } from "react-redux";
+import constants from '../helpers/constants';
+import { connect } from 'react-redux';
 import {
     getEngagements,
     getDocuments,
     clearDocuments,
     clearEngagements,
     getDetails,
-    setDetails
-} from "../store/actions/connectionData";
+    setDetails,
+} from '../store/actions/connectionData';
 import {
     getCaseConnections,
     clearCaseConnections,
-} from "../store/actions/caseConnections"
+} from '../store/actions/caseConnections';
 import {
     Ionicons,
     AntDesign,
     MaterialCommunityIcons,
     Feather,
-    MaterialIcons
+    MaterialIcons,
 } from '@expo/vector-icons';
 import { Engagement, Documents } from '../components/ConnectionsViewTabs/ConnectionsViewTabs';
 import * as TelephoneHelpers from '../helpers/telephoneHelpers.js';
@@ -43,34 +43,34 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import AddDocForm from '../components/ConnectionsViewTabs/AddDocForm';
 import Loader from '../components/Loader/Loader';
-import ScrollToTop from '../UI/ScrollToTop'
-import ConnectionsDetailsView from './ConnectionsDetailsView'
-import EditConnectionsForm from "../components/ConnectionsViewTabs/EditConnectionForm"
+import ScrollToTop from '../UI/ScrollToTop';
+import ConnectionsDetailsView from './ConnectionsDetailsView';
+import EditConnectionsForm from '../components/ConnectionsViewTabs/EditConnectionForm';
 import { Row } from 'native-base';
 
 
-const placeholderImg = require('../../assets/profile_placeholder.png')
+const placeholderImg = require('../../assets/profile_placeholder.png');
 
 function ConnectionsView(props) {
-    const connectionData = props.navigation.getParam('connectionData').person
+    const connectionData = props.navigation.getParam('connectionData').person;
     const [ tabs, setTabs ] = useState({
         engagement: true,
         docs: false,
         details: false,
     });
 
-    const [ isScrolling, setIsScrolling ] = useState(false)
+    const [ isScrolling, setIsScrolling ] = useState(false);
     useEffect(() => {
-        props.getEngagements(props.navigation.getParam('connectionData').person.pk)
-        props.getDocuments(props.navigation.getParam('connectionData').person.pk)
-        props.getDetails(props.navigation.getParam('connectionData').person.pk)
-    }, [ props.isLoadingDocs, props.isLoadingEngagements ])
+        props.getEngagements(props.navigation.getParam('connectionData').person.pk);
+        props.getDocuments(props.navigation.getParam('connectionData').person.pk);
+        props.getDetails(props.navigation.getParam('connectionData').person.pk);
+    }, [ props.isLoadingDocs, props.isLoadingEngagements ]);
 
     const styles = StyleSheet.create({
         tabs: {
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "center",
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
             borderBottomWidth: 1,
             borderTopRightRadius: 4,
@@ -78,7 +78,7 @@ function ConnectionsView(props) {
         },
 
         engagementTab: {
-            width: "33.3%",
+            width: '33.3%',
             justifyContent: 'center',
             alignItems: 'center',
             height: 36,
@@ -87,7 +87,7 @@ function ConnectionsView(props) {
         },
 
         documentsTab: {
-            width: "33.3%",
+            width: '33.3%',
             justifyContent: 'center',
             alignItems: 'center',
             height: 36,
@@ -95,7 +95,7 @@ function ConnectionsView(props) {
             textAlign: 'center',
         },
         detailsTab: {
-            width: "33.3%",
+            width: '33.3%',
             justifyContent: 'center',
             alignItems: 'center',
             height: 36,
@@ -103,27 +103,27 @@ function ConnectionsView(props) {
             textAlign: 'center',
         },
         thatBlue: {
-            color: constants.highlightColor
+            color: constants.highlightColor,
         },
 
         engagementSelected: {
             color: 'orange',
             borderBottomWidth: 3,
             borderBottomColor: constants.highlightColor,
-            overflow: "hidden",
+            overflow: 'hidden',
         },
 
         documentsSelected: {
             color: constants.highlightColor,
             borderBottomWidth: 3,
             borderBottomColor: constants.highlightColor,
-            overflow: "hidden",
+            overflow: 'hidden',
         },
         detailsSelected: {
             color: constants.highlightColor,
             borderBottomWidth: 3,
             borderBottomColor: constants.highlightColor,
-            overflow: "hidden"
+            overflow: 'hidden',
         },
 
         iconLabelContainer: {
@@ -137,7 +137,7 @@ function ConnectionsView(props) {
             width: 45,
             borderRadius: 22.5,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
         },
 
         iconStyles: {
@@ -145,33 +145,33 @@ function ConnectionsView(props) {
             color: constants.highlightColor,
             width: 28,
             height: 28,
-            marginHorizontal: 10
+            marginHorizontal: 10,
         },
 
         iconLabel: {
             color: '#0F6580',
-            fontSize: 12
+            fontSize: 12,
         },
         avatarName: {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             paddingBottom: '10%',
-            paddingTop: '5%'
-        }
-    })
+            paddingTop: '5%',
+        },
+    });
 
     const leftArrow: string = '\u2190';
 
-    const engagementsNoDocuments: object[] = props.engagements.filter((engagement) => engagement.data_type !== 'D')
+    const engagementsNoDocuments: object[] = props.engagements.filter((engagement) => engagement.data_type !== 'D');
 
     const passEngagementType: any = (type) => {
-        return props.navigation.navigate('EngagementForm', { data_type: type, id: connectionData.pk })
-    }
+        return props.navigation.navigate('EngagementForm', { data_type: type, id: connectionData.pk });
+    };
 
     const goToTop: any = () => {
         scroll.scrollTo({ x: 0, y: 0, animated: true });
-    }
+    };
 
     return (
         <View>
@@ -184,7 +184,7 @@ function ConnectionsView(props) {
                         right: 38,
                         backgroundColor: 'white',
                         padding: 8,
-                        borderRadius: 35
+                        borderRadius: 35,
                     }}
                     onPress={goToTop}
                 /> : null}
@@ -194,10 +194,10 @@ function ConnectionsView(props) {
                 scrollsToTop
                 onScroll={(e) => {
                     if (e.nativeEvent.contentOffset.y <= 250) {
-                        setIsScrolling(false)
+                        setIsScrolling(false);
                     }
                     else if (e.nativeEvent.contentOffset.y >= 250) {
-                        setIsScrolling(true)
+                        setIsScrolling(true);
                     }
                 }}
                 onScrollToTop={() => setIsScrolling(false)}
@@ -231,7 +231,7 @@ function ConnectionsView(props) {
                                         height: 80,
                                         width: 80,
                                         borderRadius: 40,
-                                        overflow: 'hidden'
+                                        overflow: 'hidden',
                                     }}
                                 />}
                         </View>
@@ -240,7 +240,7 @@ function ConnectionsView(props) {
                                 fontSize: 30,
                                 color: '#444444',
                                 paddingTop: 15,
-                                fontFamily: constants.lotoFamily
+                                fontFamily: constants.lotoFamily,
                             }}
                         >{connectionData.full_name}</Text>
                     </View>
@@ -252,7 +252,7 @@ function ConnectionsView(props) {
                             borderRadius: 4,
                             width: '100%',
                             alignItems: 'flex-start',
-                            justifyContent: 'flex-start'
+                            justifyContent: 'flex-start',
                         }}
                     >
                         <View style={[ styles.tabs ]}>
@@ -282,7 +282,7 @@ function ConnectionsView(props) {
                                             docs: false,
                                             details: true,
                                         });
-                                        props.setDetails(true)
+                                        props.setDetails(true);
                                     }}
                                 >
 
@@ -333,7 +333,7 @@ function ConnectionsView(props) {
                                             <View style={styles.iconContainer}>
                                                 <TouchableOpacity
                                                     onPress={() => {
-                                                        passEngagementType('N')
+                                                        passEngagementType('N');
                                                     }}
                                                 >
                                                     <MaterialIcons
@@ -349,7 +349,7 @@ function ConnectionsView(props) {
                                             <View style={styles.iconContainer}>
                                                 <TouchableOpacity
                                                     onPress={() => {
-                                                        passEngagementType('C')
+                                                        passEngagementType('C');
                                                     }}
                                                 >
                                                     <MaterialCommunityIcons
@@ -371,7 +371,7 @@ function ConnectionsView(props) {
                                             <View style={styles.iconContainer}>
                                                 <TouchableOpacity
                                                     onPress={async () => {
-                                                        passEngagementType('E')
+                                                        passEngagementType('E');
                                                     }}
                                                 >
                                                     <MaterialCommunityIcons
@@ -390,7 +390,7 @@ function ConnectionsView(props) {
                                                 return (
                                                     <View key={engagement.pk} style={{ width: '70%' }}>
                                                         <Engagement engagement={engagement} />
-                                                    </View>)
+                                                    </View>);
 
                                             })}
                                     </View>
@@ -404,13 +404,13 @@ function ConnectionsView(props) {
                                     style={{
                                         minHeight: 350,
 
-                                        width: '100%'
+                                        width: '100%',
                                     }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                props.navigation.navigate('DocumentForm', { id: connectionData.pk })
+                                                props.navigation.navigate('DocumentForm', { id: connectionData.pk });
                                             }}
                                             style={{
                                                 width: 162,
@@ -420,10 +420,10 @@ function ConnectionsView(props) {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 marginTop: 18,
-                                                marginBottom: 10
+                                                marginBottom: 10,
                                             }}
                                         >
-                                            <Text style={{ color: "#FFFFFF", fontSize: 18 }}>Add Document</Text>
+                                            <Text style={{ color: '#FFFFFF', fontSize: 18 }}>Add Document</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{ width: '100%', maxHeight: '100%' }} >
@@ -431,7 +431,7 @@ function ConnectionsView(props) {
                                             : props.documents.map((document) => {
 
                                                 return (
-                                                    <Documents key={document.pk} document={document} />)
+                                                    <Documents key={document.pk} document={document} />);
                                             })}
                                     </View>
                                 </View>
@@ -444,7 +444,7 @@ function ConnectionsView(props) {
                                     style={{
                                         minHeight: 350,
 
-                                        width: '100%'
+                                        width: '100%',
                                     }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -463,7 +463,7 @@ function ConnectionsView(props) {
 }
 
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         engagements: state.connection.engagements,
         isLoadingEngagements: state.engagements.isLoadingEngagements,
@@ -474,9 +474,9 @@ const mapStateToProps = state => {
         documentsError: state.connection.documentsError,
         details: state.connection.details,
         isLoadingDetails: state.connection.isLoadingDetails,
-        detailsTab: state.connection.detailsTab
-    }
-}
+        detailsTab: state.connection.detailsTab,
+    };
+};
 
 export default connect(
     mapStateToProps,
@@ -487,6 +487,6 @@ export default connect(
         clearDocuments,
         getDetails,
         setDetails,
-        getCaseConnections
-    }
+        getCaseConnections,
+    },
 )(ConnectionsView);

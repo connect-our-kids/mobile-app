@@ -17,13 +17,13 @@ class LoginWithAuth0 extends Component {
               onLogin={() =>
                   authHelpers.handleLogin(
                       authHelpers._loginWithAuth0,
-                      this.props.setUserCreds
+                      this.props.setUserCreds,
                   )
               }
               onRegister={() =>
                   authHelpers.handleLogin(
                       authHelpers._loginWithAuth0,
-                      this.props.setUserCreds
+                      this.props.setUserCreds,
                   )
               }
               email={this.props.user ? this.props.user.email : null}
@@ -36,12 +36,12 @@ class LoginWithAuth0 extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { user, isLoggedIn, authToken, idToken } = state.auth;
     return { user, isLoggedIn, authToken, idToken };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut, clearUserCases }
+    { setUserCreds, logOut, clearUserCases },
 )(LoginWithAuth0);
