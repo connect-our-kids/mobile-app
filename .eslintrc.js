@@ -227,10 +227,17 @@ module.exports = {
       'error', { 'words': true, 'nonwords': false },
     ],
 
-    /***************************************
-      node-ish
-    ***************************************/
+    /* scoping */
     
+    'no-var': [
+      'warn',
+    ],
+    'vars-on-top': [
+      'error',
+    ],
+    'block-scoped-var': [
+      'error',
+    ],
     'no-use-before-define': [
       'warn',
     ],
@@ -242,9 +249,6 @@ module.exports = {
       react
     ***************************************/
 
-    'no-use-before-define': [
-      'warn',
-    ],
     'react/display-name': [
       'warn',
     ],
@@ -274,6 +278,7 @@ module.exports = {
     'react-native/no-raw-text': [
       'warn',
     ],
+
   },
 
 };
