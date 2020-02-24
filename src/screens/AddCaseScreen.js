@@ -1,4 +1,4 @@
-//Discontinued AddCaseScreen. Occasional errors referencing import semicolons. Not connected to axios
+// Discontinued AddCaseScreen. Occasional errors referencing import semicolons. Not connected to axios
 import React, { useState } from 'react';
 import {
     Text,
@@ -35,16 +35,16 @@ export default function AddCaseScreen(props) {
         }
     })
 
-    const [caseInput, setCaseInput] = useState({
+    const [ caseInput, setCaseInput ] = useState({
         first_name: '',
         last_name: ''
     })
 
     function submitHandler() {
-        //axios call goes here
+        // axios call goes here
     }
 
-    //handle the changes to the form
+    // handle the changes to the form
     function handleChange(e) {
         setCaseInput({ ...caseInput, [e.target.name]: e.target.value })
 

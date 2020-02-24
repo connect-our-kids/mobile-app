@@ -14,7 +14,7 @@ const { familyConnectionsURL } = getEnvVars()
 export const getCaseConnections = (pk) => dispatch => {
     SecureStore.getItemAsync('cok_access_token')
         .then((accessToken) => {
-            dispatch({ type: GET_CASE_CONNECTIONS_START});
+            dispatch({ type: GET_CASE_CONNECTIONS_START });
             axios
                 .get(`${familyConnectionsURL}/api/v1/cases/${pk}/relationships/`, {
                     headers: {
@@ -22,7 +22,7 @@ export const getCaseConnections = (pk) => dispatch => {
                     }
                 })
                 .then(res => {
-                    //console.log("Case data: " + JSON.stringify(res), null, 4);
+                    // console.log("Case data: " + JSON.stringify(res), null, 4);
                     dispatch({
                         type: GET_CASE_CONNECTIONS_SUCCESS,
                         payload: res.data.results
@@ -35,10 +35,10 @@ export const getCaseConnections = (pk) => dispatch => {
                         payload: err.response
                     });
                 });
-            })
-}; 
+        })
+};
 
-//to prevent data persistance during case switching
+// to prevent data persistance during case switching
 export const clearCaseConnections = () => dispatch => {
     dispatch({ type: CLEAR_CASE_CONNECTIONS })
 }

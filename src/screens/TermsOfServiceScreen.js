@@ -24,7 +24,7 @@ const TermsOfServiceScreen = props => {
                 <ScrollView>
                     <MainText style={styles.mainText}>
                         Interested in viewing our Terms of Service?
-                </MainText>
+                    </MainText>
                     <Text onPress={() => Linking.openURL('https://www.connectourkids.org/terms')}>Click HERE!</Text>
                 </ScrollView>
             </SafeAreaView>

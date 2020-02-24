@@ -39,13 +39,11 @@
 //         // console.log(res)
 //         return JSON.stringify(res)
 //     })
-// } 
+// }
 // export const challenge = getChallenge().then(res => {
 //     // console.log('challenge', res)
 //     return JSON.stringify(res)
 // })
-
-
 
 
 // // const getRandom = () => {
@@ -54,7 +52,7 @@
 // //         // console.log('getRandomStr', res)
 // //         return toString(res);
 // //     })
-    
+
 // // }
 // // // getRandom()
 

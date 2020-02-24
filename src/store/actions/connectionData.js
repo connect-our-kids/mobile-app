@@ -16,7 +16,7 @@ export const GET_DETAILS_SUCCESS = "GET_DETAILS_SUCCESS"
 export const GET_DETAILS_FAILURE = "GET_DOCUMENTS_FAILURE"
 
 export const SET_DETAILS = 'SET_DETAILS'
-//https://family-staging.connectourkids.org/api/v1/individualperson/?
+// https://family-staging.connectourkids.org/api/v1/individualperson/?
 
 // this action grabs the history of engagements between specific child and person
 
@@ -55,7 +55,7 @@ export const clearEngagements = () => dispatch => {
     dispatch({ type: CLEAR_ENGAGEMENTS })
 }
 
-//grab the documents for specific person
+// grab the documents for specific person
 
 export const getDocuments = (id) => dispatch => {
     SecureStore.getItemAsync('cok_access_token')
@@ -93,7 +93,7 @@ export const getDetails = (id) => dispatch => {
         .then((accessToken) => {
             dispatch({ type: GET_DETAILS_START });
             axios
-            .get(`${familyConnectionsURL}/api/v1/individualperson/?id=${id}`, { 
+                .get(`${familyConnectionsURL}/api/v1/individualperson/?id=${id}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
@@ -114,6 +114,6 @@ export const getDetails = (id) => dispatch => {
         })
 }
 
-export const setDetails =(bool) => dispatch =>{
-    dispatch({type:SET_DETAILS, payload:bool})
+export const setDetails = (bool) => dispatch => {
+    dispatch({ type: SET_DETAILS, payload: bool })
 }

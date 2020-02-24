@@ -9,24 +9,24 @@ const initialState = {
 
 export const confirmationModalReducer = (state = initialState, action) => {
     switch (action.type) {
-        case MODAL_VISIBLE:
-            return {
-                ...state,
-                modalVisible: action.payload,
-                searchMe: false
-            }
-        case GET_INFO:
-            return {
-                ...state,
-                info: action.payload.key,
-                queryType: action.payload.queryType,
-                searchMe: true
-            }
-        case STOP_SEARCH_ME:
-            return initialState
-        default:
-            return {
-                ...state
-            }
+    case MODAL_VISIBLE:
+        return {
+            ...state,
+            modalVisible: action.payload,
+            searchMe: false
+        }
+    case GET_INFO:
+        return {
+            ...state,
+            info: action.payload.key,
+            queryType: action.payload.queryType,
+            searchMe: true
+        }
+    case STOP_SEARCH_ME:
+        return initialState
+    default:
+        return {
+            ...state
+        }
     }
 }

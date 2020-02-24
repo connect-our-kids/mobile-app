@@ -17,7 +17,7 @@ const CustomDrawer = (props) => {
         // if (props.loadingUser) {
         props.authChecker()
         // }
-    }, [props.loadingUser])
+    }, [ props.loadingUser ])
 
     return (
         <Animated.View style={styles.container}>
@@ -25,31 +25,31 @@ const CustomDrawer = (props) => {
             <View style={styles.half}>
 
                 <TouchableOpacity
-                    style={[styles.linkBox, styles.withBorder]}
+                    style={[ styles.linkBox, styles.withBorder ]}
                     onPress={() => props.navigation.navigate('MyAccount')}
                 >
-                    <Text style={[styles.text]}>My Account</Text>
+                    <Text style={[ styles.text ]}>My Account</Text>
                     <Text style={styles.arrow}>❯</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.linkBox, styles.withBorder]}
+                    style={[ styles.linkBox, styles.withBorder ]}
                     onPress={() => props.navigation.navigate('About')}
                 >
-                    <Text style={[styles.text]}>About</Text>
+                    <Text style={[ styles.text ]}>About</Text>
                     <Text style={styles.arrow}>❯</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.linkBox, styles.withBorder]}
+                    style={[ styles.linkBox, styles.withBorder ]}
                     onPress={() => Linking.openURL('https://www.connectourkids.org/contact')}
                 >
-                    <Text style={[styles.text]}>Support</Text>
+                    <Text style={[ styles.text ]}>Support</Text>
                     <Text style={styles.arrow}>❯</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.linkBox, styles.withBorder]}
+                    style={[ styles.linkBox, styles.withBorder ]}
                     onPress={() => Linking.openURL('https://www.connectourkids.org/privacy')}
                 >
-                    <Text style={[styles.text]}>Privacy Policy</Text>
+                    <Text style={[ styles.text ]}>Privacy Policy</Text>
                     <Text style={styles.arrow}>❯</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -63,10 +63,10 @@ const CustomDrawer = (props) => {
                 <Divider style={styles.divider} />
             </View>
 
-            <View style={[styles.half, { justifyContent: "center", alignItems: "center" }]}>
+            <View style={[ styles.half, { justifyContent: "center", alignItems: "center" } ]}>
                 {/* // conditional based on whether user is logged in */}
-                {props.isLoggedIn && props.idToken ?
-                    <>
+                {props.isLoggedIn && props.idToken
+                    ? <>
 
 
                         <TouchableOpacity

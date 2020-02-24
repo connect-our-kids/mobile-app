@@ -34,8 +34,8 @@ export const getCaseData = (pk) => dispatch => {
                         payload: err.response
                     });
                 });
-            })
-}; 
+        })
+};
 
 export const clearCaseData = () => dispatch => {
     dispatch({ type: CLEAR_CASE_DATA })

@@ -10,13 +10,13 @@ import { connectionReducer as connection } from './connectionReducer';
 import { connectionEngagementsReducer as engagements } from './connectionEngagementsReducer';
 
 export default combineReducers({
-  auth,
-  people,
-  confirmationModal,
-  recentSearches,
-  userCases,
-  caseData,
-  caseConnections,
-  connection,
-  engagements,
+    auth,
+    people,
+    confirmationModal,
+    recentSearches,
+    userCases,
+    caseData,
+    caseConnections,
+    connection,
+    engagements,
 });

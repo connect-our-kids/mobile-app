@@ -39,5 +39,3 @@ export default connect(
 )(PrivacyPolicyScreen);
 
 
-
-

@@ -52,7 +52,7 @@ export const postConnectionEngagements = (id, note, subject, dataType, dueDate, 
 export const postConnectionDocument = (id, title, category, isPublic, notes, attachment) => dispatch => {
     const createFormBody = () => {
         const formBody = new FormData()
-        formBody.append("title", title ? title : "untitled");   // a title is required by the backend
+        formBody.append("title", title ? title : "untitled"); // a title is required by the backend
         formBody.append("category", category);
         formBody.append("tags", "[]");
         formBody.append("is_public", isPublic);
@@ -65,9 +65,9 @@ export const postConnectionDocument = (id, title, category, isPublic, notes, att
         });
         return formBody
     }
-    
+
     SecureStore.getItemAsync('cok_access_token')
-        .then((accessToken) => {          
+        .then((accessToken) => {
             dispatch({ type: POST_CONNECTION_DOCUMENT_START });
             axios
                 .post(`${familyConnectionsURL}/api/v1/documents/`, createFormBody(), {

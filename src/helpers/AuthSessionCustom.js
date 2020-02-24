@@ -8,7 +8,7 @@ let _authLock = false;
 async function startAsync(options) {
     const returnUrl = options.returnUrl || getDefaultReturnUrl();
     const authUrl = options.authUrl;
-    //const startUrl = getStartUrl(authUrl, returnUrl);
+    // const startUrl = getStartUrl(authUrl, returnUrl);
     const startUrl = authUrl;
 
     console.log('startUrl', startUrl);
@@ -121,4 +121,4 @@ export default {
     getDefaultReturnUrl,
     startAsync,
 };
-//# sourceMappingURL=AuthSession.js.map
+// # sourceMappingURL=AuthSession.js.map

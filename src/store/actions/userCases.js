@@ -13,29 +13,29 @@ const { familyConnectionsURL } = getEnvVars()
 
 export const getUserCases = () => dispatch => {
     SecureStore.getItemAsync('cok_access_token')
-    .then((accessToken) => {
-        dispatch({ type: GET_USER_CASES_START });
-        axios
-            .get(`${familyConnectionsURL}/api/v1/cases/?page=1&page_size=100&status=Open`, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            .then(res => {
-                dispatch({
-                    type: GET_USER_CASES_SUCCESS,
-                    payload: res.data,
+        .then((accessToken) => {
+            dispatch({ type: GET_USER_CASES_START });
+            axios
+                .get(`${familyConnectionsURL}/api/v1/cases/?page=1&page_size=100&status=Open`, {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                .then(res => {
+                    dispatch({
+                        type: GET_USER_CASES_SUCCESS,
+                        payload: res.data,
+                    });
+                })
+                .catch(error => {
+                    dispatch({
+                        type: GET_USER_CASES_FAILURE,
+                        payload: error.response.data,
+
+                    });
                 });
-            })
-            .catch(error => {
-                dispatch({
-                    type: GET_USER_CASES_FAILURE,
-                    payload: error.response.data,
-                    
-                });
-            }); 
-    })
+        })
 
 };
 

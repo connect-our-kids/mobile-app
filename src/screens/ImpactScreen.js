@@ -14,7 +14,7 @@ import NavigationButton from '../UI/NavigationButton';
 import ScreenContainer from '../UI/ScreenContainer';
 import authHelpers from '../helpers/authHelpers';
 
-//can this be renamed to about?
+// can this be renamed to about?
 class ImpactScreen extends Component {
     static navigationOptions = ({ navigation }) =>
         headerConfig('Best Practices', navigation);
