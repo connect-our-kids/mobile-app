@@ -1,5 +1,9 @@
 module.exports = {
 
+    /***********************************************************
+      common settings
+    ***********************************************************/
+
     'env': {
         'node': true,
         'es6': true,
@@ -8,8 +12,6 @@ module.exports = {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly',
     },
-
-    /**********************************************************/
 
     'plugins': [
         'import',
@@ -27,6 +29,7 @@ module.exports = {
         'plugin:react/recommended',
         /* 'plugin:react-native-a11y/recommended', */
     ],
+
     'parser': 'babel-eslint',
     'parserOptions': {
         'ecmaFeatures': {
@@ -35,27 +38,10 @@ module.exports = {
         'ecmaVersion': 2018,
         'sourceType': 'module',
     },
-    'overrides': [
-        {
-            'files': [ '*.ts', '*.tsx' ],
-            'extends': [
-                'plugin:@typescript-eslint/eslint-recommended',
-                'plugin:@typescript-eslint/recommended',
-            ],
-            'parser': '@typescript-eslint/parser',
-            'rules': {
 
-                /* scoping */
-
-                '@typescript-eslint/no-use-before-define': [
-                    'warn',
-                ],
-
-            }
-        },
-    ],
-
-    /**********************************************************/
+    /***********************************************************
+      commmon rules
+    ***********************************************************/
 
     'rules': {
 
@@ -290,5 +276,35 @@ module.exports = {
         ],
 
     },
+
+    /***********************************************************
+      overrides
+    ***********************************************************/
+
+    'overrides': [
+        {
+            'files': [ '*.ts', '*.tsx' ],
+
+            /* settings */
+
+            'extends': [
+                'plugin:@typescript-eslint/eslint-recommended',
+                'plugin:@typescript-eslint/recommended',
+            ],
+            'parser': '@typescript-eslint/parser',
+
+            /* rules */
+
+            'rules': {
+
+                /* scoping */
+
+                '@typescript-eslint/no-use-before-define': [
+                    'warn',
+                ],
+
+            }
+        },
+    ],
 
 };
