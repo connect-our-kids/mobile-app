@@ -54,9 +54,9 @@ module.exports = {
         'indent': [
             'error', 4,
         ],
-        'linebreak-style': [
-            'error', 'unix',
-        ],
+        // 'linebreak-style': [
+        //     'error', 'unix',
+        // ],
         'eol-last': [
             'error', 'always',
         ],
@@ -145,17 +145,20 @@ module.exports = {
 
         /* keywords & blocks */
 
+        'keyword-spacing': [
+            'error', { 'before': true, 'after': true },
+        ],
         'brace-style': [
             'error', 'stroustrup', { 'allowSingleLine': true },
         ],
         'curly': [
             'error', 'all',
         ],
-        'space-before-blocks': [
+        'block-spacing': [
             'error', 'always',
         ],
-        'keyword-spacing': [
-            'error', { 'before': true, 'after': true },
+        'space-before-blocks': [
+            'error', 'always',
         ],
 
         /* functions */

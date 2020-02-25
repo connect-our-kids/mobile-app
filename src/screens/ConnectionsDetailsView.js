@@ -130,7 +130,7 @@ export default function ConnectionsDetailsView({ details, id }) {
         else if (phoneNumberArr.length === 11) {
             return `${phoneNumberArr[0]}(${phoneNumberArr.slice(1, 4).join('')}) ${phoneNumberArr.slice(4, 7).join('')}-${phoneNumberArr.slice(7, 11).join('')}`;
         }
-        else {return phoneNumber}
+        else { return phoneNumber }
     };
     return (
         edit === false

@@ -82,7 +82,7 @@ const initialLogin = async () => {
         return;
     }
     // if user cancels login process, terminate method
-    else if (response.type === 'dismiss') {return}
+    else if (response.type === 'dismiss') { return }
     // assume success
 
     // SET THE TIME TOKEN EXPIRES IN EXPO SECURE STORE
