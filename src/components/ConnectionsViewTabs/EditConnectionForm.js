@@ -103,8 +103,8 @@ function EditConnectionForm(props) {
         setFormData((formData) => {
             let copy = { ...formData };
 
-            if ('index' in options) {copy[name][options.index][options.subname] = value}
-            else {copy[name] = value}
+            if ('index' in options) { copy[name][options.index][options.subname] = value }
+            else { copy[name] = value }
 
             return copy;
         });

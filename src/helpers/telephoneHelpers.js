@@ -23,11 +23,11 @@ export const format = (telephoneObject) => {
 
 export const selectPrimaryTelephone = (person) => {
 
-    if (person == null) {return null}
+    if (person == null) { return null }
 
-    if (person.telephones == null) {return null}
+    if (person.telephones == null) { return null }
 
-    if (person.telephones.length === 0) {return null}
+    if (person.telephones.length === 0) { return null }
 
     return person.telephones[0];
 
@@ -35,7 +35,7 @@ export const selectPrimaryTelephone = (person) => {
 
 export const numbersOnly = (telephoneObject) => {
 
-    if (telephoneObject == null) {return ''}
+    if (telephoneObject == null) { return '' }
 
     return telephoneObject.telephone.replace(/\D/g, '');
 
