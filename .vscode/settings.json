@@ -1,21 +1,48 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#382d06",
-        "activityBar.activeBorder": "#0c735d",
-        "activityBar.foreground": "#e7e7e7",
-        "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#0c735d",
-        "activityBarBadge.foreground": "#e7e7e7",
-        "titleBar.activeBackground": "#0a0801",
-        "titleBar.inactiveBackground": "#0a080199",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveForeground": "#e7e7e799",
-        "statusBar.background": "#0a0801",
-        "statusBarItem.hoverBackground": "#382d06",
-        "statusBar.foreground": "#e7e7e7"
-    },
-    "peacock.color": "#0a0801",
-    "cSpell.words": [
-        "individualperson"
-    ]
+  /***************************************
+    ESLint
+  ***************************************/
+
+  "eslint.enable": true,
+  // "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.codeAction.showDocumentation": {
+    "enable": true,
+  },
+  "eslint.codeAction.disableRuleComment": {
+    "enable": true,
+    "location": "separateLine",
+  },
+
+  /***************************************
+    Editor
+  ***************************************/
+
+  /* files */
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+
+  /* editing */
+  "editor.detectIndentation": true,
+
+  /* formatting */
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+  },
+  // "[javascript]": {
+  //   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  // },
+  // "[javascriptreact]": {
+  //   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  // },
+  // "[typescript]": {
+  //   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  // },
+  // "[typescriptreact]": {
+  //   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  // },
+
+  /**************************************/
 }

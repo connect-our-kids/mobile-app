@@ -14,7 +14,7 @@ import NavigationButton from '../UI/NavigationButton';
 import ScreenContainer from '../UI/ScreenContainer';
 import authHelpers from '../helpers/authHelpers';
 
-//can this be renamed to about?
+// can this be renamed to about?
 class ImpactScreen extends Component {
     static navigationOptions = ({ navigation }) =>
         headerConfig('Best Practices', navigation);
@@ -39,14 +39,14 @@ class ImpactScreen extends Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     return {
-        isLoggedIn
+        isLoggedIn,
     };
 };
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut }
+    { setUserCreds, logOut },
 )(ImpactScreen);

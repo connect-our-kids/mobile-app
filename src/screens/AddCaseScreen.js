@@ -1,4 +1,4 @@
-//Discontinued AddCaseScreen. Occasional errors referencing import semicolons. Not connected to axios
+// Discontinued AddCaseScreen. Occasional errors referencing import semicolons. Not connected to axios
 import React, { useState } from 'react';
 import {
     Text,
@@ -8,7 +8,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     TextInput,
-    Keyboard
+    Keyboard,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import constants from '../helpers/constants';
@@ -23,30 +23,30 @@ export default function AddCaseScreen(props) {
             borderRadius: 4,
             borderWidth: 1,
             borderColor: `${constants.highlightColor}`,
-            color: `${constants.highlightColor}`
+            color: `${constants.highlightColor}`,
         },
         text: {
-            alignContent: "center",
+            alignContent: 'center',
             marginVertical: 60,
             marginHorizontal: 30,
             fontSize: 80,
-            fontWeight: "bold",
-            paddingTop: -10
-        }
-    })
+            fontWeight: 'bold',
+            paddingTop: -10,
+        },
+    });
 
-    const [caseInput, setCaseInput] = useState({
+    const [ caseInput, setCaseInput ] = useState({
         first_name: '',
-        last_name: ''
-    })
+        last_name: '',
+    });
 
     function submitHandler() {
-        //axios call goes here
+        // axios call goes here
     }
 
-    //handle the changes to the form
+    // handle the changes to the form
     function handleChange(e) {
-        setCaseInput({ ...caseInput, [e.target.name]: e.target.value })
+        setCaseInput({ ...caseInput, [e.target.name]: e.target.value });
 
     }
 
@@ -55,8 +55,8 @@ export default function AddCaseScreen(props) {
             <View
                 style={{
                     marginVertical: 200,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
                 <Text>First Name</Text>
@@ -89,12 +89,12 @@ export default function AddCaseScreen(props) {
                 underlayColor="lightgray"
                 style={{ alignItems: 'center' }}
                 onPress={() => {
-                    props.setAddCaseModalVisible(false)
+                    props.setAddCaseModalVisible(false);
                 }}
             >
                 {/* close button */}
                 <Text style={styles.text, styles.selected}>Close</Text>
             </TouchableHighlight>
         </View>
-    )
+    );
 }

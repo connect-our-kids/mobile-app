@@ -10,56 +10,57 @@ const { eventTrackingURL } = getEnvVars();
 // urlIndex: 0
 // relationshipIndex: 0
 
-export const sendUserInfo = emailAddress => {
-  axios.post(eventTrackingURL, { emailAddress });
+export const sendUserInfo = (emailAddress) => {
+    axios.post(eventTrackingURL, { emailAddress });
 };
 
 export const sendEvent = (
-  emailAddress,
-  verb,
-  noun,
-  outcome = null,
-  options = null
+    emailAddress,
+    verb,
+    noun,
+    outcome = null,
+    options = null,
 ) => {
-  if (emailAddress === null) {
-    emailAddress = 'anonymous@unknown.org';
-  }
-  const bodyObject = {};
+    if (emailAddress === null) {
+        emailAddress = 'anonymous@unknown.org';
+    }
+    const bodyObject = {};
 
-  bodyObject['event'] = `${verb}-${noun}`;
+    bodyObject['event'] = `${verb}-${noun}`;
 
-  if (outcome !== null) {
-    bodyObject['event'] += `-${outcome}`;
-  }
+    if (outcome !== null) {
+        bodyObject['event'] += `-${outcome}`;
+    }
 
-  bodyObject['emailAddress'] = emailAddress;
+    bodyObject['emailAddress'] = emailAddress;
 
-  if (options !== null) {
-    bodyObject['options'] = options;
-  }
+    if (options !== null) {
+        bodyObject['options'] = options;
+    }
 
-  return axios
-    .post(eventTrackingURL, JSON.stringify(bodyObject))
-    .then(res => {
-      return res;
-    })
-    .catch(err => {
-      console.error('Event Tracking Error: ', err);
-      return err;
-    });
+    return axios
+        .post(eventTrackingURL, JSON.stringify(bodyObject))
+        .then((res) => {
+            return res;
+        })
+        .catch((err) => {
+            console.error('Event Tracking Error: ', err);
+            return err;
+        });
 };
 
 export const createOptions = (listLength, noun, index) => {
 
-  let options = {};
-  if (listLength === null) {
-    options[`${noun}Index`] = index;
-    
-    return options;
-  } else {
-    options.possibleMatches = listLength;
-    options.personMatch = listLength === 0;
-    
-    return options;
-  }
+    let options = {};
+    if (listLength === null) {
+        options[`${noun}Index`] = index;
+
+        return options;
+    }
+    else {
+        options.possibleMatches = listLength;
+        options.personMatch = listLength === 0;
+
+        return options;
+    }
 };

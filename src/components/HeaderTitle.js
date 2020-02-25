@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableWithoutFeedback
+    View,
+    Text,
+    Image,
+    Platform,
+    StyleSheet,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import logoImg from '../../assets/logo.png';
 // import constants from '../helpers/constants';
@@ -13,26 +13,26 @@ import { sendEvent } from '../helpers/createEvent';
 import { connect } from 'react-redux';
 
 const HeaderTitle = ({ title, navigation, email }) => (
-  // title should be the string of the components name
-  <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-    {/* on android the text renders left aligned and therefore we put the logo next to it, ios renders centered */}
-    {Platform.OS === 'android' ? (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          navigation.navigate('FamilyConnections');
-          sendEvent(email, 'click', 'logo');
-        }}
-      >
-        <Image
-          source={logoImg}
-          style={{ width: 225, height: 90 }}
-          resizeMode="contain"
-        />
-      </TouchableWithoutFeedback>
-    ) : null}
+    // title should be the string of the components name
+    <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+        {/* on android the text renders left aligned and therefore we put the logo next to it, ios renders centered */}
+        {Platform.OS === 'android' ? (
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    navigation.navigate('FamilyConnections');
+                    sendEvent(email, 'click', 'logo');
+                }}
+            >
+                <Image
+                    source={logoImg}
+                    style={{ width: 225, height: 90 }}
+                    resizeMode="contain"
+                />
+            </TouchableWithoutFeedback>
+        ) : null}
         {/* <Text style={styles.text}>{title}</Text>  */}
-        
-  </View>
+
+    </View>
 );
 
 // const styles = StyleSheet.create({
@@ -43,11 +43,11 @@ const HeaderTitle = ({ title, navigation, email }) => (
 //   }
 // });
 
-const mapStateToProps = state => {
-  return { email: state.auth.user ? state.auth.user.email : null };
+const mapStateToProps = (state) => {
+    return { email: state.auth.user ? state.auth.user.email : null };
 };
 
 export default connect(
-  mapStateToProps,
-  {}
+    mapStateToProps,
+    {},
 )(HeaderTitle);

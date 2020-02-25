@@ -1,30 +1,30 @@
 import * as SecureStore from 'expo-secure-store';
-import axios from 'axios'
-import getEnvVars from '../../../environment'
-export const POST_CONNECTION_ENGAGEMENTS_START = "POST_CONNECTION_ENGAGEMENTS_START";
-export const POST_CONNECTION_ENGAGEMENTS_SUCCESS = "POST_CONNECTION_ENGAGEMENTS_SUCCESS";
-export const POST_CONNECTION_ENGAGEMENTS_FAILURE = "POST_CONNECTION_ENGAGEMENTS_FAILURE";
-export const POST_CONNECTION_DOCUMENT_START = "POST_CONNECTION_DOCUMENT_START";
-export const POST_CONNECTION_DOCUMENT_SUCCESS = "POST_CONNECTION_DOCUMENT_SUCCESS";
-export const POST_CONNECTION_DOCUMENT_FAILURE = "POST_CONNECTION_DOCUMENT_FAILURE";
-export const CLEAR_CONNECTION_ENGAGEMENTS = "CLEAR_CONNECTION_ENGAGEMENTS";
+import axios from 'axios';
+import getEnvVars from '../../../environment';
+export const POST_CONNECTION_ENGAGEMENTS_START = 'POST_CONNECTION_ENGAGEMENTS_START';
+export const POST_CONNECTION_ENGAGEMENTS_SUCCESS = 'POST_CONNECTION_ENGAGEMENTS_SUCCESS';
+export const POST_CONNECTION_ENGAGEMENTS_FAILURE = 'POST_CONNECTION_ENGAGEMENTS_FAILURE';
+export const POST_CONNECTION_DOCUMENT_START = 'POST_CONNECTION_DOCUMENT_START';
+export const POST_CONNECTION_DOCUMENT_SUCCESS = 'POST_CONNECTION_DOCUMENT_SUCCESS';
+export const POST_CONNECTION_DOCUMENT_FAILURE = 'POST_CONNECTION_DOCUMENT_FAILURE';
+export const CLEAR_CONNECTION_ENGAGEMENTS = 'CLEAR_CONNECTION_ENGAGEMENTS';
 
 // this action grabs all the engagements for a specified connection
 
 // define familyConnectionsURL from environment for axios calls
-const { familyConnectionsURL } = getEnvVars()
+const { familyConnectionsURL } = getEnvVars();
 
-export const postConnectionEngagements = (id, note, subject, dataType, dueDate, isPublic) => dispatch => {
+export const postConnectionEngagements = (id, note, subject, dataType, dueDate, isPublic) => (dispatch) => {
     SecureStore.getItemAsync('cok_access_token')
         .then((accessToken) => {
             const body = {
-                subject: subject ? subject : "",
+                subject: subject ? subject : '',
                 notes: note,
                 data_type: dataType,
                 due_date: dueDate,
                 is_public: isPublic,
                 person: id,
-            }
+            };
             dispatch({ type: POST_CONNECTION_ENGAGEMENTS_START });
             axios
                 .post(`${familyConnectionsURL}/api/v1/person/${id}/histories/`, body, {
@@ -32,66 +32,66 @@ export const postConnectionEngagements = (id, note, subject, dataType, dueDate, 
                         Authorization: `Bearer ${accessToken}`,
                     },
                 })
-                .then(res => {
+                .then((res) => {
                     dispatch({
                         type: POST_CONNECTION_ENGAGEMENTS_SUCCESS,
                         payload: res.data,
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
 
                     dispatch({
                         type: POST_CONNECTION_ENGAGEMENTS_FAILURE,
-                        payload: error.data
+                        payload: error.data,
                     });
                 });
-        })
+        });
 
 };
 
-export const postConnectionDocument = (id, title, category, isPublic, notes, attachment) => dispatch => {
+export const postConnectionDocument = (id, title, category, isPublic, notes, attachment) => (dispatch) => {
     const createFormBody = () => {
-        const formBody = new FormData()
-        formBody.append("title", title ? title : "untitled");   // a title is required by the backend
-        formBody.append("category", category);
-        formBody.append("tags", "[]");
-        formBody.append("is_public", isPublic);
-        formBody.append("notes", notes);
-        formBody.append("person", id);
-        formBody.append("attachment", {
+        const formBody = new FormData();
+        formBody.append('title', title ? title : 'untitled'); // a title is required by the backend
+        formBody.append('category', category);
+        formBody.append('tags', '[]');
+        formBody.append('is_public', isPublic);
+        formBody.append('notes', notes);
+        formBody.append('person', id);
+        formBody.append('attachment', {
             uri: attachment,
             type: 'image/jpg',
             name: 'photo.jpg',
         });
-        return formBody
-    }
-    
+        return formBody;
+    };
+
     SecureStore.getItemAsync('cok_access_token')
-        .then((accessToken) => {          
+        .then((accessToken) => {
             dispatch({ type: POST_CONNECTION_DOCUMENT_START });
             axios
                 .post(`${familyConnectionsURL}/api/v1/documents/`, createFormBody(), {
                     headers: {
-                        Accept: 'application/json',
-                        "Content-Type": 'multipart/form-data',
-                        Authorization: `Bearer ${accessToken}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${accessToken}`,
                     },
                 })
-                .then(res => {
+                .then((res) => {
                     dispatch({
                         type: POST_CONNECTION_DOCUMENT_SUCCESS,
                         payload: res.data,
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                     dispatch({
                         type: POST_CONNECTION_DOCUMENT_FAILURE,
-                        payload: error
+                        payload: error,
                     });
                 });
-        })
-}
+        });
+};
 
-export const clearConnectionEngagements = () => dispatch => {
+export const clearConnectionEngagements = () => (dispatch) => {
     dispatch({ type: CLEAR_CONNECTION_ENGAGEMENTS });
-}
+};

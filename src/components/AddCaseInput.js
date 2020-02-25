@@ -4,7 +4,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableHighlight,
-    Alert
+    Alert,
 } from 'react-native';
 import {
     FormLabel,
@@ -16,16 +16,16 @@ export default function Input(props) {
     const styles = StyleSheet.create({
         root: {
             width: '90%',
-            alignSelf: 'center'
+            alignSelf: 'center',
         },
-    })
+    });
 
     _handleChange = (value) => {
-        this.props.onChange(this.props.name, value)
-    }
+        this.props.onChange(this.props.name, value);
+    };
     _handleTouch = (value) => {
-        this.props.onTouch(this.props.name, value)
-    }
+        this.props.onTouch(this.props.name, value);
+    };
 
     const { label, error, ...rest } = props;
     return (
