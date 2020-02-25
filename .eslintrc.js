@@ -54,9 +54,9 @@ module.exports = {
         'indent': [
             'error', 4,
         ],
-        'linebreak-style': [
-            'error', 'unix',
-        ],
+        // 'linebreak-style': [
+        //     'error', 'unix',
+        // ],
         'eol-last': [
             'error', 'always',
         ],

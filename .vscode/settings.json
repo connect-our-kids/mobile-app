@@ -19,7 +19,7 @@
   ***************************************/
 
   /* files */
-  "files.eol": "\n",
+  // "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
