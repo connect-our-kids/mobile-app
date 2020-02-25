@@ -43,6 +43,15 @@ module.exports = {
                 'plugin:@typescript-eslint/recommended',
             ],
             'parser': '@typescript-eslint/parser',
+            'rules': {
+
+                /* scoping */
+
+                '@typescript-eslint/no-use-before-define': [
+                    'warn',
+                ],
+
+            }
         },
     ],
 
@@ -243,9 +252,6 @@ module.exports = {
             'error',
         ],
         'no-use-before-define': [
-            'warn',
-        ],
-        '@typescript-eslint/no-use-before-define': [
             'warn',
         ],
 
