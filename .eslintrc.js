@@ -25,7 +25,7 @@ module.exports = {
         'plugin:import/warnings',
         /* 'plugin:jsx-a11y/recommended', */
         'plugin:react/recommended',
-    /* 'plugin:react-native-a11y/recommended', */
+        /* 'plugin:react-native-a11y/recommended', */
     ],
     'parser': 'babel-eslint',
     'parserOptions': {
@@ -51,8 +51,8 @@ module.exports = {
     'rules': {
 
         /***************************************
-      style
-    ***************************************/
+         style
+        ***************************************/
 
         /* general spacing */
 
@@ -250,8 +250,8 @@ module.exports = {
         ],
 
         /***************************************
-      react
-    ***************************************/
+         react
+        ***************************************/
 
         'react/display-name': [
             'warn',
@@ -264,8 +264,8 @@ module.exports = {
         ],
 
         /***************************************
-      react-native
-    ***************************************/
+         react-native
+        ***************************************/
 
         'react-native/no-unused-styles': [
             'warn',
