@@ -1,5 +1,5 @@
 # Workspace & local settings
-.vscode/*.json
+# .vscode/settings.json
 .expo/
 
 # Logs
