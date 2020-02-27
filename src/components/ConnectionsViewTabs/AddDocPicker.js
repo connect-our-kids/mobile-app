@@ -9,21 +9,22 @@ import {
 
 
 export default function AddDocPicker(props) {
+
     const [ file, setFile ] = useState({});
 
     async function pickFile() {
-        try {
-            const response = await DocumentPicker.getDocumentAsync({
+        DocumentPicker
+            .getDocumentAsync({
                 type: '*/*',
                 copyToCacheDirectory: false,
                 multiple: false,
+            })
+            .then ((re) => {
+                setFile(re);
+            })
+            .catch ((error) => {
+                console.error(error);
             });
-
-            setFile(response);
-        }
-        catch (err) {
-            console.log(err);
-        }
     }
 
     return (
@@ -45,6 +46,7 @@ export default function AddDocPicker(props) {
 
         </View>
     );
+
 }
 
 // class App extends Component {
