@@ -15,7 +15,7 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const AddImage = (props) => {
     const [ title, setTitle ] = useState('');
@@ -81,8 +81,8 @@ const AddImage = (props) => {
                             source={{ uri: attachment }}
                             style={styles.image}
                         />
-                        : <MaterialCommunityIcons
-                            name="image-plus"
+                        : <MaterialIcons
+                            name="photo-library"
                             size={75}
                             color={constants.highlightColor}
                             // onPress={() => {
@@ -102,8 +102,8 @@ const AddImage = (props) => {
                             source={{ uri: attachment }}
                             style={styles.image}
                         />
-                        : <MaterialCommunityIcons
-                            name="image-plus"
+                        : <MaterialIcons
+                            name="photo-camera"
                             size={75}
                             color={constants.highlightColor}
                             // onPress={() => {
