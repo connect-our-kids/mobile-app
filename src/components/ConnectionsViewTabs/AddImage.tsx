@@ -18,11 +18,11 @@ import Constants from 'expo-constants';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const AddImage = (props) => {
-    // const [ title, setTitle ] = useState('');
+    const [ title, setTitle ] = useState('');
     // const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     // const [ tags, setTags ] = useState([]);
     // const [ notes, setNotes ] = useState('');
-    // const [ attachment, setAttachment ] = useState(null);
+    const [ attachment, setAttachment ] = useState(null);
     // const [ isPublic, setIsPublic ] = useState(true);
 
     // set type of engagement
@@ -30,20 +30,22 @@ const AddImage = (props) => {
         getPermissionAsync();
     }, [ false ]);
 
+    // permissions for the camera && camera roll
     const getPermissionAsync = async () => {
-        if (Constants.platform.ios) {
-            const { status: string } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (Constants.platform.ios || Constants.platform.android) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL || Permissions.CAMERA);
             if (status !== 'granted') {
                 Alert.alert('Sorry, we need camera roll permissions to make this work!');
             }
         }
     };
 
+    //
     const _pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [ 4, 3 ],
+            allowsEditing: false,
+            // aspect: [ 4, 3 ],
             quality: 1,
         });
 
@@ -51,6 +53,18 @@ const AddImage = (props) => {
             setAttachment(result.uri);
         }
     };
+
+    // taking image function
+    const takeImage = async () =>{
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            quality: 1
+        });
+        if (!result.cancelled){
+            setAttachment(result.uri)
+        }
+    }
 
     return (
         <ScrollView
@@ -65,7 +79,27 @@ const AddImage = (props) => {
                     {attachment
                         ? <Image
                             source={{ uri: attachment }}
-                            alt={title}
+                            style={styles.image}
+                        />
+                        : <MaterialCommunityIcons
+                            name="image-plus"
+                            size={75}
+                            color={constants.highlightColor}
+                            // onPress={() => {
+                            //   props.closeForm()
+                            // }}
+                        />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.imageButton}
+                    onPress={() => {
+                        takeImage();
+                    }}
+                >
+                    {attachment
+                        ? <Image
+                            source={{ uri: attachment }}
                             style={styles.image}
                         />
                         : <MaterialCommunityIcons
