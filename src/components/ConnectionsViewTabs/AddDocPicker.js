@@ -1,56 +1,97 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
-import { StyleSheet,
+import {
+    StyleSheet,
     Text,
     TouchableOpacity,
-    View } from 'react-native';
+    View,
+} from 'react-native';
 
 
-export default class App extends Component {
+export default function AddDocPicker(props) {
+    const [ file, setFile ] = useState({});
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            singleFileOBJ: '',
-        };
-    }
-
-    async SingleFilePicker() {
+    async function pickFile() {
         try {
-            const res = await DocumentPicker.getDocumentAsync({
-                type: '*/* ',
+            const response = await DocumentPicker.getDocumentAsync({
+                type: '*/*',
                 copyToCacheDirectory: false,
                 multiple: false,
             });
 
-            this.setState({ singleFileOBJ: res });
-
+            setFile(response);
         }
         catch (err) {
             console.log(err);
         }
     }
 
-    render() {
-        return (
-            <View style={styles.MainContainer}>
+    return (
+        <View style={styles.MainContainer}>
 
-                <Text style={styles.text}>
-        File Name: {this.state.singleFileOBJ.name ? this.state.singleFileOBJ.name : ''}
+            <Text style={styles.text}>
+                File Name: {file.name ? file.name : ''}
+            </Text>
+
+            <TouchableOpacity
+                activeOpacity={0.5}
+                style={styles.button}
+                onPress={pickFile}
+            >
+                <Text style={styles.buttonText}>
+                    Click Here To Pick File
                 </Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity
-                    activeOpacity={0.5}
-                    style={styles.button}
-                    onPress={this.SingleFilePicker.bind(this)}>
-                    <Text style={styles.buttonText}>
-        Click Here To Pick File
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+        </View>
+    );
 }
+
+// class App extends Component {
+
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             singleFileOBJ: '',
+//         };
+//     }
+
+//     async SingleFilePicker() {
+//         try {
+//             const res = await DocumentPicker.getDocumentAsync({
+//                 type: '*/* ',
+//                 copyToCacheDirectory: false,
+//                 multiple: false,
+//             });
+
+//             this.setState({ singleFileOBJ: res });
+
+//         }
+//         catch (err) {
+//             console.log(err);
+//         }
+//     }
+
+//     render() {
+//         return (
+//             <View style={styles.MainContainer}>
+
+//                 <Text style={styles.text}>
+//         File Name: {this.state.singleFileOBJ.name ? this.state.singleFileOBJ.name : ''}
+//                 </Text>
+
+//                 <TouchableOpacity
+//                     activeOpacity={0.5}
+//                     style={styles.button}
+//                     onPress={this.SingleFilePicker.bind(this)}>
+//                     <Text style={styles.buttonText}>
+//         Click Here To Pick File
+//                     </Text>
+//                 </TouchableOpacity>
+//             </View>
+//         );
+//     }
+// }
 
 const styles = StyleSheet.create({
     MainContainer: {
