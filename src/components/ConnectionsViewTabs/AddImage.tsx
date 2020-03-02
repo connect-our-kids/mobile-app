@@ -55,16 +55,16 @@ const AddImage = (props) => {
     };
 
     // taking image function
-    const takeImage = async () =>{
+    const takeImage = async () => {
         const result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
-            quality: 1
+            quality: 1,
         });
-        if (!result.cancelled){
-            setAttachment(result.uri)
+        if (!result.cancelled) {
+            setAttachment(result.uri);
         }
-    }
+    };
 
     return (
         <ScrollView
