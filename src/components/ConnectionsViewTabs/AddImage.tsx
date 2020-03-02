@@ -52,6 +52,8 @@ const AddImage = (props) => {
         if (!result.cancelled) {
             setAttachment(result.uri);
         }
+
+        return;
     };
 
     // taking image function
@@ -61,9 +63,12 @@ const AddImage = (props) => {
             allowsEditing: false,
             quality: 1,
         });
+
         if (!result.cancelled) {
             setAttachment(result.uri);
         }
+
+        return;
     };
 
     return (
