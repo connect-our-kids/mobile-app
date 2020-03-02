@@ -13,7 +13,7 @@ import constants from '../../../helpers/constants';
 
 export default function AddDocumentButtonsGroup(props) {
 
-    const [ document, setDocuement ] = useState(null);
+    const [ document, setDocument ] = useState(null);
 
     function pickFile() {
         return;
