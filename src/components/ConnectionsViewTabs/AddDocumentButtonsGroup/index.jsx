@@ -28,7 +28,7 @@ export default function AddDocumentButtonsGroup(props) {
     return (
         <View>
             <Button
-                iconName={'file'}
+                iconName={'insert-drive-file'}
                 onPress={pickFile}
             />
             <Button
