@@ -6,7 +6,16 @@ import TakePhotoIcon from './TakePhotoIcon.jsx';
 
 export default function TakePhotoButton({ setDocument }) {
 
-    function takePhoto() {
+    async function takePhoto() {
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+        });
+
+        if (!result.cancelled) {
+            setDocument(result.uri);
+        }
+
         return;
     }
 
