@@ -10,14 +10,12 @@ import Constants from 'expo-constants';
 
 export default function TakePhotoButton({ setDocument }) {
 
+
     async function getPermissions() {
         let hasPermissions = false;
         if (Constants.platform.ios || Constants.platform.android) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL || Permissions.CAMERA);
             hasPermissions = status === 'granted';
-            if (!hasPermissions) {
-                Alert.alert('Sorry, we need camera roll permissions to make this work!');
-            }
         }
         return hasPermissions;
     }
@@ -35,8 +33,18 @@ export default function TakePhotoButton({ setDocument }) {
         return;
     }
 
+    async function onPress() {
+        const hasPermissions = await getPermissions();
+        if (hasPermissions) {
+            await takePhoto();
+        }
+        else {
+            Alert.alert('Sorry, we need camera roll permissions to make this work!');
+        }
+    }
+
     return (
-        <Button onPress={takePhoto}>
+        <Button onPress={onPress}>
             <TakePhotoIcon/>
         </Button>
     );
