@@ -315,7 +315,9 @@ function ConnectionsView(props) {
                                     }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <AddDocumentButtonsGroup />
+                                        <AddDocumentButtonsGroup onPress={() => {
+                                            props.navigation.navigate('DocumentForm', { id: connectionData.pk });
+                                        }}/>
 
                                     </View>
                                     <View style={{ width: '100%', maxHeight: '100%' }} >
