@@ -6,6 +6,7 @@ export default {
     devFamilyConnectionsInterestURL:
     'https://connect-our-kids.herokuapp.com/api/family_connections_interest',
     highlightColor: '#0279AC',
+    iconColor: '#ffffff',
     fontFamily: 'futura-light',
     headerFont: 'futura-medium',
     headerHeight: 55,
@@ -16,4 +17,3 @@ export default {
     familyConnectionsURI: 'https://www.youtube.com/embed/eMivJgf7RNA',
     peopleSearchURI: 'https://www.youtube.com/embed/36OwzSMHHk8',
 };
-

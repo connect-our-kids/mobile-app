@@ -1,6 +1,6 @@
 import constants from '../../../helpers/constants';
 
 export default {
-    color: constants.highlightColor,
-    size: 75,
+    color: constants.iconColor,
+    size: 50,
 };
