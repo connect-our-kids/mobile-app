@@ -4,7 +4,7 @@ import PickFileIcon from './PickFileIcon.jsx';
 
 /**********************************************************/
 
-export default function PickFileButton() {
+export default function PickFileButton({ setDocument }) {
 
     function pickFile() {
         return;

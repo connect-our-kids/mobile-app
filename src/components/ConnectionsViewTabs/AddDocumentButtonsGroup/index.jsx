@@ -12,9 +12,9 @@ export default function AddDocumentButtonsGroup(props) {
 
     return (
         <View>
-            <PickFileButton/>
-            <PickPhotoButton/>
-            <TakePhotoButton/>
+            <PickFileButton setDocument={setDocument} />
+            <PickPhotoButton setDocument={setDocument} />
+            <TakePhotoButton setDocument={setDocument} />
         </View>
     );
 }

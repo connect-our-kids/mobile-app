@@ -4,7 +4,7 @@ import TakePhotoIcon from './TakePhotoIcon.jsx';
 
 /**********************************************************/
 
-export default function TakePhotoButton() {
+export default function TakePhotoButton({ setDocument }) {
 
     function takePhoto() {
         return;

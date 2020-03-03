@@ -4,7 +4,7 @@ import PickPhotoIcon from './PickPhotoIcon.jsx';
 
 /**********************************************************/
 
-export default function PickPhotoButton() {
+export default function PickPhotoButton({ setDocument }) {
 
     function pickPhoto() {
         return;
