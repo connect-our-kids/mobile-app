@@ -6,16 +6,16 @@ import TakePhotoIcon from './TakePhotoIcon.jsx';
 
 export default function TakePhotoButton({ setDocument }) {
 
-
-   async function getPermissions(){
+    async function getPermissions() {
+        let hasPermissions = false;
         if (Constants.platform.ios || Constants.platform.android) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL || Permissions.CAMERA);
-            const hasPermission = status === 'granted';
-            if (!hasPermission) {
+            hasPermissions = status === 'granted';
+            if (!hasPermissions) {
                 Alert.alert('Sorry, we need camera roll permissions to make this work!');
             }
         }
-        return hasPermission;
+        return hasPermissions;
     }
 
     async function takePhoto() {
