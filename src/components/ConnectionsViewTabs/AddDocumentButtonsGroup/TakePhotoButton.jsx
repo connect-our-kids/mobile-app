@@ -1,6 +1,10 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import Button from './Button.jsx';
 import TakePhotoIcon from './TakePhotoIcon.jsx';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 /**********************************************************/
 
