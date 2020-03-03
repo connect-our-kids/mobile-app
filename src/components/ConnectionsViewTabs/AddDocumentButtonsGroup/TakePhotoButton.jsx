@@ -14,7 +14,7 @@ export default function TakePhotoButton({ setDocument }) {
     async function getPermissions() {
         let hasPermissions = false;
         if (Constants.platform.ios || Constants.platform.android) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL || Permissions.CAMERA);
+            const { status } = await Permissions.askAsync(Permissions.CAMERA);
             hasPermissions = status === 'granted';
         }
         return hasPermissions;
@@ -39,7 +39,7 @@ export default function TakePhotoButton({ setDocument }) {
             await takePhoto();
         }
         else {
-            Alert.alert('Sorry, we need camera roll permissions to make this work!');
+            Alert.alert('Sorry, we need camera permissions to make this work!');
         }
     }
 
