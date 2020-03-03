@@ -32,8 +32,18 @@ export default function PickPhotoButton({ setDocument }) {
         return;
     }
 
+    async function onPress() {
+        const hasPermissions = await getPermissions();
+        if (hasPermissions) {
+            await pickPhoto();
+        }
+        else {
+            Alert.alert('Sorry, we need camera roll permissions to make this work!');
+        }
+    }
+
     return (
-        <Button onPress={pickPhoto}>
+        <Button onPress={onPress}>
             <PickPhotoIcon/>
         </Button>
     );
