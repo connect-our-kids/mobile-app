@@ -11,7 +11,7 @@ export default function PickFileButton({ setDocument }) {
         DocumentPicker
             .getDocumentAsync({
                 /* MIME type */
-                type: '*/*',
+                type: 'application/*',
                 /* whether to cache file for other expo APIs to use */
                 copyToCacheDirectory: false,
                 /* whether to let user select multiple files */
