@@ -47,6 +47,7 @@ import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
 import EditConnectionsForm from '../components/ConnectionsViewTabs/EditConnectionForm';
 import { Row } from 'native-base';
+import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup';
 
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
@@ -66,102 +67,8 @@ function ConnectionsView(props) {
         props.getDetails(props.navigation.getParam('connectionData').person.pk);
     }, [ props.isLoadingDocs, props.isLoadingEngagements ]);
 
-    const styles = StyleSheet.create({
-        tabs: {
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderBottomWidth: 1,
-            borderTopRightRadius: 4,
-            borderBottomColor: '#EBEBEB',
-        },
 
-        engagementTab: {
-            width: '33.3%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 36,
-            fontSize: 17.5,
-            textAlign: 'center',
-        },
-
-        documentsTab: {
-            width: '33.3%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 36,
-            fontSize: 17.5,
-            textAlign: 'center',
-        },
-        detailsTab: {
-            width: '33.3%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 36,
-            fontSize: 17.5,
-            textAlign: 'center',
-        },
-        thatBlue: {
-            color: constants.highlightColor,
-        },
-
-        engagementSelected: {
-            color: 'orange',
-            borderBottomWidth: 3,
-            borderBottomColor: constants.highlightColor,
-            overflow: 'hidden',
-        },
-
-        documentsSelected: {
-            color: constants.highlightColor,
-            borderBottomWidth: 3,
-            borderBottomColor: constants.highlightColor,
-            overflow: 'hidden',
-        },
-        detailsSelected: {
-            color: constants.highlightColor,
-            borderBottomWidth: 3,
-            borderBottomColor: constants.highlightColor,
-            overflow: 'hidden',
-        },
-
-        iconLabelContainer: {
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
-        },
-
-        iconContainer: {
-            height: 45,
-            width: 45,
-            borderRadius: 22.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-
-        iconStyles: {
-            fontSize: 28,
-            color: constants.highlightColor,
-            width: 28,
-            height: 28,
-            marginHorizontal: 10,
-        },
-
-        iconLabel: {
-            color: '#0F6580',
-            fontSize: 12,
-        },
-        avatarName: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: '10%',
-            paddingTop: '5%',
-        },
-    });
-
-    const leftArrow: string = '\u2190';
+    // const leftArrow = '\u2190';
 
     const engagementsNoDocuments: object[] = props.engagements.filter((engagement) => engagement.data_type !== 'D');
 
@@ -408,23 +315,8 @@ function ConnectionsView(props) {
                                     }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                props.navigation.navigate('DocumentForm', { id: connectionData.pk });
-                                            }}
-                                            style={{
-                                                width: 162,
-                                                height: 40,
-                                                backgroundColor: constants.highlightColor,
-                                                borderRadius: 4,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                marginTop: 18,
-                                                marginBottom: 10,
-                                            }}
-                                        >
-                                            <Text style={{ color: '#FFFFFF', fontSize: 18 }}>Add Document</Text>
-                                        </TouchableOpacity>
+                                        <AddDocumentButtonsGroup />
+
                                     </View>
                                     <View style={{ width: '100%', maxHeight: '100%' }} >
                                         {props.isLoadingDocs ? <Loader />
@@ -490,3 +382,98 @@ export default connect(
         getCaseConnections,
     },
 )(ConnectionsView);
+
+const styles = StyleSheet.create({
+    tabs: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderTopRightRadius: 4,
+        borderBottomColor: '#EBEBEB',
+    },
+
+    engagementTab: {
+        width: '33.3%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 36,
+        fontSize: 17.5,
+        textAlign: 'center',
+    },
+
+    documentsTab: {
+        width: '33.3%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 36,
+        fontSize: 17.5,
+        textAlign: 'center',
+    },
+    detailsTab: {
+        width: '33.3%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 36,
+        fontSize: 17.5,
+        textAlign: 'center',
+    },
+    thatBlue: {
+        color: constants.highlightColor,
+    },
+
+    engagementSelected: {
+        color: 'orange',
+        borderBottomWidth: 3,
+        borderBottomColor: constants.highlightColor,
+        overflow: 'hidden',
+    },
+
+    documentsSelected: {
+        color: constants.highlightColor,
+        borderBottomWidth: 3,
+        borderBottomColor: constants.highlightColor,
+        overflow: 'hidden',
+    },
+    detailsSelected: {
+        color: constants.highlightColor,
+        borderBottomWidth: 3,
+        borderBottomColor: constants.highlightColor,
+        overflow: 'hidden',
+    },
+
+    iconLabelContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+
+    iconContainer: {
+        height: 45,
+        width: 45,
+        borderRadius: 22.5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    iconStyles: {
+        fontSize: 28,
+        color: constants.highlightColor,
+        width: 28,
+        height: 28,
+        marginHorizontal: 10,
+    },
+
+    iconLabel: {
+        color: '#0F6580',
+        fontSize: 12,
+    },
+    avatarName: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: '10%',
+        paddingTop: '5%',
+    },
+});
