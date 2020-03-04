@@ -12,7 +12,7 @@ import {
     Picker,
 } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { getEngagements } from '../../store/actions/connectionData';
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
 import RNPickerSelect from 'react-native-picker-select';
 
 const AddDocForm = (props) => {
@@ -282,6 +282,7 @@ const AddDocForm = (props) => {
                                         props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
                                         props.navigation.goBack();
                                     }}
+                                    // Needs to pass file URI as attachment above
                                 >
                                     <Text style={styles.buttonText}>SAVE</Text>
                                 </TouchableOpacity>
