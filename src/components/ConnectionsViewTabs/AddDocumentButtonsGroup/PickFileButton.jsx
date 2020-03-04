@@ -5,7 +5,7 @@ import * as DocumentPicker from 'expo-document-picker';
 
 /**********************************************************/
 
-export default function PickFileButton({ setDocument }) {
+export default function PickFileButton({ afterAccept }) {
 
     function pickFile() {
         DocumentPicker
@@ -18,7 +18,9 @@ export default function PickFileButton({ setDocument }) {
                 multiple: false,
             })
             .then ((re) => {
-                setDocument(re);
+                if (re.type === 'success') {
+                    afterAccept(re.uri);
+                }
             })
             .catch ((error) => {
                 console.error('--- There was a problem selecting a file. ---');
