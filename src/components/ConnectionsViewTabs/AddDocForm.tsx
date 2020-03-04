@@ -12,7 +12,7 @@ import {
     Picker,
 } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { getEngagements } from '../../store/actions/connectionData';
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
 import RNPickerSelect from 'react-native-picker-select';
 
 const AddDocForm = (props) => {
@@ -199,36 +199,6 @@ const AddDocForm = (props) => {
                             enablesReturnKeyAutomatically
                         />
                     </View>
-                    <View style={{ width: '95%' }}>
-                        <TouchableOpacity
-                            style={{ width: '50%' }}
-                            onPress={() => {
-                                _pickImage();
-                            }}
-                        >
-                            <Text style={{ fontSize: 15 }}>SELECT AN IMAGE</Text>
-                            {attachment
-                                ? <Image
-                                    source={{ uri: attachment }}
-                                    alt={title}
-                                    style={{
-                                        width: 125,
-                                        height: 125,
-                                        marginBottom: 4,
-                                        marginTop: 4,
-                                    }}
-                                />
-                                : <MaterialCommunityIcons
-                                    name="image-plus"
-                                    size={75}
-                                    color={constants.highlightColor}
-                                    // onPress={() => {
-                                    //   props.closeForm()
-                                    // }}
-                                />
-                            }
-                        </TouchableOpacity>
-                    </View>
                     <View
                         style={{
                             width: '95%',
@@ -237,7 +207,8 @@ const AddDocForm = (props) => {
                             alignItems: 'flex-start',
                         }}
                     >
-                        <View
+                        {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
+                        {/* <View
                             style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -273,13 +244,13 @@ const AddDocForm = (props) => {
                                     onPress={() => setIsPublic(!isPublic)}
                                 />
                             </View>
-                        </View>
+                        </View> */}
                         <View style={{ width: '100%' }}>
                             <View style={{ width: '100%', alignItems: 'flex-end', marginTop: 20 }}>
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
-                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, props.navigation.getParam('uri'));
                                         props.navigation.goBack();
                                     }}
                                 >
