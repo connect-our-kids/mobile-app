@@ -7,15 +7,15 @@ import styles from './styles.js';
 
 /**********************************************************/
 
-export default function AddDocumentButtonsGroup(props) {
+export default function AddDocumentButtonsGroup({ afterAccept }) {
 
     const [ document, setDocument ] = useState(null);
 
     return (
         <View style={styles.buttonsGroup}>
-            <PickFileButton setDocument={setDocument} />
-            <PickPhotoButton setDocument={setDocument} />
-            <TakePhotoButton setDocument={setDocument} />
+            <PickFileButton setDocument={setDocument} afterAccept={afterAccept}/>
+            <PickPhotoButton setDocument={setDocument} afterAccept={afterAccept}/>
+            <TakePhotoButton setDocument={setDocument} afterAccept={afterAccept}/>
         </View>
     );
 }
