@@ -279,10 +279,9 @@ const AddDocForm = (props) => {
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
-                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, props.navigation.getParam('uri'));
                                         props.navigation.goBack();
                                     }}
-                                    // Needs to pass file URI as attachment above
                                 >
                                     <Text style={styles.buttonText}>SAVE</Text>
                                 </TouchableOpacity>
