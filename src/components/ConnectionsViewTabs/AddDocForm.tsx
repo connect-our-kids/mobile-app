@@ -199,36 +199,6 @@ const AddDocForm = (props) => {
                             enablesReturnKeyAutomatically
                         />
                     </View>
-                    <View style={{ width: '95%' }}>
-                        <TouchableOpacity
-                            style={{ width: '50%' }}
-                            onPress={() => {
-                                _pickImage();
-                            }}
-                        >
-                            <Text style={{ fontSize: 15 }}>SELECT AN IMAGE</Text>
-                            {attachment
-                                ? <Image
-                                    source={{ uri: attachment }}
-                                    alt={title}
-                                    style={{
-                                        width: 125,
-                                        height: 125,
-                                        marginBottom: 4,
-                                        marginTop: 4,
-                                    }}
-                                />
-                                : <MaterialCommunityIcons
-                                    name="image-plus"
-                                    size={75}
-                                    color={constants.highlightColor}
-                                    // onPress={() => {
-                                    //   props.closeForm()
-                                    // }}
-                                />
-                            }
-                        </TouchableOpacity>
-                    </View>
                     <View
                         style={{
                             width: '95%',
