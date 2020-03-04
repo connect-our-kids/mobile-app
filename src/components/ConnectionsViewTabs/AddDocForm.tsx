@@ -237,7 +237,8 @@ const AddDocForm = (props) => {
                             alignItems: 'flex-start',
                         }}
                     >
-                        <View
+                        {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
+                        {/* <View
                             style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -273,7 +274,7 @@ const AddDocForm = (props) => {
                                     onPress={() => setIsPublic(!isPublic)}
                                 />
                             </View>
-                        </View>
+                        </View> */}
                         <View style={{ width: '100%' }}>
                             <View style={{ width: '100%', alignItems: 'flex-end', marginTop: 20 }}>
                                 <TouchableOpacity
