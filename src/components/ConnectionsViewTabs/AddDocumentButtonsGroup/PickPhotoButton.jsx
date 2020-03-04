@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 
 /**********************************************************/
 
-export default function PickPhotoButton({ setDocument }) {
+export default function PickPhotoButton({ afterAccept }) {
 
     async function getPermissions() {
         let hasPermissions = false;
@@ -26,7 +26,7 @@ export default function PickPhotoButton({ setDocument }) {
         });
 
         if (!result.cancelled) {
-            setDocument(result.uri);
+            afterAccept(result.uri);
         }
 
         return;
