@@ -58,11 +58,7 @@ export const postConnectionDocument = (id, title, category, isPublic, notes, att
         formBody.append('is_public', isPublic);
         formBody.append('notes', notes);
         formBody.append('person', id);
-        formBody.append('attachment', {
-            uri: attachment,
-            type: 'image/jpg',
-            name: 'photo.jpg',
-        });
+        formBody.append('attachment', attachment);
         return formBody;
     };
 

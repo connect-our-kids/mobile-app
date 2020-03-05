@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    Alert,
 } from 'react-native';
 // import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
@@ -13,7 +14,7 @@ import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
 import RNPickerSelect from 'react-native-picker-select';
-import FileType from 'file-type';
+import mime from 'mime';
 
 const AddDocForm = (props) => {
     const [ title, setTitle ] = useState('');
@@ -21,32 +22,26 @@ const AddDocForm = (props) => {
     const [ notes, setNotes ] = useState('');
     const [ isPublic, setIsPublic ] = useState(true);
 
-    const [ attachmentInfo, setAttachmentInfo ] = useState({
-        mime: '',
-        ext: '',
-    });
-    const [ attachment, setAttachement ] = useState({
-        uri: props.navigation.getParam('uri'),
-    });
+    const [ attachment, setAttachment ] = useState(() => {
 
-    // Fetch attachment info
-    FileType.fromFile(attachment.uri)
-        .then((res) => {
-            console.log(res);
-            setAttachmentInfo(res);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        const attachmentUri = props.navigation.getParam('uri');
+        const attachmentType = String(mime.getType(attachmentUri));
+        const attachmentExt = String(mime.getExtension(attachmentType));
+        const attachmentName = `attachment.${attachmentExt}`;
 
-    // Update attachment after info fetched
-    useEffect(() => {
-        setAttachement((attachment) => ({
-            ...attachment,
-            name: `attachment.${attachmentInfo.ext}`,
-            type: attachmentInfo.mime,
-        }));
-    }, [ attachmentInfo ]);
+        const attachment = {
+            uri: attachmentUri,
+            name: attachmentName,
+            ext: attachmentExt,
+            type: attachmentType,
+        };
+
+        Alert.alert ('Attachment Info', JSON.stringify(attachment));
+        console.log (attachment);
+
+        return attachment;
+
+    });
 
     return (
         <ScrollView
@@ -240,7 +235,7 @@ const AddDocForm = (props) => {
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
-                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, props.navigation.getParam('uri'));
+                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
                                         props.navigation.goBack();
                                     }}
                                 >
