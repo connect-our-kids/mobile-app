@@ -1,62 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import {
-    Button,
-    Image,
     Text,
     ScrollView,
     View,
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Alert,
-    Picker,
 } from 'react-native';
-import SwitchToggle from 'react-native-switch-toggle';
-import { Feather, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+// import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-
 import RNPickerSelect from 'react-native-picker-select';
 
 const AddDocForm = (props) => {
     const [ title, setTitle ] = useState('');
     const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
-    const [ tags, setTags ] = useState([]);
     const [ notes, setNotes ] = useState('');
-    const [ attachment, setAttachment ] = useState(null);
     const [ isPublic, setIsPublic ] = useState(true);
-
-    // set type of engagement
-    useEffect(() => {
-        getPermissionAsync();
-    }, [ false ]);
-
-    const getPermissionAsync = async () => {
-        if (Constants.platform.ios) {
-            const { status: string } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-            if (status !== 'granted') {
-                Alert.alert('Sorry, we need camera roll permissions to make this work!');
-            }
-        }
-    };
-
-    const _pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [ 4, 3 ],
-            quality: 1,
-        });
-
-        if (!result.cancelled) {
-            setAttachment(result.uri);
-        }
-    };
 
     return (
         <ScrollView
