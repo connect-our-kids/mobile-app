@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Text,
     ScrollView,
@@ -13,12 +13,40 @@ import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
 import RNPickerSelect from 'react-native-picker-select';
+import FileType from 'file-type';
 
 const AddDocForm = (props) => {
     const [ title, setTitle ] = useState('');
     const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     const [ notes, setNotes ] = useState('');
     const [ isPublic, setIsPublic ] = useState(true);
+
+    const [ attachmentInfo, setAttachmentInfo ] = useState({
+        mime: '',
+        ext: '',
+    });
+    const [ attachment, setAttachement ] = useState({
+        uri: props.navigation.getParam('uri'),
+    });
+
+    // Fetch attachment info
+    FileType.fromFile(attachment.uri)
+        .then((res) => {
+            console.log(res);
+            setAttachmentInfo(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // Update attachment after info fetched
+    useEffect(() => {
+        setAttachement((attachment) => ({
+            ...attachment,
+            name: `attachment.${attachmentInfo.ext}`,
+            type: attachmentInfo.mime,
+        }));
+    }, [ attachmentInfo ]);
 
     return (
         <ScrollView
