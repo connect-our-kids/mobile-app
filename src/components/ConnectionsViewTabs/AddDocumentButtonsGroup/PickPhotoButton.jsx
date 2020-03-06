@@ -20,13 +20,31 @@ export default function PickPhotoButton({ afterAccept }) {
     }
 
     async function pickPhoto() {
-        const result = await ImagePicker.launchImageLibraryAsync({
+        const media = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
         });
 
-        if (!result.cancelled) {
-            afterAccept(result.uri);
+        /*
+        typeof media = {
+            cancelled  : boolean,
+            uri        : string,
+            type       : 'image' | 'video'
+            width      : number,
+            height     : number,
+            base64    ?: boolean,
+            exif      ?: object,
+        }
+        */
+
+        if (!media.cancelled) {
+            afterAccept({
+                type: media.type,
+                uri: media.uri,
+                name: (media.uri).replace(/^.*[\\/]/, ''),
+                width: media.width,
+                height: media.height,
+            });
         }
 
         return;

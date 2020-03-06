@@ -24,19 +24,25 @@ const AddDocForm = (props) => {
 
     const [ attachment, setAttachment ] = useState(() => {
 
-        const attachmentUri = props.navigation.getParam('uri');
-        const attachmentType = String(mime.getType(attachmentUri));
-        const attachmentExt = String(mime.getExtension(attachmentType));
-        const attachmentName = `attachment.${attachmentExt}`;
+        const media = props.navigation.getParam('media');
 
-        const attachment = {
-            uri: attachmentUri,
-            name: attachmentName,
-            ext: attachmentExt,
-            type: attachmentType,
-        };
+        /* construct the attachment */
+        const attachment = { uri: '', name: '', ext: '', type: '' };
 
-        Alert.alert ('Attachment Info', JSON.stringify(attachment));
+        /* get _actual_ location on device */
+        attachment.uri = media.uri;
+
+        /* infer MIME type from _original_ file name */
+        attachment.type = String(mime.getType(media.name));
+
+        /* get canonical file extension from MIME type */
+        attachment.ext = String(mime.getExtension(attachment.type));
+
+        /* write generic attachment name */
+        attachment.name = `attachment.${attachment.ext}`;
+
+        /* DEV ONLY */
+        // Alert.alert ('Attachment Info', JSON.stringify({ media, attachment }, null, '  '));
         console.log (attachment);
 
         return attachment;

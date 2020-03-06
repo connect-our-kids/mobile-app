@@ -308,15 +308,11 @@ function ConnectionsView(props) {
                         {
                             tabs.docs
                                 ? <View
-                                    style={{
-                                        minHeight: 350,
-
-                                        width: '100%',
-                                    }}
+                                    style={{ minHeight: 350, width: '100%' }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <AddDocumentButtonsGroup afterAccept={(uri) => {
-                                            props.navigation.navigate('DocumentForm', { id: connectionData.pk, uri });
+                                        <AddDocumentButtonsGroup afterAccept={(media) => {
+                                            props.navigation.navigate('DocumentForm', { id: connectionData.pk, media });
                                         }}/>
 
                                     </View>
@@ -335,11 +331,7 @@ function ConnectionsView(props) {
                         {
                             tabs.details
                                 ? <View
-                                    style={{
-                                        minHeight: 350,
-
-                                        width: '100%',
-                                    }}
+                                    style={{ minHeight: 350, width: '100%' }}
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         {props.isLoadingDetails ? <Loader />

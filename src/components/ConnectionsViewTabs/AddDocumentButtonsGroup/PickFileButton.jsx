@@ -17,10 +17,26 @@ export default function PickFileButton({ afterAccept }) {
                 /* whether to let user select multiple files */
                 multiple: false,
             })
-            .then ((re) => {
-                if (re.type === 'success') {
-                    afterAccept(re.uri);
+            .then ((media) => {
+
+                /*
+                typeof media = {
+                    type  : 'success' | 'cancel'
+                    uri   : string,
+                    name  : string,
+                    size  : number,
                 }
+                */
+
+                if (media.type === 'success') {
+                    afterAccept({
+                        type: 'file',
+                        uri: media.uri,
+                        name: media.name,
+                        size: media.size,
+                    });
+                }
+
             })
             .catch ((error) => {
                 console.error('--- There was a problem selecting a file. ---');

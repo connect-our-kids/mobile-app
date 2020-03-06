@@ -21,13 +21,31 @@ export default function TakePhotoButton({ afterAccept }) {
     }
 
     async function takePhoto() {
-        const result = await ImagePicker.launchCameraAsync({
+        const media = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
         });
 
-        if (!result.cancelled) {
-            afterAccept(result.uri);
+        /*
+        typeof media = {
+            cancelled  : boolean,
+            uri        : string,
+            type       : 'image' | 'video'
+            width      : number,
+            height     : number,
+            base64    ?: boolean,
+            exif      ?: object,
+        }
+        */
+
+        if (!media.cancelled) {
+            afterAccept({
+                type: media.type,
+                uri: media.uri,
+                name: (media.uri).replace(/^.*[\\/]/, ''),
+                width: media.width,
+                height: media.height,
+            });
         }
 
         return;
