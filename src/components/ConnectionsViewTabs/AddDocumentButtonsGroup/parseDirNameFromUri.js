@@ -1,4 +1,4 @@
-import URI from 'uri-js';
+import * as URI from 'uri-js';
 import parseDirNameFromPath from './parseDirNameFromPath';
 
 /**********************************************************/
