@@ -2,7 +2,7 @@ import React from 'react';
 import Button from './Button.jsx';
 import PickFileIcon from './PickFileIcon.jsx';
 import * as DocumentPicker from 'expo-document-picker';
-import convertFileToAttachment from './convertFileToAttachment';
+import convertFileToMedia from './convertFileToMedia';
 
 /**********************************************************/
 
@@ -18,10 +18,10 @@ export default function PickFileButton({ afterAccept }) {
                 /* whether to let user select multiple files */
                 multiple: false,
             })
-            .then ((media) => {
+            .then ((file) => {
 
-                if (media.type === 'success') {
-                    afterAccept(convertFileToAttachment(media));
+                if (file.type === 'success') {
+                    afterAccept(convertFileToMedia(file));
                 }
 
             })

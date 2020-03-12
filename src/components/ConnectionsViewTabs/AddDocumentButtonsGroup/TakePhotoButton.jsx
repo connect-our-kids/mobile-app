@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
 import Button from './Button.jsx';
 import TakePhotoIcon from './TakePhotoIcon.jsx';
-import convertPhotoToAttachment from './convertPhotoToAttachment';
+import convertPhotoToMedia from './convertPhotoToMedia';
 
 /**********************************************************/
 
@@ -27,13 +27,13 @@ export default function TakePhotoButton({ afterAccept }) {
 
     async function takePhoto() {
 
-        const media = await ImagePicker.launchCameraAsync({
+        const photo = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
         });
 
-        if (!media.cancelled) {
-            afterAccept(convertPhotoToAttachment(media));
+        if (!photo.cancelled) {
+            afterAccept(convertPhotoToMedia(photo));
         }
 
         return;

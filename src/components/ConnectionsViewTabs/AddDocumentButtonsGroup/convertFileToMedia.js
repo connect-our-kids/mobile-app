@@ -2,10 +2,10 @@ import parseBaseNameFromUri from './parseBaseNameFromUri';
 
 /**********************************************************/
 
-export default function convertFileToAttachment(media) {
+export default function convertFileToMedia(file) {
 
     /*
-    typeof media = {
+    typeof file = {
         type  : 'success' | 'cancel'
         uri   : string,
         name  : string,
@@ -15,9 +15,9 @@ export default function convertFileToAttachment(media) {
 
     return {
         type: 'file',
-        uri: media.uri,
-        name: parseBaseNameFromUri(media.name), // ... as a precaution
-        size: media.size,
+        uri: file.uri,
+        name: parseBaseNameFromUri(file.name), // ... as a precaution
+        size: file.size,
     };
 
 }

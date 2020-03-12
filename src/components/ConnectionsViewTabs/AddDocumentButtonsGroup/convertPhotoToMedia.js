@@ -2,10 +2,10 @@ import parseBaseNameFromUri from './parseBaseNameFromUri';
 
 /**********************************************************/
 
-export default function convertPhotoToAttachment(media) {
+export default function convertPhotoToMedia(photo) {
 
     /*
-    typeof media = {
+    typeof photo = {
         cancelled  : boolean,
         uri        : string,
         type       : 'image' | 'video'
@@ -17,11 +17,11 @@ export default function convertPhotoToAttachment(media) {
     */
 
     return {
-        type: media.type,
-        uri: media.uri,
-        name: parseBaseNameFromUri(media.uri),
-        width: media.width,
-        height: media.height,
+        type: photo.type,
+        uri: photo.uri,
+        name: parseBaseNameFromUri(photo.uri),
+        width: photo.width,
+        height: photo.height,
     };
 
 }

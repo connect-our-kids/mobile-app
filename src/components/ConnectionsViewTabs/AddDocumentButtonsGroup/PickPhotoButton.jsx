@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
 import Button from './Button.jsx';
 import PickPhotoIcon from './PickPhotoIcon.jsx';
-import convertPhotoToAttachment from './convertPhotoToAttachment';
+import convertPhotoToMedia from './convertPhotoToMedia';
 
 /**********************************************************/
 
@@ -26,13 +26,13 @@ export default function PickPhotoButton({ afterAccept }) {
 
     async function pickPhoto() {
 
-        const media = await ImagePicker.launchImageLibraryAsync({
+        const photo = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
         });
 
-        if (!media.cancelled) {
-            afterAccept(convertPhotoToAttachment(media));
+        if (!photo.cancelled) {
+            afterAccept(convertPhotoToMedia(photo));
         }
 
         return;
