@@ -1,4 +1,4 @@
-import parseBaseNameFromPath from './parseBaseNameFromPath';
+import parseBaseNameFromUri from './parseBaseNameFromUri';
 
 /**********************************************************/
 
@@ -19,7 +19,7 @@ export default function convertPhotoToAttachment(media) {
     return {
         type: media.type,
         uri: media.uri,
-        name: parseBaseNameFromPath(media.uri),
+        name: parseBaseNameFromUri(media.uri),
         width: media.width,
         height: media.height,
     };
