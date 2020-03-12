@@ -5,7 +5,7 @@ import parseBaseNameFromPath from './parseBaseNameFromPath';
 
 export default function parseBaseNameFromUri(uri) {
 
-    // take 'path' from URI, removing 'scheme', 'host', 'query', 'fragment'
+    /* take 'path' from URI, removing 'scheme', 'host', 'query', 'fragment' */
     const path = URI.parse(uri).path;
 
     return parseBaseNameFromPath(path);
