@@ -10,7 +10,7 @@ export default function FileIcon({
 }) {
     return (
         <MaterialCommunityIcons
-            name={'file-outline'}
+            name={'file-document-box-outline'}
             size={size}
             color={color}
         />
