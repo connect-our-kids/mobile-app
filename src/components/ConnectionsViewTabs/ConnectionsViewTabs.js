@@ -17,7 +17,8 @@ import {
     Linking,
 } from 'react-native';
 import { ListItem, Button, Avatar } from 'react-native-elements';
-import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import getAttachmentIcon from './Attachment/getAttachmentIcon.jsx';
 import moment from 'moment';
 
 const placeholderImg = require('../../../assets/profile_placeholder.png');
@@ -84,30 +85,12 @@ export const Engagement = (props) => {
 
 export const Documents = (props) => {
 
-    const docIcon = (name) => {
-        if (name.slice(-3) === 'pdf') {
-            return <AntDesign name="pdffile1" size={34} />;
-        }
-        else if (name.slice(-3) === 'jpg') {
-            return <AntDesign name="picture" size={34} />;
-        }
-        else if (name.slice(-4) === 'jpeg') {
-            return <AntDesign name="picture" size={34} />;
-        }
-        else if (name.slice(-3) === 'png') {
-            return <AntDesign name="picture" size={34} />;
-        }
-        else {
-            return <Entypo name="attachment" size={34} />;
-        }
-    };
-
     return (
         <View>
             <ListItem
                 title={props.document.title}
                 titleStyle={{ color: '#5A6064' }}
-                leftIcon={docIcon(props.document.original_file_name)}
+                leftIcon={getAttachmentIcon(props.document)}
                 topDivider={true}
                 onPress={() => Linking.openURL(props.document.attachment)}
                 subtitle={

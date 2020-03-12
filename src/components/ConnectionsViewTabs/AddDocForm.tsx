@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Button,
-    Image,
     Text,
     ScrollView,
     View,
@@ -9,54 +7,30 @@ import {
     StyleSheet,
     TextInput,
     Alert,
-    Picker,
 } from 'react-native';
-import SwitchToggle from 'react-native-switch-toggle';
-import { Feather, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+// import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-
 import RNPickerSelect from 'react-native-picker-select';
+import convertMediaToAttachment from './convertMediaToAttachment';
 
 const AddDocForm = (props) => {
     const [ title, setTitle ] = useState('');
     const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
-    const [ tags, setTags ] = useState([]);
     const [ notes, setNotes ] = useState('');
-    const [ attachment, setAttachment ] = useState(null);
     const [ isPublic, setIsPublic ] = useState(true);
 
-    // set type of engagement
-    useEffect(() => {
-        getPermissionAsync();
-    }, [ false ]);
+    const [ attachment, setAttachment ] = useState(() => {
 
-    const getPermissionAsync = async () => {
-        if (Constants.platform.ios) {
-            const { status: string } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-            if (status !== 'granted') {
-                Alert.alert('Sorry, we need camera roll permissions to make this work!');
-            }
-        }
-    };
+        const media = props.navigation.getParam('media');
 
-    const _pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [ 4, 3 ],
-            quality: 1,
-        });
+        const attachment = convertMediaToAttachment(media);
 
-        if (!result.cancelled) {
-            setAttachment(result.uri);
-        }
-    };
+        return attachment;
+
+    });
 
     return (
         <ScrollView
@@ -250,7 +224,7 @@ const AddDocForm = (props) => {
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
-                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, props.navigation.getParam('uri'));
+                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
                                         props.navigation.goBack();
                                     }}
                                 >

@@ -1,45 +1,54 @@
 import React from 'react';
-import Button from './Button.jsx';
-import { Alert } from 'react-native';
-import PickPhotoIcon from './PickPhotoIcon.jsx';
+import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
+import { Alert } from 'react-native';
+import Button from './Button.jsx';
+import PickPhotoIcon from './PickPhotoIcon.jsx';
+import convertPhotoToMedia from './convertPhotoToMedia';
 
 /**********************************************************/
 
 export default function PickPhotoButton({ afterAccept }) {
 
     async function getPermissions() {
+
         let hasPermissions = false;
+
         if (Constants.platform.ios || Constants.platform.android) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             hasPermissions = status === 'granted';
         }
+
         return hasPermissions;
+
     }
 
     async function pickPhoto() {
-        const result = await ImagePicker.launchImageLibraryAsync({
+
+        const photo = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
         });
 
-        if (!result.cancelled) {
-            afterAccept(result.uri);
+        if (!photo.cancelled) {
+            afterAccept(convertPhotoToMedia(photo));
         }
 
         return;
     }
 
     async function onPress() {
+
         const hasPermissions = await getPermissions();
+
         if (hasPermissions) {
             await pickPhoto();
         }
         else {
             Alert.alert('Sorry, we need camera roll permissions to make this work!');
         }
+
     }
 
     return (
