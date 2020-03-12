@@ -14,7 +14,7 @@ import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
 import RNPickerSelect from 'react-native-picker-select';
-import mime from 'mime';
+import convertMediaToAttachment from './convertMediaToAttachment';
 
 const AddDocForm = (props) => {
     const [ title, setTitle ] = useState('');
@@ -26,24 +26,7 @@ const AddDocForm = (props) => {
 
         const media = props.navigation.getParam('media');
 
-        /* construct the attachment */
-        const attachment = { uri: '', name: '', ext: '', type: '' };
-
-        /* get _actual_ location on device */
-        attachment.uri = media.uri;
-
-        /* infer MIME type from _original_ file name */
-        attachment.type = String(mime.getType(media.name));
-
-        /* get canonical file extension from MIME type */
-        attachment.ext = String(mime.getExtension(attachment.type));
-
-        /* write generic attachment name */
-        attachment.name = `attachment.${attachment.ext}`;
-
-        /* DEV ONLY */
-        // Alert.alert ('Attachment Info', JSON.stringify({ media, attachment }, null, '  '));
-        console.log (attachment);
+        const attachment = convertMediaToAttachment(media);
 
         return attachment;
 
