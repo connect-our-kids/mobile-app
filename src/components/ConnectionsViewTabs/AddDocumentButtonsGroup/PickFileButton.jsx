@@ -2,6 +2,7 @@ import React from 'react';
 import Button from './Button.jsx';
 import PickFileIcon from './PickFileIcon.jsx';
 import * as DocumentPicker from 'expo-document-picker';
+import convertFileToAttachment from './convertFileToAttachment';
 
 /**********************************************************/
 
@@ -19,28 +20,16 @@ export default function PickFileButton({ afterAccept }) {
             })
             .then ((media) => {
 
-                /*
-                typeof media = {
-                    type  : 'success' | 'cancel'
-                    uri   : string,
-                    name  : string,
-                    size  : number,
-                }
-                */
-
                 if (media.type === 'success') {
-                    afterAccept({
-                        type: 'file',
-                        uri: media.uri,
-                        name: media.name,
-                        size: media.size,
-                    });
+                    afterAccept(convertFileToAttachment(media));
                 }
 
             })
             .catch ((error) => {
+
                 console.error('--- There was a problem selecting a file. ---');
                 console.log(error);
+
             });
     }
 
