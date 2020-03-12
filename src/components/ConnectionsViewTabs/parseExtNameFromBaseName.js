@@ -6,7 +6,9 @@ export default function parseExtNameFromBaseName(path) {
     -   ...unless the LAST '.' is the FIRST character (accomodates "dot" names without extensions)
     -   clear all characters when there is no '.' (accomdates names without extensions)
     */
-    return path.replace(/^(.+(?=.*?[.])[.](?=[^.]+)|[^.]+)/, '');
+    const extName = path.replace(/^(.+(?=.*?[.])[.](?=[^.]+)|[^.]+)/, '');
+
+    return (extName !== '' ? extName : undefined);
 
     /*
     ### EXAMPLES ###

@@ -38,7 +38,7 @@ export default function convertMediaToAttachment(media) {
     }
 
     /* when extension exists, use it... */
-    if (attachment.ext && attachment.ext.length > 0) {
+    if (attachment.ext) {
 
         attachment.name = `attachment.${attachment.ext}`;
 
