@@ -44,7 +44,7 @@ const CaseListComponent = (props) => {
                     <ListItem
                         title={props.connection.person.full_name}
                         titleStyle={{ color: '#5A6064' }}
-                        subtitle={TelephoneHelpers.format(TelephoneHelpers.selectPrimaryTelephone(props.connection.person))}
+                        subtitle={props.connection.person.title}
                         subtitleStyle={{ color: '#5A6064' }}
                         leftAvatar={
                             <View
@@ -53,7 +53,8 @@ const CaseListComponent = (props) => {
                                     borderRadius: 25,
                                     overflow: 'hidden' }}
                             >
-                                <Image
+                           {props.connection.person.picture
+                                ? <Image
                                     source={{ uri: props.connection.person.picture }}
                                     style={{ height: 50,
                                         width: 50,
@@ -61,6 +62,13 @@ const CaseListComponent = (props) => {
                                         overflow: 'hidden' }}
                                     defaultSource = {placeholderImg}
                                 />
+                                : <Image
+                                    source={placeholderImg}
+                                    style={{ height: 50,
+                                        width: 50,
+                                        borderRadius: 25,
+                                        overflow: 'hidden' }}
+                                />}
                             </View>
                         }
                         onPress={async () => {
@@ -75,7 +83,7 @@ const CaseListComponent = (props) => {
                 : <ListItem
                     title={props.connection.person.full_name}
                     titleStyle={{ color: '#5A6064' }}
-                    subtitle={TelephoneHelpers.format(TelephoneHelpers.selectPrimaryTelephone(props.connection.person))}
+                    subtitle={props.connection.person.title}
                     subtitleStyle={{ color: '#5A6064' }}
                     leftAvatar={
                         <View
@@ -115,5 +123,3 @@ const CaseListComponent = (props) => {
 };
 
 export default CaseListComponent;
-
-
