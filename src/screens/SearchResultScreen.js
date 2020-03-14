@@ -113,7 +113,10 @@ class SearchResultScreen extends React.Component {
   };
 
   showConModal = (key, type, index) => {
+      console.log("state before {}", this.state)
       this.setState({ key, type, index });
+      console.log("state after {}", this.state)
+
       this.toggleModal();
   };
 

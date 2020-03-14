@@ -4,11 +4,11 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    WebView,
     Platform,
 } from 'react-native';
 import { Button } from 'native-base';
 import constants from '../../helpers/constants';
+import WebView from 'react-native-webview';
 
 const VideoModal = (props) => {
     return (
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     close: {
-        backgroundColor: 'red',
+        backgroundColor: '#6C757D',
         width: '100%',
     },
     closeBtn: {

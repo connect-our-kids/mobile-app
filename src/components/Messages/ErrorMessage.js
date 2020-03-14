@@ -24,6 +24,7 @@ const handleOpenEmail = () => {
 };
 
 const ErrorMessage = (props) => {
+    console.error("Error message props: {}", props)
     renderMessage = () => {
         if (props.data.inputKey && props.data.inputValue) {
             if (props.data.inputKey === 'name') {

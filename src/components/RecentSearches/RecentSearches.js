@@ -75,11 +75,11 @@ class RecentSearches extends Component {
 
       return (
           <View style={{ padding: 20 }}>
-              <Text style={styles.recentSearchesText}>Recent Searches:</Text>
               {recentSearchesLoaded ? (
-                  <>
+                    <View>
                       {recentSearches.length ? (
-                          <View>
+                        <View>
+                              <Text style={styles.recentSearchesText}>Recent Searches:</Text>
                               {recentSearches.map(({ data, searchType, searchInput }, i) => (
                                   <TouchableOpacity
                                       key={i}
@@ -99,12 +99,8 @@ class RecentSearches extends Component {
                                   <Text style={styles.clearButtonText}>Clear</Text>
                               </Button>
                           </View>
-                      ) : (
-                          <Text style={styles.noRecentSearchesText}>
-                Start searching to save your most recent search results!
-                          </Text>
-                      )}
-                  </>
+                      ) : null}
+                  </View>
               ) : (
                   <ActivityIndicator />
               )}

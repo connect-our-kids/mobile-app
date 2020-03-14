@@ -53,7 +53,7 @@ class PeopleSearchScreen extends React.Component {
       return encodeURI(JSON.stringify(person));
   };
 
-  handleSearchRequest = async (person, searchType, searchInput) => {
+  handleSearchRequest = async (person, searchType) => {
       const accessToken = await SecureStore.getItemAsync('cok_access_token');
       const idToken = await SecureStore.getItemAsync('cok_id_token');
       const {
@@ -73,7 +73,6 @@ class PeopleSearchScreen extends React.Component {
           requestObject['idToken'] = idToken;
           // Add to save to recent searcg
           body['searchType'] = searchType;
-          body['searchInput'] = searchInput;
       }
 
       requestObject['person'] = this.handleEncodeURI(person);
@@ -229,8 +228,8 @@ class PeopleSearchScreen extends React.Component {
                                       keyExtractor={(item, index) => index.toString()}
                                   />
                               </>
-                          ) : null}
-                          {isLoggedIn && (
+                          ) : null }
+                          {(
                               <RecentSearches
                                   handleSearch={this.handleSearchRequest}
                                   navigation={navigation}

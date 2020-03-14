@@ -10,7 +10,6 @@ import {
     isPhone,
     isUrl,
 } from '../../helpers/inputValidators';
-import { parseAddress, parseCityState, parseName } from '../../helpers/parsers';
 import { connect } from 'react-redux';
 import {
     getInfo,
@@ -22,11 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 class SearchForm extends Component {
   state = {
       name: '',
-      cityState: '',
-      firstName: '',
-      lastName: '',
-      city: '',
-      state: '',
+      location: '',
       email: '',
       address: '',
       phone: '',
@@ -52,134 +47,110 @@ class SearchForm extends Component {
   }
 
   handleFormSubmit = () => {
-      let inputKey;
-      let inputValue;
-      let formattedObject = null;
+        let formattedObject = null;
 
-      const unusedKeys = [ 'firstName', 'lastName', 'city', 'state' ];
+        console.log('this is the state ', this.state);
 
-      console.log('this is the state ', this.state);
+        let searchType = this.state.tabPage; // number
 
-      const inputObj = this.findInputWithLength();
+        let mainValue = "";
 
-      if (!inputObj) {
-          return;
-      }
+        if(searchType == 0)
+            mainValue = this.state.name;
+        else if(searchType == 1)
+            mainValue = this.state.email;
+        else if(searchType == 2)
+            mainValue = this.state.address;
+        else if(searchType == 3)
+            mainValue = this.state.phone;
+        else if(searchType == 4)
+            mainValue = this.state.url;
 
-      for (let [ key, value ] of Object.entries(inputObj)) {
-          inputKey = key;
-          inputValue = value;
-      }
-      let searchType;
-      if (isName(inputValue)) {
-          if (!this.state.name) {
-              this.setState({ name: inputValue, [inputKey]: '', tabPage: 0 });
-          }
-          searchType = 'name';
-          formattedObject = this.formatRequestObject(inputValue, 'name');
-      }
-      else if (isEmail(inputValue)) {
-          if (!this.state.email) {
-              this.setState({ email: inputValue, [inputKey]: '', tabPage: 1 });
-          }
-          searchType = 'email';
-          formattedObject = this.formatRequestObject(inputValue, 'email');
-      }
-      else if (isAddress(inputValue)) {
-          if (!this.state.address) {
-              this.setState({ address: inputValue, [inputKey]: '', tabPage: 2 });
-          }
-          searchType = 'address';
-          formattedObject = this.formatRequestObject(inputValue, 'address');
-      }
-      else if (isPhone(inputValue)) {
-          if (!this.state.phone) {
-              this.setState({ phone: inputValue, [inputKey]: '', tabPage: 3 });
-          }
-          searchType = 'phone';
-          formattedObject = this.formatRequestObject(inputValue, 'phone');
-      }
-      else if (isUrl(inputValue)) {
-          if (!this.state.url) {
-              this.setState({ url: inputValue, [inputKey]: '', tabPage: 4 });
-          }
-          searchType = 'url';
-          formattedObject = this.formatRequestObject(inputValue, 'url');
-      }
-      if (unusedKeys.includes(inputKey)) {
-          null;
-      }
-      else {
-          console.log('your input is not valid');
-      }
+        if (isName(mainValue)) {
+            if (!this.state.tabPage == 0) {
+                this.setState({ email: mainValue, location: '', tabPage: 0 });
+            }
+            searchType = 'name';
+            formattedObject = this.formatRequestObject(mainValue, 'name');
+        }
+        else if (isEmail(mainValue)) {
+            if (!this.state.tabPage == 1) {
+                this.setState({ email: mainValue, tabPage: 1 });
+            }
+            searchType = 'email';
+            formattedObject = this.formatRequestObject(mainValue, 'email');
+        }
+        else if (isAddress(mainValue)) {
+            if (!this.state.tabPage == 2) {
+                this.setState({ address: mainValue, tabPage: 2 });
+            }
+            searchType = 'address';
+            formattedObject = this.formatRequestObject(mainValue, 'address');
+        }
+        else if (isPhone(mainValue)) {
+            if (!this.state.tabPage == 3) {
+                this.setState({ phone: mainValue, tabPage: 3 });
+            }
+            searchType = 'phone';
+            formattedObject = this.formatRequestObject(mainValue, 'phone');
+        }
+        else if (isUrl(mainValue)) {
+            if (!this.state.tabPage == 2) {
+                this.setState({ url: mainValue, tabPage: 4 });
+            }
+            searchType = 'url';
+            formattedObject = this.formatRequestObject(mainValue, 'url');
+        }
 
-      if (formattedObject) {
-          this.props.handleSearch(formattedObject, searchType, inputValue);
-      }
-      else {
-          console.log('formattedObject: error');
-          this.props.sendSearchErrorMessage({ inputKey, inputValue });
-      }
-  };
-
-  findInputWithLength = () => {
-      let input;
-      let name;
-
-      for (let key in this.state) {
-          if (key !== 'cityState' && key !== 'tabPage' && this.state[key]) {
-              if (this.state[key].length) {
-                  input = this.state[key];
-                  name = key;
-              }
-          }
-      }
-      if (name && input) {
-          return { [name]: input };
-      }
-      else {
-      }
+        if (formattedObject) {
+            this.props.handleSearch(formattedObject, searchType);
+        }
+        else {
+            console.log('formattedObject: error');
+            this.props.sendSearchErrorMessage({ mainValue });
+        }
   };
 
   formatRequestObject = (inputValue, type) => {
       const person = {};
 
+
+      console.log("formatRequestObject {} {}", type, inputValue)
+
       switch (type) {
       case 'name':
           person.names = [];
-          const parsedName = parseName(inputValue);
-          person.names.push(parsedName);
+          person.names.push({raw:this.state.name});
 
-          if (this.state.cityState.length) {
+          const location = this.state.location.trim();
+          if (location) {
               person.addresses = [];
-              const location = parseCityState(this.state.cityState);
-              person.addresses.push(location);
+              person.addresses.push({raw: location});
           }
           break;
 
       case 'email':
           person.emails = [];
           person.emails.push({
-              address: inputValue,
+              address: this.state.email,
           });
           break;
       case 'address':
           person.addresses = [];
-          const addresses = parseAddress(inputValue);
-          person.addresses.push(addresses);
+          person.addresses.push({raw:this.state.address});
           break;
 
       case 'phone':
           person.phones = [];
           person.phones.push({
-              number: inputValue.replace(/[^0-9]+/g, ''),
+              number: this.state.phone.replace(/[^0-9]+/g, ''),
           });
           break;
 
       case 'url':
           person.urls = [];
           person.urls.push({
-              url: inputValue,
+              url: this.state.url,
           });
           break;
 
@@ -204,6 +175,17 @@ class SearchForm extends Component {
       });
   };
 
+  resetState = () => {
+      this.state = {
+        name: '',
+        location: '',
+        email: '',
+        address: '',
+        phone: '',
+        url: ''
+    };
+  }
+
   render() {
       return (
           <View style={{ marginBottom: 20 }}>
@@ -212,6 +194,7 @@ class SearchForm extends Component {
                   activeTextStyle={{ color: '#64aab8' }}
                   tabBarUnderlineStyle={{ backgroundColor: '#0279AC' }}
                   page={this.state.tabPage}
+                  onChangeTab={(event) => this.resetState()}
               >
                   <Tab
                       heading="Name"
@@ -222,51 +205,28 @@ class SearchForm extends Component {
                       tabStyle={{ backgroundColor: '#fff' }}
                   >
                       <View style={styles.nameInputFullWidth}>
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                              <Text style={{ width: '50%', position: 'relative', top: 16, left: 14 }}>First Name</Text>
-                              <Text style={{ width: '50%', position: 'relative', top: 16, left: 14 }}>Last Name</Text>
-                          </View>
-
                           <View style={styles.peopleSearch}>
-
                               <Input
-                                  placeholder="e.g. John"
+                                  placeholder="First Middle Last Name"
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
-                                  value={this.state.firstName}
-                                  onChangeText={(text) => this.changeHandler('firstName', text)}
-                              />
-                              <Input
-                                  placeholder="e.g. Smith"
-                                  placeholderTextColor='rgba(24,23,21,.5)'
-                                  style={styles.textInput}
-                                  value={this.state.lastName}
-                                  onChangeText={(text) => this.changeHandler('lastName', text)}
-                              />
+                                  value={this.state.name}
+                                  onChangeText={(text) => this.changeHandler('name', text)}
+                                  lightTheme
+                                  autoCapitalize="words"
 
-                          </View>
-
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                              <Text style={{ width: '50%', position: 'relative', top: 16, left: 14 }}>City</Text>
-                              <Text style={{ width: '50%', position: 'relative', top: 16, left: 14 }}>State</Text>
+                              />
 
                           </View>
                           <View style={styles.peopleSearch}>
                               <Input
-                                  placeholder="e.g. Boston"
+                                  placeholder="City, State"
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
-                                  value={this.state.city}
-                                  onChangeText={(text) => this.changeHandler('city', text)}
-                              />
-
-
-                              <Input
-                                  placeholder="e.g. Massachusetts"
-                                  placeholderTextColor='rgba(24,23,21,.5)'
-                                  style={styles.textInput}
-                                  value={this.state.state}
-                                  onChangeText={(text) => this.changeHandler('state', text)}
+                                  value={this.state.location}
+                                  onChangeText={(text) => this.changeHandler('location', text)}
+                                  lightTheme
+                                  autoCapitalize="words"
                               />
                           </View>
                       </View>
@@ -282,7 +242,7 @@ class SearchForm extends Component {
                   >
                       <View style={styles.searchBar}>
                           <SearchBar
-                              placeholder="Search email..."
+                              placeholder="Email Address"
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
                               inputContainerStyle={{ backgroundColor: '#fff' }}
@@ -303,7 +263,7 @@ class SearchForm extends Component {
                   >
                       <View>
                           <SearchBar
-                              placeholder="Search address..."
+                              placeholder="Mailing Address"
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
                               inputContainerStyle={{ backgroundColor: '#fff' }}
@@ -311,6 +271,7 @@ class SearchForm extends Component {
                               value={this.state.address}
                               onChangeText={(text) => this.changeHandler('address', text)}
                               lightTheme
+                              autoCapitalize="none"
                           />
                       </View>
                   </Tab>
@@ -324,7 +285,7 @@ class SearchForm extends Component {
                   >
                       <View>
                           <SearchBar
-                              placeholder="Search phone number..."
+                              placeholder="Phone Number"
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
                               inputContainerStyle={{ backgroundColor: '#fff' }}
@@ -332,6 +293,8 @@ class SearchForm extends Component {
                               value={this.state.phone}
                               onChangeText={(text) => this.changeHandler('phone', text)}
                               lightTheme
+                              autoCapitalize="none"
+
                           />
                       </View>
                   </Tab>
@@ -345,7 +308,7 @@ class SearchForm extends Component {
                   >
                       <View>
                           <SearchBar
-                              placeholder="Search URL..."
+                              placeholder="URL"
                               placeholderTextColor='rgba(24,23,21,.5)'
                               containerStyle={styles.textInputWide}
                               inputContainerStyle={{ backgroundColor: '#fff' }}
@@ -353,6 +316,7 @@ class SearchForm extends Component {
                               value={this.state.url}
                               onChangeText={(text) => this.changeHandler('url', text)}
                               lightTheme
+                              autoCapitalize="none"
                           />
                       </View>
                   </Tab>
@@ -360,12 +324,8 @@ class SearchForm extends Component {
               <View style={{ flexDirection: 'row', margin: 16, justifyContent: 'space-between' }}>
                   <Button style={styles.button} onPress={() => {
                       this.setState({
-                          firstName: '',
-                          lastName: '',
-                          city: '',
-                          state: '',
-                          name: `${this.state.firstName} ${this.state.lastName}`,
-                          cityState: `${this.state.city} ${this.state.state}`,
+                          name: `${this.state.name}`,
+                          location: `${this.state.location}`,
                           email: this.state.email,
                           address: this.state.address,
                           phone: this.state.phone,
