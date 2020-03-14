@@ -35,10 +35,6 @@ import RecentSearches from '../components/RecentSearches/RecentSearches';
 
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';
-import Video from '../components/Video/Video';
-import SearchFooter from '../components/SearchFooter/SearchFooter';
-import TermsOfService from '../components/SearchFooter/TermsOfService';
-import PrivacyPolicy from '../components/SearchFooter/PrivacyPolicy';
 
 class PeopleSearchScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>
@@ -240,36 +236,7 @@ class PeopleSearchScreen extends React.Component {
                                   navigation={navigation}
                               />
                           )}
-                          {this.state.videoPlayerOpen ? (
-                              <View>
-                                  <Video uri={constants.peopleSearchURI} />
-                                  <TouchableHighlight
-                                      style={[
-                                          styles.videoButton,
-                                          { borderColor: 'red', marginTop: 5, marginBottom: 20 },
-                                      ]}
-                                      onPress={this.closeVideo}
-                                  >
-                                      <Text style={[ styles.videoButtonText, { color: 'red' } ]}>
-                      Close Video
-                                      </Text>
-                                  </TouchableHighlight>
-                              </View>
-                          ) : (
-                              <TouchableHighlight
-                                  style={styles.videoButton}
-                                  onPress={this.openVideo}
-                              >
-                                  <Text style={styles.videoButtonText}>
-                    Watch a 2 minute quick introductory video
-                                  </Text>
-                              </TouchableHighlight>
-                          )}
                       </View>
-                      {/* <SearchFooter
-              openModal={this.openModal}
-              controlModal={this.controlModal}
-            /> */}
                   </ScrollView>
               </SafeAreaView>
           </Container>
@@ -301,23 +268,7 @@ const styles = StyleSheet.create({
         color: `${constants.highlightColor}`,
         marginBottom: 20,
         marginLeft: 10,
-    },
-    videoButton: {
-        alignItems: 'center',
-        paddingTop: 11,
-        paddingBottom: 11,
-        borderWidth: 1,
-        borderColor: '#0279AC',
-        borderStyle: 'solid',
-        borderRadius: 5,
-        marginLeft: 17,
-        marginRight: 17,
-    },
-    videoButtonText: {
-        color: '#0279AC',
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-    },
+    }
 });
 
 const mapStateToProps = (state) => {

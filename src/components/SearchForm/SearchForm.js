@@ -289,7 +289,7 @@ class SearchForm extends Component {
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.email}
                               onChangeText={(text) => this.changeHandler('email', text)}
-                              lightTheme="true"
+                              lightTheme
                           />
                       </View>
                   </Tab>
@@ -310,7 +310,7 @@ class SearchForm extends Component {
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.address}
                               onChangeText={(text) => this.changeHandler('address', text)}
-                              lightTheme="true"
+                              lightTheme
                           />
                       </View>
                   </Tab>
@@ -331,7 +331,7 @@ class SearchForm extends Component {
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.phone}
                               onChangeText={(text) => this.changeHandler('phone', text)}
-                              lightTheme="true"
+                              lightTheme
                           />
                       </View>
                   </Tab>
@@ -352,7 +352,7 @@ class SearchForm extends Component {
                               inputStyle={{ backgroundColor: '#fff' }}
                               value={this.state.url}
                               onChangeText={(text) => this.changeHandler('url', text)}
-                              lightTheme="true"
+                              lightTheme
                           />
                       </View>
                   </Tab>
