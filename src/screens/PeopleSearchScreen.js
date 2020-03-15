@@ -30,7 +30,6 @@ import constants from '../helpers/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader/Loader';
-import ErrorMessage from '../components/Messages/ErrorMessage';
 
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';

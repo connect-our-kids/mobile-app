@@ -27,7 +27,6 @@ import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
 import PersonInfo from '../components/Person/PersonInfo';
 import Loader from '../components/Loader/Loader';
-import ErrorMessage from '../components/Messages/ErrorMessage';
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';
 import { ConfirmationModal } from '../components/Person/ConfirmationModal';
