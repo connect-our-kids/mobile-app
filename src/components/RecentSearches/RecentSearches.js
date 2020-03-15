@@ -79,7 +79,7 @@ class RecentSearches extends Component {
                     <View>
                       {recentSearches.length ? (
                         <View>
-                              <Text style={styles.recentSearchesText}>Recent Searches:</Text>
+                              <Text style={styles.recentSearchesText}>Recent Searches</Text>
                               {recentSearches.map(({ data, searchType, searchInput }, i) => (
                                   <TouchableOpacity
                                       key={i}
@@ -93,7 +93,6 @@ class RecentSearches extends Component {
                               ))}
                               <Button
                                   style={styles.clearButton}
-                                  danger
                                   onPress={this.clearRecentSearches}
                               >
                                   <Text style={styles.clearButtonText}>Clear</Text>
@@ -124,12 +123,15 @@ const styles = StyleSheet.create({
         fontFamily: `${constants.lotoFamily}`,
     },
     clearButton: {
+        backgroundColor: 'white',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        borderColor: '#0279ac',
+        borderWidth: 1
     },
     clearButtonText: {
-        color: '#fff',
+        color: '#0279ac',
 
     },
     noRecentSearchesText: {

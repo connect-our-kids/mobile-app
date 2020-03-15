@@ -50,15 +50,6 @@ export const fetchSearchResult = (body, cb, email) => (dispatch) => {
                     payload: res.data.possible_persons,
                 });
                 sendEvent(email, 'search', 'person', 'success', options);
-                // SAVE TO RECENT SEARCH
-                if (body.searchType && body.searchInput) {
-                    saveToRecentSearches({
-                        searchType: body.searchType,
-                        searchInput: body.searchInput,
-                        data: res.data.possible_persons,
-                    });
-                    dispatch({ type: SAVING_RECENT_SEARCHES });
-                }
             }
             else if (res.data.person) {
                 options = createOptions(0, null, null);
@@ -68,15 +59,6 @@ export const fetchSearchResult = (body, cb, email) => (dispatch) => {
                     payload: res.data.person,
                 });
                 sendEvent(email, 'search', 'person', 'success', options);
-                // SAVE TO RECENT SEARCH
-                if (body.searchType && body.searchInput) {
-                    saveToRecentSearches({
-                        searchType: body.searchType,
-                        searchInput: body.searchInput,
-                        data: res.data.person,
-                    });
-                    dispatch({ type: SAVING_RECENT_SEARCHES });
-                }
             }
             else if (
                 res.data.persons_count === 0

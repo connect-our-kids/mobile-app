@@ -19,6 +19,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 class SearchForm extends Component {
+
   state = {
       name: '',
       location: '',
@@ -27,7 +28,8 @@ class SearchForm extends Component {
       phone: '',
       url: '',
       tabPage: 0,
-  };
+      showNoInputMessage: false,
+    };
 
   componentDidUpdate(prevProps, prevState) {
       if (this.props.searchMe && this.props.queryType) {
@@ -47,6 +49,7 @@ class SearchForm extends Component {
   }
 
   handleFormSubmit = () => {
+
         let formattedObject = null;
 
         console.log('this is the state ', this.state);
@@ -66,37 +69,47 @@ class SearchForm extends Component {
         else if(searchType == 4)
             mainValue = this.state.url;
 
+
+        if (mainValue.trim().length == 0) {
+            console.log("No search input provided")
+            console.log("state now: ", this.state)
+
+            this.setState({...this.state, showNoInputMessage: true})
+            console.log("state now: ", this.state)
+            return;
+        }
+
         if (isName(mainValue)) {
             if (!this.state.tabPage == 0) {
-                this.setState({ email: mainValue, location: '', tabPage: 0 });
+                this.setState({...this.state,  email: mainValue, location: '', tabPage: 0 });
             }
             searchType = 'name';
             formattedObject = this.formatRequestObject(mainValue, 'name');
         }
         else if (isEmail(mainValue)) {
             if (!this.state.tabPage == 1) {
-                this.setState({ email: mainValue, tabPage: 1 });
+                this.setState({...this.state, email: mainValue, tabPage: 1 });
             }
             searchType = 'email';
             formattedObject = this.formatRequestObject(mainValue, 'email');
         }
         else if (isAddress(mainValue)) {
             if (!this.state.tabPage == 2) {
-                this.setState({ address: mainValue, tabPage: 2 });
+                this.setState({...this.state,  address: mainValue, tabPage: 2 });
             }
             searchType = 'address';
             formattedObject = this.formatRequestObject(mainValue, 'address');
         }
         else if (isPhone(mainValue)) {
             if (!this.state.tabPage == 3) {
-                this.setState({ phone: mainValue, tabPage: 3 });
+                this.setState({...this.state,  phone: mainValue, tabPage: 3 });
             }
             searchType = 'phone';
             formattedObject = this.formatRequestObject(mainValue, 'phone');
         }
         else if (isUrl(mainValue)) {
             if (!this.state.tabPage == 2) {
-                this.setState({ url: mainValue, tabPage: 4 });
+                this.setState({...this.state,  url: mainValue, tabPage: 4 });
             }
             searchType = 'url';
             formattedObject = this.formatRequestObject(mainValue, 'url');
@@ -119,6 +132,12 @@ class SearchForm extends Component {
 
       switch (type) {
       case 'name':
+
+        if( this.state.name?.trim().length == 0) {
+            console.warn("No name provided");
+            return;
+        }
+
           person.names = [];
           person.names.push({raw:this.state.name});
 
@@ -164,26 +183,20 @@ class SearchForm extends Component {
   startOver = () => {
       this.props.resetReduxState();
       this.setState({
-          firstName: '',
-          lastName: '',
-          city: '',
-          state: '',
+          name: '',
+          location: '',
           email: '',
           address: '',
           phone: '',
           url: '',
+          showNoInputMessage: false,
+          tabPage: 0
       });
   };
 
-  resetState = () => {
-      this.state = {
-        name: '',
-        location: '',
-        email: '',
-        address: '',
-        phone: '',
-        url: ''
-    };
+  tabChanged = (event) => {
+      console.log("tab index: ", event.i)
+    this.setState({...this.state, tabPage: event.i})
   }
 
   render() {
@@ -194,7 +207,7 @@ class SearchForm extends Component {
                   activeTextStyle={{ color: '#64aab8' }}
                   tabBarUnderlineStyle={{ backgroundColor: '#0279AC' }}
                   page={this.state.tabPage}
-                  onChangeTab={(event) => this.resetState()}
+                  onChangeTab={(i) => this.tabChanged(i)}
               >
                   <Tab
                       heading="Name"
@@ -220,7 +233,7 @@ class SearchForm extends Component {
                           </View>
                           <View style={styles.peopleSearch}>
                               <Input
-                                  placeholder="City, State"
+                                  placeholder="City, State (Optional)"
                                   placeholderTextColor='rgba(24,23,21,.5)'
                                   style={styles.textInput}
                                   value={this.state.location}
@@ -250,6 +263,7 @@ class SearchForm extends Component {
                               value={this.state.email}
                               onChangeText={(text) => this.changeHandler('email', text)}
                               lightTheme
+                              autoCapitalize='none'
                           />
                       </View>
                   </Tab>
@@ -331,6 +345,7 @@ class SearchForm extends Component {
                           phone: this.state.phone,
                           url: this.state.url,
                           tabPage: this.state.tabPage || 0,
+                          showNoInputMessage: false
                       }, () => this.handleFormSubmit());
                   }}>
                       <Text style={styles.buttonText}> Search </Text>
@@ -340,6 +355,12 @@ class SearchForm extends Component {
                       <Text style={{ ...styles.buttonText, color: '#0279ac' }}> Clear </Text>
                   </Button>
               </View>
+
+                {(this.state.showNoInputMessage) ? (
+                    <View>
+                        <Text>Enter a value above to search</Text>
+                    </View>
+                ) : null }
           </View>
       );
   }
@@ -443,8 +464,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     nameInputFullWidth: {
-        width: '100%',
-        height: '100%',
+        width: '100%'
     },
     peopleSearch: {
         flexDirection: 'row',

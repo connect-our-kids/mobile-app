@@ -26,7 +26,8 @@ const handleOpenEmail = () => {
 const ErrorMessage = (props) => {
     console.error("Error message props: {}", props)
     renderMessage = () => {
-        if (props.data.inputKey && props.data.inputValue) {
+
+        /*if (props.data.inputKey && props.data.inputValue) {
             if (props.data.inputKey === 'name') {
                 // if (splitValue === 1){
                 if (!isName(props.data.inputValue)) {
@@ -94,11 +95,11 @@ const ErrorMessage = (props) => {
         }
         else {
             console.log('ERROR in ErrorMessage.js');
-        }
+        }*/
     };
     return (
         <View style={{ backgroundColor: '#fff3cd', padding: 15 }}>
-            {this.renderMessage()}
+            {this.props.errorMessage}
         </View>
     );
 };
