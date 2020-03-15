@@ -84,8 +84,6 @@ class PeopleSearchScreen extends React.Component {
         this.props.resetState();
     }
 
-    console.log("User ", user);
-
     fetchSearchResult(
         body,
         () => navigation.navigate('SearchResult'),
@@ -177,7 +175,7 @@ class PeopleSearchScreen extends React.Component {
                               </TouchableHighlight>
                           )}
                               <>
-                                  <FlatList
+                              <FlatList style={{height: '100%'}}
                                     ListHeaderComponent = {
                                         <View>
 
@@ -195,9 +193,11 @@ class PeopleSearchScreen extends React.Component {
 
                                             </View>
 
+                                            {this.state.errorMessage?.length > 0 ? (
                                                 <View style={{ backgroundColor: '#fff3cd', padding: 15 }}>
                                                     {this.state.errorMessage}
                                                 </View>
+                                            ): null }
 
 
                                             {this.props.isFetching && <Loader />}
