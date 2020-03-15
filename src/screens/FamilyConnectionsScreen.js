@@ -100,10 +100,10 @@ const FamilyConnectionsScreen = (props) => {
             return 'Female';
         }
         else if (gender === 'O') {
-            return 'Unspecified Gender';
+            return '';
         }
         else {
-            return null;
+            return '';
         }
     };
 
@@ -555,7 +555,7 @@ const FamilyConnectionsScreen = (props) => {
                                 borderColor: 'white',
                                 marginBottom: 100,
                             }}
-                            title="Unspecified"
+                            title="Not Specified"
                             textStyle={{ ...styles.checkboxes }}
                             size={30}
                             checked={state.filters.unspecified}
@@ -593,13 +593,14 @@ const FamilyConnectionsScreen = (props) => {
                             style={{
                                 position: 'absolute',
                                 zIndex: 1000,
-                                bottom: constants.headerHeight,
+                                bottom: 10,
                                 right: 46,
                             }}
                             onPress={() => goToTop()}
                         />
                     ) : null}
                     <ScrollView
+                        style={{height: '100%'}}
                         ref={(a) => (scroll = a)}
                         contentInset={{ bottom: constants.headerHeight }}
                         scrollsToTop
@@ -623,7 +624,7 @@ const FamilyConnectionsScreen = (props) => {
                                     title={result.full_name}
                                     titleStyle={{ color: '#5A6064' }}
                                     subtitle={`${genderAssignment(result.gender)}${
-                                        result.birthday ? '\nBirth: ' + result.birthday.raw : ''
+                                        result.birthday?.raw?.length > 0 ? '\nBirth: ' + result.birthday.raw : ''
                                     }`}
                                     subtitleStyle={{ color: '#9FABB3' }}
                                     leftAvatar={

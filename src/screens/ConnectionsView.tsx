@@ -87,7 +87,7 @@ function ConnectionsView(props) {
                     style={{
                         position: 'absolute',
                         zIndex: 1000,
-                        bottom: 15,
+                        bottom: 10,
                         right: 38,
                         backgroundColor: 'white',
                         padding: 8,

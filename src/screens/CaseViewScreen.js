@@ -76,7 +76,7 @@ export function CaseViewScreen(props) {
             return 'Female';
         }
         else if (gender === 'O') {
-            return 'Unspecified Gender';
+            return 'Not Specfied';
         }
         else {
             return null;
@@ -491,6 +491,7 @@ export function CaseViewScreen(props) {
                     </TouchableOpacity>
                     <ScrollView
                         scrollsToTop
+
                     >
 
                         <View
@@ -535,8 +536,9 @@ export function CaseViewScreen(props) {
                                     containerStyle={{
                                         backgroundColor: 'white',
                                         borderColor: 'white',
+                                        color: 'red'
                                     }}
-                                    title="Not available"
+                                    title="Not Set"
                                     textStyle={styles.checkboxes}
                                     size={30}
                                     checked={filtersSelected[0] ? true : false}
@@ -549,51 +551,17 @@ export function CaseViewScreen(props) {
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: 'rgba(24, 23, 21, 0.5)',
-                                        width: 25,
-                                        height: 25,
-                                        marginRight: 20,
-                                        borderWidth: 1,
-                                        borderColor: '#fff',
-                                        borderRadius: 100,
-                                    }}
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <CheckBox
-                                    containerStyle={{
                                         backgroundColor: 'white',
-                                        borderColor: 'white',
-                                    }}
-                                    title="Family candidate"
-                                    textStyle={styles.checkboxes}
-                                    size={30}
-                                    checked={filtersSelected[1] ? true : false}
-                                    onPress={() =>
-                                        setFiltersSelected({
-                                            ...filtersSelected,
-                                            1: !filtersSelected[1],
-                                        })
-                                    }
-                                />
-                                <View
-                                    style={{
-                                        backgroundColor: '#9DE36B',
                                         width: 25,
                                         height: 25,
                                         marginRight: 20,
                                         borderWidth: 1,
-                                        borderColor: '#fff',
+                                        borderColor: '#ddd',
                                         borderRadius: 100,
                                     }}
                                 />
                             </View>
+
                             <View
                                 style={{
                                     flexDirection: 'row',
@@ -629,41 +597,7 @@ export function CaseViewScreen(props) {
                                     }}
                                 />
                             </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <CheckBox
-                                    containerStyle={{
-                                        backgroundColor: 'white',
-                                        borderColor: 'white',
-                                    }}
-                                    title="No-go"
-                                    textStyle={styles.checkboxes}
-                                    size={30}
-                                    checked={filtersSelected[3] ? true : false}
-                                    onPress={() =>
-                                        setFiltersSelected({
-                                            ...filtersSelected,
-                                            3: !filtersSelected[3],
-                                        })
-                                    }
-                                />
-                                <View
-                                    style={{
-                                        backgroundColor: '#DE4A4C',
-                                        width: 25,
-                                        height: 25,
-                                        marginRight: 20,
-                                        borderWidth: 1,
-                                        borderColor: '#fff',
-                                        borderRadius: 100,
-                                    }}
-                                />
-                            </View>
+
                             <View
                                 style={{
                                     flexDirection: 'row',
@@ -699,6 +633,7 @@ export function CaseViewScreen(props) {
                                     }}
                                 />
                             </View>
+
                             <View
                                 style={{
                                     flexDirection: 'row',
@@ -711,7 +646,7 @@ export function CaseViewScreen(props) {
                                         backgroundColor: 'white',
                                         borderColor: 'white',
                                     }}
-                                    title="Support candidate"
+                                    title="Potential Suporter"
                                     textStyle={styles.checkboxes}
                                     size={30}
                                     checked={filtersSelected[5] ? true : false}
@@ -734,6 +669,81 @@ export function CaseViewScreen(props) {
                                     }}
                                 />
                             </View>
+
+
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <CheckBox
+                                    containerStyle={{
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
+                                    }}
+                                    title="Placement Option"
+                                    textStyle={styles.checkboxes}
+                                    size={30}
+                                    checked={filtersSelected[1] ? true : false}
+                                    onPress={() =>
+                                        setFiltersSelected({
+                                            ...filtersSelected,
+                                            1: !filtersSelected[1],
+                                        })
+                                    }
+                                />
+                                <View
+                                    style={{
+                                        backgroundColor: '#9DE36B',
+                                        width: 25,
+                                        height: 25,
+                                        marginRight: 20,
+                                        borderWidth: 1,
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
+                                    }}
+                                />
+                            </View>
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <CheckBox
+                                    containerStyle={{
+                                        backgroundColor: 'white',
+                                        borderColor: 'white',
+                                    }}
+                                    title="No-go"
+                                    textStyle={styles.checkboxes}
+                                    size={30}
+                                    checked={filtersSelected[3] ? true : false}
+                                    onPress={() =>
+                                        setFiltersSelected({
+                                            ...filtersSelected,
+                                            3: !filtersSelected[3],
+                                        })
+                                    }
+                                />
+                                <View
+                                    style={{
+                                        backgroundColor: '#DE4A4C',
+                                        width: 25,
+                                        height: 25,
+                                        marginRight: 20,
+                                        borderWidth: 1,
+                                        borderColor: '#fff',
+                                        borderRadius: 100,
+                                    }}
+                                />
+                            </View>
+
 
                             <Text
                                 style={{
@@ -798,7 +808,7 @@ export function CaseViewScreen(props) {
                                     backgroundColor: 'white',
                                     borderColor: 'white',
                                 }}
-                                title="Unspecified"
+                                title="Not Specified"
                                 textStyle={styles.checkboxes}
                                 size={30}
                                 checked={filtersSelected[8]}
