@@ -19,6 +19,7 @@ import {
     Alert,
     TouchableOpacity,
 } from 'react-native';
+
 import {
     ListItem,
     Image,
@@ -30,6 +31,7 @@ import {
 
 // redux
 import { connect } from 'react-redux';
+
 import {
     getCaseData,
     getUserCases,
@@ -43,13 +45,15 @@ import constants from '../helpers/constants';
 
 // local component imports
 import CaseViewScreen from './CaseViewScreen.js';
-import ConnectionsLogin from '../components/Authentication/ConnectionsLogin';
+import ConnectionsLogin from '../components/auth/ConnectionsLogin.tsx';
 import Loader from '../components/Loader/Loader';
 
 // 3rd party imports like icons & scroll functionality
 import ScrollToTop from '../UI/ScrollToTop';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
+
+/**********************************************************/
 
 // placeholder image for non-logged in users?
 const placeholderImg = require('../../assets/profile_placeholder.png');

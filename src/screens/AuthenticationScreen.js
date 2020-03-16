@@ -1,8 +1,8 @@
 import React, { Component, useEffect } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
-import LoginWithAuth0 from '../components/Authentication/LoginWithAuth0';
+import LoginWithAuth0 from '../components/auth/LoginWithAuth0.tsx';
 import { connect } from 'react-redux';
-import RegisterModalsContainer from '../components/AuthModals/RegisterModalsContainer';
+import RegisterModalsContainer from '../components/auth/RegisterModalsContainer.tsx';
 import {
     setModalVisible,
     setAgreeModalVisible,
