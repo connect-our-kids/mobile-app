@@ -22,7 +22,7 @@ import {
 
 import { connect } from 'react-redux';
 import Loader from '../components/Loader/Loader';
-import CaseListComponent from '../components/CaseListComponent/index.jsx';
+import CaseList from '../components/CaseList/index.jsx';
 
 import ScrollToTop from '../UI/ScrollToTop';
 import { RadioButton } from 'react-native-paper';
@@ -407,7 +407,7 @@ export function CaseViewScreen(props) {
                             SearchedConnections
               && SearchedConnections.map((connection, index) => {
                   return (
-                      <CaseListComponent
+                      <CaseList
                           pressed={() => {
                               props.navigation.navigate('ConnectionsView', {
                                   connectionData: connection,

@@ -35,7 +35,7 @@ function getTextColor(person) {
 
 /**********************************************************/
 
-export default function CaseListComponent(props) {
+export default function CaseList(props) {
     return (
         <View style={{ width: '100%', paddingLeft: 5, paddingRight: 10 }}>
             <View>
