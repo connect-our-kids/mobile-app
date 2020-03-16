@@ -58,12 +58,12 @@ export const Engagement = (props) => {
         >
             {props.engagement.created_by.picture
                 ? <Image
-                    style={{ height: 50, width: 50, borderRadius: 25, overflow: 'hidden', marginLeft: 15, marginRight: 15, marginTop: 5 }}
+                    style={{ height: 50, width: 50, borderRadius: 25, overflow: 'hidden', marginLeft: 5, marginRight: 15, marginTop: 5 }}
                     source={{ uri: props.engagement.created_by.picture }}
                     defaultSource = {placeholderImg}
                 />
                 : <Image
-                    style={{ height: 50, width: 50, borderRadius: 25, overflow: 'hidden', marginLeft: 15, marginRight: 15, marginTop: 5 }}
+                    style={{ height: 50, width: 50, borderRadius: 25, overflow: 'hidden', marginLeft: 5, marginRight: 15, marginTop: 5 }}
                     source={placeholderImg}
                 />}
             <View>

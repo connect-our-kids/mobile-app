@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     scrollButton: {
         position: 'absolute',
         zIndex: 1000,
-        bottom: constants.headerHeight,
+        bottom: 5,
         right: 46,
     },
 });

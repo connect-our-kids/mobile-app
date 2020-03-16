@@ -12,11 +12,16 @@ import authHelpers from '../../helpers/authHelpers';
 
 const ConnectionsLogin = (props) => {
 
+    const learnMorePressed = () => {
+        Linking.openURL('https://www.connectourkids.org/tools/family-connections')
+    }
+
     return (
         <ScreenContainer>
             <MainText>
-                {'Welcome to Connect Our Kids!\n\nFamily Connections is a smart technology tool that will help you identify and engage extended family members. We like to think of Family Connections as a mind-mapping tool—giving you the power to build a supportive network for every child you serve including blood relatives, neighbors, teachers, and members of their religious community.\n\nLogin or Sign Up below to access these powerful connection tools.'}
+                {'Family Connections helps social workers, family recruiters, and CASA volunteeers identify and engage extended family members of children in foster care.'}
             </MainText>
+            <Text style={styles.linkText} onPress={learnMorePressed}>Learn More About Family Connections</Text>
             <View style={styles.linkContainer}>
                 <View style={styles.logInBtns}>
                     <Button
@@ -53,9 +58,15 @@ const styles = StyleSheet.create({
     logOutText: {
         color: '#fff',
     },
+    linkText: {
+        color: '#0279AC',
+        marginTop: 20,
+        textAlign: 'center'
+    },
     linkContainer: {
         justifyContent: 'space-between',
         flex: 1,
+        marginTop: 40
     },
     buttonStyle: {
         flex: 1,

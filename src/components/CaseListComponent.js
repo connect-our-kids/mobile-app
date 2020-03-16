@@ -35,16 +35,35 @@ import * as TelephoneHelpers from '../helpers/telephoneHelpers.js';
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
+const getBackgroundColor = (person) => {
+    if(person.status === null) {
+        return 'white'
+    }
+
+    return person.status.color;
+}
+
+const getTextColor = (person) => {
+
+    if(person.status === null) {
+        return '#5A6064'
+    }
+
+    return 'white';
+
+}
+
 const CaseListComponent = (props) => {
     return (
-        <View style={{ paddingLeft: 2, paddingRight: 2 }}>
+        <View style={{ width: '100%', paddingLeft: 5, paddingRight: 10 }}>
                  <View>
 
                     <ListItem
                         title={props.connection.person.full_name}
-                        titleStyle={{ color: '#5A6064' }}
+                        titleStyle={{ color: getTextColor(props.connection.person) }}
                         subtitle={props.connection.person.title}
-                        subtitleStyle={{ color: '#5A6064' }}
+                        subtitleStyle={{ color: getTextColor(props.connection.person) }}
+                        containerStyle={{backgroundColor: getBackgroundColor(props.connection.person), borderRadius: 5, marginTop: 5}}
                         leftAvatar={
                             <View
                                 style={{ height: 50,
@@ -76,10 +95,7 @@ const CaseListComponent = (props) => {
                         }}
                     />
 
-                    {props.connection.person.status ?
 
-                    <SocialIcon style={{ position: 'absolute', bottom: 5, left: 5, backgroundColor: props.connection.person.status.color, height: 18, width: 18 }}/>
-                    : null }
                 </View>
 
         </View>

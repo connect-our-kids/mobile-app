@@ -36,24 +36,17 @@ import {
     MaterialIcons,
 } from '@expo/vector-icons';
 import { Engagement, Documents } from '../components/ConnectionsViewTabs/ConnectionsViewTabs';
-import * as TelephoneHelpers from '../helpers/telephoneHelpers.js';
-import AddEngagementForm from '../components/ConnectionsViewTabs/AddEngagementForm';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-import AddDocForm from '../components/ConnectionsViewTabs/AddDocForm';
 import Loader from '../components/Loader/Loader';
 import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
-import EditConnectionsForm from '../components/ConnectionsViewTabs/EditConnectionForm';
-import { Row } from 'native-base';
 import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup';
+import CaseListComponent from '../components/CaseListComponent';
 
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
 function ConnectionsView(props) {
-    const connectionData = props.navigation.getParam('connectionData').person;
+    const connection = props.navigation.getParam('connectionData');
     const [ tabs, setTabs ] = useState({
         engagement: true,
         docs: false,
@@ -73,7 +66,7 @@ function ConnectionsView(props) {
     const engagementsNoDocuments: object[] = props.engagements.filter((engagement) => engagement.data_type !== 'D');
 
     const passEngagementType: any = (type) => {
-        return props.navigation.navigate('EngagementForm', { data_type: type, id: connectionData.pk });
+        return props.navigation.navigate('EngagementForm', { data_type: type, id: connection.person.pk });
     };
 
     const goToTop: any = () => {
@@ -81,13 +74,13 @@ function ConnectionsView(props) {
     };
 
     return (
-        <View>
+        <View >
             {isScrolling
                 ? <ScrollToTop
                     style={{
                         position: 'absolute',
                         zIndex: 1000,
-                        bottom: 15,
+                        bottom: 10,
                         right: 38,
                         backgroundColor: 'white',
                         padding: 8,
@@ -97,7 +90,7 @@ function ConnectionsView(props) {
                 /> : null}
             <ScrollView
                 ref={(a) => { scroll = a }}
-                style={{ maxHeight: '100%', width: '100%' }}
+                style={{ height: '100%', width: '100%' }}
                 scrollsToTop
                 onScroll={(e) => {
                     if (e.nativeEvent.contentOffset.y <= 250) {
@@ -113,44 +106,10 @@ function ConnectionsView(props) {
 
                 <View>
                     <View style={styles.avatarName}>
-                        <View
-                            style={{
-                                height: 80,
-                                width: 80,
-                                borderRadius: 40,
-                                overflow: 'hidden',
-                            }}
-                        >
-                            {connectionData.picture
-                                ? <Image
-                                    source={{ uri: connectionData.picture }}
-                                    style={{
-                                        height: 80,
-                                        width: 80,
-                                        borderRadius: 40,
-                                        overflow: 'hidden',
-                                    }}
-                                    defaultSource={placeholderImg}
-                                />
-                                : <Image
-                                    source={placeholderImg}
-                                    style={{
-                                        height: 80,
-                                        width: 80,
-                                        borderRadius: 40,
-                                        overflow: 'hidden',
-                                    }}
-                                />}
-                        </View>
-                        <Text
-                            style={{
-                                fontSize: 30,
-                                color: '#444444',
-                                paddingTop: 15,
-                                fontFamily: constants.lotoFamily,
-                            }}
-                        >{connectionData.full_name}</Text>
-                    </View>
+                    <CaseListComponent
+                          connection={connection}
+                      />
+                      </View>
                 </View>
 
                 <View style={[ { justifyContent: 'flex-start', width: '100%', alignItems: 'flex-start' } ]}>
@@ -172,10 +131,9 @@ function ConnectionsView(props) {
                                             docs: false,
                                             details: false,
                                         });
-                                    }}
-                                >
+                                    }}>
                                     <Text style={tabs.engagement ? styles.thatBlue : null} >
-                  Engagements
+                                        Engagements
                                     </Text>
 
                                 </Text>
@@ -190,11 +148,10 @@ function ConnectionsView(props) {
                                             details: true,
                                         });
                                         props.setDetails(true);
-                                    }}
-                                >
+                                    }}>
 
                                     <Text style={tabs.details ? styles.thatBlue : null} >
-                  Details
+                                        Details
                                     </Text>
 
                                 </Text>
@@ -208,10 +165,9 @@ function ConnectionsView(props) {
                                             docs: true,
                                             details: false,
                                         });
-                                    }}
-                                >
+                                    }}>
                                     <Text style={tabs.docs ? styles.thatBlue : null} >
-                  Documents
+                                        Documents
                                     </Text>
                                 </Text>
                             </View>
@@ -224,16 +180,17 @@ function ConnectionsView(props) {
                                         width: '100%',
                                         minHeight: 350,
                                         paddingVertical: 15,
-                                        paddingHorizontal: 25,
+                                        paddingHorizontal: 10,
                                     }}
                                 >
                                     <View
                                         style={{
                                             flexDirection: 'row',
-                                            justifyContent: 'space-between',
+                                            justifyContent: 'center',
                                             alignItems: 'center',
                                             marginTop: 4,
                                             marginBottom: 20,
+                                            marginHorizontal: 0
                                         }}
                                     >
                                         <View style={styles.iconLabelContainer}>
@@ -312,7 +269,7 @@ function ConnectionsView(props) {
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <AddDocumentButtonsGroup afterAccept={(media) => {
-                                            props.navigation.navigate('DocumentForm', { id: connectionData.pk, media });
+                                            props.navigation.navigate('DocumentForm', { id: connection.person.pk, media });
                                         }}/>
 
                                     </View>
@@ -335,7 +292,7 @@ function ConnectionsView(props) {
                                 >
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         {props.isLoadingDetails ? <Loader />
-                                            : <ConnectionsDetailsView details={props.details} id={connectionData.pk} />
+                                            : <ConnectionsDetailsView details={props.details} id={connection.person.pk} />
                                         }
                                     </View>
                                 </View>
@@ -441,6 +398,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
+        marginHorizontal: 15
     },
 
     iconContainer: {
@@ -464,10 +422,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     avatarName: {
-        display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingBottom: '10%',
-        paddingTop: '5%',
+        paddingTop: 5,
+        paddingLeft: 5
     },
 });
