@@ -512,7 +512,6 @@ export function CaseViewScreen(props) {
                                     containerStyle={{
                                         backgroundColor: 'white',
                                         borderColor: 'white',
-                                        color: 'red'
                                     }}
                                     title="Not Set"
                                     textStyle={styles.checkboxes}
