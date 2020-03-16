@@ -30,8 +30,6 @@ import constants from '../helpers/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader/Loader';
-import ErrorMessage from '../components/Messages/ErrorMessage';
-import RecentSearches from '../components/RecentSearches/RecentSearches';
 
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';
@@ -49,45 +47,49 @@ class PeopleSearchScreen extends React.Component {
       privacy: false,
   };
 
+  componentDidMount() {
+
+  }
+
   handleEncodeURI = (person) => {
       return encodeURI(JSON.stringify(person));
   };
 
-  handleSearchRequest = async (person, searchType, searchInput) => {
-      const accessToken = await SecureStore.getItemAsync('cok_access_token');
-      const idToken = await SecureStore.getItemAsync('cok_id_token');
-      const {
-      // accessToken,
-          fetchSearchResult,
-          // idToken,
-          isLoggedIn,
-          navigation,
-          user,
-      } = this.props;
+  handleSearchRequest = async (person, searchType) => {
+    const accessToken = await SecureStore.getItemAsync('cok_access_token');
+    const idToken = await SecureStore.getItemAsync('cok_id_token');
+    const {
+    // accessToken,
+        fetchSearchResult,
+        // idToken,
+        isLoggedIn,
+        navigation,
+        user,
+    } = this.props;
 
-      const body = {};
-      const requestObject = {};
+    const body = {};
+    const requestObject = {};
 
-      if (isLoggedIn) {
-          requestObject['authToken'] = accessToken;
-          requestObject['idToken'] = idToken;
-          // Add to save to recent searcg
-          body['searchType'] = searchType;
-          body['searchInput'] = searchInput;
-      }
+    if (isLoggedIn) {
+        requestObject['authToken'] = accessToken;
+        requestObject['idToken'] = idToken;
+    }
+    body['searchType'] = searchType;
 
-      requestObject['person'] = this.handleEncodeURI(person);
-      body['requestObject'] = JSON.stringify(requestObject);
+    requestObject['person'] = this.handleEncodeURI(person);
+    body['requestObject'] = JSON.stringify(requestObject);
 
-      if (this.props.person || this.props.possiblePersons.length) {
-          this.props.resetState();
-      }
+    if (this.props.person || this.props.possiblePersons.length) {
+        this.props.resetState();
+    }
 
-      fetchSearchResult(
-          body,
-          () => navigation.navigate('SearchResult'),
-          user ? user.email : null,
-      );
+    fetchSearchResult(
+        body,
+        () => navigation.navigate('SearchResult'),
+        user ? user.email : null,
+    );
+
+
   };
 
   handleNavigateToResult = async (searchPointer) => {
@@ -139,34 +141,15 @@ class PeopleSearchScreen extends React.Component {
       this.props.setModalVisible(true);
   };
 
+  showSearchErrorMessage = (message) => {
+      this.setState({...this.state, errorMessgae: message});
+  }
+
   render() {
       const { isLoggedIn, navigation } = this.props;
       return (
           <Container style={styles.container}>
               <SafeAreaView>
-                  <View>
-                      <Modal
-                          animationType="slide"
-                          transparent={false}
-                          visible={this.state.modalVisible}
-                          onRequestClose={this.closeModal}
-                      >
-                          {this.state.terms && (
-                              <TermsOfService
-                                  closeModal={this.closeModal}
-                                  controlModal={this.controlModal}
-                                  user={this.props.user}
-                                  isLoggedIn={this.props.isLoggedIn}
-                              />
-                          )}
-                          {this.state.privacy && (
-                              <PrivacyPolicy
-                                  closeModal={this.closeModal}
-                                  controlModal={this.controlModal}
-                              />
-                          )}
-                      </Modal>
-                  </View>
                   <StatusBar barStyle="dark-content" />
                   <RegisterModalsContainer
                       modalVisible={this.props.modalVisible}
@@ -182,37 +165,50 @@ class PeopleSearchScreen extends React.Component {
                           )
                       }
                   />
-                  <ScrollView>
-                      <View>
-                          <Text style={styles.intro}>Search By:</Text>
-                      </View>
 
-                      <View>
-                          <SearchForm
-                              handleSearch={this.handleSearchRequest}
-                              resetReduxState={this.resetReduxState}
-                              data={this.props.data}
-                          />
-
-                          {!isLoggedIn && (
+                    {!isLoggedIn && (
                               <TouchableHighlight onPress={this.startRegister}>
                                   <Text style={styles.link}>
-                    This is a preview. Social workers can have completely free
-                    access. Click here to find out more.
+                                    This is a preview. Social workers, family recruiters, and CASA volunteers can have completely free access. Touch here to find out more.
                                   </Text>
                               </TouchableHighlight>
                           )}
-                          {this.props.isFetching && <Loader />}
-                          {this.props.error && (
-                              <ErrorMessage
-                                  data={this.props.error}
-                                  query={this.props.query}
-                              />
-                          )}
-                          {!!this.props.possiblePersons.length ? (
                               <>
-                                  <Text style={styles.matchesText}>Possible Matches</Text>
-                                  <FlatList
+                              <FlatList style={{height: '100%'}}
+                                    ListHeaderComponent = {
+                                        <View>
+
+                                            <View>
+                                                <Text style={styles.intro}>Find A Person By...</Text>
+                                            </View>
+
+                                            <View>
+                                                <SearchForm
+                                                    handleSearch={this.handleSearchRequest}
+                                                    resetReduxState={this.resetReduxState}
+                                                    data={this.props.data}
+                                                    sendSearchErrorMessage={this.showSearchErrorMessage}
+                                                />
+
+                                            </View>
+
+                                            {this.state.errorMessage?.length > 0 ? (
+                                                <View style={{ backgroundColor: '#fff3cd', padding: 15 }}>
+                                                    {this.state.errorMessage}
+                                                </View>
+                                            ): null }
+
+
+                                            {this.props.isFetching && <Loader />}
+
+                                            {(this.props.possiblePersons.length) ? (
+                                            <Text style={styles.matchesText}>Possible Matches</Text>
+                                            ): null}
+
+
+                                        </View>
+
+                                    }
                                       data={this.props.possiblePersons}
                                       renderItem={({ item }) => {
                                           return (
@@ -229,15 +225,6 @@ class PeopleSearchScreen extends React.Component {
                                       keyExtractor={(item, index) => index.toString()}
                                   />
                               </>
-                          ) : null}
-                          {isLoggedIn && (
-                              <RecentSearches
-                                  handleSearch={this.handleSearchRequest}
-                                  navigation={navigation}
-                              />
-                          )}
-                      </View>
-                  </ScrollView>
               </SafeAreaView>
           </Container>
       );

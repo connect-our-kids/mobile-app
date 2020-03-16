@@ -16,6 +16,7 @@ const initialState = {
     isFetching: false,
     person: null,
     possiblePersons: [],
+    errorMessage: "yes!"
 };
 
 export const peopleSearchReducer = (state = initialState, action) => {
@@ -41,14 +42,18 @@ export const peopleSearchReducer = (state = initialState, action) => {
             error: null,
         };
     case FETCH_PERSON_FAILURE:
+        return {
+            ...state,
+            isFetching: false
+        }
     case FETCH_SEARCH_RESULT_FAILURE:
+        console.error(" There was a FETCH_SEARCH_RESULT_FAILURE: ", action)
         return {
             error: action.payload,
             isFetching: false,
             person: null,
             possiblePersons: [],
-            data: action.data,
-            query: action.query,
+            errorMessage: "There was a problem performing the search"
         };
     case RESET_PERSON:
         return {

@@ -63,12 +63,6 @@ const PersonInfoRow = ({
                         handlePressDirections(data, key['zip_code'], key['city']);
                     }
                 }
-                else if (key.zip_code === undefined) {
-                    let address = `${key.display}`;
-                    let type = 'address';
-                    console.log('ADDRESS', `${key.display}`);
-                    showConModal(address, type, index);
-                }
                 else {
                     let address = `${key.display}, ${key.zip_code}`;
                     let type = 'address';

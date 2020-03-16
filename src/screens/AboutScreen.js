@@ -31,8 +31,8 @@ class AboutScreen extends Component {
               <SafeAreaView style={{ width: '95%' }}>
                   <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
                       <MainText>
-              Connect Our Kids makes free tools for social workers engaged in
-              permanency searches for foster kids. Watch the video below to learn more about the free tools and resources in this app.
+              Connect Our Kids makes free tools for social workers, family recruiters, and CASA volunteers engaged in
+              permanency searches for kids in foster care.
                       </MainText>
 
                       <Video uri={constants.aboutURI} />
@@ -48,11 +48,6 @@ class AboutScreen extends Component {
             Video not loading?<Text style={{ textDecorationLine: 'underline', fontWeight: 'bold' }}>Tap here.</Text></Text>
                       <Divider style={{ height: 1, backgroundColor: '#E5E4E2' }} />
 
-                      {/* Redirect links to website below */}
-                      {/* <Text onPress={() => Linking.openURL('https://www.connectourkids.org/terms')}>Click Here to view the Terms of Service.</Text>
-            <Text onPress={() => Linking.openURL('https://www.connectourkids.org/privacy')}>Click Here to view Privacy Policy.</Text>
-            <Text onPress={() => Linking.openURL('https://www.connectourkids.org/contact')}>Click HERE to contact us!</Text> */}
-
                       <Text>
                           {`V${version}`}
                       </Text>
@@ -65,7 +60,6 @@ class AboutScreen extends Component {
                               color: '#AAA9AD',
                           }}
                       >
-                          {`Copyright ${getYear()} © Connect Our Kids.\nAll Rights Reserved.`}
                       </Text>
                   </ScrollView>
               </SafeAreaView>
