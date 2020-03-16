@@ -39,9 +39,8 @@ import { Engagement, Documents } from '../components/ConnectionsViewTabs/Connect
 import Loader from '../components/Loader/Loader';
 import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
-import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup';
-import CaseListComponent from '../components/CaseListComponent';
-
+import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';
+import CaseList from '../components/CaseList/index.jsx';
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
@@ -106,10 +105,10 @@ function ConnectionsView(props) {
 
                 <View>
                     <View style={styles.avatarName}>
-                    <CaseListComponent
-                          connection={connection}
-                      />
-                      </View>
+                        <CaseList
+                            connection={connection}
+                        />
+                    </View>
                 </View>
 
                 <View style={[ { justifyContent: 'flex-start', width: '100%', alignItems: 'flex-start' } ]}>
@@ -190,7 +189,7 @@ function ConnectionsView(props) {
                                             alignItems: 'center',
                                             marginTop: 4,
                                             marginBottom: 20,
-                                            marginHorizontal: 0
+                                            marginHorizontal: 0,
                                         }}
                                     >
                                         <View style={styles.iconLabelContainer}>
@@ -398,7 +397,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
-        marginHorizontal: 15
+        marginHorizontal: 15,
     },
 
     iconContainer: {
@@ -426,6 +425,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingBottom: '10%',
         paddingTop: 5,
-        paddingLeft: 5
+        paddingLeft: 5,
     },
 });

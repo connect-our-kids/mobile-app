@@ -1,4 +1,4 @@
-import HeaderTitle from './../components/HeaderTitle';
+import HeaderTitle from './../components/HeaderTitle/index.jsx';
 import logoImg from '../../assets/logo.png';
 import {
     Image,
@@ -70,4 +70,3 @@ const styles = StyleSheet.create({
     imageStyles: { width: 225, height: 90 },
     iconStyles: { fontSize: 40, color: '#000', paddingRight: 20 },
 });
-
