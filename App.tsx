@@ -11,22 +11,15 @@ export default function App() {
     const [ state, setState ] = useState({ fontLoaded: false });
 
     useEffect (() => {
-        Font.loadAsync ({
-            [constants.fontFamily]: require('./assets/fonts/Lato-Light.ttf'),
-            [constants.headerFont]: require('./assets/fonts/Futura-Medium.otf'),
-            [constants.lotoFamily]: require('./assets/fonts/Lato-Light.ttf'),
-        }).then((res) => {
-            setState({ fontLoaded: true });
-        });
+
     });
 
     return (
         <AppearanceProvider>
-            {state.fontLoaded
-                ? <Provider store={store}>
+                <Provider store={store}>
                     <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
                     <Navigator />
-                </Provider> : null}
+                </Provider>
         </AppearanceProvider>
     );
 
