@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import {
     Text,
     View,
@@ -23,10 +23,10 @@ import {
 import { connect } from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import CaseListComponent from '../components/CaseListComponent';
-import { MaterialIcons } from '@expo/vector-icons';
+
 import ScrollToTop from '../UI/ScrollToTop';
 import { RadioButton } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+
 const leftArrow = '\u2190';
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
@@ -621,7 +621,7 @@ export function CaseViewScreen(props) {
                                         backgroundColor: 'white',
                                         borderColor: 'white',
                                     }}
-                                    title="Potential Suporter"
+                                    title="Potential Supporter"
                                     textStyle={styles.checkboxes}
                                     size={30}
                                     checked={filtersSelected[5] ? true : false}
@@ -644,7 +644,6 @@ export function CaseViewScreen(props) {
                                     }}
                                 />
                             </View>
-
 
 
                             <View
