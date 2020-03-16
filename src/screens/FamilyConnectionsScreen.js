@@ -38,7 +38,6 @@ import {
     authChecker,
 } from '../store/actions';
 
-
 // constants = like a config variable
 import constants from '../helpers/constants';
 
@@ -49,9 +48,8 @@ import Loader from '../components/Loader/Loader';
 
 // 3rd party imports like icons & scroll functionality
 import ScrollToTop from '../UI/ScrollToTop';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
-import { MaterialIcons } from '@expo/vector-icons';
 
 // placeholder image for non-logged in users?
 const placeholderImg = require('../../assets/profile_placeholder.png');
@@ -253,7 +251,7 @@ const FamilyConnectionsScreen = (props) => {
                 <SearchBar
                     inputStyle={{ fontSize: 16 }}
                     inputContainerStyle={{ backgroundColor: '#FAFAFA', height: 45.62 }}
-                    placeholder="Search Name..."
+                    placeholder="Search Cases"
                     placeholderTextColor="#8D8383"
                     // lightTheme
                     round
@@ -600,7 +598,7 @@ const FamilyConnectionsScreen = (props) => {
                         />
                     ) : null}
                     <ScrollView
-                        style={{height: '100%'}}
+                        style={{ height: '100%' }}
                         ref={(a) => (scroll = a)}
                         contentInset={{ bottom: constants.headerHeight }}
                         scrollsToTop
