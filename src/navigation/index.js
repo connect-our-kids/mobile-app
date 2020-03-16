@@ -90,25 +90,23 @@ const FamilyConnectionsNavigator = createStackNavigator(
                         height: 52,
                     },
                     headerLeft:
-            (<TouchableOpacity
-                underlayColor="lightgray"
-                style={{ padding: 7.5 }}
-                onPressIn={() => {
-                    navigation.goBack();
-                }}
-            >
-                <Text
-                    style={{
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        marginLeft: 5,
-                        fontSize: 20,
-                        color: '#0F6580',
-                    }}
-                >
-                    {leftArrow} ALL CASES
-                </Text>
-            </TouchableOpacity>),
+                        (<TouchableOpacity
+                            underlayColor="lightgray"
+                            style={{ padding: 7.5 }}
+                            onPressIn={() => {
+                                navigation.goBack();
+                            }}>
+                            <Text
+                                style={{
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                    marginLeft: 5,
+                                    fontSize: 20,
+                                    color: '#0F6580',
+                                }}>
+                                {leftArrow} Back To Cases
+                            </Text>
+                        </TouchableOpacity>),
                 };
             },
         },
@@ -122,27 +120,23 @@ const FamilyConnectionsNavigator = createStackNavigator(
                         height: 52,
                     },
                     headerLeft:
-            (<TouchableOpacity
-                underlayColor="lightgray"
-                style={{ padding: 7.5, display: 'flex' }}
-                onPressIn={() => {
-                    navigation.goBack();
-                }}
-            >
-                <Text
-                    style={{
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        marginLeft: 5,
-                        fontSize: 27,
-                        color: '#8b8b89',
-                    }}
-                >
-                    {leftArrow}
-                </Text>
-                {/* <Text>Edit Details</Text> */}
-                {/* if details true show edit, if not don't */}
-            </TouchableOpacity>),
+                        (<TouchableOpacity
+                            underlayColor="lightgray"
+                            style={{ padding: 7.5 }}
+                            onPressIn={() => {
+                                navigation.goBack();
+                            }}>
+                            <Text
+                                style={{
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                    marginLeft: 5,
+                                    fontSize: 20,
+                                    color: '#0F6580',
+                                }}>
+                                {leftArrow} Back To Case
+                            </Text>
+                        </TouchableOpacity>),
                 };
             },
         },

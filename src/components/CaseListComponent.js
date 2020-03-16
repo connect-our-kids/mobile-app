@@ -55,7 +55,7 @@ const getTextColor = (person) => {
 
 const CaseListComponent = (props) => {
     return (
-        <View style={{ paddingLeft: 2, paddingRight: 2 }}>
+        <View style={{ width: '100%', paddingLeft: 5, paddingRight: 10 }}>
                  <View>
 
                     <ListItem

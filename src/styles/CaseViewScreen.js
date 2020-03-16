@@ -42,7 +42,7 @@ export default function CaseViewScreen(props) {
                     alignItems: 'center',
                 }}
             >
-                <Text>{caseData.full_name}</Text>
+                <Text>{caseData.full_name} Test</Text>
                 <View>
                     <ListItem leftAvatar={{ source: { uri: caseData.picture || placeholderImg } }} />
                     <Text>Gender: {caseData.gender}</Text>

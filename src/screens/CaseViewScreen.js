@@ -288,9 +288,9 @@ export function CaseViewScreen(props) {
                                         {genderAssignment(caseData.gender)}
                                     </Text>
                                 ) : null}
-                                {caseData.birthday ? (
+                                {caseData.birthday?.raw?.length > 0 ? (
                                     <Text style={{ color: '#434245' }}>
-                    Date of Birth: {caseData.birthday.raw}
+                                        Date of Birth: {caseData.birthday.raw}
                                     </Text>
                                 ) : null}
                                 {caseData.address && caseData.address.formatted ? (
@@ -300,7 +300,7 @@ export function CaseViewScreen(props) {
                                 ) : null}
                                 {caseData.foster_care ? (
                                     <Text style={{ color: '#434245' }}>
-                    Initiation: {caseData.foster_care}
+                                        Case Initiation: {caseData.foster_care}
                                     </Text>
                                 ) : null}
                             </View>
@@ -353,35 +353,11 @@ export function CaseViewScreen(props) {
                     <View
                         style={{
                             flexDirection: 'column',
-                            width: '95%',
+                            width: '100%',
                             minHeight: 350,
                         }}
                     >
-                        <View
-                            style={{
-                                width: '100%',
-                                height: 36,
-                                borderTopLeftRadius: 4,
-                                borderTopRightRadius: 4,
-                                backgroundColor: '#0279AC',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                            }}
-                        >
-                            <View>
-                                <Text
-                                    style={{
-                                        width: '100%',
-                                        padding: 5,
-                                        fontSize: 17.5,
-                                        color: '#FFFFFF',
-                                    }}
-                                >
-                  Connections
-                                </Text>
-                            </View>
-                        </View>
+
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -398,7 +374,7 @@ export function CaseViewScreen(props) {
                                     backgroundColor: '#FAFAFA',
                                     height: 45.62,
                                 }}
-                                placeholder="Search Name..."
+                                placeholder="Search Connections"
                                 placeholderTextColor="#8D8383"
                                 // lightTheme
                                 round
