@@ -7,6 +7,7 @@ module.exports = {
     'env': {
         'node': true,
         'es6': true,
+        'jest/globals': true,
     },
     'globals': {
         'Atomics': 'readonly',
@@ -20,6 +21,7 @@ module.exports = {
         'react-native',
         /* 'react-native-a11y', */
         '@typescript-eslint',
+        'jest',
     ],
     'extends': [
         'eslint:recommended',
@@ -28,6 +30,8 @@ module.exports = {
         /* 'plugin:jsx-a11y/recommended', */
         'plugin:react/recommended',
         /* 'plugin:react-native-a11y/recommended', */
+        'plugin:jest/recommended',
+        'plugin:jest/style',
     ],
 
     'parser': 'babel-eslint',
