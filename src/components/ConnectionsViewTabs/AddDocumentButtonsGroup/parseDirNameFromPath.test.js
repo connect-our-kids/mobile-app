@@ -1,6 +1,6 @@
 import parseDirNameFromPath from './parseDirNameFromPath';
 
-const spy1 = jest.fn();
+const spy1 = jest.fn(() => '/dir/name/');
 spy1('/dir/name/test-file.ext');
 
 test('Function is called', () => {
