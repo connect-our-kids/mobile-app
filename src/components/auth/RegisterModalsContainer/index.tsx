@@ -1,70 +1,94 @@
 import React from 'react';
-import { View, Modal, StyleSheet, Dimensions } from 'react-native';
+
+import {
+    View,
+    Modal,
+    StyleSheet,
+} from 'react-native';
+
 import SocialWorkerModal from '../SocialWorkerModal/index.jsx';
 import VideoAgreeModal from '../VideoAgreeModal/index.jsx';
 import VideoModal from '../VideoModal/index.jsx';
-import constants from '../../../helpers/constants';
+
 import { sendEvent } from '../../../helpers/createEvent';
 
-const RegisterModalsContainer = (props) => {
+/**********************************************************/
+
+export default function RegisterModalsContainer(props): JSX.Element {
+
     return (
         <Modal
             animationType="slide"
             transparent={false}
             visible={props.modalVisible}
-            onRequestClose={() => {
+            onRequestClose={(): void => {
                 props.setModalVisible(false);
             }}
         >
             <View style={styles.marginTop}>
                 <View>
-                    {props.modalVisible && !props.videoAgree && !props.videoVisible && (
-                        <SocialWorkerModal
-                            modalVisible={props.modalVisible}
-                            advanceModal={props.setAgreeModalVisible}
-                            setModalVisible={props.setModalVisible}
-                            sendEvent={sendEvent}
-                        />
-                    )}
-                    {!props.videoVisible && props.videoAgree && (
-                        <VideoAgreeModal
-                            modalVisible={props.modalVisible}
-                            advanceModal={props.setVideoPlayerModalVisible}
-                            setModalVisible={props.setModalVisible}
-                            onLogin={props.onLogin}
-                            sendEvent={sendEvent}
-                        />
-                    )}
-                    {!props.videoAgree && props.videoVisible && (
-                        <VideoModal
-                            setModalVisible={props.setModalVisible}
-                            onLogin={props.onLogin}
-                            sendEvent={sendEvent}
-                        />
-                    )}
+                    {(props.modalVisible && !props.videoAgree && !props.videoVisible)
+                        ? (
+                            <SocialWorkerModal
+                                modalVisible={props.modalVisible}
+                                advanceModal={props.setAgreeModalVisible}
+                                setModalVisible={props.setModalVisible}
+                                sendEvent={sendEvent}
+                            />
+                        )
+                        : null
+                    }
+                    {(!props.videoVisible && props.videoAgree)
+                        ? (
+                            <VideoAgreeModal
+                                modalVisible={props.modalVisible}
+                                advanceModal={props.setVideoPlayerModalVisible}
+                                setModalVisible={props.setModalVisible}
+                                onLogin={props.onLogin}
+                                sendEvent={sendEvent}
+                            />
+                        )
+                        : null
+                    }
+                    {(!props.videoAgree && props.videoVisible)
+                        ? (
+                            <VideoModal
+                                setModalVisible={props.setModalVisible}
+                                onLogin={props.onLogin}
+                                sendEvent={sendEvent}
+                            />
+                        )
+                        : null
+                    }
                 </View>
             </View>
         </Modal>
     );
-};
+
+}
+
+/**********************************************************/
 
 const styles = StyleSheet.create({
+
     marginTop: {
         marginTop: 22,
     },
-    logo: {
-        width: Dimensions.get('window').width - 40,
-        height: 100,
-    },
-    button: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        backgroundColor: constants.highlightColor,
-    },
-    btnText: {
-        color: '#fff',
-    },
-});
 
-export default RegisterModalsContainer;
+    // logo: {
+    //     width: Dimensions.get('window').width - 40,
+    //     height: 100,
+    // },
+
+    // button: {
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     flexDirection: 'row',
+    //     backgroundColor: constants.highlightColor,
+    // },
+
+    // btnText: {
+    //     color: '#fff',
+    // },
+
+});
