@@ -8,7 +8,7 @@ import {
     Dimensions,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
+import constants from '../../../helpers/constants';
 
 const SocialWorkerModal = (props) => {
     return (

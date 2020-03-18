@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Modal, StyleSheet, Dimensions } from 'react-native';
-import SocialWorkerModal from '../SocialWorkerModal';
+import SocialWorkerModal from '../SocialWorkerModal/index.jsx';
 import VideoAgreeModal from '../VideoAgreeModal/index.jsx';
 import VideoModal from '../VideoModal/index.jsx';
 import constants from '../../../helpers/constants';
