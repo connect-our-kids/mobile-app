@@ -32,7 +32,7 @@ import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader/Loader';
 
 import authHelpers from '../helpers/authHelpers';
-import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';
+import RegisterModalsContainer from './../components/auth/RegisterModalsContainer/index.tsx';
 
 class PeopleSearchScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>
@@ -56,38 +56,38 @@ class PeopleSearchScreen extends React.Component {
   };
 
   handleSearchRequest = async (person, searchType) => {
-    const accessToken = await SecureStore.getItemAsync('cok_access_token');
-    const idToken = await SecureStore.getItemAsync('cok_id_token');
-    const {
-    // accessToken,
-        fetchSearchResult,
-        // idToken,
-        isLoggedIn,
-        navigation,
-        user,
-    } = this.props;
+      const accessToken = await SecureStore.getItemAsync('cok_access_token');
+      const idToken = await SecureStore.getItemAsync('cok_id_token');
+      const {
+          // accessToken,
+          fetchSearchResult,
+          // idToken,
+          isLoggedIn,
+          navigation,
+          user,
+      } = this.props;
 
-    const body = {};
-    const requestObject = {};
+      const body = {};
+      const requestObject = {};
 
-    if (isLoggedIn) {
-        requestObject['authToken'] = accessToken;
-        requestObject['idToken'] = idToken;
-    }
-    body['searchType'] = searchType;
+      if (isLoggedIn) {
+          requestObject['authToken'] = accessToken;
+          requestObject['idToken'] = idToken;
+      }
+      body['searchType'] = searchType;
 
-    requestObject['person'] = this.handleEncodeURI(person);
-    body['requestObject'] = JSON.stringify(requestObject);
+      requestObject['person'] = this.handleEncodeURI(person);
+      body['requestObject'] = JSON.stringify(requestObject);
 
-    if (this.props.person || this.props.possiblePersons.length) {
-        this.props.resetState();
-    }
+      if (this.props.person || this.props.possiblePersons.length) {
+          this.props.resetState();
+      }
 
-    fetchSearchResult(
-        body,
-        () => navigation.navigate('SearchResult'),
-        user ? user.email : null,
-    );
+      fetchSearchResult(
+          body,
+          () => navigation.navigate('SearchResult'),
+          user ? user.email : null,
+      );
 
 
   };
@@ -142,7 +142,7 @@ class PeopleSearchScreen extends React.Component {
   };
 
   showSearchErrorMessage = (message) => {
-      this.setState({...this.state, errorMessgae: message});
+      this.setState({ ...this.state, errorMessgae: message });
   }
 
   render() {
@@ -166,65 +166,65 @@ class PeopleSearchScreen extends React.Component {
                       }
                   />
 
-                    {!isLoggedIn && (
-                              <TouchableHighlight onPress={this.startRegister}>
-                                  <Text style={styles.link}>
+                  {!isLoggedIn && (
+                      <TouchableHighlight onPress={this.startRegister}>
+                          <Text style={styles.link}>
                                     This is a preview. Social workers, family recruiters, and CASA volunteers can have completely free access. Touch here to find out more.
-                                  </Text>
-                              </TouchableHighlight>
-                          )}
-                              <>
-                              <FlatList style={{height: '100%'}}
-                                    ListHeaderComponent = {
-                                        <View>
+                          </Text>
+                      </TouchableHighlight>
+                  )}
+                  <>
+                      <FlatList style={{ height: '100%' }}
+                          ListHeaderComponent = {
+                              <View>
 
-                                            <View>
-                                                <Text style={styles.intro}>Find A Person By...</Text>
-                                            </View>
+                                  <View>
+                                      <Text style={styles.intro}>Find A Person By...</Text>
+                                  </View>
 
-                                            <View>
-                                                <SearchForm
-                                                    handleSearch={this.handleSearchRequest}
-                                                    resetReduxState={this.resetReduxState}
-                                                    data={this.props.data}
-                                                    sendSearchErrorMessage={this.showSearchErrorMessage}
-                                                />
+                                  <View>
+                                      <SearchForm
+                                          handleSearch={this.handleSearchRequest}
+                                          resetReduxState={this.resetReduxState}
+                                          data={this.props.data}
+                                          sendSearchErrorMessage={this.showSearchErrorMessage}
+                                      />
 
-                                            </View>
+                                  </View>
 
-                                            {this.state.errorMessage?.length > 0 ? (
-                                                <View style={{ backgroundColor: '#fff3cd', padding: 15 }}>
-                                                    {this.state.errorMessage}
-                                                </View>
-                                            ): null }
-
-
-                                            {this.props.isFetching && <Loader />}
-
-                                            {(this.props.possiblePersons.length) ? (
-                                            <Text style={styles.matchesText}>Possible Matches</Text>
-                                            ): null}
+                                  {this.state.errorMessage?.length > 0 ? (
+                                      <View style={{ backgroundColor: '#fff3cd', padding: 15 }}>
+                                          {this.state.errorMessage}
+                                      </View>
+                                  ) : null }
 
 
-                                        </View>
+                                  {this.props.isFetching && <Loader />}
 
-                                    }
-                                      data={this.props.possiblePersons}
-                                      renderItem={({ item }) => {
-                                          return (
-                                              <PersonRow
-                                                  item={item}
-                                                  handlePress={() =>
-                                                      this.props.navigation.navigate('SearchResult', {
-                                                          searchPointer: item['@search_pointer_hash'],
-                                                      })
-                                                  }
-                                              />
-                                          );
-                                      }}
-                                      keyExtractor={(item, index) => index.toString()}
+                                  {(this.props.possiblePersons.length) ? (
+                                      <Text style={styles.matchesText}>Possible Matches</Text>
+                                  ) : null}
+
+
+                              </View>
+
+                          }
+                          data={this.props.possiblePersons}
+                          renderItem={({ item }) => {
+                              return (
+                                  <PersonRow
+                                      item={item}
+                                      handlePress={() =>
+                                          this.props.navigation.navigate('SearchResult', {
+                                              searchPointer: item['@search_pointer_hash'],
+                                          })
+                                      }
                                   />
-                              </>
+                              );
+                          }}
+                          keyExtractor={(item, index) => index.toString()}
+                      />
+                  </>
               </SafeAreaView>
           </Container>
       );
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
         color: `${constants.highlightColor}`,
         marginBottom: 20,
         marginLeft: 10,
-    }
+    },
 });
 
 const mapStateToProps = (state) => {

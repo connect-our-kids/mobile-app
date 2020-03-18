@@ -28,7 +28,7 @@ import constants from '../helpers/constants';
 import PersonInfo from '../components/Person/PersonInfo';
 import Loader from '../components/Loader/Loader';
 import authHelpers from '../helpers/authHelpers';
-import RegisterModalsContainer from './../components/AuthModals/RegisterModalsContainer';
+import RegisterModalsContainer from './../components/auth/RegisterModalsContainer/index.tsx';
 import { ConfirmationModal } from '../components/Person/ConfirmationModal';
 
 class SearchResultScreen extends React.Component {
@@ -112,9 +112,9 @@ class SearchResultScreen extends React.Component {
   };
 
   showConModal = (key, type, index) => {
-      console.log("state before {}", this.state)
+      console.log('state before {}', this.state);
       this.setState({ key, type, index });
-      console.log("state after {}", this.state)
+      console.log('state after {}', this.state);
 
       this.toggleModal();
   };

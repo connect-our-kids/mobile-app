@@ -4,73 +4,82 @@ import {
     TouchableOpacity,
     View,
     StyleSheet,
+    Linking,
     Dimensions,
-    Platform,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
 
-const VideoAgreeModal = (props) => {
+import constants from '../../../helpers/constants';
+
+/**********************************************************/
+
+export default function SocialWorkerModal(props) {
+
     return (
         <>
             <View style={styles.headerContainer}>
                 <Text style={styles.modalHeaderStyle}>
-          Two minutes for better results
+                    Do you work with foster kids?
                 </Text>
                 <TouchableOpacity
                     style={styles.close}
                     onPress={() => {
-                        props.setModalVisible(false);
+                        props.setModalVisible(!props.modalVisible);
                     }}
                 >
-                    <Text style={[ styles.btnText, styles.closeBtn ]}>❌</Text>
+                    <Text style={[ styles.btnText, styles.closeBtn ]}>
+                        ❌
+                    </Text>
                 </TouchableOpacity>
             </View>
             <Text style={styles.modalTextStyle}>
-        Before you start, we'd like you to watch a two minute video so that you
-        know everything about People Search.
+                People Search is for social workers and those that work directly with
+                foster kids. If you do not work with foster kids, we&apos;d love to tell you
+                more about what we do.
             </Text>
             <View style={styles.buttonContainer}>
                 <Button
                     style={styles.yesButton}
                     block
                     onPress={() => {
-                        props.sendEvent(null, 'click', 'watch-video');
+                        props.sendEvent(null, 'click', 'yes-i-am-a-social-worker');
                         props.advanceModal();
                     }}
                 >
-                    <Text style={styles.btnText}>Show me the video</Text>
+                    <Text style={styles.btnText}>
+                        Yes, I work with foster kids
+                    </Text>
                 </Button>
                 <Button
                     style={styles.noButton}
                     block
                     onPress={() => {
-                        props.setModalVisible(false);
-                        props.onLogin();
-                        props.sendEvent(null, 'click', 'do-not-watch-video');
+                        props.sendEvent(null, 'click', 'i-am-not-a-social-worker');
+                        Linking.openURL('https://connectourkids.org');
                     }}
                 >
-                    <Text style={styles.btnText}>Skip the video</Text>
+                    <Text style={styles.btnText}>
+                        Nope, that&apos;s not me
+                    </Text>
                 </Button>
             </View>
         </>
     );
-};
+
+}
+
+/**********************************************************/
 
 const styles = StyleSheet.create({
-    videoWrapper: {
-        height: 300,
-        margin: 30,
-    },
     headerContainer: {
         borderBottomColor: constants.highlightColor,
         borderBottomWidth: 1,
         paddingBottom: 20,
         paddingHorizontal: 20,
         marginVertical: 20,
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'baseline',
+        flexDirection: 'row',
         width: Dimensions.get('window').width,
     },
     yesButton: {
@@ -94,28 +103,18 @@ const styles = StyleSheet.create({
     modalHeaderStyle: {
         color: constants.highlightColor,
         fontSize: 20,
-        fontFamily: constants.fontFamily,
+        fontFamily: constants.lotoFamily,
     },
     modalTextStyle: {
-        fontFamily: constants.fontFamily,
+        fontFamily: constants.lotoFamily,
         paddingHorizontal: 20,
         fontSize: 18,
         lineHeight: 25,
     },
-    logo: {
-        width: Dimensions.get('window').width - 40,
-        height: 100,
-    },
     buttonContainer: {
         padding: 20,
-        borderTopColor: constants.highlightColor,
+        borderTopColor: '#0279AC',
         borderTopWidth: 1,
         marginTop: 20,
     },
-    WebViewContainer: {
-        marginTop: Platform.OS == 'ios' ? 20 : 0,
-        marginBottom: 30,
-    },
 });
-
-export default VideoAgreeModal;
