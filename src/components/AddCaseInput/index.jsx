@@ -17,13 +17,6 @@ export default function AddCaseInput(props) {
 
     const { label, error, ...rest } = props;
 
-    const styles = StyleSheet.create({
-        root: {
-            width: '90%',
-            alignSelf: 'center',
-        },
-    });
-
     function handleChange(value) {
         props.onChange(props.name, value);
     }
@@ -44,4 +37,16 @@ export default function AddCaseInput(props) {
             {error && <FormValidationMessage>{error}</FormValidationMessage>}
         </View>
     );
+
 }
+
+/**********************************************************/
+
+const styles = StyleSheet.create({
+
+    root: {
+        width: '90%',
+        alignSelf: 'center',
+    },
+
+});
