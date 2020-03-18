@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Modal, StyleSheet, Dimensions } from 'react-native';
 import SocialWorkerModal from '../SocialWorkerModal';
 import VideoAgreeModal from '../VideoAgreeModal';
-import VideoModal from '../VideoModal';
+import VideoModal from '../VideoModal/index.jsx';
 import constants from '../../../helpers/constants';
 import { sendEvent } from '../../../helpers/createEvent';
 

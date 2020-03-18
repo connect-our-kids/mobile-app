@@ -7,7 +7,7 @@ import {
     Platform,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
+import constants from '../../../helpers/constants';
 import WebView from 'react-native-webview';
 
 const VideoModal = (props) => {
