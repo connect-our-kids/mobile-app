@@ -4,11 +4,11 @@ import React from 'react';
 import { View, Text, StyleSheet, Linking, ScrollView } from 'react-native';
 import { Button } from 'native-base';
 import { Avatar, Divider } from 'react-native-elements';
-import constants from '../../helpers/constants';
-import { sendEvent } from '../../helpers/createEvent';
-import NavigationButton from '../../UI/NavigationButton';
-import ScreenContainer from '../../UI/ScreenContainer';
-import MainText from '../../UI/MainText';
+import constants from '../../../helpers/constants';
+import { sendEvent } from '../../../helpers/createEvent';
+import NavigationButton from '../../../UI/NavigationButton';
+import ScreenContainer from '../../../UI/ScreenContainer';
+import MainText from '../../../UI/MainText';
 
 const Login = (props) => {
     return (
