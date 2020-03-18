@@ -1,47 +1,60 @@
-// no typescript needed
-
 import React, { Component } from 'react';
-import authHelpers from '../../../helpers/authHelpers';
-import { connect } from 'react-redux';
-import { setUserCreds, logOut, clearUserCases } from '../../../store/actions';
+
 import Login from '../Login/index.tsx';
 
-class LoginWithAuth0 extends Component {
-  onRegister = () => {};
+import authHelpers from '../../../helpers/authHelpers';
 
-  render() {
-      return (
-          <Login
-              idToken={this.props.idToken ? this.props.idToken : null}
-              navigation={this.props.navigation}
-              onLogin={() =>
-                  authHelpers.handleLogin(
-                      authHelpers._loginWithAuth0,
-                      this.props.setUserCreds,
-                  )
-              }
-              onRegister={() =>
-                  authHelpers.handleLogin(
-                      authHelpers._loginWithAuth0,
-                      this.props.setUserCreds,
-                  )
-              }
-              email={this.props.user ? this.props.user.email : null}
-              isLoggedIn={this.props.isLoggedIn}
-              logOut={this.props.logOut}
-              clearUserCases={this.props.clearUserCases}
-              setModalVisible={this.props.setModalVisible}
-          />
-      );
-  }
+import { connect } from 'react-redux';
+
+import {
+    setUserCreds,
+    logOut,
+    clearUserCases,
+} from '../../../store/actions';
+
+/**********************************************************/
+
+function mapStateToProps(state) {
+
+    const { user, isLoggedIn, authToken, idToken } = state.auth;
+
+    return { user, isLoggedIn, authToken, idToken };
+
 }
 
-const mapStateToProps = (state) => {
-    const { user, isLoggedIn, authToken, idToken } = state.auth;
-    return { user, isLoggedIn, authToken, idToken };
-};
+function LoginWithAuth0(props): JSX.Element {
+
+    return (
+        <Login
+            idToken={props.idToken ? props.idToken : null}
+            navigation={props.navigation}
+            onLogin={(): void =>
+                authHelpers.handleLogin(
+                    authHelpers._loginWithAuth0,
+                    props.setUserCreds,
+                )
+            }
+            onRegister={(): void =>
+                authHelpers.handleLogin(
+                    authHelpers._loginWithAuth0,
+                    props.setUserCreds,
+                )
+            }
+            email={props.user ? props.user.email : null}
+            isLoggedIn={props.isLoggedIn}
+            logOut={props.logOut}
+            clearUserCases={props.clearUserCases}
+            setModalVisible={props.setModalVisible}
+        />
+    );
+
+}
 
 export default connect(
     mapStateToProps,
-    { setUserCreds, logOut, clearUserCases },
+    {
+        setUserCreds,
+        logOut,
+        clearUserCases,
+    },
 )(LoginWithAuth0);
