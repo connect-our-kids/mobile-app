@@ -8,7 +8,7 @@ import {
     Platform,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
+import constants from '../../../helpers/constants';
 
 const VideoAgreeModal = (props) => {
     return (
