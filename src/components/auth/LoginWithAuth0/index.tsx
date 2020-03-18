@@ -1,10 +1,10 @@
 // no typescript needed
 
 import React, { Component } from 'react';
-import authHelpers from '../../helpers/authHelpers';
+import authHelpers from '../../../helpers/authHelpers';
 import { connect } from 'react-redux';
-import { setUserCreds, logOut, clearUserCases } from '../../store/actions';
-import Login from './Login';
+import { setUserCreds, logOut, clearUserCases } from '../../../store/actions';
+import Login from '../Login.tsx';
 
 class LoginWithAuth0 extends Component {
   onRegister = () => {};
