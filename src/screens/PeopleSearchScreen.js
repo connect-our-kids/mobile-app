@@ -32,7 +32,7 @@ import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader/Loader';
 
 import authHelpers from '../helpers/authHelpers';
-import RegisterModalsContainer from './../components/auth/RegisterModalsContainer.tsx';
+import RegisterModalsContainer from './../components/auth/RegisterModalsContainer/index.tsx';
 
 class PeopleSearchScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>

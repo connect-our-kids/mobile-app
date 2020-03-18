@@ -28,7 +28,7 @@ import constants from '../helpers/constants';
 import PersonInfo from '../components/Person/PersonInfo';
 import Loader from '../components/Loader/Loader';
 import authHelpers from '../helpers/authHelpers';
-import RegisterModalsContainer from './../components/auth/RegisterModalsContainer.tsx';
+import RegisterModalsContainer from './../components/auth/RegisterModalsContainer/index.tsx';
 import { ConfirmationModal } from '../components/Person/ConfirmationModal';
 
 class SearchResultScreen extends React.Component {
