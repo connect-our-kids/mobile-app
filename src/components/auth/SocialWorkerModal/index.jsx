@@ -8,14 +8,18 @@ import {
     Dimensions,
 } from 'react-native';
 import { Button } from 'native-base';
+
 import constants from '../../../helpers/constants';
 
-const SocialWorkerModal = (props) => {
+/**********************************************************/
+
+export default function SocialWorkerModal(props) {
+
     return (
         <>
             <View style={styles.headerContainer}>
                 <Text style={styles.modalHeaderStyle}>
-          Do you work with foster kids?
+                    Do you work with foster kids?
                 </Text>
                 <TouchableOpacity
                     style={styles.close}
@@ -23,13 +27,15 @@ const SocialWorkerModal = (props) => {
                         props.setModalVisible(!props.modalVisible);
                     }}
                 >
-                    <Text style={[ styles.btnText, styles.closeBtn ]}>❌</Text>
+                    <Text style={[ styles.btnText, styles.closeBtn ]}>
+                        ❌
+                    </Text>
                 </TouchableOpacity>
             </View>
             <Text style={styles.modalTextStyle}>
-        People Search is for social workers and those that work directly with
-        foster kids. If you do not work with foster kids, we'd love to tell you
-        more about what we do.
+                People Search is for social workers and those that work directly with
+                foster kids. If you do not work with foster kids, we&apos;d love to tell you
+                more about what we do.
             </Text>
             <View style={styles.buttonContainer}>
                 <Button
@@ -40,7 +46,9 @@ const SocialWorkerModal = (props) => {
                         props.advanceModal();
                     }}
                 >
-                    <Text style={styles.btnText}>Yes, I work with foster kids</Text>
+                    <Text style={styles.btnText}>
+                        Yes, I work with foster kids
+                    </Text>
                 </Button>
                 <Button
                     style={styles.noButton}
@@ -50,12 +58,17 @@ const SocialWorkerModal = (props) => {
                         Linking.openURL('https://connectourkids.org');
                     }}
                 >
-                    <Text style={styles.btnText}>Nope, that's not me</Text>
+                    <Text style={styles.btnText}>
+                        Nope, that&apos;s not me
+                    </Text>
                 </Button>
             </View>
         </>
     );
-};
+
+}
+
+/**********************************************************/
 
 const styles = StyleSheet.create({
     headerContainer: {
@@ -105,5 +118,3 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 });
-
-export default SocialWorkerModal;
