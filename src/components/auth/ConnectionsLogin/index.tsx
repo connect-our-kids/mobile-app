@@ -3,18 +3,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
-import { sendEvent } from '../../helpers/createEvent';
-import NavigationButton from '../../UI/NavigationButton';
-import MainText from '../../UI/MainText';
-import ScreenContainer from '../../UI/ScreenContainer';
-import authHelpers from '../../helpers/authHelpers';
+import constants from '../../../helpers/constants';
+import { sendEvent } from '../../../helpers/createEvent';
+import NavigationButton from '../../../UI/NavigationButton';
+import MainText from '../../../UI/MainText';
+import ScreenContainer from '../../../UI/ScreenContainer';
+import authHelpers from '../../../helpers/authHelpers';
 
 const ConnectionsLogin = (props) => {
 
     const learnMorePressed = () => {
-        Linking.openURL('https://www.connectourkids.org/tools/family-connections')
-    }
+        Linking.openURL('https://www.connectourkids.org/tools/family-connections');
+    };
 
     return (
         <ScreenContainer>
@@ -38,7 +38,7 @@ const ConnectionsLogin = (props) => {
                         style={styles.buttonStyle}
                         block
                         onPress={() => {
-                            props.setModalVisible(true); {/* {props.setModalVisible} */}
+                            props.setModalVisible(true); { /* {props.setModalVisible} */ }
                             sendEvent(null, 'click', 'sign-up');
                         }}
                     ><Text style={styles.btnText}>Sign Up</Text>
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     linkText: {
         color: '#0279AC',
         marginTop: 20,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     linkContainer: {
         justifyContent: 'space-between',
         flex: 1,
-        marginTop: 40
+        marginTop: 40,
     },
     buttonStyle: {
         flex: 1,

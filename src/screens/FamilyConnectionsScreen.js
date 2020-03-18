@@ -45,7 +45,7 @@ import constants from '../helpers/constants';
 
 // local component imports
 import CaseViewScreen from './CaseViewScreen.js';
-import ConnectionsLogin from '../components/auth/ConnectionsLogin.tsx';
+import ConnectionsLogin from '../components/auth/ConnectionsLogin/index.tsx';
 import Loader from '../components/Loader/Loader';
 
 // 3rd party imports like icons & scroll functionality
