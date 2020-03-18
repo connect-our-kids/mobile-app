@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d2905849-cb48-4fe1-8214-cdcf3e781da0" name="Default Changelist" comment="Fix for production login.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Authentication/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Authentication/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/Login/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/Login/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/helpers/authHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/authHelpers.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
