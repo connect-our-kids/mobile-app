@@ -46,11 +46,8 @@ module.exports = {
     /* DO transform... */
     'transform': {
 
-        /* JavaScript */
-        '^.+\\.js[x]?$': 'babel-jest',
-
-        /* TypeScript */
-        '^.+\\.ts[x]?$': 'babel-jest',
+        /* JavaScript & TypeScript */
+        '^.+\\.[t|j]sx?$': 'babel-jest',
 
     },
 
