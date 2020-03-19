@@ -65,6 +65,38 @@ module.exports = {
 
     ],
 
+    /***************************************
+        CODE COVERAGE
+    ***************************************/
+
+    /* DO NOT collect (by default) */
+    'collectCoverage': false,
+
+    /* DO count files matching... */
+    'collectCoverageFrom': [
+
+        /* JavaScript files */
+        '**/*.{js,jsx}',
+
+        /* TypeScript files */
+        '**/*.{ts,tsx}',
+
+        /* --- EXCLUDING --- */
+
+        /* dependencies */
+        '!**/*_modules/**',
+        '!**/*_packages/**',
+
+        /* configuration files */
+        '!**/.*rc.{js,ts}',
+        '!**/*.config.{js,ts}',
+        '!**/*.setup.{js,ts}',
+
+        /* builds */
+        '!<rootDir>/build/**',
+
+    ],
+
     /**************************************/
 
 };
