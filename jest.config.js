@@ -4,9 +4,7 @@
 
 module.exports = {
 
-    /*
-    Limit testing to...
-    */
+    /* Limit testing to... */
     'projects': [
         /* Android */
         {
@@ -17,9 +15,8 @@ module.exports = {
             'preset': 'jest-expo/ios',
         },
     ],
-    /*
-    DO test...
-    */
+
+    /* DO test... */
     'moduleFileExtensions': [
         /* JSON files (*.json) */
         'json',
@@ -30,18 +27,16 @@ module.exports = {
         'ts',
         'tsx',
     ],
-    /*
-    DO transform...
-    */
+
+    /* DO transform... */
     'transform': {
         /* JavaScript files (*.{js, jsx}) */
         '^.+\\.js[x]?$': 'babel-jest',
         /* TypeScript files (*.{ts, tsx}) */
         '^.+\\.ts[x]?$': 'babel-jest',
     },
-    /*
-    DO NOT transform...
-    */
+
+    /* DO NOT transform... */
     'transformIgnorePatterns': [
         /*
         Files as directed by Expo.
