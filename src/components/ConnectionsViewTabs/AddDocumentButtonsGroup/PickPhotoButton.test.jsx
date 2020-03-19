@@ -20,8 +20,8 @@ const onPressMock = jest.fn();
 
 const { getByTestId } = render(
     <View>
-        <TouchableOpacity onPress={onPressMock} testID="componentTest">
-            <PickPhotoButton />
+        <TouchableOpacity onPress={onPressMock}>
+            <PickPhotoButton/>
         </TouchableOpacity>
     </View>,
 );
