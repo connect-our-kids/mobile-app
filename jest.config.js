@@ -4,6 +4,10 @@
 
 module.exports = {
 
+    /***************************************
+        WHAT TO TEST
+    ***************************************/
+
     /* Limit testing to... */
     'projects': [
         /* Android */
@@ -27,6 +31,10 @@ module.exports = {
         'ts',
         'tsx',
     ],
+
+    /***************************************
+        CODE TRANSFORMATION (transpilation)
+    ***************************************/
 
     /* DO transform... */
     'transform': {
