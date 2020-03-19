@@ -7,7 +7,10 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "lint": "eslint ./src || true",
-    "test": "jest --watchAll"
+    "test": "jest --watch --changedSince=origin/master",
+    "test:debug": "jest --watch --onlyChanged --runInBand",
+    "test:coverage": "jest --coverage=true",
+    "test:update-snapshots": "jest --updateSnapshot"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "2.1.0",
