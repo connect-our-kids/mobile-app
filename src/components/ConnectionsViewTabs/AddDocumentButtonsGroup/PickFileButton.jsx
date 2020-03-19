@@ -34,7 +34,7 @@ export default function PickFileButton({ afterAccept }) {
     }
 
     return (
-        <Button onPress={pickFile}>
+        <Button onPress={pickFile} testID='pickfiletest'>
             <PickFileIcon/>
         </Button>
     );
