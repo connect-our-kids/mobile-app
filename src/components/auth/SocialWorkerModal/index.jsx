@@ -19,7 +19,7 @@ export default function SocialWorkerModal(props) {
         <>
             <View style={styles.headerContainer}>
                 <Text style={styles.modalHeaderStyle}>
-                    Do you work with foster kids?
+                    Do you work with kids in foster care?
                 </Text>
                 <TouchableOpacity
                     style={styles.close}
@@ -34,7 +34,7 @@ export default function SocialWorkerModal(props) {
             </View>
             <Text style={styles.modalTextStyle}>
                 People Search is for social workers and those that work directly with
-                foster kids. If you do not work with foster kids, we&apos;d love to tell you
+                kids in foster care. If you do not work with kids in foster care, we&apos;d love to tell you
                 more about what we do.
             </Text>
             <View style={styles.buttonContainer}>
