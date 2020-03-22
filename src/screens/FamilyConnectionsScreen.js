@@ -53,6 +53,8 @@ import ScrollToTop from '../UI/ScrollToTop';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
 
+import { lastName, created, updated, name } from '../helpers/comparators';
+
 /**********************************************************/
 
 // placeholder image for non-logged in users?
@@ -162,60 +164,9 @@ const FamilyConnectionsScreen = (props) => {
         }
     }
 
-    // ------SORTING Functionality------
-    const name = (a, b) => {
-        const A = a.full_name.toUpperCase();
-        const B = b.full_name.toUpperCase();
-        let comparison = 0;
-        if (A > B) {
-            comparison = 1;
-        }
-        else {
-            comparison = -1;
-        }
-        return comparison;
-    };
-
-    const lastName = (a, b) => {
-        const A = a.last_name.toUpperCase();
-        const B = b.last_name.toUpperCase();
-        let comparison = 0;
-        if (A > B) {
-            comparison = 1;
-        }
-        else {
-            comparison = -1;
-        }
-        return comparison;
-    };
-
-    const created = (a, b) => {
-        const A = a.created_at;
-        const B = b.created_at;
-        let comparison = 0;
-        if (A > B) {
-            comparison = 1;
-        }
-        else {
-            comparison = -1;
-        }
-        return comparison;
-    };
-
-    const updated = (a, b) => {
-        const A = a.updated_at;
-        const B = b.updated_at;
-        let comparison = 0;
-        if (A > B) {
-            comparison = 1;
-        }
-        else {
-            comparison = -1;
-        }
-        return comparison;
-    };
 
     if (state.filters.last) {
+        console.log("Sorting by last name");
         filteredCases.sort(lastName);
     }
     else if (state.filters.created) {
@@ -257,6 +208,7 @@ const FamilyConnectionsScreen = (props) => {
                     inputContainerStyle={{ backgroundColor: '#FAFAFA', height: 45.62 }}
                     placeholder="Search Cases"
                     placeholderTextColor="#8D8383"
+                    cancelButtonProps={{buttonTextStyle: {color: 'rgb(8,121,169)'}}}
                     // lightTheme
                     round
                     name="searchKeywords"

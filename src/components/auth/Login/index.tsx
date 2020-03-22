@@ -152,8 +152,8 @@ export default function Login(props): JSX.Element {
                                 borderBottomWidth: 1,
                             }}>
                                 <Text style={styles.text}>
-                                    {(props.isLoggedIn && props.idToken && props.idToken.name)
-                                        ? props.idToken.name
+                                    {(props.isLoggedIn && props.idToken && props.idToken.email)
+                                        ? props.idToken.email
                                         : null
                                     }
                                 </Text>
@@ -175,9 +175,12 @@ export default function Login(props): JSX.Element {
                                     style={[
                                         styles.button,
                                         {
-                                            backgroundColor: 'red',
+                                            backgroundColor: 'white',
                                             alignItems: 'center',
                                             justifyContent: 'center',
+                                            borderColor: 'rgb(8,121,169)',
+                                            borderWidth: 1
+
                                         },
                                     ]}
                                     onPress={(): void => {
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
     },
 
     logOutText: {
-        color: '#fff',
+        color: 'rgb(8,121,169)',
     },
 
     linkContainer: {
@@ -259,7 +262,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'column',
-        marginBottom: 10,
+        marginBottom: 10
     },
 
     text: {

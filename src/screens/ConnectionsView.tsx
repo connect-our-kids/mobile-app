@@ -41,6 +41,7 @@ import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
 import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';
 import CaseList from '../components/CaseList/index.jsx';
+import { created } from '../helpers/comparators';
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
@@ -249,13 +250,19 @@ function ConnectionsView(props) {
 
                                     <View>
                                         {
-                                            engagementsNoDocuments.map((engagement) => {
-                                                return (
-                                                    <View key={engagement.pk} style={{ width: '70%' }}>
-                                                        <Engagement engagement={engagement} />
-                                                    </View>);
 
-                                            })}
+                                            engagementsNoDocuments.length > 0 ?
+
+                                                engagementsNoDocuments.map((engagement) => {
+                                                    return (
+                                                        <View key={engagement.pk} style={{ width: '70%' }}>
+                                                            <Engagement engagement={engagement} />
+                                                        </View>);
+
+                                                }) :
+
+                                                <Text style={{width: '100%', textAlign: 'center', marginTop: 50}}>No engagements have been recorded for this person.</Text>
+                                        }
                                     </View>
                                 </View>
                                 : null
@@ -273,12 +280,16 @@ function ConnectionsView(props) {
 
                                     </View>
                                     <View style={{ width: '100%', maxHeight: '100%' }} >
-                                        {props.isLoadingDocs ? <Loader />
-                                            : props.documents.map((document) => {
+                                        {props.isLoadingDocs ? <Loader /> :
 
-                                                return (
-                                                    <Documents key={document.pk} document={document} />);
-                                            })}
+                                            props.documents.length > 0 ?
+                                                props.documents.sort(created).reverse().map((document) => {
+
+                                                    return (
+                                                        <Documents key={document.pk} document={document} />);
+                                                }) :
+                                                <Text style={{width: '100%', textAlign: 'center', marginTop: 50}}>No documents have been attached to this person.</Text>
+                                        }
                                     </View>
                                 </View>
                             // </View>

@@ -16,7 +16,7 @@ export const getCaseConnections = (pk) => (dispatch) => {
         .then((accessToken) => {
             dispatch({ type: GET_CASE_CONNECTIONS_START });
             axios
-                .get(`${familyConnectionsURL}/api/v1/cases/${pk}/relationships/`, {
+                .get(`${familyConnectionsURL}/api/v1/cases/${pk}/relationships/?page_size=9999`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },

@@ -376,6 +376,7 @@ export function CaseViewScreen(props) {
                                 }}
                                 placeholder="Search Connections"
                                 placeholderTextColor="#8D8383"
+                                cancelButtonProps={{buttonTextStyle: {color: 'rgb(8,121,169)'}}}
                                 // lightTheme
                                 round
                                 name="searchKeywords"
