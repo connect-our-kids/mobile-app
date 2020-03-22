@@ -250,13 +250,19 @@ function ConnectionsView(props) {
 
                                     <View>
                                         {
-                                            engagementsNoDocuments.map((engagement) => {
-                                                return (
-                                                    <View key={engagement.pk} style={{ width: '70%' }}>
-                                                        <Engagement engagement={engagement} />
-                                                    </View>);
 
-                                            })}
+                                            engagementsNoDocuments.length > 0 ?
+
+                                                engagementsNoDocuments.map((engagement) => {
+                                                    return (
+                                                        <View key={engagement.pk} style={{ width: '70%' }}>
+                                                            <Engagement engagement={engagement} />
+                                                        </View>);
+
+                                                }) :
+
+                                                <Text style={{width: '100%', textAlign: 'center', marginTop: 50}}>No engagements have been recorded for this person.</Text>
+                                        }
                                     </View>
                                 </View>
                                 : null
@@ -282,7 +288,7 @@ function ConnectionsView(props) {
                                                     return (
                                                         <Documents key={document.pk} document={document} />);
                                                 }) :
-                                                <Text>No documents</Text>
+                                                <Text style={{width: '100%', textAlign: 'center', marginTop: 50}}>No documents have been attached to this person.</Text>
                                         }
                                     </View>
                                 </View>

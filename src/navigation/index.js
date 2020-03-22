@@ -104,7 +104,7 @@ const FamilyConnectionsNavigator = createStackNavigator(
                                     fontSize: 20,
                                     color: '#0F6580',
                                 }}>
-                                {leftArrow} Back To Cases
+                                {leftArrow} Back to cases
                             </Text>
                         </TouchableOpacity>),
                 };
@@ -134,7 +134,7 @@ const FamilyConnectionsNavigator = createStackNavigator(
                                     fontSize: 20,
                                     color: '#0F6580',
                                 }}>
-                                {leftArrow} Back To Case
+                                {leftArrow} Back to case
                             </Text>
                         </TouchableOpacity>),
                 };
