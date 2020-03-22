@@ -208,6 +208,7 @@ const FamilyConnectionsScreen = (props) => {
                     inputContainerStyle={{ backgroundColor: '#FAFAFA', height: 45.62 }}
                     placeholder="Search Cases"
                     placeholderTextColor="#8D8383"
+                    cancelButtonProps={{buttonTextStyle: {color: 'rgb(8,121,169)'}}}
                     // lightTheme
                     round
                     name="searchKeywords"
