@@ -41,6 +41,7 @@ import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
 import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';
 import CaseList from '../components/CaseList/index.jsx';
+import { created } from '../helpers/comparators';
 
 const placeholderImg = require('../../assets/profile_placeholder.png');
 
@@ -273,12 +274,16 @@ function ConnectionsView(props) {
 
                                     </View>
                                     <View style={{ width: '100%', maxHeight: '100%' }} >
-                                        {props.isLoadingDocs ? <Loader />
-                                            : props.documents.map((document) => {
+                                        {props.isLoadingDocs ? <Loader /> :
 
-                                                return (
-                                                    <Documents key={document.pk} document={document} />);
-                                            })}
+                                            props.documents.length > 0 ?
+                                                props.documents.sort(created).reverse().map((document) => {
+
+                                                    return (
+                                                        <Documents key={document.pk} document={document} />);
+                                                }) :
+                                                <Text>No documents</Text>
+                                        }
                                     </View>
                                 </View>
                             // </View>
