@@ -18,10 +18,6 @@ import {
 } from 'react-navigation-stack';
 import { Ionicons } from '@expo/vector-icons';
 import AboutScreen from '../screens/AboutScreen';
-import SupportScreen from '../screens/SupportScreen';
-import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
-import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
-import ImpactScreen from '../screens/ImpactScreen';
 import FamilyConnectionsScreen from '../screens/FamilyConnectionsScreen';
 import PeopleSearchScreen from '../screens/PeopleSearchScreen';
 import SearchResultScreen from '../screens/SearchResultScreen';
