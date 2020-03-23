@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+/**********************************************************/
+
 export default StyleSheet.create({
+
     caseListWrapper: {
         width: '100%',
         paddingLeft: 5,

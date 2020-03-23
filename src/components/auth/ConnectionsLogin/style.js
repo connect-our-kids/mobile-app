@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+/**********************************************************/
+
+export default StyleSheet.create({
 
     logInBtns: {
         flexDirection: 'row',
@@ -31,6 +33,6 @@ export default styles = StyleSheet.create({
 
     btnText: {
         color: '#fff',
-    }
+    },
 
 });
