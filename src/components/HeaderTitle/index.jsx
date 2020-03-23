@@ -13,6 +13,8 @@ import { sendEvent } from '../../helpers/createEvent';
 
 import { connect } from 'react-redux';
 
+import styles from './style.js'
+
 /**********************************************************/
 
 function mapStateToProps(state) {
@@ -27,11 +29,7 @@ function HeaderTitle(props) {
 
     // title should be the string of the components name
     return (
-        <View style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            width: '100%',
-        }}>
+        <View style={styles.view1}>
             {/* on android the text renders left aligned and therefore we put the logo next to it, ios renders centered */}
             {(Platform.OS === 'android')
                 ? (
@@ -43,32 +41,20 @@ function HeaderTitle(props) {
                     >
                         <Image
                             source={logoImg}
-                            style={{
-                                width: 225,
-                                height: 90,
-                            }}
+                            style={styles.logoImage}
                             resizeMode="contain"
                         />
                     </TouchableWithoutFeedback>
                 )
                 : null
             }
-            {/* <Text style={styles.text}>{title}</Text> */}
 
         </View>
     );
 
 }
 
-// const styles = StyleSheet.create({
-//
-//   text: {
-//     color: 'white',
-//     fontSize: 25,
-//     fontFamily: constants.headerFont
-//   }
-//
-// });
+
 
 export default connect(
     mapStateToProps,
