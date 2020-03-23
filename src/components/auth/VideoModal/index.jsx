@@ -1,18 +1,12 @@
 import React from 'react';
+import styles from './style.js';
 
-import {
-    Text,
-    View,
-    StyleSheet,
-    Dimensions,
-    Platform,
-} from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button } from 'native-base';
 
 import WebView from 'react-native-webview';
 
-import constants from '../../../helpers/constants';
 
 /**********************************************************/
 
@@ -58,77 +52,3 @@ export default function VideoModal(props) {
     );
 
 }
-
-/**********************************************************/
-
-const styles = StyleSheet.create({
-
-    videoWrapper: {
-        height: 300,
-        margin: 30,
-    },
-
-    // headerContainer: {
-    //     borderBottomColor: constants.highlightColor,
-    //     borderBottomWidth: 1,
-    //     paddingBottom: 20,
-    //     paddingHorizontal: 20,
-    //     marginBottom: 20,
-    //     flexDirection: 'row',
-    //     width: Dimensions.get('window').width,
-    // },
-
-    // yesButton: {
-    //     backgroundColor: constants.highlightColor,
-    //     marginBottom: 10,
-    // },
-
-    noButton: {
-        backgroundColor: constants.highlightColor,
-        marginBottom: 10,
-    },
-
-    close: {
-        backgroundColor: '#6C757D',
-        width: '100%',
-    },
-
-    // closeBtn: {
-    //     padding: 5,
-    // },
-
-    btnText: {
-        color: '#fff',
-    },
-
-    // modalHeaderStyle: {
-    //     color: constants.highlightColor,
-    //     fontSize: 20,
-    //     fontFamily: constants.fontFamily,
-    // },
-
-    // modalTextStyle: {
-    //     fontFamily: constants.fontFamily,
-    //     paddingHorizontal: 20,
-    //     fontSize: 18,
-    //     lineHeight: 25,
-    // },
-
-    // logo: {
-    //     width: Dimensions.get('window').width - 40,
-    //     height: 100,
-    // },
-
-    // buttonContainer: {
-    //     padding: 20,
-    //     borderTopColor: constants.highlightColor,
-    //     borderTopWidth: 1,
-    //     marginTop: 20,
-    // },
-
-    WebViewContainer: {
-        marginTop: (Platform.OS === 'ios') ? 20 : 0,
-        marginBottom: 30,
-    },
-
-});
