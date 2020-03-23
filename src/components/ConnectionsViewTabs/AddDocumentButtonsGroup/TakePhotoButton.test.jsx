@@ -1,29 +1,64 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render, fireEvent } from 'react-native-testing-library';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Platform } from 'react-native';
 
 import TakePhotoButton from './TakePhotoButton.jsx';
 
-describe('<TakePhotoButton />', () => {
-    it('selects component', () => {
-        const tree = renderer.create(<TakePhotoButton />).toJSON();
-        expect(tree.children).toHaveLength(1);
+if ([ 'android', 'ios' ].includes(Platform.OS)) {
+
+    /* current tests */
+
+    describe('<TakePhotoButton />', () => {
+
+        it('selects component', () => {
+            const tree = renderer.create(<TakePhotoButton />).toJSON();
+            expect(tree.children).toHaveLength(1);
+        });
+
+        it('Matches snapshot of component', () => {
+            const tree = renderer.create(<TakePhotoButton />).toJSON();
+            expect(tree).toMatchSnapshot();
+        });
+
     });
-    it('Matches snapshot of component', () => {
-        const tree = renderer.create(<TakePhotoButton />).toJSON();
-        expect(tree).toMatchSnapshot();
+
+    describe('onPress fires', () => {
+
+        it('checks if fired', () => {
+
+            const onPressMock = jest.fn();
+
+            const { getByTestId } = render(
+                <View>
+                    <TakePhotoButton
+                        testID={'take-photo-button'}
+                        onPress={onPressMock}
+                    />
+                </View>,
+            );
+
+            fireEvent.press(getByTestId('take-photo-button'));
+            expect(onPressMock).toHaveBeenCalled();
+        });
+
     });
-});
 
-const onPressMock = jest.fn();
+}
+else {
 
-const { getByTestId } = render(
-    <View>
-        <TouchableOpacity onPress={onPressMock}>
-            <TakePhotoButton/>
-        </TouchableOpacity>
-    </View>,
-);
+    /* nothing to see here... */
 
-fireEvent.press(getByTestId('button'));
+}
+
+// const onPressMock = jest.fn();
+
+// const { getByTestId } = render(
+//     <View>
+//         <TouchableOpacity onPress={onPressMock}>
+//             <TakePhotoButton/>
+//         </TouchableOpacity>
+//     </View>,
+// );
+
+// fireEvent.press(getByTestId('button'));
