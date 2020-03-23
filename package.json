@@ -8,6 +8,7 @@
     "eject": "expo eject",
     "lint": "eslint ./src || true",
     "test": "jest --watch --changedSince=origin/master",
+    "test:all": "jest --watchAll",
     "test:debug": "jest --watch --onlyChanged --runInBand",
     "test:coverage": "jest --coverage=true",
     "test:update-snapshots": "jest --updateSnapshot"
