@@ -4,7 +4,7 @@ import { Platform, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import { render, fireEvent } from 'react-native-testing-library';
 
-import Video from './index.jsx';
+import Video from './Video';
 
 /**********************************************************/
 
