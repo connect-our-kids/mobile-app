@@ -8,7 +8,7 @@ import jwtDecode from 'jwt-decode';
 
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
-import Video from '../components/Video/Video';
+import Video from '../components/Video/index.jsx';
 import MainText from '../UI/MainText';
 import NavigationButton from '../UI/NavigationButton';
 import ScreenContainer from '../UI/ScreenContainer';
