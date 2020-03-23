@@ -2,11 +2,88 @@
   jest.config
 ***********************************************************/
 
-module.exports = {
+function getBaseConfig() {
+    return {
 
-    /***************************************
-        WHAT TO TEST
-    ***************************************/
+        /***************************************
+            CODE TRANSFORMATION (transpilation)
+        ***************************************/
+
+        /* DO test... */
+        'moduleFileExtensions': [
+
+            /* JSON */
+            'json',
+
+            /* JavaScript */
+            'js',
+            'jsx',
+
+            /* TypeScript */
+            'ts',
+            'tsx',
+
+        ],
+
+        /* DO transform... */
+        'transform': {
+
+            /* JavaScript */
+            '^.+\\.(js|jsx)$': 'babel-jest',
+
+            /* TypeScript */
+            '^.+\\.(ts|tsx)$': 'babel-jest',
+
+        },
+
+        /**************************************/
+
+    };
+}
+
+function getBaseCoverageConfig() {
+    return {
+
+        /***************************************
+            CODE COVERAGE
+        ***************************************/
+
+        /* DO NOT collect (by default) */
+        'collectCoverage': false,
+
+        /* DO count files matching... */
+        'collectCoverageFrom': [
+
+            /* JavaScript files */
+            '**/*.{js,jsx}',
+
+            /* TypeScript files */
+            '**/*.{ts,tsx}',
+
+            /* --- EXCLUDING --- */
+
+            /* dependencies */
+            '!**/*_modules/**',
+            '!**/*_packages/**',
+
+            /* configuration files */
+            '!**/.*rc.{js,ts}',
+            '!**/*.config.{js,ts}',
+            '!**/*.setup.{js,ts}',
+
+            /* builds */
+            '!<rootDir>/build/**',
+
+        ],
+
+        /**************************************/
+
+    };
+}
+
+/**********************************************************/
+
+module.exports = {
 
     /* Limit testing to... */
     'projects': [
@@ -14,86 +91,19 @@ module.exports = {
         /* Android */
         {
             'preset': 'jest-expo/android',
+
+            ...(getBaseConfig()),
+            ...(getBaseCoverageConfig()),
         },
 
         /* iOS */
         {
             'preset': 'jest-expo/ios',
+
+            ...(getBaseConfig()),
+            ...(getBaseCoverageConfig()),
         },
 
     ],
-
-    /* DO test... */
-    'moduleFileExtensions': [
-
-        /* JSON */
-        'json',
-
-        /* JavaScript */
-        'js',
-        'jsx',
-
-        /* TypeScript */
-        'ts',
-        'tsx',
-
-    ],
-
-    /***************************************
-        CODE TRANSFORMATION (transpilation)
-    ***************************************/
-
-    /* DO transform... */
-    'transform': {
-
-        /* JavaScript & TypeScript */
-        '^.+\\.[t|j]sx?$': 'babel-jest',
-
-    },
-
-    /* DO NOT transform... */
-    'transformIgnorePatterns': [
-
-        /*
-        ... as directed by Expo
-        source: <https://docs.expo.io/versions/latest/guides/testing-with-jest/#jest-configuration>
-        */
-        'node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)',
-
-    ],
-
-    /***************************************
-        CODE COVERAGE
-    ***************************************/
-
-    /* DO NOT collect (by default) */
-    'collectCoverage': false,
-
-    /* DO count files matching... */
-    'collectCoverageFrom': [
-
-        /* JavaScript files */
-        '**/*.{js,jsx}',
-
-        /* TypeScript files */
-        '**/*.{ts,tsx}',
-
-        /* --- EXCLUDING --- */
-
-        /* dependencies */
-        '!**/*_modules/**',
-        '!**/*_packages/**',
-
-        /* configuration files */
-        '!**/.*rc.{js,ts}',
-        '!**/*.config.{js,ts}',
-        '!**/*.setup.{js,ts}',
-
-        /* builds */
-        '!<rootDir>/build/**',
-
-    ],
-
-    /**************************************/
 
 };
