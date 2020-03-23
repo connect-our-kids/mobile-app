@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './CaseList-style.js';
 
 import {
     View,
@@ -36,11 +37,7 @@ function getTextColor(person) {
 export default function CaseList(props) {
 
     return (
-        <View style={{
-            width: '100%',
-            paddingLeft: 5,
-            paddingRight: 10,
-        }}>
+        <View style={styles.caseListWrapper}>
             <View>
                 <ListItem
                     onPress={async () => {
@@ -61,35 +58,20 @@ export default function CaseList(props) {
                     }}
                     leftAvatar={
                         <View
-                            style={{
-                                height: 50,
-                                width: 50,
-                                borderRadius: 25,
-                                overflow: 'hidden',
-                            }}
+                            style={styles.avatarStyle}
                         >
                             {(props.connection.person.picture)
                                 ? (
                                     <Image
                                         source={{ uri: props.connection.person.picture }}
                                         defaultSource={placeholderImg}
-                                        style={{
-                                            height: 50,
-                                            width: 50,
-                                            borderRadius: 25,
-                                            overflow: 'hidden',
-                                        }}
+                                        style={styles.pictureStyle}
                                     />
                                 )
                                 : (
                                     <Image
                                         source={placeholderImg}
-                                        style={{
-                                            height: 50,
-                                            width: 50,
-                                            borderRadius: 25,
-                                            overflow: 'hidden',
-                                        }}
+                                        style={styles.placeholderImgStyle}
                                     />
                                 )
                             }
