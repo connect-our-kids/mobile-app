@@ -45,8 +45,8 @@ import constants from '../helpers/constants';
 
 // local component imports
 import CaseViewScreen from './CaseViewScreen.js';
-import ConnectionsLogin from '../components/auth/ConnectionsLogin/index.tsx';
-import Loader from '../components/Loader/index.jsx';
+import ConnectionsLogin from '../components/auth/ConnectionsLogin';
+import Loader from '../components/Loader';
 
 // 3rd party imports like icons & scroll functionality
 import ScrollToTop from '../UI/ScrollToTop';
@@ -166,7 +166,7 @@ const FamilyConnectionsScreen = (props) => {
 
 
     if (state.filters.last) {
-        console.log("Sorting by last name");
+        console.log('Sorting by last name');
         filteredCases.sort(lastName);
     }
     else if (state.filters.created) {
@@ -208,7 +208,7 @@ const FamilyConnectionsScreen = (props) => {
                     inputContainerStyle={{ backgroundColor: '#FAFAFA', height: 45.62 }}
                     placeholder="Search Cases"
                     placeholderTextColor="#8D8383"
-                    cancelButtonProps={{buttonTextStyle: {color: 'rgb(8,121,169)'}}}
+                    cancelButtonProps={{ buttonTextStyle: { color: 'rgb(8,121,169)' } }}
                     // lightTheme
                     round
                     name="searchKeywords"

@@ -21,8 +21,8 @@ import {
 } from '../store/actions/caseConnections';
 
 import { connect } from 'react-redux';
-import Loader from '../components/Loader/index.jsx';
-import CaseList from '../components/CaseList/index.jsx';
+import Loader from '../components/Loader';
+import CaseList from '../components/CaseList';
 
 import ScrollToTop from '../UI/ScrollToTop';
 import { RadioButton } from 'react-native-paper';
@@ -376,7 +376,7 @@ export function CaseViewScreen(props) {
                                 }}
                                 placeholder="Search Connections"
                                 placeholderTextColor="#8D8383"
-                                cancelButtonProps={{buttonTextStyle: {color: 'rgb(8,121,169)'}}}
+                                cancelButtonProps={{ buttonTextStyle: { color: 'rgb(8,121,169)' } }}
                                 // lightTheme
                                 round
                                 name="searchKeywords"

@@ -5,10 +5,10 @@ import {
     Modal,
 } from 'react-native';
 
-import SocialWorkerModal from '../SocialWorkerModal/index.jsx';
-import VideoAgreeModal from '../VideoAgreeModal/index.jsx';
-import VideoModal from '../VideoModal/index.jsx';
-import styles from './style.js';
+import SocialWorkerModal from '../SocialWorkerModal';
+import VideoAgreeModal from '../VideoAgreeModal';
+import VideoModal from '../VideoModal';
+import styles from './style';
 
 import { sendEvent } from '../../../helpers/createEvent';
 

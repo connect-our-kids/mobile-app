@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Login from '../Login/index.tsx';
+import Login from '../Login';
 
 import authHelpers from '../../../helpers/authHelpers';
 
