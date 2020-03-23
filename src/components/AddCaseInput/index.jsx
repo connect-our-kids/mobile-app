@@ -1,17 +1,12 @@
 import React from 'react';
-
-import {
-    View,
-    StyleSheet,
-} from 'react-native';
-
+import { View } from 'react-native';
 import {
     FormLabel,
     FormInput,
     FormValidationMessage,
 } from 'react-native-elements';
+import styles from './style';
 
-/**********************************************************/
 
 export default function AddCaseInput(props) {
 
@@ -39,14 +34,3 @@ export default function AddCaseInput(props) {
     );
 
 }
-
-/**********************************************************/
-
-const styles = StyleSheet.create({
-
-    root: {
-        width: '90%',
-        alignSelf: 'center',
-    },
-
-});
