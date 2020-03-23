@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './CaseList-style.js';
+import styles from './CaseList.styles';
 
 import {
     View,

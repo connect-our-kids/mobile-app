@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 
-import styles from './style.js'
+import styles from './SocialWorkerModal.styles';
 
 /**********************************************************/
 

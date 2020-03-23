@@ -11,7 +11,7 @@ import { Button } from 'native-base';
 import MainText from '../../../UI/MainText';
 import ScreenContainer from '../../../UI/ScreenContainer';
 import authHelpers from '../../../helpers/authHelpers';
-import styles from './style';
+import styles from './ConnectionsLogin.styles';
 
 import { sendEvent } from '../../../helpers/createEvent';
 

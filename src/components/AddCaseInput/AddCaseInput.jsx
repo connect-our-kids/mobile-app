@@ -5,7 +5,7 @@ import {
     FormInput,
     FormValidationMessage,
 } from 'react-native-elements';
-import styles from './style';
+import styles from './AddCaseInput.styles';
 
 
 export default function AddCaseInput(props) {

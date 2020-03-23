@@ -14,7 +14,7 @@ import {
 
 import { sendEvent } from '../../../helpers/createEvent';
 
-import styles from './style.js';
+import styles from './Login.styles';
 /**********************************************************/
 
 export default function Login(props): JSX.Element {

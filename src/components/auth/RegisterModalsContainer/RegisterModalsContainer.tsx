@@ -8,7 +8,7 @@ import {
 import SocialWorkerModal from '../SocialWorkerModal';
 import VideoAgreeModal from '../VideoAgreeModal';
 import VideoModal from '../VideoModal';
-import styles from './style';
+import styles from './RegisterModalsContainer.styles';
 
 import { sendEvent } from '../../../helpers/createEvent';
 

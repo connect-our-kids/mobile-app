@@ -13,7 +13,7 @@ import { sendEvent } from '../../helpers/createEvent';
 
 import { connect } from 'react-redux';
 
-import styles from './style.js'
+import styles from './HeaderTitle.styles';
 
 /**********************************************************/
 
@@ -53,7 +53,6 @@ function HeaderTitle(props) {
     );
 
 }
-
 
 
 export default connect(
