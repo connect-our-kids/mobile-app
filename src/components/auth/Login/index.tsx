@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     Text,
-    StyleSheet,
 } from 'react-native';
 
 import { Button } from 'native-base';
@@ -15,24 +14,14 @@ import {
 
 import { sendEvent } from '../../../helpers/createEvent';
 
+import styles from './style.js';
 /**********************************************************/
 
 export default function Login(props): JSX.Element {
 
     return (
-        <View
-            style={{
-                width: '100%',
-            }}
-        >
-            <View
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingTop: 15,
-                    paddingBottom: 15,
-                }}
-            >
+        <View style = {styles.view1}>
+            <View style = {styles.view2}>
                 {(props.idToken && props.idToken.picture)
                     ? (
                         <Avatar
@@ -53,15 +42,7 @@ export default function Login(props): JSX.Element {
 
                 {(props.isLoggedIn && props.idToken && props.idToken.email)
                     ? (
-                        <Divider
-                            style={{
-                                width: '100%',
-                                height: 1,
-                                backgroundColor: '#E5E4E2',
-                                marginTop: 20,
-                                marginBottom: 6,
-                            }}
-                        />
+                        <Divider style = {styles.divider}/>
                     )
                     : null
                 }
@@ -69,13 +50,8 @@ export default function Login(props): JSX.Element {
 
             {(props.isLoggedIn && props.idToken)
                 ? (
-                    <View style={{
-                        paddingLeft: 10,
-                    }}>
-                        <Text style={{
-                            fontWeight: 'bold',
-                            fontSize: 20,
-                        }}>
+                    <View style = {styles.view3}>
+                        <Text style = {styles.view3Text}>
                             Information
                         </Text>
                     </View>
@@ -85,48 +61,20 @@ export default function Login(props): JSX.Element {
 
             {(props.isLoggedIn && props.idToken)
                 ? (
-                    <View style={{
-                        flexDirection: 'row',
-                        padding: 10,
-                    }}>
-                        <View style={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                            flexDirection: 'column',
-                            width: '30%',
-                        }}>
-                            <Text style={{
-                                marginTop: 6,
-                                marginBottom: 6,
-                                fontSize: 16,
-                            }}>
+                    <View style = {styles.view4}>
+                        <View style = {styles.view5}>
+                            <Text style = {styles.view5Text}>
                                 First Name
                             </Text>
-                            <Text style={{
-                                marginTop: 6,
-                                marginBottom: 6,
-                                fontSize: 16,
-                            }}>
+                            <Text style = {styles.view5Text}>
                                 Last Name
                             </Text>
-                            <Text style={{
-                                marginTop: 6,
-                                marginBottom: 6,
-                                fontSize: 16,
-                            }}>
+                            <Text style = {styles.view5Text}>
                                 Email
                             </Text>
                         </View>
-                        <View style={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                            width: '70%',
-                        }}>
-                            <View style={{
-                                width: '100%',
-                                borderBottomColor: '#E5E4E2',
-                                borderBottomWidth: 1,
-                            }}>
+                        <View style = {styles.view6}>
+                            <View style = {styles.view7}>
                                 <Text style={styles.text}>
                                     {(props.isLoggedIn && props.idToken && props.idToken.given_name)
                                         ? props.idToken.given_name
@@ -134,11 +82,7 @@ export default function Login(props): JSX.Element {
                                     }
                                 </Text>
                             </View>
-                            <View style={{
-                                width: '100%',
-                                borderBottomColor: '#E5E4E2',
-                                borderBottomWidth: 1,
-                            }}>
+                            <View style={styles.view8And9}>
                                 <Text style={styles.text}>
                                     {(props.isLoggedIn && props.idToken && props.idToken.family_name)
                                         ? props.idToken.family_name
@@ -146,11 +90,7 @@ export default function Login(props): JSX.Element {
                                     }
                                 </Text>
                             </View>
-                            <View style={{
-                                width: '100%',
-                                borderBottomColor: '#E5E4E2',
-                                borderBottomWidth: 1,
-                            }}>
+                            <View style={styles.view8And9}>
                                 <Text style={styles.text}>
                                     {(props.isLoggedIn && props.idToken && props.idToken.email)
                                         ? props.idToken.email
@@ -167,21 +107,11 @@ export default function Login(props): JSX.Element {
                 <View style={styles.logInBtns}>
                     {(props.isLoggedIn)
                         ? (
-                            <View style={{
-                                width: '50%',
-                                marginTop: 40,
-                            }}>
+                            <View style={styles.view10}>
                                 <Button
                                     style={[
                                         styles.button,
-                                        {
-                                            backgroundColor: 'white',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            borderColor: 'rgb(8,121,169)',
-                                            borderWidth: 1
-
-                                        },
+                                        styles.view10Button,
                                     ]}
                                     onPress={(): void => {
                                         props.idToken && props.idToken.email ? props.logOut(props.idToken.email) : props.logOut();
@@ -225,53 +155,3 @@ export default function Login(props): JSX.Element {
     );
 
 }
-
-/**********************************************************/
-
-const styles = StyleSheet.create({
-
-    logInBtns: {
-        flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'space-evenly',
-    },
-
-    logOutText: {
-        color: 'rgb(8,121,169)',
-    },
-
-    linkContainer: {
-        justifyContent: 'space-between',
-        flex: 1,
-    },
-
-    buttonStyle: {
-        flex: 1,
-        marginHorizontal: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#0279AC',
-    },
-
-    btnText: {
-        color: '#fff',
-    },
-
-    button: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'column',
-        marginBottom: 10
-    },
-
-    text: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 6,
-        marginBottom: 6,
-        fontSize: 15,
-
-    },
-
-});
