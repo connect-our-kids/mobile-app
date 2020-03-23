@@ -52,7 +52,7 @@ export default function PickPhotoButton({ afterAccept }) {
     }
 
     return (
-        <Button onPress={onPress} testID="componentTest">
+        <Button onPress={onPress} testID="pick-photo-button">
             <PickPhotoIcon/>
         </Button>
     );
