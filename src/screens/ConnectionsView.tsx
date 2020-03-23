@@ -36,7 +36,7 @@ import {
     MaterialIcons,
 } from '@expo/vector-icons';
 import { Engagement, Documents } from '../components/ConnectionsViewTabs/ConnectionsViewTabs';
-import Loader from '../components/Loader/Loader';
+import Loader from '../components/Loader/index.jsx';
 import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
 import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';

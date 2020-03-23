@@ -21,7 +21,7 @@ import {
 } from '../store/actions/caseConnections';
 
 import { connect } from 'react-redux';
-import Loader from '../components/Loader/Loader';
+import Loader from '../components/Loader/index.jsx';
 import CaseList from '../components/CaseList/index.jsx';
 
 import ScrollToTop from '../UI/ScrollToTop';

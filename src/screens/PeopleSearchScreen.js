@@ -29,7 +29,7 @@ import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import { sendEvent } from '../helpers/createEvent';
-import Loader from '../components/Loader/Loader';
+import Loader from '../components/Loader/index.jsx';
 
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from './../components/auth/RegisterModalsContainer/index.tsx';
