@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     Linking,
 } from 'react-native';
 
@@ -12,10 +11,10 @@ import { Button } from 'native-base';
 import MainText from '../../../UI/MainText';
 import ScreenContainer from '../../../UI/ScreenContainer';
 import authHelpers from '../../../helpers/authHelpers';
+import styles from './style';
 
 import { sendEvent } from '../../../helpers/createEvent';
 
-/**********************************************************/
 
 export default function ConnectionsLogin(props): JSX.Element {
 
@@ -28,7 +27,7 @@ export default function ConnectionsLogin(props): JSX.Element {
     return (
         <ScreenContainer>
             <MainText>
-                Family Connections helps social workers, family recruiters, and CASA volunteeers identify and engage extended family members of children in foster care.
+                Family Connections helps social workers, family recruiters, and CASA volunteers identify and engage extended family members of children in foster care.
             </MainText>
             <Text
                 style={styles.linkText}
@@ -69,51 +68,3 @@ export default function ConnectionsLogin(props): JSX.Element {
     );
 
 }
-
-/**********************************************************/
-
-const styles = StyleSheet.create({
-
-    logInBtns: {
-        flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'space-evenly',
-    },
-
-    // logOutText: {
-    //     color: '#fff',
-    // },
-
-    linkText: {
-        color: '#0279AC',
-        marginTop: 20,
-        textAlign: 'center',
-    },
-
-    linkContainer: {
-        justifyContent: 'space-between',
-        flex: 1,
-        marginTop: 40,
-    },
-
-    buttonStyle: {
-        flex: 1,
-        marginHorizontal: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#0279AC',
-    },
-
-    btnText: {
-        color: '#fff',
-    },
-
-    // button: {
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',
-    //     flexDirection: 'column',
-    //     marginBottom: 10,
-    // },
-
-});
