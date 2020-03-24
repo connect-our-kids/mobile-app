@@ -3,10 +3,12 @@ import React from 'react';
 import {
     Text,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 
 import { Button } from 'native-base';
+
+import styles from './VideoAgreeModal.styles';
 
 /**********************************************************/
 
