@@ -8,7 +8,7 @@ import {
 
 import Input from './Input';
 
-import styles from '../AddCase/Form.styles';
+import styles from './Form.styles';
 
 /**********************************************************/
 

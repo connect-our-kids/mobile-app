@@ -4,7 +4,7 @@ import { Platform, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import { render, fireEvent } from 'react-native-testing-library';
 
-import AddCaseForm from '../AddCase/Form';
+import AddCaseForm from './Form';
 
 /**********************************************************/
 
