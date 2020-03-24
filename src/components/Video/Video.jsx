@@ -2,7 +2,8 @@ import React from 'react';
 import { Platform, StyleSheet, View, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-const Video = ({ uri }) => {
+export default function Video({ uri }) {
+
     return (
         <View style={styles.videoContainer}>
             <WebView
@@ -14,7 +15,8 @@ const Video = ({ uri }) => {
             />
         </View>
     );
-};
+
+}
 
 const styles = StyleSheet.create({
     videoContainer: {
@@ -27,5 +29,3 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS == 'ios' ? 20 : 0,
     },
 });
-
-export default Video;
