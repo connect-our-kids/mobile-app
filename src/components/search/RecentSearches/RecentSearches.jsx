@@ -14,8 +14,8 @@ import {
     populateSearchResults,
     setRecentSearches,
     stopSavingRecentSearches,
-} from '../../store/actions';
-import constants from '../../helpers/constants';
+} from '../../../store/actions';
+import constants from '../../../helpers/constants';
 
 class RecentSearches extends Component {
     async componentDidMount() {
