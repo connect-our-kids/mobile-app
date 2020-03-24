@@ -27,12 +27,12 @@ import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import PersonRow from '../components/Person/PersonRow';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
-import SearchForm from '../components/SearchForm';
+import SearchForm from '../components/search/Search/Form';
 import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader';
 
 import authHelpers from '../helpers/authHelpers';
-import RegisterModalsContainer from './../components/auth/RegisterModalsContainer';
+import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
 
 class PeopleSearchScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>

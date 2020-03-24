@@ -8,7 +8,7 @@ import {
 
 import { ListItem } from 'react-native-elements';
 
-const placeholderImg = require('../../../assets/profile_placeholder.png');
+const placeholderImg = require('../../../../assets/profile_placeholder.png');
 
 /**********************************************************/
 

@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button, Tabs, Tab, Input } from 'native-base';
 import { SearchBar } from 'react-native-elements';
-import constants from '../../helpers/constants';
+import constants from '../../../helpers/constants';
 import {
     isName,
     isEmail,
     isAddress,
     isPhone,
     isUrl,
-} from '../../helpers/inputValidators';
+} from '../../../helpers/inputValidators';
 import { connect } from 'react-redux';
 import {
     getInfo,
     stopSearchMe,
     sendSearchErrorMessage,
-} from '../../store/actions';
+} from '../../../store/actions';
 import { Ionicons } from '@expo/vector-icons';
 
 class SearchForm extends Component {

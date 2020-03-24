@@ -22,7 +22,7 @@ import {
 
 import { connect } from 'react-redux';
 import Loader from '../components/Loader';
-import CaseList from '../components/CaseList';
+import CaseList from '../components/cases/CaseList';
 
 import ScrollToTop from '../UI/ScrollToTop';
 import { RadioButton } from 'react-native-paper';

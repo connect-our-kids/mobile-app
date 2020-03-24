@@ -40,7 +40,7 @@ import Loader from '../components/Loader';
 import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
 import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';
-import CaseList from '../components/CaseList';
+import CaseList from '../components/cases/CaseList';
 import { created } from '../helpers/comparators';
 
 const placeholderImg = require('../../assets/profile_placeholder.png');

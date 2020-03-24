@@ -13,7 +13,7 @@ import {
 
 import getEnvVars from '../../../environment';
 import saveToRecentSearches from '../../helpers/saveToRecentSearches';
-import { sendEvent, createOptions } from './../../helpers/createEvent';
+import { sendEvent, createOptions } from '../../helpers/createEvent';
 
 const { peopleSearchURL } = getEnvVars();
 

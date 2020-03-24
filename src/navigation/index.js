@@ -26,7 +26,7 @@ import AuthenticationView from '../screens/AuthenticationScreen';
 import CaseViewScreen from '../screens/CaseViewScreen';
 import ConnectionsView from '../screens/ConnectionsView';
 import AddEngagementForm from '../components/ConnectionsViewTabs/AddEngagementForm';
-import AddDocForm from '../components/ConnectionsViewTabs/AddDocForm';
+import AddDocumentForm from '../components/ConnectionsViewTabs/AddDocumentForm';
 import logoImg from '../../assets/logo.png';
 import CustomDrawer from './CustomDrawer';
 import { connect } from 'react-redux';
@@ -174,7 +174,7 @@ const FamilyConnectionsNavigator = createStackNavigator(
             },
         },
         DocumentForm: {
-            screen: AddDocForm,
+            screen: AddDocumentForm,
             initialRouteName: 'FamilyConnections',
             defaultNavigationOptions: {
                 headerStyle: {
