@@ -15,9 +15,15 @@ You can find the repo for the project at [connect our kids repo](https://github.
 
 ## Labs17 Contributors
 
-### Team Lead
-
-#### [Irving Duran](https://github.com/fixmylifedesigns)
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Irving Duran](https://avatars.githubusercontent.com/u/32081816?s=64)     | [Irving Duran](https://github.com/fixmylifedesigns) | Team Lead |
+| ![Bryan Szendel](https://avatars.githubusercontent.com/u/22917212?s=64)    | [Bryan Szendel](https://github.com/bryanszendel)    | Developer |
+| ![Blaine Blonquist](https://avatars.githubusercontent.com/u/49822176?s=64) | [Blaine Blonquist](https://github.com/bquizza5)     | Developer |
+| ![Tania Keller](https://avatars.githubusercontent.com/u/51134714?s=64)     | [Tania Keller](https://github.com/taniamichelle)    | Developer |
+| ![Scott Beeker](https://avatars.githubusercontent.com/u/49079747?s=64)     | [Scott Beeker](https://github.com/dangolbeeker)     | Developer |
+| ![Marques Johnson](https://avatars.githubusercontent.com/u/46509067?s=64)  | [Marques Johnson](https://github.com/MarquesJ8023)  | Developer |
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)      | [Bishop Lake](https://github.com/Bishop-Lake)       | Developer |
 
 <img src="https://avatars2.githubusercontent.com/u/32081816?s=460&v=4" width = "130"/>
 
