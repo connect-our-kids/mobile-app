@@ -27,7 +27,7 @@ import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import PersonRow from '../components/Person/PersonRow';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
-import SearchForm from '../components/SearchForm';
+import SearchForm from '../components/search/SearchForm';
 import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader';
 
