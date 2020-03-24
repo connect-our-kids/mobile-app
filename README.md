@@ -7,31 +7,23 @@ You can find the repo for the project at [connect our kids repo](https://github.
 | Avatar | Name | Role |
 |:-------|:-----|:-----|
 | ![Asa Shalom](https://avatars.githubusercontent.com/u/36455310?s=64)       | [Asa Shalom](https://github.com/AsaOfDiamonds)   | Developer |
-| ![Ryan Walker](https://avatars.githubusercontent.com/u/26858745?s=64)      | [Ryan Walker](https://github.com/rytwalker)      | Developer |
-| ![Tyler Spaulding](https://avatars.githubusercontent.com/u/45692071?s=64)  | [Tyler Spaulding](https://github.com/NightlyD3V) | Developer |
 | ![Michael Gunter](https://avatars.githubusercontent.com/u/47502855?s=64)   | [Michael Gunter](https://github.com/maxgunter99) | Developer |
 | ![Pedro Montesinos](https://avatars.githubusercontent.com/u/20940599?s=64) | [Pedro Montesinos](https://github.com/pedrolmr)  | Developer |
+| ![Ryan Walker](https://avatars.githubusercontent.com/u/26858745?s=64)      | [Ryan Walker](https://github.com/rytwalker)      | Developer |
 | ![Sean Pheneger](https://avatars.githubusercontent.com/u/41925787?s=64)    | [Sean Pheneger](https://github.com/wcolts2000)   | Developer |
+| ![Tyler Spaulding](https://avatars.githubusercontent.com/u/45692071?s=64)  | [Tyler Spaulding](https://github.com/NightlyD3V) | Developer |
 
 ## Labs17 Contributors
 
 | Avatar | Name | Role |
 |:-------|:-----|:-----|
 | ![Irving Duran](https://avatars.githubusercontent.com/u/32081816?s=64)     | [Irving Duran](https://github.com/fixmylifedesigns) | Team Lead |
-| ![Bryan Szendel](https://avatars.githubusercontent.com/u/22917212?s=64)    | [Bryan Szendel](https://github.com/bryanszendel)    | Developer |
-| ![Blaine Blonquist](https://avatars.githubusercontent.com/u/49822176?s=64) | [Blaine Blonquist](https://github.com/bquizza5)     | Developer |
-| ![Tania Keller](https://avatars.githubusercontent.com/u/51134714?s=64)     | [Tania Keller](https://github.com/taniamichelle)    | Developer |
-| ![Scott Beeker](https://avatars.githubusercontent.com/u/49079747?s=64)     | [Scott Beeker](https://github.com/dangolbeeker)     | Developer |
-| ![Marques Johnson](https://avatars.githubusercontent.com/u/46509067?s=64)  | [Marques Johnson](https://github.com/MarquesJ8023)  | Developer |
 | ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)      | [Bishop Lake](https://github.com/Bishop-Lake)       | Developer |
-
-<img src="https://avatars2.githubusercontent.com/u/32081816?s=460&v=4" width = "130"/>
-
-#
-
-| [<img src="https://avatars1.githubusercontent.com/u/22917212?s=400&v=4" width = "200" />](https://github.com/)[Bryan Szendel](https://github.com/bryanszendel) | [<img src="https://avatars2.githubusercontent.com/u/49822176?s=460&v=4" width = "200" />](https://github.com/)[Blaine Blonquist](https://github.com/bquizza5)  | [<img src="https://avatars1.githubusercontent.com/u/51134714?s=460&v=4" width = "200" />](https://github.com/)[Tania Keller](https://github.com/taniamichelle) | [<img src="https://avatars2.githubusercontent.com/u/49079747?s=460&v=4" width = "200" />](https://github.com/)  [Scott Beeker](https://github.com/dangolbeeker)
-|:--:|:--:|:--:|:--:|
-[<img src="https://avatars0.githubusercontent.com/u/46509067?s=460&v=4" width = "200" />](https://github.com/)[Marques Johnson](https://github.com/MarquesJ8023) | [<img src="https://avatars2.githubusercontent.com/u/50998248?s=460&v=4" width = "200" />](https://github.com/) [Bishop Lake](https://github.com/Bishop-Lake)|
+| ![Blaine Blonquist](https://avatars.githubusercontent.com/u/49822176?s=64) | [Blaine Blonquist](https://github.com/bquizza5)     | Developer |
+| ![Bryan Szendel](https://avatars.githubusercontent.com/u/22917212?s=64)    | [Bryan Szendel](https://github.com/bryanszendel)    | Developer |
+| ![Marques Johnson](https://avatars.githubusercontent.com/u/46509067?s=64)  | [Marques Johnson](https://github.com/MarquesJ8023)  | Developer |
+| ![Scott Beeker](https://avatars.githubusercontent.com/u/49079747?s=64)     | [Scott Beeker](https://github.com/dangolbeeker)     | Developer |
+| ![Tania Keller](https://avatars.githubusercontent.com/u/51134714?s=64)     | [Tania Keller](https://github.com/taniamichelle)    | Developer |
 
 ## Labs19 Contributors
 
