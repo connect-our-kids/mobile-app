@@ -1,4 +1,4 @@
-import HeaderTitle from './../components/HeaderTitle/index.jsx';
+import HeaderTitle from './../components/HeaderTitle';
 import logoImg from '../../assets/logo.png';
 import {
     Image,
