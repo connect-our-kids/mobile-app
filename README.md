@@ -4,9 +4,14 @@ You can find the repo for the project at [connect our kids repo](https://github.
 
 ## Labs13 Contributors
 
-| [<img src="https://avatars1.githubusercontent.com/u/36455310?s=460&v=4" width = "200" />](https://github.com/) [Asa Shalom](https://github.com/AsaOfDiamonds) | [<img src="https://avatars3.githubusercontent.com/u/26858745?s=460&v=4" width = "200" />](https://github.com/) [Ryan Walker](https://github.com/rytwalker) | [<img src="https://avatars0.githubusercontent.com/u/45692071?s=460&v=4" width = "200" />](https://github.com/)[Tyler Spaulding](https://github.com/NightlyD3V) | [<img src="https://avatars2.githubusercontent.com/u/47502855?s=460&v=4" width = "200" />](https://github.com/) [Michael Gunter](https://github.com/maxgunter99)
-|:--:|:--:|:--:|:--:|
-[<img src="https://avatars2.githubusercontent.com/u/20940599?s=460&amp;v=4" width = "200" />](https://github.com/) [Pedro Montesinos](https://github.com/pedrolmr)| [<img src="https://avatars1.githubusercontent.com/u/41925787?s=460&v=4" width = "200" />](https://github.com/) [Sean Pheneger](https://github.com/wcolts2000) |
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Asa Shalom](https://avatars.githubusercontent.com/u/36455310?s=100) | [Asa Shalom](https://github.com/AsaOfDiamonds) | Developer |
+| ![Ryan Walker](https://avatars.githubusercontent.com/u/26858745?s=100) | [Ryan Walker](https://github.com/rytwalker) | Developer |
+| ![Tyler Spaulding](https://avatars.githubusercontent.com/u/45692071?s=100) | [Tyler Spaulding](https://github.com/NightlyD3V) | Developer |
+| ![Michael Gunter](https://avatars.githubusercontent.com/u/47502855?s=100) | [Michael Gunter](https://github.com/maxgunter99) | Developer |
+| ![Pedro Montesinos](https://avatars.githubusercontent.com/u/20940599?s=100) | [Pedro Montesinos](https://github.com/pedrolmr) | Developer |
+| ![Sean Pheneger](https://avatars.githubusercontent.com/u/41925787?s=100) | [Sean Pheneger](https://github.com/wcolts2000) | Developer |
 
 ## Labs17 Contributors
 
