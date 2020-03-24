@@ -41,9 +41,16 @@ You can find the repo for the project at [connect our kids repo](https://github.
 
 ## Labs21 Contributors
 
-| <img src= "https://avatars0.githubusercontent.com/u/28660371?s=120&v=4" width= "200" />[Jason Glassbrook](https://github.com/jason-glassbrook)  |<img src= "https://avatars1.githubusercontent.com/u/48068572?s=460&u=bf3f093b15d57fa4a2778d18bb404b5e56a62a4c&v=4" width= "200" /> [Nathan Sayers](https://github.com/nathan-saygers)| <img src= "https://avatars3.githubusercontent.com/u/26654712?s=460&u=27626e737896c881422f64eb76aba0bfe913ccbf&v=4" width= "200" /> [Ariana Shackelford](https://github.com/ArianaShackelford)  |  <img src= "https://avatars1.githubusercontent.com/u/54650844?s=460&u=3408af3dbf4d72f3e3702fb61eb631d10305a668&v=4" width= "200" /> [Sara De La Cruz](https://github.com/Sara-DLC) |
-|---|---|---|---|
-| <img src= "https://avatars0.githubusercontent.com/u/55757912?s=460&u=07aec466525bdd4c6502f3f61c7a0eb8d092aff6&v=4" width= "200" /> [Alejandro E Rodriguez](https://github.com/imxande)  | <img src= "https://avatars0.githubusercontent.com/u/50350459?s=460&u=1e59a62f9138e4aa5109c4d30a44996f14d85bed&v=4" width= "200" /> [Faye Skeen](https://github.com/fskeen)  | <img src= "https://avatars2.githubusercontent.com/u/53713175?s=460&u=62aac5d6df1bcd65460c9252751a30f542436479&v=4" width= "200" /> [Tyge Davis](https://github.com/tygedavis)  |   |
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)            | [Bishop Lake](https://github.com/Bishop-Lake)              | Team Lead |
+| ![Alejandro E Rodriguez](https://avatars0.githubusercontent.com/u/55757912?s=64) | [Alejandro E Rodriguez](https://github.com/imxande)        | Developer |
+| ![Ariana Shackelford](https://avatars3.githubusercontent.com/u/26654712?s=64)    | [Ariana Shackelford](https://github.com/ArianaShackelford) | Developer |
+| ![Faye Skeen](https://avatars0.githubusercontent.com/u/50350459?s=64)            | [Faye Skeen](https://github.com/fskeen)                    | Developer |
+| ![Jason Glassbrook](https://avatars0.githubusercontent.com/u/28660371?s=64)      | [Jason Glassbrook](https://github.com/jason-glassbrook)    | Developer |
+| ![Nathan Sayers](https://avatars1.githubusercontent.com/u/48068572?s=64)         | [Nathan Sayers](https://github.com/nathan-saygers)         | Developer |
+| ![Sara De La Cruz](https://avatars1.githubusercontent.com/u/54650844?s=64)       | [Sara De La Cruz](https://github.com/Sara-DLC)             | Developer |
+| ![Tyge Davis](https://avatars2.githubusercontent.com/u/53713175?s=64)            | [Tyge Davis](https://github.com/tygedavis)                 | Developer |
 
 ## Project Overview
 
