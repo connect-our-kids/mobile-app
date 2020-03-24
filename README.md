@@ -43,7 +43,15 @@ You can find the repo for the project at [connect our kids repo](https://github.
 | <img  src="https://media-exp1.licdn.com/dms/image/C4E03AQEAKjs2r3aVjQ/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=6slNFYVJ8NSpoyiM3ROlyIWP_Q_fSWcrGWLQTCrnJhk"  width = "200"  />[Uzias Rivera](https://github.com/uziasr)
 
   
+  
+## Labs21 Contributors
 
+
+
+
+| <img src= "https://avatars0.githubusercontent.com/u/28660371?s=120&v=4" width= "200" />[Jason Glassbrook](https://github.com/jason-glassbrook)  |<img src= "https://avatars1.githubusercontent.com/u/48068572?s=460&u=bf3f093b15d57fa4a2778d18bb404b5e56a62a4c&v=4" width= "200" /> [Nathan Sayers](https://github.com/nathan-saygers)| <img src= "https://avatars3.githubusercontent.com/u/26654712?s=460&u=27626e737896c881422f64eb76aba0bfe913ccbf&v=4" width= "200" /> [Ariana Shackelford](https://github.com/ArianaShackelford)  |  <img src= "https://avatars1.githubusercontent.com/u/54650844?s=460&u=3408af3dbf4d72f3e3702fb61eb631d10305a668&v=4" width= "200" /> [Sara De La Cruz](https://github.com/Sara-DLC) |
+|---|---|---|---|
+| <img src= "https://avatars0.githubusercontent.com/u/55757912?s=460&u=07aec466525bdd4c6502f3f61c7a0eb8d092aff6&v=4" width= "200" /> [Alejandro E Rodriguez](https://github.com/imxande)  | <img src= "https://avatars0.githubusercontent.com/u/50350459?s=460&u=1e59a62f9138e4aa5109c4d30a44996f14d85bed&v=4" width= "200" /> [Faye Skeen](https://github.com/fskeen)  | <img src= "https://avatars2.githubusercontent.com/u/53713175?s=460&u=62aac5d6df1bcd65460c9252751a30f542436479&v=4" width= "200" /> [Tyge Davis](https://github.com/tygedavis)  |   |
 
 ## Project Overview
 
@@ -57,13 +65,13 @@ You can find the project repo at [Connect Our Kids RN Repo](https://github.com/c
 
   
 
-[Trello Board](trello.com/b/svxEuquq/labs-17-connect-our-kids-social-worker-app)
+[Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
 
   
 
   
 
-[Product Canvas](https://docs.google.com/document/d/1deZi-ucUPVX1uKFpFDO8XlMUkK_RvsCPk5gzOhVPDbw/edit#)
+[Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
 
   
 
