@@ -16,7 +16,7 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 import RNPickerSelect from 'react-native-picker-select';
 import convertMediaToAttachment from './convertMediaToAttachment';
 
-const AddDocForm = (props) => {
+const AddDocumentForm = (props) => {
     const [ title, setTitle ] = useState('');
     const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     const [ notes, setNotes ] = useState('');
@@ -283,4 +283,4 @@ export default connect(
         postConnectionDocument,
         getEngagements,
     },
-)(AddDocForm);
+)(AddDocumentForm);
