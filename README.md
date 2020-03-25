@@ -29,15 +29,15 @@ You can find the repo for the project at [connect our kids repo](https://github.
 
 | Avatar | Name | Role |
 |:-------|:-----|:-----|
-| <img  src="https://media-exp1.licdn.com/dms/image/C4E03AQHGic7sMz70Mw/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=lP3VV4loQH1B5HTdUDJ-Yv32aI4FkBchLZEdd1K4PUk"  width = "200"  /> | [Bishop Lake](https://github.com/Bishop-Lake) | Team Lead |
-| <img  src="https://media-exp1.licdn.com/dms/image/C4D03AQG89n8MMgDyoQ/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=_-kpMBv4gLAfd3251RoQe9yw_SKfh0Ii0x97-EJ0YCo"  width = "200"  /> | [Angela Flowers](https://github.com/ajflowers) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C4E03AQHGMjOc1a7RUQ/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=zDSClF-3maeWJf_ovoNj5IUxMv84VP3g0o7h_EfONQA"  width = "200"  /> | [Austin Michaud](https://github.com/foobar404) | Developer |
-| <img  src="https://ca.slack-edge.com/T4JUEB3ME-ULW412KRA-7431d247096a-512"  width = "200"  /> | [Bayron Puac](https://github.com/bayronpuac) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C5603AQEE3mE3A2fyrQ/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=BSk8Ys0CQfGv6RaXCzPtsjWYldldD6GePhjcjrAZrD8"  width = "200"  /> | [Brandon Kaplan](https://github.com/) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C5603AQFH2x-fSjxosA/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=msmt8NX-M3h2uuaD5jisnk6OLek4G_09bfHF44_7G1k"  width = "200"  /> | [Emily Richard](https://github.com/emilyelri) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C5603AQGwr5Hhx3Eswg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=aVoEDDtK1jT5ObiXz3I1dr_yTWuwSHwg31M0hrQqBxQ"  width = "200"  /> | [Jordan Athey](https://github.com/AjileJ) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C4E03AQHyG5YZ-jTakg/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=b98KbKvGiE_CseKq1q3j-G7gGBy4Me4ANj5T991T1yg"  width = "200"  /> | [Kelsey Adams](https://github.com/) | Developer |
-| <img  src="https://media-exp1.licdn.com/dms/image/C4E03AQEAKjs2r3aVjQ/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=6slNFYVJ8NSpoyiM3ROlyIWP_Q_fSWcrGWLQTCrnJhk"  width = "200"  /> | [Uzias Rivera](https://github.com/uziasr) | Developer |
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)    | [Bishop Lake](https://github.com/Bishop-Lake)  | Team Lead |
+| <img alt="Brandon Kaplan" src="https://ca.slack-edge.com/T4JUEB3ME-ULVC6TBS5-312523b9b14d-512" width="64"/> | Brandon Kaplan | UX Designer |
+| <img alt="Kelsey Adams" src="https://ca.slack-edge.com/T4JUEB3ME-UK4PF87PX-f03508e200f7-512" width="64"/>   | Kelsey Adams   | UX Designer |
+| ![Angela Flowers](https://avatars.githubusercontent.com/u/16947614?s=64) | [Angela Flowers](https://github.com/ajflowers) | Developer |
+| ![Austin Michaud](https://avatars.githubusercontent.com/u/28680349?s=64) | [Austin Michaud](https://github.com/foobar404) | Developer |
+| ![Bayron Puac](https://avatars.githubusercontent.com/u/53735140?s=64)    | [Bayron Puac](https://github.com/bayronpuac)   | Developer |
+| ![Emily Richard](https://avatars.githubusercontent.com/u/46936014?s=64)  | [Emily Richard](https://github.com/emilyelri)  | Developer |
+| ![Jordan Athey](https://avatars.githubusercontent.com/u/53097022?s=64)   | [Jordan Athey](https://github.com/AjileJ)      | Developer |
+| ![Uzias Rivera](https://avatars.githubusercontent.com/u/40837265?s=64)   | [Uzias Rivera](https://github.com/uziasr)      | Developer |
 
 ## Labs21 Contributors
 
