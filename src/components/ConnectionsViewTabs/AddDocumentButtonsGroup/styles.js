@@ -16,6 +16,12 @@ export default StyleSheet.create({
         borderRadius: 16,
         padding: 8,
         margin: 4,
+        alignItems: 'center',
         // width: '30%',
+    },
+    buttonLabel: {
+        fontSize: 12,
+        color: constants.textColor,
+        alignItems: 'center',
     },
 });
