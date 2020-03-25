@@ -103,13 +103,29 @@ In the future, we want authenticated users to have access to the full features o
 
 -   [Visual Studio Code](https://code.visualstudio.com/) with extensions:
 
-    -   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) for automatic linting on save
+    -   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) for automatic linting when you save.
+
+-   [Expo CLI](https://docs.expo.io/versions/latest/workflow/expo-cli/)
+
+    Expo CLI is the official tool for running Expo apps (`expo start`) and following the Expo workflow (`expo <command>`).
+    You should only install production dependencies with `expo install`, because Expo limits the versions of packages to ensure compatibility.
+    Use `expo upgrade` to upgrade the Expo SDK. To upgrade other dependencies, you may need to _carefully_ use `npm`.
+
+-   [NPM](https://www.npmjs.com/)
+
+    NPM is the industry-standard package manager for JavaScript packages.
+    For this project, you should _prefer_ `expo` commands when possible.
+    However, `npm` gives you more control over dependencies when you need it.
 
 #### Running On Your Mobile Device
+
+-   Expo CLI: `expo start`
 
 -   [Expo Client](https://expo.io/tools#client)
 
 #### Running On An Emulator
+
+-   Expo CLI: `expo start`
 
 -   [Android Studio](https://developer.android.com/studio)
 
