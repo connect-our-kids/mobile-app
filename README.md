@@ -17,20 +17,6 @@ In the future, we want authenticated users to have access to the full features o
 
 ## Project
 
-### Resources
-
--   [Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
-
--   [Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
-
--   [UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
-
--   [Version 2 Application Flow](https://www.figma.com/file/SLjHC3TQIBspRBNgRM9xMr/Untitled?node-id=0%3A1)
-
--   [Overview video of our Changes](https://www.youtube.com/watch?v=isHGElZI3-Y&feature=youtu.be)
-
--   [Change Log](./CHANGELOG.md) (stale)
-
 ### Features
 
 -   App navigation...
@@ -50,6 +36,20 @@ In the future, we want authenticated users to have access to the full features o
         -   taking photos
 
 -   _Best Practices_
+
+### Resources
+
+-   [Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
+
+-   [Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
+
+-   [UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
+
+-   [Version 2 Application Flow](https://www.figma.com/file/SLjHC3TQIBspRBNgRM9xMr/Untitled?node-id=0%3A1)
+
+-   [Overview video of our Changes](https://www.youtube.com/watch?v=isHGElZI3-Y&feature=youtu.be)
+
+-   [Change Log](./CHANGELOG.md) (stale)
 
 ### Getting Started
 
