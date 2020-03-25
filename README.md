@@ -19,8 +19,6 @@ In the future, we want authenticated users to have access to the full features o
 
 ### Resources
 
--   You can find the project repo at [Connect Our Kids RN Repo](https://github.com/connect-our-kids/mobile-app).
-
 -   [Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
 
 -   [Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
