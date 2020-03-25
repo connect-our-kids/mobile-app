@@ -170,16 +170,6 @@ See [People Search API](https://docs.google.com/document/d/1145R9-FcmA1NMXMAwbzF
 
 [![License][license-image]][license-url]
 
-## Project Overview
-
-You can find the project repo at [Connect Our Kids RN Repo](https://github.com/labs13-connect-kids/mobile).
-
-[Trello Board](https://trello.com/b/NUgsesAO/labs-13-connect-kids)
-
-[Product Canvas](https://docs.google.com/document/d/1deZi-ucUPVX1uKFpFDO8XlMUkK_RvsCPk5gzOhVPDbw/edit#)
-
-[UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
-
 ## Contributors
 
 ## Lambda Labs 21
