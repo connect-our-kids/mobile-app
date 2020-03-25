@@ -112,6 +112,28 @@ Before getting starting on this project, it will be enormously helpful for you t
     > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people.
     > This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
 
+#### Configuration
+
+-   [Babel](https://babeljs.io/docs/en/configuration)
+
+    Babel transpiles (translates) newer JavaScript syntax so older or incompatible environments will understand it.
+
+    **_configuration:_** [babel.config.js](./babel.config.js)
+
+-   [ESLint](https://eslint.org/docs/user-guide/configuring)
+
+    ESLint lints (checks) JavaScript/TypeScript code against a style guide and warns you about inconsistent style and possible coding errors.
+
+    **_configuration:_** [.eslintrc.js](./.eslintrc.js)
+
+-   [Jest](https://jestjs.io/docs/en/configuration.html)
+
+    Jest tests your code... but only if configured properly.
+
+    **_configuration:_** [jest.config.js](./jest.config.js)
+
+If you have questions about understanding or updating this project's configuration, please contact [Jason Glassbrook](https://github.com/jason-glassbrook).
+
 ### Recommended Development Tools
 
 #### Coding
