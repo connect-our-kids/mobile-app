@@ -15,21 +15,23 @@ Once authenticated, users will have full access to the app's features (including
 
 In the future, we want authenticated users to have access to the full features of Family Connections and Best Practices while using the mobile app.
 
-## Project Overview
+## Project
 
-You can find the project repo at [Connect Our Kids RN Repo](https://github.com/connect-our-kids/mobile-app).
+### Resources
 
-[Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
+-   You can find the project repo at [Connect Our Kids RN Repo](https://github.com/connect-our-kids/mobile-app).
 
-[Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
+-   [Trello Board](https://trello.com/b/OHG8AQnD/labs21-connect-our-kids)
 
-[UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
+-   [Product Canvas](https://www.notion.so/Connect-Our-Kids-React-Native-App-build-on-99a8978b9a5e46359641b365c91acf73)
 
-[Version 2 Application Flow](https://www.figma.com/file/SLjHC3TQIBspRBNgRM9xMr/Untitled?node-id=0%3A1)
+-   [UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
 
-[Overview video of our Changes](https://www.youtube.com/watch?v=isHGElZI3-Y&feature=youtu.be)
+-   [Version 2 Application Flow](https://www.figma.com/file/SLjHC3TQIBspRBNgRM9xMr/Untitled?node-id=0%3A1)
 
-[ChangeLog](./CHANGELOG.md)
+-   [Overview video of our Changes](https://www.youtube.com/watch?v=isHGElZI3-Y&feature=youtu.be)
+
+-   [Change Log](./CHANGELOG.md) (stale)
 
 ### Features
 
