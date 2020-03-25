@@ -2,56 +2,6 @@
 
 You can find the repo for the project at [connect our kids repo](https://github.com/connect-our-kids/mobile-app).
 
-## Labs13 Contributors
-
-| Avatar | Name | Role |
-|:-------|:-----|:-----|
-| ![Asa Shalom](https://avatars.githubusercontent.com/u/36455310?s=64)       | [Asa Shalom](https://github.com/AsaOfDiamonds)   | Developer |
-| ![Michael Gunter](https://avatars.githubusercontent.com/u/47502855?s=64)   | [Michael Gunter](https://github.com/maxgunter99) | Developer |
-| ![Pedro Montesinos](https://avatars.githubusercontent.com/u/20940599?s=64) | [Pedro Montesinos](https://github.com/pedrolmr)  | Developer |
-| ![Ryan Walker](https://avatars.githubusercontent.com/u/26858745?s=64)      | [Ryan Walker](https://github.com/rytwalker)      | Developer |
-| ![Sean Pheneger](https://avatars.githubusercontent.com/u/41925787?s=64)    | [Sean Pheneger](https://github.com/wcolts2000)   | Developer |
-| ![Tyler Spaulding](https://avatars.githubusercontent.com/u/45692071?s=64)  | [Tyler Spaulding](https://github.com/NightlyD3V) | Developer |
-
-## Labs17 Contributors
-
-| Avatar | Name | Role |
-|:-------|:-----|:-----|
-| ![Irving Duran](https://avatars.githubusercontent.com/u/32081816?s=64)     | [Irving Duran](https://github.com/fixmylifedesigns) | Team Lead |
-| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)      | [Bishop Lake](https://github.com/Bishop-Lake)       | Developer |
-| ![Blaine Blonquist](https://avatars.githubusercontent.com/u/49822176?s=64) | [Blaine Blonquist](https://github.com/bquizza5)     | Developer |
-| ![Bryan Szendel](https://avatars.githubusercontent.com/u/22917212?s=64)    | [Bryan Szendel](https://github.com/bryanszendel)    | Developer |
-| ![Marques Johnson](https://avatars.githubusercontent.com/u/46509067?s=64)  | [Marques Johnson](https://github.com/MarquesJ8023)  | Developer |
-| ![Scott Beeker](https://avatars.githubusercontent.com/u/49079747?s=64)     | [Scott Beeker](https://github.com/dangolbeeker)     | Developer |
-| ![Tania Keller](https://avatars.githubusercontent.com/u/51134714?s=64)     | [Tania Keller](https://github.com/taniamichelle)    | Developer |
-
-## Labs19 Contributors
-
-| Avatar | Name | Role |
-|:-------|:-----|:-----|
-| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)    | [Bishop Lake](https://github.com/Bishop-Lake)  | Team Lead |
-| <img alt="Brandon Kaplan" src="https://ca.slack-edge.com/T4JUEB3ME-ULVC6TBS5-312523b9b14d-512" width="64"/> | Brandon Kaplan | UX Designer |
-| <img alt="Kelsey Adams" src="https://ca.slack-edge.com/T4JUEB3ME-UK4PF87PX-f03508e200f7-512" width="64"/>   | Kelsey Adams   | UX Designer |
-| ![Angela Flowers](https://avatars.githubusercontent.com/u/16947614?s=64) | [Angela Flowers](https://github.com/ajflowers) | Developer |
-| ![Austin Michaud](https://avatars.githubusercontent.com/u/28680349?s=64) | [Austin Michaud](https://github.com/foobar404) | Developer |
-| ![Bayron Puac](https://avatars.githubusercontent.com/u/53735140?s=64)    | [Bayron Puac](https://github.com/bayronpuac)   | Developer |
-| ![Emily Richard](https://avatars.githubusercontent.com/u/46936014?s=64)  | [Emily Richard](https://github.com/emilyelri)  | Developer |
-| ![Jordan Athey](https://avatars.githubusercontent.com/u/53097022?s=64)   | [Jordan Athey](https://github.com/AjileJ)      | Developer |
-| ![Uzias Rivera](https://avatars.githubusercontent.com/u/40837265?s=64)   | [Uzias Rivera](https://github.com/uziasr)      | Developer |
-
-## Labs21 Contributors
-
-| Avatar | Name | Role |
-|:-------|:-----|:-----|
-| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)           | [Bishop Lake](https://github.com/Bishop-Lake)              | Team Lead |
-| ![Alejandro E Rodriguez](https://avatars.githubusercontent.com/u/55757912?s=64) | [Alejandro E Rodriguez](https://github.com/imxande)        | Developer |
-| ![Ariana Shackelford](https://avatars.githubusercontent.com/u/26654712?s=64)    | [Ariana Shackelford](https://github.com/ArianaShackelford) | Developer |
-| ![Faye Skeen](https://avatars.githubusercontent.com/u/50350459?s=64)            | [Faye Skeen](https://github.com/fskeen)                    | Developer |
-| ![Jason Glassbrook](https://avatars.githubusercontent.com/u/28660371?s=64)      | [Jason Glassbrook](https://github.com/jason-glassbrook)    | Developer |
-| ![Nathan Saygers](https://avatars.githubusercontent.com/u/48068572?s=64)        | [Nathan Saygers](https://github.com/nathan-saygers)         | Developer |
-| ![Sara De La Cruz](https://avatars.githubusercontent.com/u/54650844?s=64)       | [Sara De La Cruz](https://github.com/Sara-DLC)             | Developer |
-| ![Tyge Davis](https://avatars.githubusercontent.com/u/53713175?s=64)            | [Tyge Davis](https://github.com/tygedavis)                 | Developer |
-
 ## Project Overview
 
 You can find the project repo at [Connect Our Kids RN Repo](https://github.com/connect-our-kids/mobile-app).
@@ -229,3 +179,55 @@ You can find the project repo at [Connect Our Kids RN Repo](https://github.com/l
 [Product Canvas](https://docs.google.com/document/d/1deZi-ucUPVX1uKFpFDO8XlMUkK_RvsCPk5gzOhVPDbw/edit#)
 
 [UX Design files](https://balsamiq.cloud/snv27r3/p7n83ab/rEEED)
+
+## Contributors
+
+### Lambda Labs 13
+
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Asa Shalom](https://avatars.githubusercontent.com/u/36455310?s=64)       | [Asa Shalom](https://github.com/AsaOfDiamonds)   | Developer |
+| ![Michael Gunter](https://avatars.githubusercontent.com/u/47502855?s=64)   | [Michael Gunter](https://github.com/maxgunter99) | Developer |
+| ![Pedro Montesinos](https://avatars.githubusercontent.com/u/20940599?s=64) | [Pedro Montesinos](https://github.com/pedrolmr)  | Developer |
+| ![Ryan Walker](https://avatars.githubusercontent.com/u/26858745?s=64)      | [Ryan Walker](https://github.com/rytwalker)      | Developer |
+| ![Sean Pheneger](https://avatars.githubusercontent.com/u/41925787?s=64)    | [Sean Pheneger](https://github.com/wcolts2000)   | Developer |
+| ![Tyler Spaulding](https://avatars.githubusercontent.com/u/45692071?s=64)  | [Tyler Spaulding](https://github.com/NightlyD3V) | Developer |
+
+### Lambda Labs 17
+
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Irving Duran](https://avatars.githubusercontent.com/u/32081816?s=64)     | [Irving Duran](https://github.com/fixmylifedesigns) | Team Lead |
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)      | [Bishop Lake](https://github.com/Bishop-Lake)       | Developer |
+| ![Blaine Blonquist](https://avatars.githubusercontent.com/u/49822176?s=64) | [Blaine Blonquist](https://github.com/bquizza5)     | Developer |
+| ![Bryan Szendel](https://avatars.githubusercontent.com/u/22917212?s=64)    | [Bryan Szendel](https://github.com/bryanszendel)    | Developer |
+| ![Marques Johnson](https://avatars.githubusercontent.com/u/46509067?s=64)  | [Marques Johnson](https://github.com/MarquesJ8023)  | Developer |
+| ![Scott Beeker](https://avatars.githubusercontent.com/u/49079747?s=64)     | [Scott Beeker](https://github.com/dangolbeeker)     | Developer |
+| ![Tania Keller](https://avatars.githubusercontent.com/u/51134714?s=64)     | [Tania Keller](https://github.com/taniamichelle)    | Developer |
+
+### Lambda Labs 19
+
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)    | [Bishop Lake](https://github.com/Bishop-Lake)  | Team Lead |
+| <img alt="Brandon Kaplan" src="https://ca.slack-edge.com/T4JUEB3ME-ULVC6TBS5-312523b9b14d-512" width="64"/> | Brandon Kaplan | UX Designer |
+| <img alt="Kelsey Adams" src="https://ca.slack-edge.com/T4JUEB3ME-UK4PF87PX-f03508e200f7-512" width="64"/>   | Kelsey Adams   | UX Designer |
+| ![Angela Flowers](https://avatars.githubusercontent.com/u/16947614?s=64) | [Angela Flowers](https://github.com/ajflowers) | Developer |
+| ![Austin Michaud](https://avatars.githubusercontent.com/u/28680349?s=64) | [Austin Michaud](https://github.com/foobar404) | Developer |
+| ![Bayron Puac](https://avatars.githubusercontent.com/u/53735140?s=64)    | [Bayron Puac](https://github.com/bayronpuac)   | Developer |
+| ![Emily Richard](https://avatars.githubusercontent.com/u/46936014?s=64)  | [Emily Richard](https://github.com/emilyelri)  | Developer |
+| ![Jordan Athey](https://avatars.githubusercontent.com/u/53097022?s=64)   | [Jordan Athey](https://github.com/AjileJ)      | Developer |
+| ![Uzias Rivera](https://avatars.githubusercontent.com/u/40837265?s=64)   | [Uzias Rivera](https://github.com/uziasr)      | Developer |
+
+## Lambda Labs 21
+
+| Avatar | Name | Role |
+|:-------|:-----|:-----|
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)           | [Bishop Lake](https://github.com/Bishop-Lake)              | Team Lead |
+| ![Alejandro E Rodriguez](https://avatars.githubusercontent.com/u/55757912?s=64) | [Alejandro E Rodriguez](https://github.com/imxande)        | Developer |
+| ![Ariana Shackelford](https://avatars.githubusercontent.com/u/26654712?s=64)    | [Ariana Shackelford](https://github.com/ArianaShackelford) | Developer |
+| ![Faye Skeen](https://avatars.githubusercontent.com/u/50350459?s=64)            | [Faye Skeen](https://github.com/fskeen)                    | Developer |
+| ![Jason Glassbrook](https://avatars.githubusercontent.com/u/28660371?s=64)      | [Jason Glassbrook](https://github.com/jason-glassbrook)    | Developer |
+| ![Nathan Saygers](https://avatars.githubusercontent.com/u/48068572?s=64)        | [Nathan Saygers](https://github.com/nathan-saygers)        | Developer |
+| ![Sara De La Cruz](https://avatars.githubusercontent.com/u/54650844?s=64)       | [Sara De La Cruz](https://github.com/Sara-DLC)             | Developer |
+| ![Tyge Davis](https://avatars.githubusercontent.com/u/53713175?s=64)            | [Tyge Davis](https://github.com/tygedavis)                 | Developer |
