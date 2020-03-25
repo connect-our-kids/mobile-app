@@ -86,6 +86,15 @@ In the future, we want authenticated users to have access to the full features o
 
     Have fun!
 
+#### Testing
+
+-   [Jest](https://jestjs.io/) and [Jest Expo](https://www.npmjs.com/package/jest-expo)
+
+    When using Expo, you must use Jest Expo (`jest-expo`).
+    Do not directly install `jest`.
+
+-   [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
+
 #### APIs
 
 -   [Axios](https://www.npmjs.com/package/axios)
