@@ -43,14 +43,14 @@ You can find the repo for the project at [connect our kids repo](https://github.
 
 | Avatar | Name | Role |
 |:-------|:-----|:-----|
-| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)            | [Bishop Lake](https://github.com/Bishop-Lake)              | Team Lead |
-| ![Alejandro E Rodriguez](https://avatars0.githubusercontent.com/u/55757912?s=64) | [Alejandro E Rodriguez](https://github.com/imxande)        | Developer |
-| ![Ariana Shackelford](https://avatars3.githubusercontent.com/u/26654712?s=64)    | [Ariana Shackelford](https://github.com/ArianaShackelford) | Developer |
-| ![Faye Skeen](https://avatars0.githubusercontent.com/u/50350459?s=64)            | [Faye Skeen](https://github.com/fskeen)                    | Developer |
-| ![Jason Glassbrook](https://avatars0.githubusercontent.com/u/28660371?s=64)      | [Jason Glassbrook](https://github.com/jason-glassbrook)    | Developer |
-| ![Nathan Sayers](https://avatars1.githubusercontent.com/u/48068572?s=64)         | [Nathan Sayers](https://github.com/nathan-saygers)         | Developer |
-| ![Sara De La Cruz](https://avatars1.githubusercontent.com/u/54650844?s=64)       | [Sara De La Cruz](https://github.com/Sara-DLC)             | Developer |
-| ![Tyge Davis](https://avatars2.githubusercontent.com/u/53713175?s=64)            | [Tyge Davis](https://github.com/tygedavis)                 | Developer |
+| ![Bishop Lake](https://avatars.githubusercontent.com/u/50998248?s=64)           | [Bishop Lake](https://github.com/Bishop-Lake)              | Team Lead |
+| ![Alejandro E Rodriguez](https://avatars.githubusercontent.com/u/55757912?s=64) | [Alejandro E Rodriguez](https://github.com/imxande)        | Developer |
+| ![Ariana Shackelford](https://avatars.githubusercontent.com/u/26654712?s=64)    | [Ariana Shackelford](https://github.com/ArianaShackelford) | Developer |
+| ![Faye Skeen](https://avatars.githubusercontent.com/u/50350459?s=64)            | [Faye Skeen](https://github.com/fskeen)                    | Developer |
+| ![Jason Glassbrook](https://avatars.githubusercontent.com/u/28660371?s=64)      | [Jason Glassbrook](https://github.com/jason-glassbrook)    | Developer |
+| ![Nathan Saygers](https://avatars.githubusercontent.com/u/48068572?s=64)        | [Nathan Saygers](https://github.com/nathan-saygers)         | Developer |
+| ![Sara De La Cruz](https://avatars.githubusercontent.com/u/54650844?s=64)       | [Sara De La Cruz](https://github.com/Sara-DLC)             | Developer |
+| ![Tyge Davis](https://avatars.githubusercontent.com/u/53713175?s=64)            | [Tyge Davis](https://github.com/tygedavis)                 | Developer |
 
 ## Project Overview
 
