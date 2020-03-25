@@ -51,15 +51,15 @@ In the future, we want authenticated users to have access to the full features o
 
 -   _Best Practices_
 
-### Authentication with Auth0
+### Things To (Try To) Understand Before Contributing
 
-Utilizing Auth0 for authentication and tokens
+-   APIs
 
-### People Search API
+    -   [Auth0](https://auth0.com/)
 
-People Search API [development api](https://dev.search.connectourkids.org/)
+    -   [People Search API (dev only)](https://dev.search.connectourkids.org/)
 
-> People Search is a tool for discovering contact and relationship information from a population of over 3 billion people. This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
+        > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people. This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
 
 ## Requirements
 
