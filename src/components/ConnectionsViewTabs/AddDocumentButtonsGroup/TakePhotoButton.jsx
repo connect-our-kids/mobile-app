@@ -2,10 +2,12 @@ import React from 'react';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 import Button from './Button.jsx';
 import TakePhotoIcon from './TakePhotoIcon.jsx';
 import convertPhotoToMedia from './convertPhotoToMedia';
+import constants from '../../../helpers/constants.js';
+import { colors } from 'react-native-elements';
 
 /**********************************************************/
 
@@ -56,6 +58,7 @@ export default function TakePhotoButton({ afterAccept }) {
     return (
         <Button onPress={onPress} testID="take-photo-button">
             <TakePhotoIcon/>
+            <Text>TAKE PHOTO</Text>
         </Button>
     );
 }

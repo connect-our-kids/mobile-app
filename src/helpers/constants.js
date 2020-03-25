@@ -6,8 +6,9 @@ export default {
     devFamilyConnectionsInterestURL:
     'https://connect-our-kids.herokuapp.com/api/family_connections_interest',
     highlightColor: '#0279AC',
-    iconColor: '#ffffff',
-/*    fontFamily: 'futura-light',
+    iconColor: '#0F6580',
+    textColor: '#5A6064',
+    /*    fontFamily: 'futura-light',
     headerFont: 'futura-medium',*/
     headerHeight: 55,
     defaultImageUri:

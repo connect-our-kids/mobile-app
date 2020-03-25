@@ -3,6 +3,7 @@ import Button from './Button.jsx';
 import PickFileIcon from './PickFileIcon.jsx';
 import * as DocumentPicker from 'expo-document-picker';
 import convertFileToMedia from './convertFileToMedia';
+import { Text } from 'react-native';
 
 /**********************************************************/
 
@@ -36,6 +37,7 @@ export default function PickFileButton({ afterAccept }) {
     return (
         <Button onPress={pickFile} testID='pick-file-button'>
             <PickFileIcon/>
+            <Text>UPLOAD FILE</Text>
         </Button>
     );
 }

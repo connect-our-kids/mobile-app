@@ -11,7 +11,7 @@ export default StyleSheet.create({
     },
     button: {
         flexGrow: 0,
-        backgroundColor: constants.highlightColor,
+        // backgroundColor: constants.highlightColor,
         color: constants.iconColor,
         borderRadius: 16,
         padding: 8,

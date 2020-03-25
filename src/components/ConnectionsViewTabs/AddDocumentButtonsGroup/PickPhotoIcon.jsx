@@ -10,7 +10,7 @@ export default function PickPhotoIcon({
 }) {
     return (
         <MaterialIcons
-            name={'photo-library'}
+            name={'add-to-photos'}
             size={size}
             color={color}
         />
