@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Text,
     ScrollView,
@@ -6,24 +6,23 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Alert,
 } from 'react-native';
 // import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
-import RNPickerSelect from 'react-native-picker-select';
 import convertMediaToAttachment from './convertMediaToAttachment';
+import getAttachmentIcon from './Attachment/getAttachmentIcon';
 
 
 const AddDocumentForm = (props) => {
     const [ title, setTitle ] = useState('');
-    const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
+    const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     const [ notes, setNotes ] = useState('');
-    const [ isPublic, setIsPublic ] = useState(true);
+    const [ isPublic ] = useState(true);
 
-    const [ attachment, setAttachment ] = useState(() => {
+    const [ attachment ] = useState(() => {
 
         const media = props.navigation.getParam('media');
 
@@ -37,56 +36,56 @@ const AddDocumentForm = (props) => {
         <ScrollView
             contentContainerStyle={styles.scrollView}
         >
-                    <View
-                        style={styles.view1}
-                    >
-                        <Text
-                            style={styles.text1}
-                        >Add Document</Text>
+            <View
+                style={styles.view1}
+            >
+                <Text
+                    style={styles.text1}
+                >Add Document</Text>
 
-                    </View>
-                    {/* TITLE BAR */}
-                    <View
-                        style={styles.view2}
-                    >
-                        {/* Title text */}
-                        <TextInput
-                            onChangeText={(text: string) => {
-                                setTitle(text);
-                            }}
-                            placeholder='TITLE'
-                            placeholderTextColor={'#AAA9AD'}
-                            style={styles.textInput1}
-                            textAlignVertical='top'
-                            name="title"
-                            value={title}
-                        />
-                    </View>
-                    {/* NOTES BAR */}
-                    <View
-                        style={styles.view3}
-                    >
-                        <TextInput
-                            onChangeText={(text: string) => {
-                                setNotes(text);
-                            }}
-                            placeholder='NOTES'
-                            placeholderTextColor={'#AAA9AD'}
-                            style={styles.textInput2}
-                            textAlignVertical='top'
-                            name="notes"
-                            value={notes}
-                            multiline
-                            numberOfLines={4}
-                            returnKeyType="default"
-                            enablesReturnKeyAutomatically
-                        />
-                    </View>
-                    <View
-                        style={styles.view4}
-                    >
-                        {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
-                        {/* <View
+            </View>
+            {/* TITLE BAR */}
+            <View
+                style={styles.view2}
+            >
+                {/* Title text */}
+                <TextInput
+                    onChangeText={(text: string) => {
+                        setTitle(text);
+                    }}
+                    placeholder='TITLE'
+                    placeholderTextColor={'#AAA9AD'}
+                    style={styles.textInput1}
+                    textAlignVertical='top'
+                    name="title"
+                    value={title}
+                />
+            </View>
+            {/* NOTES BAR */}
+            <View
+                style={styles.view3}
+            >
+                <TextInput
+                    onChangeText={(text: string) => {
+                        setNotes(text);
+                    }}
+                    placeholder='NOTES'
+                    placeholderTextColor={'#AAA9AD'}
+                    style={styles.textInput2}
+                    textAlignVertical='top'
+                    name="notes"
+                    value={notes}
+                    multiline
+                    numberOfLines={4}
+                    returnKeyType="default"
+                    enablesReturnKeyAutomatically
+                />
+            </View>
+            <View
+                style={styles.view4}
+            >
+                {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
+                {/* <View
                             style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -123,20 +122,20 @@ const AddDocumentForm = (props) => {
                                 />
                             </View>
                         </View> */}
-                        <View style={{ width: '100%', backgroundColor: 'yellow' }}>
-                            <View style={{ alignItems: 'center', marginTop: 10 }}>
-                                <TouchableOpacity
-                                    style={styles.saveButton}
-                                    onPress={() => {
-                                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
-                                        props.navigation.goBack();
-                                    }}
-                                >
-                                    <Text style={styles.buttonText}>SAVE</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                <View style={{ width: '100%', backgroundColor: 'yellow' }}>
+                    <View style={{ alignItems: 'center', marginTop: 10 }}>
+                        <TouchableOpacity
+                            style={styles.saveButton}
+                            onPress={() => {
+                                props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                                props.navigation.goBack();
+                            }}
+                        >
+                            <Text style={styles.buttonText}>SAVE</Text>
+                        </TouchableOpacity>
                     </View>
+                </View>
+            </View>
         </ScrollView>
     );
 };
@@ -199,8 +198,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     text1: { fontSize: 30,
-        fontWeight: 'bold'
-    },
+        fontWeight: 'bold' },
     textInput1: {
         padding: 4,
         paddingRight: 80,
