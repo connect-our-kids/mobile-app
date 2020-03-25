@@ -5,18 +5,28 @@ import mime from 'mime';
 
 /**********************************************************/
 
-export default function getAttachmentIcon(attachment) {
+export default function AttachmentIcon({
+    attachment,
+    size,
+    color,
+}) {
 
     const type = mime.getType(attachment.original_file_name) || 'unknown';
 
     if (type.startsWith('image')) {
         return (
-            <ImageIcon/>
+            <ImageIcon
+                size={size}
+                color={color}
+            />
         );
     }
     else {
         return (
-            <FileIcon/>
+            <FileIcon
+                size={size}
+                color={color}
+            />
         );
     }
 
