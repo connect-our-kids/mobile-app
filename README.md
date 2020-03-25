@@ -2,6 +2,16 @@
 
 # Connect Our Kids - Mobile App
 
+## Mission Statement
+
+> Our mission is to empower social workers with free modern technology to find permanent loving homes for foster kids.
+
+Social workers who are not familiar with Connect Our Kids will learn about us through their personal connections, social media, emails, and training programs. The social worker will use their browser on their desktop or the mobile phone to learn more at [connectourkids.org](https://connectourkids.org). That user will then click a “download mobile app” button that will drive them to the app store.
+
+Once they’ve downloaded the app, they will have basic access to each of the sections of the app (but not full access). At that point, they will be prompted to login or signup. Once authenticated, they’ll have full access to the People Search features.
+
+In the future, the registered user will have access to full features of Family Connections and Best Practices in the mobile app.
+
 ## Project Overview
 
 You can find the project repo at [Connect Our Kids RN Repo](https://github.com/connect-our-kids/mobile-app).
@@ -17,16 +27,6 @@ You can find the project repo at [Connect Our Kids RN Repo](https://github.com/c
 [Overview video of our Changes](https://www.youtube.com/watch?v=isHGElZI3-Y&feature=youtu.be)
 
 [ChangeLog](./CHANGELOG.md)
-
-## Mission Statement
-
-> Our mission is to empower social workers with free modern technology to find permanent loving homes for foster kids.
-
-Social workers who are not familiar with Connect Our Kids will learn about us through their personal connections, social media, emails, and training programs. The social worker will use their browser on their desktop or the mobile phone to learn more at [connectourkids.org](https://connectourkids.org). That user will then click a “download mobile app” button that will drive them to the app store.
-
-Once they’ve downloaded the app, they’ll have basic access to each of the sections of the app (but not full access). At that point, they will be prompted to login or signup. Once authenticated, they’ll have full access to the People Search features.
-
-In the future, the registered user will have access to full features of Family Connections and Best Practices in the mobile app.
 
 ### Features
 
@@ -143,22 +143,6 @@ Remember that this project is licensed under the MIT license, and by submitting 
 ### Attribution
 
 These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
-
-## Documentation
-
-See [People Search API](https://docs.google.com/document/d/1145R9-FcmA1NMXMAwbzFmNZ4DRtdWuazCsZYtJa8Owg/edit) for details on the backend of our project.
-
-[react-native-badge]: https://img.shields.io/badge/React%20Native-.60-blue.svg
-
-[react-native-url]: https://facebook.github.io/react-native/
-
-[license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
-
-[license-url]: LICENSE
-
-[![React Native Version][react-native-badge]][react-native-url]
-
-[![License][license-badge]][license-url]
 
 ## Contributors
 
