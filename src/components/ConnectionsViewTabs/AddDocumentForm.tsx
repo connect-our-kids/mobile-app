@@ -35,58 +35,19 @@ const AddDocumentForm = (props) => {
 
     return (
         <ScrollView
-            contentContainerStyle={{
-                width: '100%',
-                height: '100%',
-                justifyContent: 'center',
-                borderRadius: 4,
-                backgroundColor: 'red',
-            }}
+            contentContainerStyle={styles.scrollView}
         >
-
-            <View
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'flex-end',
-                    backgroundColor: 'black',
-                }}
-            >
-                <View
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        borderRadius: 4,
-                        backgroundColor: 'orange',
-                    }}
-                >
                     <View
-                        style={{
-                            width: '95%',
-                            alignItems: 'flex-start',
-                            marginTop: 30,
-                            marginBottom: 13,
-                            backgroundColor: 'purple',
-                        }}
+                        style={styles.view1}
                     >
                         <Text
-                            style={{ fontSize: 30, fontWeight: 'bold' }}
+                            // style={{ fontSize: 30, fontWeight: 'bold' }}
                         >Add Document</Text>
 
                     </View>
                     {/* TITLE BAR */}
                     <View
-                        style={{
-                            minHeight: 25,
-                            marginTop: 10,
-                            marginBottom: 5,
-                            width: '95%',
-                            backgroundColor: 'red',
-                            borderRadius: 4,
-                            padding: 2,
-                        }}
+                        style={styles.view2}
                     >
                         {/* Title text */}
                         <TextInput
@@ -95,71 +56,15 @@ const AddDocumentForm = (props) => {
                             }}
                             placeholder='TITLE'
                             placeholderTextColor={'#AAA9AD'}
-                            style={{ padding: 4, paddingRight: 80, fontSize: 15,backgroundColor: 'green', }}
+                            style={styles.textInput1}
                             textAlignVertical='top'
                             name="title"
                             value={title}
                         />
                     </View>
-                    {/* // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports */}
-
-                    {/* CATEGORY */}
-
-                    {/* <View
-                        style={{
-                            minHeight: 25,
-                            marginTop: 5,
-                            marginBottom: 5,
-                            width: '95%',
-                            backgroundColor: 'white',
-                            borderRadius: 4,
-                            padding: 2,
-                        }}
-                    >
-                        <RNPickerSelect
-                            selectedValue={category}
-                            style={{
-                                height: 50,
-                                width: 100,
-                                placeholder: {
-                                    color: '#AAA9AD',
-                                    padding: 4,
-                                    paddingRight: 80,
-                                    fontSize: 15,
-                                },
-                                inputIOS: {
-                                    color: '#000',
-                                    padding: 4,
-                                    paddingRight: 80,
-                                    fontSize: 15,
-                                },
-                            }}
-                            placeholder={{ label: 'SELECT CATEGORY...' }}
-                            onValueChange={(value: string, index: number) =>
-                                setCategory(value)}
-
-                            items={[
-                                { key: 1, label: 'Education', value: 1 },
-                                { key: 2, label: 'Friends', value: 2 },
-                                { key: 3, label: 'Network', value: 3 },
-                                { key: 4, label: 'Relatives', value: 5 },
-                                { key: 5, label: 'Sports', value: 6 },
-                                { key: 6, label: 'Other', value: 4 },
-                            ]}
-                        />
-                    </View> */}
-
                     {/* NOTES BAR */}
                     <View
-                        style={{
-                            height: 150,
-                            marginTop: 5,
-                            marginBottom: 10,
-                            width: '95%',
-                            backgroundColor: 'red',
-                            borderRadius: 4,
-                            padding: 2,
-                        }}
+                        style={styles.view3}
                     >
                         <TextInput
                             onChangeText={(text: string) => {
@@ -167,15 +72,7 @@ const AddDocumentForm = (props) => {
                             }}
                             placeholder='NOTES'
                             placeholderTextColor={'#AAA9AD'}
-                            style={{
-                                paddingTop: 4,
-                                paddingLeft: 4,
-                                height: '100%',
-                                width: '100%',
-                                alignSelf: 'flex-start',
-                                fontSize: 15,
-                                backgroundColor: 'green',
-                            }}
+                            style={styles.textInput2}
                             textAlignVertical='top'
                             name="notes"
                             value={notes}
@@ -186,12 +83,7 @@ const AddDocumentForm = (props) => {
                         />
                     </View>
                     <View
-                        style={{
-                            width: '95%',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}
+                        style={styles.view4}
                     >
                         {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
                         {/* <View
@@ -231,8 +123,8 @@ const AddDocumentForm = (props) => {
                                 />
                             </View>
                         </View> */}
-                        <View style={{ width: '100%' }}>
-                            <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
+                        <View style={{ width: '100%', backgroundColor: 'yellow' }}>
+                            <View style={{ alignItems: 'center', marginTop: 10 }}>
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
@@ -245,22 +137,11 @@ const AddDocumentForm = (props) => {
                             </View>
                         </View>
                     </View>
-                </View>
-            </View>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    formContainer: {
-        width: '95%',
-        padding: 4,
-        marginTop: 35,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
     saveButton: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -277,6 +158,62 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 30,
         color: '#fff',
+    },
+    scrollView: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red',
+    },
+    view1: {
+        width: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30,
+        marginBottom: 13,
+        backgroundColor: 'purple',
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    view2: {
+        minHeight: 25,
+        marginTop: 10,
+        marginBottom: 5,
+        width: '95%',
+        backgroundColor: 'red',
+        borderRadius: 4,
+        padding: 2,
+    },
+    view3: {
+        height: 150,
+        marginTop: 5,
+        marginBottom: 10,
+        width: '95%',
+        backgroundColor: 'red',
+        borderRadius: 4,
+        padding: 2,
+    },
+    view4: {
+        width: '95%',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+    },
+    textInput1: {
+        padding: 4,
+        paddingRight: 80,
+        fontSize: 15,
+        backgroundColor: 'green',
+    },
+    textInput2: {
+        paddingTop: 4,
+        paddingLeft: 4,
+        height: '100%',
+        width: '100%',
+        alignSelf: 'flex-start',
+        fontSize: 15,
+        backgroundColor: 'green',
     },
 });
 
