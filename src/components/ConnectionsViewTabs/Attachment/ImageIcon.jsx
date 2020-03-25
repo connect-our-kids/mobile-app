@@ -5,8 +5,8 @@ import icons from './icons.js';
 /**********************************************************/
 
 export default function ImageIcon({
-    color = icons.color,
     size = icons.size,
+    color = icons.color,
 }) {
     return (
         <MaterialCommunityIcons
