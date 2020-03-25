@@ -53,13 +53,53 @@ In the future, we want authenticated users to have access to the full features o
 
 ### Things To (Try To) Understand Before Contributing
 
--   APIs
+#### Build Systems
 
-    -   [Auth0](https://auth0.com/)
+-   [Expo](https://docs.expo.io/versions/latest/introduction)
 
-    -   [People Search API (dev only)](https://dev.search.connectourkids.org/)
+    Expo (`expo`, `@expo/*`, `expo-cli`) is a layer on top of React Native. Expo...
 
-        > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people. This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
+    -   lets you to develop entirely in JavaScript/TypeScript (unless you need to do something very special),
+    -   lets you to avoid most platform-specific configuration,
+    -   lets you run the app on your mobile device (instead or in addition to an emulator),
+    -   provides additional built-in functionality to that of React Native.
+
+#### Component-Based Interfaces
+
+-   [React](https://reactjs.org/) and [React Native](https://reactnative.dev/)
+
+    React (`react`) is a JavaScript library for building component-based interfaces.
+    React Native (`react-native`) is the official implementation of React for "native" interfaces.
+    [React DOM](https://reactjs.org/docs/react-dom.html) (`react-dom`), which you may be more familiar with, is the official implementation of React for "web" interfaces.
+
+-   [React Navigation](https://reactnavigation.org/)
+
+    React Navigation (`react-navigation`) controls the user's _navigation_ through the app.
+    **We _strongly_ recommend that you read through [the documentation](https://reactnavigation.org/docs/getting-started) before you begin contributing to this project.**
+
+    This project uses version [4.x](https://reactnavigation.org/docs/4.x/getting-started/), which is not the latest version.
+    If you have significant time and patience, you might consider upgrading the project to version [5.x](https://reactnavigation.org/docs/5.x/getting-started/) or later.
+
+#### State Management
+
+-   [Redux](https://redux.js.org/) and [React Redux](https://react-redux.js.org/)
+
+    Have fun!
+
+#### APIs
+
+-   [Axios](https://www.npmjs.com/package/axios)
+
+    Axios lets you send HTTP requests.
+
+-   [Auth0](https://auth0.com/)
+
+    Auth0 lets you authenticate users.
+
+-   [People Search API (dev only)](https://dev.search.connectourkids.org/)
+
+    > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people.
+    > This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
 
 ### Requirements
 
