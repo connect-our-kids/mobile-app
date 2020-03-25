@@ -33,21 +33,21 @@ In the future, we want authenticated users to have access to the full features o
 
 ### Features
 
--   navigation
+-   App navigation...
     -   with tabs
     -   with stacks
 
--   authentication with Auth0
+-   User authentication with Auth0
 
--   event tracking
+-   Event tracking
 
 -   _People Search_
 
 -   _Family Connections_
-    -   upload documents
-        -   pick files
-        -   pick images
-        -   take photos
+    -   Upload documents by...
+        -   picking files
+        -   picking images
+        -   taking photos
 
 -   _Best Practices_
 
