@@ -97,7 +97,7 @@ In the future, we want authenticated users to have access to the full features o
 
 -   Redux-Thunk <https://www.npmjs.com/package/redux-thunk>
 
-## Recommended Tools
+## Recommended Development Tools
 
 -   Android Studio <https://developer.android.com/studio>
 
