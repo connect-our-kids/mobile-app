@@ -158,17 +158,17 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 See [People Search API](https://docs.google.com/document/d/1145R9-FcmA1NMXMAwbzFmNZ4DRtdWuazCsZYtJa8Owg/edit) for details on the backend of our project.
 
-[rn-image]: https://img.shields.io/badge/React%20Native-.60-blue.svg
+[react-native-badge]: https://img.shields.io/badge/React%20Native-.60-blue.svg
 
-[rn-url]: https://facebook.github.io/react-native/
+[react-native-url]: https://facebook.github.io/react-native/
 
-[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
 
 [license-url]: LICENSE
 
-[![React Native Version][rn-image]][rn-url]
+[![React Native Version][react-native-badge]][react-native-url]
 
-[![License][license-image]][license-url]
+[![License][license-badge]][license-url]
 
 ## Contributors
 
