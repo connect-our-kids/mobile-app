@@ -61,7 +61,7 @@ In the future, we want authenticated users to have access to the full features o
 
         > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people. This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
 
-## Requirements
+### Requirements
 
 -   iOS 10.0+
 
