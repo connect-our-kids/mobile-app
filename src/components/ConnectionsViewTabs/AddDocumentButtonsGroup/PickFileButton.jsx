@@ -3,7 +3,6 @@ import Button from './Button.jsx';
 import PickFileIcon from './PickFileIcon.jsx';
 import * as DocumentPicker from 'expo-document-picker';
 import convertFileToMedia from './convertFileToMedia';
-import { Text } from 'react-native';
 import PickFileLabel from './PickFileLabel.jsx';
 
 /**********************************************************/

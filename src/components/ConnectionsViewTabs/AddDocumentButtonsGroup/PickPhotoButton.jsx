@@ -2,7 +2,7 @@ import React from 'react';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Alert, Text } from 'react-native';
+import { Alert } from 'react-native';
 import Button from './Button.jsx';
 import PickPhotoIcon from './PickPhotoIcon.jsx';
 import PickPhotoLabel from './PickPhotoLabel.jsx';

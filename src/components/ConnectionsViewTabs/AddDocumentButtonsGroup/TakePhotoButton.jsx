@@ -2,12 +2,10 @@ import React from 'react';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Alert, Text } from 'react-native';
+import { Alert } from 'react-native';
 import Button from './Button.jsx';
 import TakePhotoIcon from './TakePhotoIcon.jsx';
 import convertPhotoToMedia from './convertPhotoToMedia';
-import styles from './styles.js';
-import { colors } from 'react-native-elements';
 import TakePhotoLabel from './TakePhotoLabel.jsx';
 
 /**********************************************************/
