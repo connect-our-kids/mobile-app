@@ -97,7 +97,19 @@ In the future, we want authenticated users to have access to the full features o
 
 -   [Redux-Thunk](https://www.npmjs.com/package/redux-thunk)
 
-## Recommended Development Tools
+### Recommended Development Tools
+
+#### Coding
+
+-   [Visual Studio Code](https://code.visualstudio.com/) with extensions:
+
+    -   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) for automatic linting on save
+
+#### Running On Your Mobile Device
+
+-   [Expo Client](https://expo.io/tools#client)
+
+#### Running On An Emulator
 
 -   [Android Studio](https://developer.android.com/studio)
 
