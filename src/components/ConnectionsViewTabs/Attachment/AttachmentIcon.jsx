@@ -5,7 +5,7 @@ import mime from 'mime';
 
 /**********************************************************/
 
-export default function getAttachmentIcon(attachment) {
+export default function AttachmentIcon({ attachment }) {
 
     const type = mime.getType(attachment.original_file_name) || 'unknown';
 
