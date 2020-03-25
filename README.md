@@ -164,13 +164,9 @@ If you have questions about understanding or updating this project's configurati
 
 -   Expo CLI: `expo start`
 
--   [Android Studio](https://developer.android.com/studio)
+-   [Android Studio](https://developer.android.com/studio) and [Android Studio Emulator](https://docs.expo.io/versions/latest/workflow/android-studio-emulator)
 
--   [Android Studio Emulator](https://docs.expo.io/versions/latest/workflow/android-studio-emulator)
-
--   [Xcode](https://developer.apple.com/xcode)
-
--   [iOS Simulator](https://docs.expo.io/versions/v33.0.0/workflow/ios-simulator)
+-   [Xcode](https://developer.apple.com/xcode) and [iOS Simulator](https://docs.expo.io/versions/v33.0.0/workflow/ios-simulator)
 
 ## Contributing
 
