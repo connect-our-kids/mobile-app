@@ -1,6 +1,6 @@
-# Connect Our Kids - Mobile App
+![logo of Connect Our Kids](./assets/logo.png)
 
-You can find the repo for the project at [connect our kids repo](https://github.com/connect-our-kids/mobile-app).
+# Connect Our Kids - Mobile App
 
 ## Project Overview
 
@@ -27,8 +27,6 @@ Social workers who are not familiar with Connect Our Kids will learn about us th
 Once they’ve downloaded the app, they’ll have basic access to each of the sections of the app (but not full access). At that point, they will be prompted to login or signup. Once authenticated, they’ll have full access to the People Search features.
 
 In the future, the registered user will have access to full features of Family Connections and Best Practices in the mobile app.
-
-![](header.png)
 
 ### Features
 
