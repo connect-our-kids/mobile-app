@@ -41,7 +41,7 @@ const AddDocumentForm = (props) => {
                         style={styles.view1}
                     >
                         <Text
-                            // style={{ fontSize: 30, fontWeight: 'bold' }}
+                            style={styles.text1}
                         >Add Document</Text>
 
                     </View>
@@ -173,8 +173,6 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginBottom: 13,
         backgroundColor: 'purple',
-        fontSize: 30,
-        fontWeight: 'bold'
     },
     view2: {
         minHeight: 25,
@@ -199,6 +197,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+    },
+    text1: { fontSize: 30,
+        fontWeight: 'bold'
     },
     textInput1: {
         padding: 4,
