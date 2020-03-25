@@ -58,7 +58,7 @@ export default function TakePhotoButton({ afterAccept }) {
 
 
     return (
-        <Button onPress={onPress} label='TAKE PHOTO' testID="take-photo-button">
+        <Button onPress={onPress} testID="take-photo-button">
             <TakePhotoIcon/>
             <TakePhotoLabel/>
         </Button>
