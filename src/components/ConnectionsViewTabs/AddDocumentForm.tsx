@@ -16,6 +16,7 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 import RNPickerSelect from 'react-native-picker-select';
 import convertMediaToAttachment from './convertMediaToAttachment';
 
+
 const AddDocumentForm = (props) => {
     const [ title, setTitle ] = useState('');
     const [ category, setCategory ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
@@ -37,8 +38,9 @@ const AddDocumentForm = (props) => {
             contentContainerStyle={{
                 width: '100%',
                 height: '100%',
-                justifyContent: 'flex-start',
+                justifyContent: 'center',
                 borderRadius: 4,
+                backgroundColor: 'red',
             }}
         >
 
@@ -46,16 +48,18 @@ const AddDocumentForm = (props) => {
                 style={{
                     width: '100%',
                     height: '100%',
-                    justifyContent: 'flex-start',
-                    backgroundColor: '#DEDEDE',
+                    justifyContent: 'flex-end',
+                    backgroundColor: 'black',
                 }}
             >
                 <View
                     style={{
                         width: '100%',
-                        justifyContent: 'center',
+                        height: '100%',
+                        justifyContent: 'flex-end',
                         alignItems: 'center',
                         borderRadius: 4,
+                        backgroundColor: 'orange',
                     }}
                 >
                     <View
@@ -64,30 +68,34 @@ const AddDocumentForm = (props) => {
                             alignItems: 'flex-start',
                             marginTop: 30,
                             marginBottom: 13,
+                            backgroundColor: 'purple',
                         }}
                     >
                         <Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}
+                            style={{ fontSize: 30, fontWeight: 'bold' }}
                         >Add Document</Text>
+
                     </View>
+                    {/* TITLE BAR */}
                     <View
                         style={{
                             minHeight: 25,
                             marginTop: 10,
                             marginBottom: 5,
                             width: '95%',
-                            backgroundColor: 'white',
+                            backgroundColor: 'red',
                             borderRadius: 4,
                             padding: 2,
                         }}
                     >
+                        {/* Title text */}
                         <TextInput
                             onChangeText={(text: string) => {
                                 setTitle(text);
                             }}
                             placeholder='TITLE'
                             placeholderTextColor={'#AAA9AD'}
-                            style={{ padding: 4, paddingRight: 80, fontSize: 15 }}
+                            style={{ padding: 4, paddingRight: 80, fontSize: 15,backgroundColor: 'green', }}
                             textAlignVertical='top'
                             name="title"
                             value={title}
@@ -95,7 +103,9 @@ const AddDocumentForm = (props) => {
                     </View>
                     {/* // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports */}
 
-                    <View
+                    {/* CATEGORY */}
+
+                    {/* <View
                         style={{
                             minHeight: 25,
                             marginTop: 5,
@@ -137,15 +147,16 @@ const AddDocumentForm = (props) => {
                                 { key: 6, label: 'Other', value: 4 },
                             ]}
                         />
-                    </View>
+                    </View> */}
 
+                    {/* NOTES BAR */}
                     <View
                         style={{
-                            height: 70,
+                            height: 150,
                             marginTop: 5,
                             marginBottom: 10,
                             width: '95%',
-                            backgroundColor: 'white',
+                            backgroundColor: 'red',
                             borderRadius: 4,
                             padding: 2,
                         }}
@@ -163,6 +174,7 @@ const AddDocumentForm = (props) => {
                                 width: '100%',
                                 alignSelf: 'flex-start',
                                 fontSize: 15,
+                                backgroundColor: 'green',
                             }}
                             textAlignVertical='top'
                             name="notes"
@@ -220,7 +232,7 @@ const AddDocumentForm = (props) => {
                             </View>
                         </View> */}
                         <View style={{ width: '100%' }}>
-                            <View style={{ width: '100%', alignItems: 'flex-end', marginTop: 20 }}>
+                            <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
@@ -252,17 +264,18 @@ const styles = StyleSheet.create({
     saveButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 96,
-        height: 36,
+        width: 200,
+        height: 50,
         // backgroundColor: 'lightgray',
         borderRadius: 50,
         borderWidth: 1,
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 20,
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
     buttonText: {
-        fontSize: 14,
+        fontSize: 30,
         color: '#fff',
     },
 });
