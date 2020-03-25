@@ -33,19 +33,23 @@ You can find the project repo at [Connect Our Kids RN Repo](https://github.com/c
 
 ### Features
 
--   Authentication via Auth0
+-   navigation
+    -   with tabs
+    -   with stacks
 
--   Event tracking
+-   authentication with Auth0
 
--   People Search
+-   event tracking
 
--   Best Practices
+-   _People Search_
 
--   Family Connections
+-   _Family Connections_
+    -   upload documents
+        -   pick files
+        -   pick images
+        -   take photos
 
--   Upload Documents
-
--   Bottom Navigation
+-   _Best Practices_
 
 ### Authentication with Auth0
 
