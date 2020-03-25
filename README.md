@@ -67,45 +67,45 @@ In the future, we want authenticated users to have access to the full features o
 
 -   Android 5.0+
 
--   Axios <https://www.npmjs.com/package/axios>
+-   [Axios](https://www.npmjs.com/package/axios)
 
--   Expo <https://docs.expo.io/versions/latest/introduction/faq/>
+-   [Expo](https://docs.expo.io/versions/latest/introduction)
 
--   Expo-Constants <https://www.npmjs.com/package/expo-constants>
+-   [Expo-Constants](https://www.npmjs.com/package/expo-constants)
 
--   Expo-Font <https://www.npmjs.com/package/expo-font>
+-   [Expo-Font](https://www.npmjs.com/package/expo-font)
 
--   Native-Base <https://www.npmjs.com/package/native-base>
+-   [Native-Base](https://www.npmjs.com/package/native-base)
 
--   React <https://reactjs.org/>
+-   [React](https://reactjs.org)
 
--   React-Dom <https://www.npmjs.com/package/react-dom>
+-   [React-Dom](https://www.npmjs.com/package/react-dom)
 
--   React-Native <https://github.com/facebook/react-native>
+-   [React-Native](https://github.com/facebook/react-native)
 
--   React-Native-Auth0 <https://www.npmjs.com/package/react-native-auth0>
+-   [React-Native-Auth0](https://www.npmjs.com/package/react-native-auth0)
 
--   React-Native-Web <https://github.com/necolas/react-native-web>
+-   [React-Native-Web](https://github.com/necolas/react-native-web)
 
--   React-Navigation <https://reactnavigation.org/>
+-   [React-Navigation](https://reactnavigation.org)
 
--   React-Redux <https://react-redux.js.org/>
+-   [React-Redux](https://react-redux.js.org)
 
--   Redux <https://redux.js.org/>
+-   [Redux](https://redux.js.org)
 
--   Redux_Devtools-Extension <https://www.npmjs.com/package/redux-devtools-extension>
+-   [Redux_Devtools-Extension](https://www.npmjs.com/package/redux-devtools-extension)
 
--   Redux-Thunk <https://www.npmjs.com/package/redux-thunk>
+-   [Redux-Thunk](https://www.npmjs.com/package/redux-thunk)
 
 ## Recommended Development Tools
 
--   Android Studio <https://developer.android.com/studio>
+-   [Android Studio](https://developer.android.com/studio)
 
--   Android Studio Emulator <https://docs.expo.io/versions/latest/workflow/android-studio-emulator/>
+-   [Android Studio Emulator](https://docs.expo.io/versions/latest/workflow/android-studio-emulator)
 
--   Xcode <https://developer.apple.com/xcode/>
+-   [Xcode](https://developer.apple.com/xcode)
 
--   iOS Simulator <https://docs.expo.io/versions/v33.0.0/workflow/ios-simulator/>
+-   [iOS Simulator](https://docs.expo.io/versions/v33.0.0/workflow/ios-simulator)
 
 ## Contributing
 
@@ -149,7 +149,7 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 ### Attribution
 
-These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
+These contribution guidelines have been adapted from [this good `Contributing.md` template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
 
 ## Contributors
 
