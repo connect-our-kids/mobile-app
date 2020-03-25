@@ -6,8 +6,9 @@ import { Alert, Text } from 'react-native';
 import Button from './Button.jsx';
 import TakePhotoIcon from './TakePhotoIcon.jsx';
 import convertPhotoToMedia from './convertPhotoToMedia';
-import constants from '../../../helpers/constants.js';
+import styles from './styles.js';
 import { colors } from 'react-native-elements';
+import TakePhotoLabel from './TakePhotoLabel.jsx';
 
 /**********************************************************/
 
@@ -55,10 +56,11 @@ export default function TakePhotoButton({ afterAccept }) {
 
     }
 
+
     return (
-        <Button onPress={onPress} testID="take-photo-button">
+        <Button onPress={onPress} label='TAKE PHOTO' testID="take-photo-button">
             <TakePhotoIcon/>
-            <Text>TAKE PHOTO</Text>
+            <TakePhotoLabel/>
         </Button>
     );
 }
