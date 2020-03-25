@@ -2,15 +2,18 @@
 
 # Connect Our Kids - Mobile App
 
-## Mission Statement
+## Mission
 
 > Our mission is to empower social workers with free modern technology to find permanent loving homes for foster kids.
 
-Social workers who are not familiar with Connect Our Kids will learn about us through their personal connections, social media, emails, and training programs. The social worker will use their browser on their desktop or the mobile phone to learn more at [connectourkids.org](https://connectourkids.org). That user will then click a “download mobile app” button that will drive them to the app store.
+Social workers who are not familiar with Connect Our Kids will learn about us through their personal connections, social media, emails, and training programs.
+Social workers can learn more at [connectourkids.org](https://connectourkids.org), where they will be able to follow "download mobile app" to their device's app store to install this app.
 
-Once they’ve downloaded the app, they will have basic access to each of the sections of the app (but not full access). At that point, they will be prompted to login or signup. Once authenticated, they’ll have full access to the People Search features.
+Once they have downloaded the app, social workers will have basic access to the app's features.
+Users will be prompted to log in or sign up to obtain full access.
+Once authenticated, users will have full access to the app's features (including People Search).
 
-In the future, the registered user will have access to full features of Family Connections and Best Practices in the mobile app.
+In the future, we want authenticated users to have access to the full features of Family Connections and Best Practices while using the mobile app.
 
 ## Project Overview
 
