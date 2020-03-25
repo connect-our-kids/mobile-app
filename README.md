@@ -1,4 +1,4 @@
-# Connect Our Kids
+# Connect Our Kids - Mobile App
 
 You can find the repo for the project at [connect our kids repo](https://github.com/connect-our-kids/mobile-app).
 
