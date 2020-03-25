@@ -13,7 +13,7 @@ import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
 import convertMediaToAttachment from './convertMediaToAttachment';
-import getAttachmentIcon from './Attachment/getAttachmentIcon';
+import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
 
 
 const AddDocumentForm = (props) => {
@@ -43,6 +43,11 @@ const AddDocumentForm = (props) => {
                     style={styles.text1}
                 >Add Document</Text>
 
+            </View>
+            <View>
+                <AttachmentIcon attachment={attachment.name}/>
+                <Text>{attachment.ext}</Text>
+                <Text>{props.navigation.getParam('media').type}</Text>
             </View>
             {/* TITLE BAR */}
             <View

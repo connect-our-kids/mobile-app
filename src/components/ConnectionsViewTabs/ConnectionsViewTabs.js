@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { ListItem, Button, Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import getAttachmentIcon from './Attachment/getAttachmentIcon.jsx';
+import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
 import moment from 'moment';
 
 const placeholderImg = require('../../../assets/profile_placeholder.png');
@@ -90,7 +90,7 @@ export const Documents = (props) => {
             <ListItem
                 title={props.document.title}
                 titleStyle={{ color: '#5A6064' }}
-                leftIcon={getAttachmentIcon(props.document)}
+                leftIcon={(<AttachmentIcon attachment={props.document}/>)}
                 topDivider={true}
                 onPress={() => Linking.openURL(props.document.attachment)}
                 subtitle={
