@@ -2,12 +2,14 @@
 
 # Connect Our Kids - Mobile App
 
--   [Mission](#mission)
--   [Project](#project)
-    -   [Features](#features)
-    -   [Resources](#resources)
-    -   [Getting Started](#getting-started)
-    -   [Recommended Development Tools](#recommended-development-tools)
+-   [Introduction](#introduction)
+    -   [Mission](#mission)
+    -   [Key Features](#key-features)
+    -   [Team Resources](#team-resources)
+-   [Getting Started](#getting-started)
+    -   [Recommended Tools](#recommended-tools)
+    -   [Key Topics](#key-topics)
+    -   [Configuration](#configuration)
 -   [Contributing](#contributing)
     -   [Issue/Bug Request](#issuebug-request)
     -   [Feature Requests](#feature-requests)
