@@ -66,7 +66,7 @@ In the future, we want authenticated users to have access to the full features o
 
 -   [Changelog (stale)](./CHANGELOG.md)
 
-### Getting Started
+## Getting Started
 
 Before getting starting on this project, it will be enormously helpful for you to have _at least_ a basic understanding of the following topics.
 
