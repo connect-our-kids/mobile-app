@@ -57,7 +57,7 @@ const AddDocumentForm = (props) => {
                     />
                     : <AttachmentIcon attachment={attachment.name} size={80}/>
                 }
-                <View style={ { borderWidth: 2 } }>
+                <View>
                     <Text>Document Type: {media.type}</Text>
                     <Text>File Extension: {attachment.ext}</Text>
                 </View>
@@ -167,43 +167,45 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 16,
         marginBottom: 16,
+        borderRadius: 4,
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
     buttonText: {
         fontSize: 30,
-        color: '#fff',
+        color: constants.iconColor,
     },
     scrollView: {
         width: '100%',
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: constants.backgroundColor,
         padding: 16,
     },
     view1: {
         width: '95%',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
         marginTop: 30,
         marginBottom: 13,
-        backgroundColor: 'purple',
+        // backgroundColor: 'purple',
     },
     view2: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        borderWidth: 2,
         height: '35%',
         width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: constants.borderColor,
     },
     view3: {
         minHeight: 25,
         marginTop: 10,
         marginBottom: 5,
         width: '95%',
-        backgroundColor: 'red',
+        backgroundColor: constants.borderColor,
         borderRadius: 4,
         padding: 2,
     },
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
         width: '95%',
-        backgroundColor: 'red',
+        backgroundColor: constants.borderColor,
         borderRadius: 4,
         padding: 2,
     },
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
         padding: 4,
         paddingRight: 80,
         fontSize: 15,
-        backgroundColor: 'green',
+        backgroundColor: constants.backgroundColor,
     },
     textInput2: {
         paddingTop: 4,
@@ -237,12 +239,12 @@ const styles = StyleSheet.create({
         width: '100%',
         alignSelf: 'flex-start',
         fontSize: 15,
-        backgroundColor: 'green',
+        backgroundColor: constants.backgroundColor,
     },
     image1: {
         width: '35%',
-        height: '80%',
-        margin: '2%',
+        height: '90%',
+        // margin: '2%',
     },
 });
 
