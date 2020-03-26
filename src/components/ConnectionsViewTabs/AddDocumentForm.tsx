@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-        padding: 8,
+        padding: 16,
     },
 
     content: {
