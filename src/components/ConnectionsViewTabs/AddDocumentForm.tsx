@@ -63,23 +63,18 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
 
     return (
         <KeyboardAvoidingView
-            // style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            contentContainerStyle={[ styles.KeyboardAvoidingView ]}
         >
             <ScrollView
-                contentContainerStyle={[ styles.scrollView, styles.container ]}
+                contentContainerStyle={[ styles.container, styles.scrollView ]}
             >
-                <View
-                    style={[ styles.content, styles.displayText, styles.view1 ]}
-                >
-                    <Text
-                        style={styles.text1}
-                    >Add Document</Text>
-
-                </View>
+                <Text style={[ styles.content, styles.text1 ]}>
+                        Add Document
+                </Text>
                 {/* Image thumbnail / Doc Icon */}
                 <View
-                    style={[ styles.content, styles.displayText, styles.view2 ]}
+                    style={[ styles.content, styles.view2 ]}
                 >
                     {media.type === 'image'
                         ? <Image
@@ -90,109 +85,92 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                         : <AttachmentIcon attachment={attachment.name} size={80}/>
                     }
                     <View>
-                        <Text>Document Type: {media.type}</Text>
-                        <Text>File Extension: {attachment.ext}</Text>
+                        <Text style={[ styles.displayText ]}>
+                            Document Type: {media.type}
+                        </Text>
+                        <Text style={[ styles.displayText ]}>
+                            File Extension: {attachment.ext}
+                        </Text>
                     </View>
                 </View>
-                {/* TITLE BAR */}
-                <View
-                    style={[ styles.content, styles.view3 ]}
+                {/* TITLE INPUT */}
+                <TextInput
+                    style={[ styles.content, styles.inputText, styles.textInput1 ]}
+                    value={title}
+                    onChangeText={setTitle}
+                    placeholder={'TITLE'}
+                    placeholderTextColor={'#AAA9AD'}
+                    textAlignVertical={'top'}
+                />
+                {/* NOTES INPUT */}
+                <TextInput
+                    style={[ styles.content, styles.inputText, styles.textInput2 ]}
+                    value={notes}
+                    onChangeText={setNotes}
+                    multiline={true}
+                    numberOfLines={4}
+                    placeholder={'NOTES'}
+                    placeholderTextColor={'#AAA9AD'}
+                    textAlignVertical={'top'}
+                    returnKeyType={'default'}
+                    enablesReturnKeyAutomatically={true}
+                />
+                <TouchableOpacity
+                    style={[ styles.content, styles.saveButton ]}
+                    onPress={() => {
+                        props.postConnectionDocument(
+                            props.navigation.getParam('id'),
+                            title,
+                            category,
+                            isPublic,
+                            notes,
+                            attachment,
+                        );
+                        props.navigation.goBack();
+                    }}
                 >
-                    {/* Title text */}
-                    <TextInput
-                        onChangeText={(text: string) => {
-                            setTitle(text);
-                        }}
-                        placeholder='TITLE'
-                        placeholderTextColor={'#AAA9AD'}
-                        style={[ styles.inputText, styles.textInput1 ]}
-                        textAlignVertical='top'
-                        name="title"
-                        value={title}
-                    />
-                </View>
-                {/* NOTES BAR */}
+                    <Text style={styles.buttonText}>SAVE</Text>
+                </TouchableOpacity>
+                {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
+                {/*
                 <View
-                    style={[ styles.content, styles.view4 ]}
+                    style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        marginTop: 15,
+                    }}
                 >
-                    <TextInput
-                        onChangeText={(text: string) => {
-                            setNotes(text);
-                        }}
-                        placeholder='NOTES'
-                        placeholderTextColor={'#AAA9AD'}
-                        style={[ styles.inputText, styles.textInput2 ]}
-                        textAlignVertical='top'
-                        name="notes"
-                        value={notes}
-                        multiline
-                        numberOfLines={4}
-                        returnKeyType="default"
-                        enablesReturnKeyAutomatically
-                    />
-                </View>
-                <View
-                    style={[ styles.content, styles.view5 ]}
-                >
-                    {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
-                    {/* <View
-                            style={{
-                                flexDirection: 'row',
-                                width: '100%',
-                                justifyContent: 'space-between',
-                                marginTop: 15,
+                    <Text style={{ width: '75%', fontSize: 15 }}>This Information is Sensitive</Text>
+                    <View>
+                        <SwitchToggle
+                            switchOn={!isPublic}
+                            backgroundColorOn='#158FB4'
+                            backgroundColorOff='#AAA9AD'
+                            circleColorOn='#0F6580'
+                            circleColorOff='#E5E4E2'
+                            containerStyle={{
+                                width: 49,
+                                height: 20,
+                                borderRadius: 16,
+                                padding: 0.1,
                             }}
-                        >
-                            <Text style={{ width: '75%', fontSize: 15 }}>This Information is Sensitive</Text>
-                            <View>
-                                <SwitchToggle
-                                    switchOn={!isPublic}
-                                    backgroundColorOn='#158FB4'
-                                    backgroundColorOff='#AAA9AD'
-                                    circleColorOn='#0F6580'
-                                    circleColorOff='#E5E4E2'
-                                    containerStyle={{
-                                        width: 49,
-                                        height: 20,
-                                        borderRadius: 16,
-                                        padding: 0.1,
-                                    }}
-                                    circleStyle={{ width: 28,
-                                        height: 28,
-                                        borderRadius: 15,
-                                        shadowColor: '#000',
-                                        shadowOffset: {
-                                            width: 1,
-                                            height: 3,
-                                        },
-                                        shadowOpacity: 0.23,
-                                        shadowRadius: 2.62,
-                                        elevation: 4 }}
-                                    onPress={() => setIsPublic(!isPublic)}
-                                />
-                            </View>
-                        </View> */}
-                    {/* <View style={{ width: '100%', backgroundColor: 'yellow' }}>
-                    <View style={{ alignItems: 'center', marginTop: 10 }}> */}
-                    <TouchableOpacity
-                        style={styles.saveButton}
-                        onPress={() => {
-                            props.postConnectionDocument(
-                                props.navigation.getParam('id'),
-                                title,
-                                category,
-                                isPublic,
-                                notes,
-                                attachment,
-                            );
-                            props.navigation.goBack();
-                        }}
-                    >
-                        <Text style={styles.buttonText}>SAVE</Text>
-                    </TouchableOpacity>
-                    {/* </View>
-                </View> */}
+                            circleStyle={{ width: 28,
+                                height: 28,
+                                borderRadius: 15,
+                                shadowColor: '#000',
+                                shadowOffset: {
+                                    width: 1,
+                                    height: 3,
+                                },
+                                shadowOpacity: 0.23,
+                                shadowRadius: 2.62,
+                                elevation: 4 }}
+                            onPress={() => setIsPublic(!isPublic)}
+                        />
+                    </View>
                 </View>
+                */}
             </ScrollView>
         </KeyboardAvoidingView>
     );
@@ -203,13 +181,18 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
 
 const styles = StyleSheet.create({
 
+    KeyboardAvoidingView: {
+        justifyContent: 'flex-start',
+    },
+
     container: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
         padding: 8,
     },
 
     content: {
+        width: '100%',
         margin: 8,
     },
 
@@ -294,9 +277,9 @@ const styles = StyleSheet.create({
     },
 
     textInput2: {
-        height: '100%',
-        width: '100%',
-        alignSelf: 'flex-start',
+        // height: '100%',
+        // width: '100%',
+        // alignSelf: 'flex-start',
         fontSize: 15,
         backgroundColor: constants.inputBackgroundColor,
     },
