@@ -2,6 +2,23 @@
 
 # Connect Our Kids - Mobile App
 
+-   [Mission](#mission)
+-   [Project](#project)
+    -   [Features](#features)
+    -   [Resources](#resources)
+    -   [Getting Started](#getting-started)
+    -   [Recommended Development Tools](#recommended-development-tools)
+-   [Contributing](#contributing)
+    -   [Issue/Bug Request](#issuebug-request)
+    -   [Feature Requests](#feature-requests)
+    -   [Pull Requests](#pull-requests)
+    -   [Attribution](#attribution)
+-   [Contributors](#contributors)
+    -   [Lambda Labs 21](#lambda-labs-21)
+    -   [Lambda Labs 19](#lambda-labs-19)
+    -   [Lambda Labs 17](#lambda-labs-17)
+    -   [Lambda Labs 13](#lambda-labs-13)
+
 ## Mission
 
 > Our mission is to empower social workers with free modern technology to find permanent loving homes for foster kids.
@@ -214,7 +231,7 @@ These contribution guidelines have been adapted from [this good `Contributing.md
 
 ## Contributors
 
-## Lambda Labs 21
+### Lambda Labs 21
 
 | Avatar | Name | Role |
 |:-------|:-----|:-----|
