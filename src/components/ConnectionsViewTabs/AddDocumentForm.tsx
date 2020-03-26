@@ -42,6 +42,7 @@ function mapStateToProps(state: Record<string, any>): Record<string, any> {
         isLoadingDocs,
     };
 }
+
 /**********************************************************/
 
 function AddDocumentForm(props: Record<string, any>): JSX.Element {
@@ -197,6 +198,8 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
     );
 
 }
+
+/**********************************************************/
 
 const styles = StyleSheet.create({
 
