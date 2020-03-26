@@ -52,10 +52,7 @@ const AddDocumentForm = (props) => {
                 {media.type === 'image'
                     ? <Image
                         source={{ uri: attachment.uri }}
-                        style={{
-                            width: '35%',
-                            margin: '2%',
-                        }}
+                        style={styles.image1}
                         resizeMode='contain'
                     />
                     : <AttachmentIcon attachment={attachment.name}/>
@@ -196,7 +193,6 @@ const styles = StyleSheet.create({
     },
     view2: {
         flexDirection: 'row',
-        alignItems: 'center',
         height: 100,
     },
     view3: {
@@ -239,6 +235,10 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         fontSize: 15,
         backgroundColor: 'green',
+    },
+    image1: {
+        width: '35%',
+        margin: '2%',
     },
 });
 
