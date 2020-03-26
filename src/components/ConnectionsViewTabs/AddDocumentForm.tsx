@@ -20,10 +20,12 @@ import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
 
 
 const AddDocumentForm = (props) => {
+
     const [ title, setTitle ] = useState('');
     const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     const [ notes, setNotes ] = useState('');
     const [ isPublic ] = useState(true);
+
     const [ media ] = useState(() => props.navigation.getParam('media'));
     const [ attachment ] = useState(() => {
 
@@ -151,7 +153,14 @@ const AddDocumentForm = (props) => {
                     <TouchableOpacity
                         style={styles.saveButton}
                         onPress={() => {
-                            props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                            props.postConnectionDocument(
+                                props.navigation.getParam('id'),
+                                title,
+                                category,
+                                isPublic,
+                                notes,
+                                attachment,
+                            );
                             props.navigation.goBack();
                         }}
                     >
@@ -163,6 +172,7 @@ const AddDocumentForm = (props) => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
+
 };
 
 const styles = StyleSheet.create({
@@ -196,10 +206,12 @@ const styles = StyleSheet.create({
         borderColor: constants.highlightColor,
         backgroundColor: constants.highlightColor,
     },
+
     buttonText: {
         fontSize: 30,
         color: constants.iconColor,
     },
+
     scrollView: {
         width: '100%',
         height: '100%',
@@ -207,11 +219,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: constants.backgroundColor,
     },
+
     view1: {
         width: '95%',
         alignItems: 'flex-start',
         justifyContent: 'center',
     },
+
     view2: {
         flexDirection: 'row',
         alignItems: 'flex-start',
@@ -221,32 +235,38 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: constants.borderColor,
     },
+
     view3: {
         minHeight: 25,
         width: '95%',
         backgroundColor: constants.borderColor,
         borderRadius: 4,
     },
+
     view4: {
         height: 150,
         width: '95%',
         backgroundColor: constants.borderColor,
         borderRadius: 4,
     },
+
     view5: {
         width: '95%',
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
     },
+
     text1: {
         fontSize: 30,
         fontWeight: 'bold',
     },
+
     textInput1: {
         fontSize: 15,
         backgroundColor: constants.inputBackgroundColor,
     },
+
     textInput2: {
         height: '100%',
         width: '100%',
@@ -254,10 +274,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         backgroundColor: constants.inputBackgroundColor,
     },
+
     image1: {
         width: '35%',
         height: '90%',
     },
+
 });
 
 const mapStateToProps = (state) => {
