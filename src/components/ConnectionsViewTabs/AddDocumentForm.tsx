@@ -24,7 +24,9 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 
 /**********************************************************/
 
-const AddDocumentForm = (props) => {
+/**********************************************************/
+
+function AddDocumentForm(props: Record<string, any>): JSX.Element {
 
     // /* DEV */ console.log(props.navigation);
 
@@ -176,7 +178,7 @@ const AddDocumentForm = (props) => {
         </KeyboardAvoidingView>
     );
 
-};
+}
 
 const styles = StyleSheet.create({
 
