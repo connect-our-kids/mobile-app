@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
     Text,
     ScrollView,
@@ -10,14 +11,18 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
+
 // import SwitchToggle from 'react-native-switch-toggle';
-import { getEngagements } from '../../store/actions/connectionData';
+
+import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
+import convertMediaToAttachment from './convertMediaToAttachment';
+
 import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
+import { getEngagements } from '../../store/actions/connectionData';
 import { postConnectionDocument } from '../../store/actions/connectionEngagements';
-import convertMediaToAttachment from './convertMediaToAttachment';
-import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
 
+/**********************************************************/
 
 const AddDocumentForm = (props) => {
 
