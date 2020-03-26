@@ -24,6 +24,24 @@ import { postConnectionDocument } from '../../store/actions/connectionEngagement
 
 /**********************************************************/
 
+export default connect(
+    mapStateToProps,
+    {
+        postConnectionDocument,
+        getEngagements,
+    },
+)(AddDocumentForm);
+
+function mapStateToProps(state: Record<string, any>): Record<string, any> {
+    const { accessToken } = state.auth;
+    const { isLoadingDocs } = state.engagements;
+    return {
+        accessToken,
+        isLoadingEngagements: state.engagements.isLoadingEngagements,
+        engagementsError: state.engagements.engagementsError,
+        isLoadingDocs,
+    };
+}
 /**********************************************************/
 
 function AddDocumentForm(props: Record<string, any>): JSX.Element {
@@ -286,21 +304,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-const mapStateToProps = (state) => {
-    const { accessToken } = state.auth;
-    const { isLoadingDocs } = state.engagements;
-    return {
-        accessToken,
-        isLoadingEngagements: state.engagements.isLoadingEngagements,
-        engagementsError: state.engagements.engagementsError,
-        isLoadingDocs,
-    };
-};
-
-export default connect(
-    mapStateToProps, {
-        postConnectionDocument,
-        getEngagements,
-    },
-)(AddDocumentForm);
