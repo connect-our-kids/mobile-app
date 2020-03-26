@@ -53,11 +53,11 @@ const AddDocumentForm = (props) => {
                     ? <Image
                         source={{ uri: attachment.uri }}
                         style={styles.image1}
-                        resizeMode='contain'
+                        resizeMode={'cover'}
                     />
-                    : <AttachmentIcon attachment={attachment.name}/>
+                    : <AttachmentIcon attachment={attachment.name} size={80}/>
                 }
-                <View>
+                <View style={ { borderWidth: 2 } }>
                     <Text>Document Type: {media.type}</Text>
                     <Text>File Extension: {attachment.ext}</Text>
                 </View>
@@ -140,19 +140,19 @@ const AddDocumentForm = (props) => {
                                 />
                             </View>
                         </View> */}
-                <View style={{ width: '100%', backgroundColor: 'yellow' }}>
-                    <View style={{ alignItems: 'center', marginTop: 10 }}>
-                        <TouchableOpacity
-                            style={styles.saveButton}
-                            onPress={() => {
-                                props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
-                                props.navigation.goBack();
-                            }}
-                        >
-                            <Text style={styles.buttonText}>SAVE</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                {/* <View style={{ width: '100%', backgroundColor: 'yellow' }}>
+                    <View style={{ alignItems: 'center', marginTop: 10 }}> */}
+                <TouchableOpacity
+                    style={styles.saveButton}
+                    onPress={() => {
+                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                        props.navigation.goBack();
+                    }}
+                >
+                    <Text style={styles.buttonText}>SAVE</Text>
+                </TouchableOpacity>
+                {/* </View>
+                </View> */}
             </View>
         </ScrollView>
     );
@@ -162,13 +162,11 @@ const styles = StyleSheet.create({
     saveButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 200,
+        width: '100%',
         height: 50,
-        // backgroundColor: 'lightgray',
-        borderRadius: 50,
         borderWidth: 1,
-        marginTop: 10,
-        marginBottom: 20,
+        marginTop: 16,
+        marginBottom: 16,
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
@@ -182,6 +180,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'red',
+        padding: 16,
     },
     view1: {
         width: '95%',
@@ -193,7 +192,11 @@ const styles = StyleSheet.create({
     },
     view2: {
         flexDirection: 'row',
-        height: 100,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        borderWidth: 2,
+        height: '35%',
+        width: '100%',
     },
     view3: {
         minHeight: 25,
@@ -238,6 +241,7 @@ const styles = StyleSheet.create({
     },
     image1: {
         width: '35%',
+        height: '80%',
         margin: '2%',
     },
 });
