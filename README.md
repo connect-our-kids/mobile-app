@@ -68,6 +68,8 @@ In the future, we want authenticated users to have access to the full features o
 
 ## Getting Started
 
+### Key Topics
+
 Before getting starting on this project, it will be enormously helpful for you to have _at least_ a basic understanding of the following topics.
 
 #### Build Systems
