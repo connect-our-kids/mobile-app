@@ -70,23 +70,6 @@ const AddDocumentForm = (props) => {
                 </View>
                 {/* TITLE BAR */}
                 <View
-                    style={styles.view3}
-                >
-                    {/* Title text */}
-                    <TextInput
-                        onChangeText={(text: string) => {
-                            setTitle(text);
-                        }}
-                        placeholder='TITLE'
-                        placeholderTextColor={'#AAA9AD'}
-                        style={styles.textInput1}
-                        textAlignVertical='top'
-                        name="title"
-                        value={title}
-                    />
-                </View>
-                {/* TITLE BAR */}
-                <View
                     style={[ styles.content, styles.view3 ]}
                 >
                     {/* Title text */}
