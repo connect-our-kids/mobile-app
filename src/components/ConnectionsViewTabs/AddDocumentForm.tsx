@@ -7,6 +7,8 @@ import {
     StyleSheet,
     TextInput,
     Image,
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 // import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
@@ -34,76 +36,80 @@ const AddDocumentForm = (props) => {
     console.log(props.navigation);
 
     return (
-        <ScrollView
-            contentContainerStyle={styles.scrollView}
+        <KeyboardAvoidingView
+            // style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-            <View
-                style={styles.view1}
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
             >
-                <Text
-                    style={styles.text1}
-                >Add Document</Text>
+                <View
+                    style={styles.view1}
+                >
+                    <Text
+                        style={styles.text1}
+                    >Add Document</Text>
 
-            </View>
-            {/* Image thumbnail / Doc Icon */}
-            <View
-                style={styles.view2}
-            >
-                {media.type === 'image'
-                    ? <Image
-                        source={{ uri: attachment.uri }}
-                        style={styles.image1}
-                        resizeMode={'cover'}
-                    />
-                    : <AttachmentIcon attachment={attachment.name} size={80}/>
-                }
-                <View>
-                    <Text>Document Type: {media.type}</Text>
-                    <Text>File Extension: {attachment.ext}</Text>
                 </View>
-            </View>
-            {/* TITLE BAR */}
-            <View
-                style={styles.view3}
-            >
-                {/* Title text */}
-                <TextInput
-                    onChangeText={(text: string) => {
-                        setTitle(text);
-                    }}
-                    placeholder='TITLE'
-                    placeholderTextColor={'#AAA9AD'}
-                    style={styles.textInput1}
-                    textAlignVertical='top'
-                    name="title"
-                    value={title}
-                />
-            </View>
-            {/* NOTES BAR */}
-            <View
-                style={styles.view4}
-            >
-                <TextInput
-                    onChangeText={(text: string) => {
-                        setNotes(text);
-                    }}
-                    placeholder='NOTES'
-                    placeholderTextColor={'#AAA9AD'}
-                    style={styles.textInput2}
-                    textAlignVertical='top'
-                    name="notes"
-                    value={notes}
-                    multiline
-                    numberOfLines={4}
-                    returnKeyType="default"
-                    enablesReturnKeyAutomatically
-                />
-            </View>
-            <View
-                style={styles.view5}
-            >
-                {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
-                {/* <View
+                {/* Image thumbnail / Doc Icon */}
+                <View
+                    style={styles.view2}
+                >
+                    {media.type === 'image'
+                        ? <Image
+                            source={{ uri: attachment.uri }}
+                            style={styles.image1}
+                            resizeMode={'cover'}
+                        />
+                        : <AttachmentIcon attachment={attachment.name} size={80}/>
+                    }
+                    <View>
+                        <Text>Document Type: {media.type}</Text>
+                        <Text>File Extension: {attachment.ext}</Text>
+                    </View>
+                </View>
+                {/* TITLE BAR */}
+                <View
+                    style={styles.view3}
+                >
+                    {/* Title text */}
+                    <TextInput
+                        onChangeText={(text: string) => {
+                            setTitle(text);
+                        }}
+                        placeholder='TITLE'
+                        placeholderTextColor={'#AAA9AD'}
+                        style={styles.textInput1}
+                        textAlignVertical='top'
+                        name="title"
+                        value={title}
+                    />
+                </View>
+                {/* NOTES BAR */}
+                <View
+                    style={styles.view4}
+                >
+                    <TextInput
+                        onChangeText={(text: string) => {
+                            setNotes(text);
+                        }}
+                        placeholder='NOTES'
+                        placeholderTextColor={'#AAA9AD'}
+                        style={styles.textInput2}
+                        textAlignVertical='top'
+                        name="notes"
+                        value={notes}
+                        multiline
+                        numberOfLines={4}
+                        returnKeyType="default"
+                        enablesReturnKeyAutomatically
+                    />
+                </View>
+                <View
+                    style={styles.view5}
+                >
+                    {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
+                    {/* <View
                             style={{
                                 flexDirection: 'row',
                                 width: '100%',
@@ -140,21 +146,22 @@ const AddDocumentForm = (props) => {
                                 />
                             </View>
                         </View> */}
-                {/* <View style={{ width: '100%', backgroundColor: 'yellow' }}>
+                    {/* <View style={{ width: '100%', backgroundColor: 'yellow' }}>
                     <View style={{ alignItems: 'center', marginTop: 10 }}> */}
-                <TouchableOpacity
-                    style={styles.saveButton}
-                    onPress={() => {
-                        props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
-                        props.navigation.goBack();
-                    }}
-                >
-                    <Text style={styles.buttonText}>SAVE</Text>
-                </TouchableOpacity>
-                {/* </View>
+                    <TouchableOpacity
+                        style={styles.saveButton}
+                        onPress={() => {
+                            props.postConnectionDocument(props.navigation.getParam('id'), title, category, isPublic, notes, attachment);
+                            props.navigation.goBack();
+                        }}
+                    >
+                        <Text style={styles.buttonText}>SAVE</Text>
+                    </TouchableOpacity>
+                    {/* </View>
                 </View> */}
-            </View>
-        </ScrollView>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
