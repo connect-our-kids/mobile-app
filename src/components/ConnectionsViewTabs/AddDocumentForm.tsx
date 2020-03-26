@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    Image,
 } from 'react-native';
 // import SwitchToggle from 'react-native-switch-toggle';
 import { getEngagements } from '../../store/actions/connectionData';
@@ -21,16 +22,16 @@ const AddDocumentForm = (props) => {
     const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
     const [ notes, setNotes ] = useState('');
     const [ isPublic ] = useState(true);
-
+    const [ media ] = useState(() => props.navigation.getParam('media'));
     const [ attachment ] = useState(() => {
-
-        const media = props.navigation.getParam('media');
 
         const attachment = convertMediaToAttachment(media);
 
         return attachment;
 
     });
+
+    console.log(props.navigation);
 
     return (
         <ScrollView
@@ -44,14 +45,29 @@ const AddDocumentForm = (props) => {
                 >Add Document</Text>
 
             </View>
-            <View>
-                <AttachmentIcon attachment={attachment.name}/>
-                <Text>{attachment.ext}</Text>
-                <Text>{props.navigation.getParam('media').type}</Text>
+            {/* Image thumbnail / Doc Icon */}
+            <View
+                style={styles.view2}
+            >
+                {media.type === 'image'
+                    ? <Image
+                        source={{ uri: attachment.uri }}
+                        style={{
+                            width: '35%',
+                            margin: '2%',
+                        }}
+                        resizeMode='contain'
+                    />
+                    : <AttachmentIcon attachment={attachment.name}/>
+                }
+                <View>
+                    <Text>Document Type: {media.type}</Text>
+                    <Text>File Extension: {attachment.ext}</Text>
+                </View>
             </View>
             {/* TITLE BAR */}
             <View
-                style={styles.view2}
+                style={styles.view3}
             >
                 {/* Title text */}
                 <TextInput
@@ -68,7 +84,7 @@ const AddDocumentForm = (props) => {
             </View>
             {/* NOTES BAR */}
             <View
-                style={styles.view3}
+                style={styles.view4}
             >
                 <TextInput
                     onChangeText={(text: string) => {
@@ -87,7 +103,7 @@ const AddDocumentForm = (props) => {
                 />
             </View>
             <View
-                style={styles.view4}
+                style={styles.view5}
             >
                 {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
                 {/* <View
@@ -179,6 +195,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'purple',
     },
     view2: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 100,
+    },
+    view3: {
         minHeight: 25,
         marginTop: 10,
         marginBottom: 5,
@@ -187,7 +208,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 2,
     },
-    view3: {
+    view4: {
         height: 150,
         marginTop: 5,
         marginBottom: 10,
@@ -196,7 +217,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 2,
     },
-    view4: {
+    view5: {
         width: '95%',
         flexDirection: 'column',
         justifyContent: 'space-between',
