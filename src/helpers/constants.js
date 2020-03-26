@@ -8,6 +8,7 @@ export default {
     highlightColor: '#0279AC',
     iconColor: '#ffffff',
     backgroundColor: '#ffffff',
+    inputBackgroundColor: '#E5E5E5',
     textColor: '#AAA9AD',
     borderColor: '#AAA9AD',
     /* fontFamily: 'futura-light', */

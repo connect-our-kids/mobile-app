@@ -182,7 +182,8 @@ const styles = StyleSheet.create({
     },
 
     inputText: {
-        padding: 4,
+        padding: 8,
+        borderRadius: 4,
     },
 
     saveButton: {
@@ -244,14 +245,14 @@ const styles = StyleSheet.create({
     },
     textInput1: {
         fontSize: 15,
-        backgroundColor: constants.backgroundColor,
+        backgroundColor: constants.inputBackgroundColor,
     },
     textInput2: {
         height: '100%',
         width: '100%',
         alignSelf: 'flex-start',
         fontSize: 15,
-        backgroundColor: constants.backgroundColor,
+        backgroundColor: constants.inputBackgroundColor,
     },
     image1: {
         width: '35%',
