@@ -87,7 +87,7 @@ const AddDocumentForm = (props) => {
                 </View>
                 {/* NOTES BAR */}
                 <View
-                    style={[ styles.contnet, styles.view4 ]}
+                    style={[ styles.content, styles.view4 ]}
                 >
                     <TextInput
                         onChangeText={(text: string) => {
