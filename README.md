@@ -9,6 +9,7 @@
 -   [Getting Started](#getting-started)
     -   [Recommended Tools](#recommended-tools)
     -   [Key Topics](#key-topics)
+    -.  [Organization](#organization)
     -   [Configuration](#configuration)
 -   [Contributing](#contributing)
     -   [Issue/Bug Request](#issuebug-request)
@@ -164,6 +165,12 @@ Before getting starting on this project, it will be enormously helpful for you t
 
     > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people.
     > This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
+
+### Organization
+
+As projects grow and become more complex, the need for good organization and planning also grows.
+Bad and inconsistent organization make it harder to understand _what_ code does and _where_ it does it.
+
 
 ### Configuration
 
