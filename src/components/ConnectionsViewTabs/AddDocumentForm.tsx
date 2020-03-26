@@ -21,21 +21,19 @@ import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
 
 const AddDocumentForm = (props) => {
 
-    const [ title, setTitle ] = useState('');
-    const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
-    const [ notes, setNotes ] = useState('');
-    const [ isPublic ] = useState(true);
+    // /* DEV */ console.log(props.navigation);
 
+    /* handle attachment data */
     const [ media ] = useState(() => props.navigation.getParam('media'));
-    const [ attachment ] = useState(() => {
+    const [ attachment ] = useState(() => convertMediaToAttachment(media));
 
-        const attachment = convertMediaToAttachment(media);
+    /* form input values */
+    const [ title, setTitle ] = useState('');
+    const [ notes, setNotes ] = useState('');
 
-        return attachment;
-
-    });
-
-    console.log(props.navigation);
+    /* previous form input values -- preserved for backward compatibility */
+    const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
+    const [ isPublic ] = useState(true);
 
     return (
         <KeyboardAvoidingView
