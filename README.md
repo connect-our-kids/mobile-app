@@ -163,7 +163,7 @@ Before getting starting on this project, it will be enormously helpful for you t
     > People Search is a tool for discovering contact and relationship information from a population of over 3 billion people.
     > This tool is made available by Connect Our Kids to help social workers discover extended family members for foster kids.
 
-#### Configuration
+### Configuration
 
 -   [Babel](https://babeljs.io/docs/en/configuration)
 
