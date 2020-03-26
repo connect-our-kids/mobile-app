@@ -228,8 +228,6 @@ const styles = StyleSheet.create({
     },
     view4: {
         height: 150,
-        marginTop: 5,
-        marginBottom: 10,
         width: '95%',
         backgroundColor: constants.borderColor,
         borderRadius: 4,
@@ -258,7 +256,6 @@ const styles = StyleSheet.create({
     image1: {
         width: '35%',
         height: '90%',
-        // margin: '2%',
     },
 });
 
