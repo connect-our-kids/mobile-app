@@ -10,7 +10,7 @@ export default function PickFileIcon({
 }) {
     return (
         <MaterialIcons
-            name={'insert-drive-file'}
+            name={'note-add'}
             size={size}
             color={color}
         />
