@@ -417,7 +417,7 @@ const BottomNavigator = createBottomTabNavigator(
     },
 
     {
-        initialRouteName: 'FamilyConnections',
+        initialRouteName: 'PeopleSearchNavigator',
         tabBarOptions: {
             inactiveTintColor: 'rgba(24, 23, 21, 0.5)',
             activeTintColor: '#0279AC',

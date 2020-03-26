@@ -14,6 +14,7 @@ export default StyleSheet.create({
         color: '#0279AC',
         marginTop: 20,
         textAlign: 'center',
+        marginBottom: 20
     },
 
     linkContainer: {

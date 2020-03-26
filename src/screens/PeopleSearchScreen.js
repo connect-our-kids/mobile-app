@@ -169,7 +169,7 @@ class PeopleSearchScreen extends React.Component {
                   {!isLoggedIn && (
                       <TouchableHighlight onPress={this.startRegister}>
                           <Text style={styles.link}>
-                                    This is a preview. Social workers, family recruiters, and CASA volunteers can have completely free access. Touch here to find out more.
+                                    This is a preview with limited results. Social workers, family recruiters, and CASA volunteers can have completely free access. Touch here to find out more.
                           </Text>
                       </TouchableHighlight>
                   )}
