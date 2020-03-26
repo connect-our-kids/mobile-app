@@ -19,7 +19,9 @@
     -   [Lambda Labs 17](#lambda-labs-17)
     -   [Lambda Labs 13](#lambda-labs-13)
 
-## Mission
+## Introduction
+
+### Mission
 
 > Our mission is to empower social workers with free modern technology to find permanent loving homes for foster kids.
 
@@ -32,9 +34,7 @@ Once authenticated, users will have full access to the app's features (including
 
 In the future, we want authenticated users to have access to the full features of Family Connections and Best Practices while using the mobile app.
 
-## Project
-
-### Features
+### Key Features
 
 -   App navigation...
     -   with tabs
