@@ -35,10 +35,10 @@ const AddDocumentForm = (props) => {
 
     return (
         <ScrollView
-            contentContainerStyle={styles.scrollView}
+            contentContainerStyle={[ styles.scrollView, styles.container ]}
         >
             <View
-                style={styles.view1}
+                style={[ styles.content, styles.displayText, styles.view1 ]}
             >
                 <Text
                     style={styles.text1}
@@ -47,7 +47,7 @@ const AddDocumentForm = (props) => {
             </View>
             {/* Image thumbnail / Doc Icon */}
             <View
-                style={styles.view2}
+                style={[ styles.content, styles.displayText, styles.view2 ]}
             >
                 {media.type === 'image'
                     ? <Image
@@ -64,7 +64,7 @@ const AddDocumentForm = (props) => {
             </View>
             {/* TITLE BAR */}
             <View
-                style={styles.view3}
+                style={[ styles.content, styles.view3 ]}
             >
                 {/* Title text */}
                 <TextInput
@@ -73,7 +73,7 @@ const AddDocumentForm = (props) => {
                     }}
                     placeholder='TITLE'
                     placeholderTextColor={'#AAA9AD'}
-                    style={styles.textInput1}
+                    style={[ styles.inputText, styles.textInput1 ]}
                     textAlignVertical='top'
                     name="title"
                     value={title}
@@ -81,7 +81,7 @@ const AddDocumentForm = (props) => {
             </View>
             {/* NOTES BAR */}
             <View
-                style={styles.view4}
+                style={[ styles.contnet, styles.view4 ]}
             >
                 <TextInput
                     onChangeText={(text: string) => {
@@ -89,7 +89,7 @@ const AddDocumentForm = (props) => {
                     }}
                     placeholder='NOTES'
                     placeholderTextColor={'#AAA9AD'}
-                    style={styles.textInput2}
+                    style={[ styles.inputText, styles.textInput2 ]}
                     textAlignVertical='top'
                     name="notes"
                     value={notes}
@@ -100,7 +100,7 @@ const AddDocumentForm = (props) => {
                 />
             </View>
             <View
-                style={styles.view5}
+                style={[ styles.content, styles.view5 ]}
             >
                 {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
                 {/* <View
@@ -159,14 +159,31 @@ const AddDocumentForm = (props) => {
 };
 
 const styles = StyleSheet.create({
+
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 8,
+    },
+
+    content: {
+        margin: 8,
+    },
+
+    displayText: {
+        padding: 2,
+    },
+
+    inputText: {
+        padding: 4,
+    },
+
     saveButton: {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         height: 50,
         borderWidth: 1,
-        marginTop: 16,
-        marginBottom: 16,
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
@@ -180,14 +197,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'red',
-        padding: 16,
     },
     view1: {
         width: '95%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 30,
-        marginBottom: 13,
         backgroundColor: 'purple',
     },
     view2: {
@@ -200,12 +214,9 @@ const styles = StyleSheet.create({
     },
     view3: {
         minHeight: 25,
-        marginTop: 10,
-        marginBottom: 5,
         width: '95%',
         backgroundColor: 'red',
         borderRadius: 4,
-        padding: 2,
     },
     view4: {
         height: 150,
@@ -214,7 +225,6 @@ const styles = StyleSheet.create({
         width: '95%',
         backgroundColor: 'red',
         borderRadius: 4,
-        padding: 2,
     },
     view5: {
         width: '95%',
@@ -222,17 +232,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
     },
-    text1: { fontSize: 30,
-        fontWeight: 'bold' },
+    text1: {
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
     textInput1: {
-        padding: 4,
-        paddingRight: 80,
         fontSize: 15,
         backgroundColor: 'green',
     },
     textInput2: {
-        paddingTop: 4,
-        paddingLeft: 4,
         height: '100%',
         width: '100%',
         alignSelf: 'flex-start',
