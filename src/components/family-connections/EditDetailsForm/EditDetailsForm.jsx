@@ -15,12 +15,12 @@ import {
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Picker } from 'react-native-picker-dropdown';
-import { getDetails } from '../../store/actions/connectionData';
+import { getDetails } from '../../../store/actions/connectionData';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import Intl from 'intl';
-import getEnvVars from '../../../environment';
+import getEnvVars from '../../../../environment';
 import * as yup from 'yup';
 import { Appearance } from 'react-native-appearance';
 
@@ -84,7 +84,7 @@ let schema = yup.object().shape({
         .nullable(),
 });
 
-function EditConnectionForm(props) {
+function EditDetailsForm(props) {
     const [ token, setToken ] = useState('');
     const [ formData, setFormData ] = useState(props.details);
     const [ error, setError ] = useState(false);
@@ -877,4 +877,4 @@ const mapStateToProps = (state) => {
     return {};
 };
 
-export default connect(mapStateToProps, { getDetails })(EditConnectionForm);
+export default connect(mapStateToProps, { getDetails })(EditDetailsForm);

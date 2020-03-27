@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { render, fireEvent } from 'react-native-testing-library';
 import { View, Platform } from 'react-native';
 
-import TakePhotoButton from './TakePhotoButton.jsx';
+import TakePhotoButton from './TakePhotoButton';
 
 if ([ 'android', 'ios' ].includes(Platform.OS)) {
 
