@@ -14,7 +14,7 @@ export default StyleSheet.create({
     button: {
         flexGrow: 0,
         // backgroundColor: constants.highlightColor,
-        color: constants.iconColor,
+        color: constants.highlightColor,
         borderRadius: 16,
         padding: 8,
         margin: 4,
@@ -24,7 +24,7 @@ export default StyleSheet.create({
 
     buttonLabel: {
         fontSize: 12,
-        color: constants.textColor,
+        color: constants.highlightColor,
         alignItems: 'center',
     },
 
