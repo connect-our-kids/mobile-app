@@ -64,22 +64,31 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            contentContainerStyle={[ styles.KeyboardAvoidingView ]}
         >
             <ScrollView
-                contentContainerStyle={[ styles.container, styles.scrollView ]}
+                style={[ styles.scrollView ]}
+                contentContainerStyle={[ styles.container ]}
             >
                 {/* HEADER */}
+                <Text style={[ styles.content, styles.header ]}>
+                    Add Document
                 </Text>
                 {/* ATTACHMENT INFO */}
-                        ? <Image
+                <View style={[ styles.content, styles.attachmentInfoContainer ]}>
+                    {(media.type === 'image') ? (
+                        <Image
                             source={{ uri: attachment.uri }}
-                            style={styles.image1}
-                            resizeMode={'cover'}
+                            style={[ styles.attachmentPreview ]}
+                            resizeMode={'center'}
                         />
-                        : <AttachmentIcon attachment={attachment.name} size={80}/>
+                    ) : (
+                        <AttachmentIcon
+                            attachment={attachment.name}
+                            size={80}
+                        />
+                    )
                     }
-                    <View>
+                    <View style={[ styles.attachmentInfo ]}>
                         <Text style={[ styles.displayText ]}>
                             Document Type: {media.type}
                         </Text>
@@ -90,16 +99,16 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                 </View>
                 {/* TITLE INPUT */}
                 <TextInput
-                    style={[ styles.content, styles.inputText, styles.textInput1 ]}
+                    style={[ styles.content, styles.inputText ]}
                     value={title}
                     onChangeText={setTitle}
                     placeholder={'TITLE'}
                     placeholderTextColor={'#AAA9AD'}
-                    textAlignVertical={'top'}
+                    textAlignVertical={'center'}
                 />
                 {/* NOTES INPUT */}
                 <TextInput
-                    style={[ styles.content, styles.inputText, styles.textInput2 ]}
+                    style={[ styles.content, styles.inputText ]}
                     value={notes}
                     onChangeText={setNotes}
                     multiline={true}
@@ -113,7 +122,7 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                 {/* SAVE BUTTON */}
                 <TouchableOpacity
                     style={[ styles.content, styles.saveButton ]}
-                    onPress={() => {
+                    onPress={(): void => {
                         props.postConnectionDocument(
                             props.navigation.getParam('id'),
                             title,
@@ -125,7 +134,9 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                         props.navigation.goBack();
                     }}
                 >
-                    <Text style={styles.buttonText}>SAVE</Text>
+                    <Text style={[ styles.saveButtonText ]}>
+                        SAVE
+                    </Text>
                 </TouchableOpacity>
                 {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
                 {/*
@@ -177,18 +188,25 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
 
 const styles = StyleSheet.create({
 
-    KeyboardAvoidingView: {
-        justifyContent: 'flex-start',
+    scrollView: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: constants.backgroundColor,
+        padding: 0,
+        margin: 0,
     },
 
     container: {
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-        padding: 16,
+        width: '100%',
+        height: '100%',
+        padding: 8,
+        margin: 0,
     },
 
     content: {
-        width: '100%',
+        // width: '100%',
         margin: 8,
     },
 
@@ -199,12 +217,38 @@ const styles = StyleSheet.create({
     inputText: {
         padding: 8,
         borderRadius: 4,
+        fontSize: 16,
+        backgroundColor: constants.inputBackgroundColor,
+    },
+
+    header: {
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
+
+    attachmentInfoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        height: '25%',
+        borderWidth: 0,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: constants.borderColor,
+    },
+
+    attachmentPreview: {
+        width: '40%',
+        height: '100%',
+    },
+
+    attachmentInfo: {
+        paddingLeft: 16,
     },
 
     saveButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
         height: 50,
         borderWidth: 1,
         borderRadius: 4,
@@ -212,77 +256,9 @@ const styles = StyleSheet.create({
         backgroundColor: constants.highlightColor,
     },
 
-    buttonText: {
+    saveButtonText: {
         fontSize: 30,
         color: constants.iconColor,
-    },
-
-    scrollView: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: constants.backgroundColor,
-    },
-
-    view1: {
-        width: '95%',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-    },
-
-    view2: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        height: '35%',
-        width: '100%',
-        borderBottomWidth: 1,
-        borderBottomColor: constants.borderColor,
-    },
-
-    view3: {
-        minHeight: 25,
-        width: '95%',
-        backgroundColor: constants.borderColor,
-        borderRadius: 4,
-    },
-
-    view4: {
-        height: 150,
-        width: '95%',
-        backgroundColor: constants.borderColor,
-        borderRadius: 4,
-    },
-
-    view5: {
-        width: '95%',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-    },
-
-    text1: {
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-
-    textInput1: {
-        fontSize: 15,
-        backgroundColor: constants.inputBackgroundColor,
-    },
-
-    textInput2: {
-        // height: '100%',
-        // width: '100%',
-        // alignSelf: 'flex-start',
-        fontSize: 15,
-        backgroundColor: constants.inputBackgroundColor,
-    },
-
-    image1: {
-        width: '35%',
-        height: '90%',
     },
 
 });
