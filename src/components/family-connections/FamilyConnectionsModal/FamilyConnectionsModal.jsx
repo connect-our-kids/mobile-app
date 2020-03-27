@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
     Text,
     TouchableOpacity,
@@ -7,9 +8,10 @@ import {
     Dimensions,
     Platform,
 } from 'react-native';
-import { Button } from 'native-base';
-import constants from '../../helpers/constants';
-import { Input } from 'native-base';
+
+import { Button, Input } from 'native-base';
+
+import constants from '../../../helpers/constants';
 
 class FamilyConnectionsModal extends Component {
   state = {

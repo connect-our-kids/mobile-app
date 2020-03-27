@@ -14,13 +14,14 @@ import {
 
 // import SwitchToggle from 'react-native-switch-toggle';
 
-import AttachmentIcon from './Attachment/AttachmentIcon.jsx';
+import AttachmentIcon from '../Attachment/AttachmentIcon.jsx';
 import convertMediaToAttachment from './convertMediaToAttachment';
 
-import constants from '../../helpers/constants';
 import { connect } from 'react-redux';
-import { getEngagements } from '../../store/actions/connectionData';
-import { postConnectionDocument } from '../../store/actions/connectionEngagements';
+import { getEngagements } from '../../../store/actions/connectionData';
+import { postConnectionDocument } from '../../../store/actions/connectionEngagements';
+
+import constants from '../../../helpers/constants';
 
 /**********************************************************/
 

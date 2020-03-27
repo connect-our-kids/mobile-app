@@ -35,11 +35,11 @@ import {
     Feather,
     MaterialIcons,
 } from '@expo/vector-icons';
-import { Engagement, Documents } from '../components/ConnectionsViewTabs/ConnectionsViewTabs';
+import { Engagement, Documents } from '../components/family-connections/ConnectionsViewTabs';
 import Loader from '../components/Loader';
 import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from './ConnectionsDetailsView';
-import AddDocumentButtonsGroup from '../components/ConnectionsViewTabs/AddDocumentButtonsGroup/index.jsx';
+import AddDocumentButtonsGroup from '../components/family-connections/AddDocumentButtonsGroup';
 import CaseList from '../components/cases/CaseList';
 import { created } from '../helpers/comparators';
 

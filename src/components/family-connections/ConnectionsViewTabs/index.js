@@ -1,2 +1,4 @@
-import ConnectionsViewTabs from './ConnectionsViewTabs';
-export default ConnectionsViewTabs;
+export {
+    Engagement,
+    Documents,
+} from './ConnectionsViewTabs';

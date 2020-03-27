@@ -11,7 +11,7 @@ import {
     Modal,
     Image,
 } from 'react-native';
-import EditConnectionForm from '../components/ConnectionsViewTabs/EditConnectionForm';
+import EditConnectionForm from '../components/family-connections/EditConnectionForm';
 import * as GenderUtil   from '../helpers/genderUtil';
 
 export default function ConnectionsDetailsView({ details, id }) {

@@ -13,11 +13,11 @@ import SwitchToggle from 'react-native-switch-toggle';
 import axios from 'axios';
 import { Feather } from '@expo/vector-icons';
 import { Input } from 'react-native-elements';
-import { getEngagements } from '../../store/actions/connectionData';
-import constants from '../../helpers/constants';
+import { getEngagements } from '../../../store/actions/connectionData';
+import constants from '../../../helpers/constants';
 import * as SecureStore from 'expo-secure-store';
 import { connect } from 'react-redux';
-import { postConnectionEngagements } from '../../store/actions/connectionEngagements';
+import { postConnectionEngagements } from '../../../store/actions/connectionEngagements';
 
 const AddEngagementForm = (props) => {
     const [ note, setNote ] = useState('');
