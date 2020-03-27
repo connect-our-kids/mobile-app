@@ -4,7 +4,7 @@ import { View, Button, Platform } from 'react-native';
 import { render, fireEvent } from 'react-native-testing-library';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import PickFileButton from './PickFileButton.jsx';
+import PickFileButton from './PickFileButton';
 
 if ([ 'android', 'ios' ].includes(Platform.OS)) {
 
