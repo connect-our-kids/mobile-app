@@ -69,14 +69,9 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
             <ScrollView
                 contentContainerStyle={[ styles.container, styles.scrollView ]}
             >
-                <Text style={[ styles.content, styles.text1 ]}>
-                        Add Document
+                {/* HEADER */}
                 </Text>
-                {/* Image thumbnail / Doc Icon */}
-                <View
-                    style={[ styles.content, styles.view2 ]}
-                >
-                    {media.type === 'image'
+                {/* ATTACHMENT INFO */}
                         ? <Image
                             source={{ uri: attachment.uri }}
                             style={styles.image1}
@@ -115,6 +110,7 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                     returnKeyType={'default'}
                     enablesReturnKeyAutomatically={true}
                 />
+                {/* SAVE BUTTON */}
                 <TouchableOpacity
                     style={[ styles.content, styles.saveButton ]}
                     onPress={() => {
