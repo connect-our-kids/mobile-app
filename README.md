@@ -234,6 +234,15 @@ If you have the time and patience, please consider:
 1.  Factoring out inline styles into the `<component>.style` files.
 2.  Factoring out shared and common styles into a "theme" for the app.
 
+Please document your system for organizing styles.
+
+#### State Management
+
+At the time of writing, the implementation of the store is overly complex and difficult to follow.
+Again... If you have the time and patience, please consider refactoring the store.
+
+Please document your system for organizing the store.
+
 ### Configuration
 
 -   [Babel](https://babeljs.io/docs/en/configuration)
