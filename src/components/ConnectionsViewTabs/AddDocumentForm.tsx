@@ -79,15 +79,14 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                         <Image
                             source={{ uri: attachment.uri }}
                             style={[ styles.attachmentPreview ]}
-                            resizeMode={'center'}
+                            resizeMode={'cover'}
                         />
                     ) : (
                         <AttachmentIcon
                             attachment={attachment.name}
                             size={80}
                         />
-                    )
-                    }
+                    )}
                     <View style={[ styles.attachmentInfo ]}>
                         <Text style={[ styles.displayText ]}>
                             Document Type: {media.type}
