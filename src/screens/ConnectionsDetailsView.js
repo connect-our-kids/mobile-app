@@ -11,8 +11,8 @@ import {
     Modal,
     Image,
 } from 'react-native';
-import EditConnectionForm from '../components/family-connections/EditConnectionForm';
-import * as GenderUtil   from '../helpers/genderUtil';
+import EditDetailsForm from '../components/family-connections/EditDetailsForm';
+import * as GenderUtil from '../helpers/genderUtil';
 
 export default function ConnectionsDetailsView({ details, id }) {
 
@@ -133,7 +133,6 @@ export default function ConnectionsDetailsView({ details, id }) {
         }
         else { return phoneNumber }
     };
-
 
 
     return (
@@ -263,7 +262,7 @@ export default function ConnectionsDetailsView({ details, id }) {
                 </> : null}
                 <View style={{ height: 60 }} />
             </View>
-            : <EditConnectionForm details={details} id={id} setEdit={setEdit} />
+            : <EditDetailsForm details={details} id={id} setEdit={setEdit} />
     );
 
 }

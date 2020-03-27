@@ -84,7 +84,7 @@ let schema = yup.object().shape({
         .nullable(),
 });
 
-function EditConnectionForm(props) {
+function EditDetailsForm(props) {
     const [ token, setToken ] = useState('');
     const [ formData, setFormData ] = useState(props.details);
     const [ error, setError ] = useState(false);
@@ -877,4 +877,4 @@ const mapStateToProps = (state) => {
     return {};
 };
 
-export default connect(mapStateToProps, { getDetails })(EditConnectionForm);
+export default connect(mapStateToProps, { getDetails })(EditDetailsForm);
