@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { View } from 'react-native';
 
@@ -6,9 +6,9 @@ import {
     FormValidationMessage,
 } from 'react-native-elements';
 
-import Input from './Input';
+import AddCaseInput from '../AddCaseInput';
 
-import styles from './Form.styles';
+import styles from './AddCaseForm.styles';
 
 /**********************************************************/
 
@@ -34,7 +34,8 @@ export default function AddCaseForm({ inputs, error }) {
     return (
         <View style={styles.root}>
             {inputs.map ((input) => (
-                <Input
+                <AddCaseInput
+                    key={input.name}
                     name={input.name}
                     label={input.label}
                     placeholder={input.placeholder}
