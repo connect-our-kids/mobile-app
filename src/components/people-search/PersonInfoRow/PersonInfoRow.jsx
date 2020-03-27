@@ -6,7 +6,7 @@ import renderMaskedOrResult from '../../../helpers/renderMaskedOrResult';
 import { connect } from 'react-redux';
 import { resetState, showModal } from '../../../store/actions';
 
-const PersonInfoRow = ({
+function PersonInfoRow({
     isLoggedIn,
     item,
     itemKey,
@@ -17,9 +17,11 @@ const PersonInfoRow = ({
     navigation,
     setData,
     resetState,
-}) => {
+}) {
+
     if (item[itemKey]) {
-        handlePressDirections = (data, postalCode, city) => {
+
+        let handlePressDirections = (data, postalCode, city) => {
             if (postalCode === undefined) {
                 let address = `${city}, ${data}`;
                 const type = 'address';
@@ -83,6 +85,7 @@ const PersonInfoRow = ({
                 setData(key, type);
             }
         };
+
         return (
             <Row style={styles.rowContainer}>
                 <Col size={30} style={styles.rowLabel}>
@@ -91,6 +94,7 @@ const PersonInfoRow = ({
                 <Col size={70} style={styles.colList}>
                     {item[itemKey].map((key, index) => {
                         if (itemKey === 'addresses') {
+
                             return (
                                 <TouchableOpacity
                                     style={styles.colListContainer}
@@ -111,8 +115,10 @@ const PersonInfoRow = ({
                                     </Text>
                                 </TouchableOpacity>
                             );
+
                         }
                         else if (itemKey === 'relationships') {
+
                             return (
                                 <TouchableOpacity
                                     style={styles.colListContainer}
@@ -128,8 +134,10 @@ const PersonInfoRow = ({
                                     </Text>
                                 </TouchableOpacity>
                             );
+
                         }
                         else {
+
                             return (
                                 <TouchableOpacity style={styles.colListContainer} key={index}>
                                     <Text
@@ -161,11 +169,16 @@ const PersonInfoRow = ({
                 </Col>
             </Row>
         );
+
     }
     else {
+
         return null;
+
     }
-};
+
+}
+
 const mapStateToProps = (state) => {
     const { isLoggedIn } = state.auth;
     const { modalVisible } = state.confirmationModal;

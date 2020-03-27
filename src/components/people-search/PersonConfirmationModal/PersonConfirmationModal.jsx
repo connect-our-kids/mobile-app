@@ -20,6 +20,7 @@ export default function PersonConfirmationModal({
     user,
     index,
 }) {
+
     const handlePressDirections = (data) => {
         let daddr = data;
         if (Platform.OS === 'ios') {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardItem, Grid } from 'native-base';
 import { StyleSheet } from 'react-native';
-import PersonInfoHeader from './PersonInfoHeader';
+import PersonInfoHeader from '../PersonInfoHeader';
 
-const PersonRow = ({ handlePress, item }) => {
+export default function PersonRow({ handlePress, item }) {
     return (
         <Card
             style={{
@@ -20,12 +20,10 @@ const PersonRow = ({ handlePress, item }) => {
             </CardItem>
         </Card>
     );
-};
+}
 
 const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
     },
 });
-
-export default PersonRow;

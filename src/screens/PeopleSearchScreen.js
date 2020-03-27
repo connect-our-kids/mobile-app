@@ -24,7 +24,7 @@ import {
 import { Container } from 'native-base';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
-import PersonRow from '../components/people-search/Person/PersonRow';
+import PersonRow from '../components/people-search/PersonRow';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
 import SearchForm from '../components/people-search/SearchForm';

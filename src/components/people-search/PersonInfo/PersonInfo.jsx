@@ -1,10 +1,18 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Grid } from 'native-base';
-import PersonInfoHeader from './PersonInfoHeader';
-import PersonInfoRow from './PersonInfoRow';
+import PersonInfoHeader from '../PersonInfoHeader';
+import PersonInfoRow from '../PersonInfoRow';
 
-const PersonInfo = ({ item, startRegister, isLoggedIn, showConModal, navigation, setData }) => {
+export default function PersonInfo({
+    item,
+    startRegister,
+    isLoggedIn,
+    showConModal,
+    navigation,
+    setData,
+}) {
+
     return (
         <Grid style={styles.container}>
             <PersonInfoHeader item={item} />
@@ -54,7 +62,8 @@ const PersonInfo = ({ item, startRegister, isLoggedIn, showConModal, navigation,
             />
         </Grid>
     );
-};
+
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -63,5 +72,3 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
 });
-
-export default PersonInfo;
