@@ -11,11 +11,17 @@ export default StyleSheet.create({
     },
     button: {
         flexGrow: 0,
-        backgroundColor: constants.highlightColor,
+        // backgroundColor: constants.highlightColor,
         color: constants.iconColor,
         borderRadius: 16,
         padding: 8,
         margin: 4,
+        alignItems: 'center',
         // width: '30%',
+    },
+    buttonLabel: {
+        fontSize: 12,
+        color: constants.textColor,
+        alignItems: 'center',
     },
 });

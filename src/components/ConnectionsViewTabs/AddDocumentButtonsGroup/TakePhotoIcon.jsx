@@ -10,7 +10,7 @@ export default function TakePhotoIcon({
 }) {
     return (
         <MaterialIcons
-            name={'photo-camera'}
+            name={'add-a-photo'}
             size={size}
             color={color}
         />
