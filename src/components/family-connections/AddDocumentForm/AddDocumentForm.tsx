@@ -103,7 +103,7 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                     value={title}
                     onChangeText={setTitle}
                     placeholder={'TITLE'}
-                    placeholderTextColor={constants.textColor}
+                    placeholderTextColor={constants.inputPlaceholderTextColor}
                     textAlignVertical={'center'}
                 />
                 {/* NOTES INPUT */}
@@ -114,7 +114,7 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                     multiline={true}
                     numberOfLines={4}
                     placeholder={'NOTES'}
-                    placeholderTextColor={constants.textColor}
+                    placeholderTextColor={constants.inputPlaceholderTextColor}
                     textAlignVertical={'top'}
                     returnKeyType={'default'}
                     enablesReturnKeyAutomatically={true}

@@ -33,9 +33,11 @@ export default StyleSheet.create({
     },
 
     inputText: {
-        padding: 8,
-        borderRadius: 4,
         fontSize: 16,
+        padding: 8,
+        borderColor: constants.inputBorderColor,
+        borderRadius: constants.inputBorderRadius,
+        borderWidth: constants.inputBorderWidth,
         backgroundColor: constants.inputBackgroundColor,
     },
 
@@ -50,14 +52,15 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         height: '25%',
         borderWidth: 0,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: constants.borderWidth,
+        borderBottomWidth: constants.borderWidth,
         borderColor: constants.borderColor,
     },
 
     attachmentPreview: {
         width: '40%',
         height: '100%',
+        paddingVertical: 8,
     },
 
     attachmentInfo: {
@@ -68,15 +71,15 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        borderWidth: 1,
-        borderRadius: 4,
-        borderColor: constants.highlightColor,
-        backgroundColor: constants.highlightColor,
+        borderWidth: constants.buttonBorderWidth,
+        borderRadius: constants.buttonBorderRadius,
+        borderColor: constants.buttonBorderColor,
+        backgroundColor: constants.primaryButtonBackgroundColor,
     },
 
     saveButtonText: {
         fontSize: 30,
-        color: constants.iconColor,
+        color: constants.primaryButtonTextColor,
     },
 
 });
