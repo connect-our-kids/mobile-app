@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import constants from '../../../helpers/constants';
 
 export default StyleSheet.create({
+
     buttonsGroup: {
         display: 'flex',
         justifyContent: 'space-evenly',
@@ -9,6 +10,7 @@ export default StyleSheet.create({
         padding: 4,
         width: '100%',
     },
+
     button: {
         flexGrow: 0,
         // backgroundColor: constants.highlightColor,
@@ -19,9 +21,11 @@ export default StyleSheet.create({
         alignItems: 'center',
         // width: '30%',
     },
+
     buttonLabel: {
         fontSize: 12,
         color: constants.textColor,
         alignItems: 'center',
     },
+
 });
