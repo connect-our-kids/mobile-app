@@ -25,11 +25,11 @@ import {
 } from '../store/actions';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
-import PersonInfo from '../components/Person/PersonInfo';
+import PersonInfo from '../components/people-search/Person/PersonInfo';
 import Loader from '../components/Loader';
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
-import { ConfirmationModal } from '../components/Person/ConfirmationModal';
+import { ConfirmationModal } from '../components/people-search/Person/ConfirmationModal';
 
 class SearchResultScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>

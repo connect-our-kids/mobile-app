@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Text } from 'native-base';
-import constants from '../../helpers/constants';
-import { styles } from '../../styles';
+import constants from '../../../helpers/constants';
+import { styles } from '../../../styles';
 
 const PersonInfoHeader = ({ item, listItem = false }) => {
     let allAddresses = '';

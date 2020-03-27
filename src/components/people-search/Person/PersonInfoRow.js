@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Col, Row, Text } from 'native-base';
-import { styles } from '../../styles';
-import renderMaskedOrResult from '../../helpers/renderMaskedOrResult';
+import { styles } from '../../../styles';
+import renderMaskedOrResult from '../../../helpers/renderMaskedOrResult';
 import { connect } from 'react-redux';
-import { resetState, showModal } from '../../store/actions';
+import { resetState, showModal } from '../../../store/actions';
 
 const PersonInfoRow = ({
     isLoggedIn,

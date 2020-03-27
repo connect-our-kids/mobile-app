@@ -8,8 +8,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
-import { sendEvent, createOptions } from '../../helpers/createEvent';
+import constants from '../../../helpers/constants';
+import { sendEvent, createOptions } from '../../../helpers/createEvent';
 
 export const ConfirmationModal = ({
     toggleModal,
