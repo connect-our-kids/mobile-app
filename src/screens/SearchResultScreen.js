@@ -29,7 +29,7 @@ import PersonInfo from '../components/people-search/Person/PersonInfo';
 import Loader from '../components/Loader';
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
-import { ConfirmationModal } from '../components/people-search/Person/ConfirmationModal';
+import PersonConfirmationModal from '../components/people-search/PersonConfirmationModal';
 
 class SearchResultScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>
@@ -136,7 +136,7 @@ class SearchResultScreen extends React.Component {
                       visible={this.state.modalVisible}
                       onRequestClose={this.toggleModal}
                   >
-                      <ConfirmationModal
+                      <PersonConfirmationModal
                           toggleModal={this.toggleModal}
                           type={this.state.type}
                           data={this.state.key}
