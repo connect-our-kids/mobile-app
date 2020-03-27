@@ -171,6 +171,68 @@ Before getting starting on this project, it will be enormously helpful for you t
 As projects grow and become more complex, the need for good organization and planning also grows.
 Bad and inconsistent organization make it harder to understand _what_ code does and _where_ it does it.
 
+#### Components
+
+In this project, we have attempted to organize components as follows...
+
+-   Components (`<component>`) that are imported by other components/screens should reside in their own directory.
+    Components should be named in _`PascalCase`_.
+
+-   Each component directory should have an `index` that default exports the component.
+    This is necessary so you can import components with `import <component> from '<path>/<component>'` instead of `import <component> from '<path>/<component>/<component>'`.
+
+-   Subcomponents that are only used by a "primary" component should reside in the "primary" component's directory.
+    They should not be exported by `index`.
+
+-   Component styles are located adjacent to their component `<component>.styles`.
+
+-   Component tests are located adjacent to their component `<component>.test`.
+
+-   Closely-related components may be organized into "families".
+    Families are directories named in _`kebab-case`_.
+
+In summary, see the diagram below.
+
+```directory
+components/
+
+    <component>/
+
+        index
+        <component>
+        <component>.styles
+        <component>.test
+        <sub-component>
+        <sub-component>.styles
+        <sub-component>.test
+        ...
+
+    <family>/
+
+        <component-a>/
+        <component-b>/
+        <component-c>/
+        ...
+```
+
+As a first rule-of-thumb, if a component is becoming very large or difficult to read, then you should probably break it into smaller components.
+This will help you read and understand your components better.
+As a second rule-of-thumb, if you are reusing some pattern within one or more components, then you should probably factor out that pattern into its own component.
+This will reduce the amount of code you need to write and is easier to maintain if you want to make changes across the app.
+Don't make more work for yourself.
+
+At the time of writing, you may find some component directories that include only a `todo` file.
+These are components that _would make sense to exist_, but which the most recent team did not have time to factor out.
+If you have the time and patience, please consider building and factoring out these components.
+
+#### Styles & Themes
+
+At the time of writing, there are many styles written inline throughout the app.
+These are difficult to maintain and update.
+If you have the time and patience, please consider:
+
+1.  Factoring out inline styles into the `<component>.style` files.
+2.  Factoring out shared and common styles into a "theme" for the app.
 
 ### Configuration
 
