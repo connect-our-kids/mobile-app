@@ -24,10 +24,14 @@ export default function ConnectionsLogin(props): JSX.Element {
 
     }
 
+    function signUpPressed(): void {
+        Linking.openURL('https://www.connectourkids.org/tools/family-connections#request-access');
+    }
+
     return (
         <ScreenContainer>
             <MainText>
-                Family Connections helps social workers, family recruiters, and CASA volunteers identify and engage extended family members of children in foster care.
+                Family Connections is a free tool that helps social workers, family recruiters, and CASA volunteers identify and engage extended family members of children in foster care.
             </MainText>
             <Text
                 style={styles.linkText}
@@ -35,6 +39,19 @@ export default function ConnectionsLogin(props): JSX.Element {
             >
                 Learn More About Family Connections
             </Text>
+            <MainText>
+                Your team manager can request access, and invite their team members into a secure team account.
+            </MainText>
+
+            <Text
+                style={styles.linkText}
+                onPress={signUpPressed}
+            >
+                Request Team Access
+            </Text>
+            <MainText>
+                If you have been invited to use Family Connections, you can login.
+            </MainText>
             <View style={styles.linkContainer}>
                 <View style={styles.logInBtns}>
                     <Button
@@ -48,18 +65,6 @@ export default function ConnectionsLogin(props): JSX.Element {
                     >
                         <Text style={styles.btnText}>
                             Login
-                        </Text>
-                    </Button>
-                    <Button
-                        style={styles.buttonStyle}
-                        block
-                        onPress={(): void => {
-                            props.setModalVisible(true);
-                            sendEvent(null, 'click', 'sign-up');
-                        }}
-                    >
-                        <Text style={styles.btnText}>
-                            Sign Up
                         </Text>
                     </Button>
                 </View>
