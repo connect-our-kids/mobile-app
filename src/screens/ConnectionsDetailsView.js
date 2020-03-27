@@ -12,6 +12,7 @@ import {
     Image,
 } from 'react-native';
 import EditConnectionForm from '../components/ConnectionsViewTabs/EditConnectionForm';
+import * as GenderUtil   from '../helpers/genderUtil';
 
 export default function ConnectionsDetailsView({ details, id }) {
 
@@ -132,6 +133,9 @@ export default function ConnectionsDetailsView({ details, id }) {
         }
         else { return phoneNumber }
     };
+
+
+
     return (
         edit === false
             ? <View style={styles.rootView}>
@@ -169,7 +173,7 @@ export default function ConnectionsDetailsView({ details, id }) {
                     {details.gender
                         ? <View style={styles.textView}>
                             <Text style={styles.labelText}>Gender</Text>
-                            <Text style={styles.contentText}>{details.gender}</Text>
+                            <Text style={styles.contentText}>{GenderUtil.genderEnumToString(details.gender)}</Text>
                         </View> : null}
                     {details.deceased
                         ? <View style={styles.textView}>
