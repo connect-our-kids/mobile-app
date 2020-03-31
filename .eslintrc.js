@@ -4,11 +4,22 @@ module.exports = {
       common settings
     ***********************************************************/
 
+    'parser': 'babel-eslint',
+
+    'parserOptions': {
+        'sourceType': 'module',
+        'ecmaVersion': 2018,
+        'ecmaFeatures': {
+            'jsx': true,
+        },
+    },
+
     'env': {
-        'node': true,
         'es6': true,
+        'node': true,
         'jest/globals': true,
     },
+
     'globals': {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly',
@@ -23,6 +34,7 @@ module.exports = {
         '@typescript-eslint',
         'jest',
     ],
+
     'extends': [
         'eslint:recommended',
         'plugin:import/errors',
@@ -34,15 +46,6 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest/style',
     ],
-
-    'parser': 'babel-eslint',
-    'parserOptions': {
-        'ecmaFeatures': {
-            'jsx': true,
-        },
-        'ecmaVersion': 2018,
-        'sourceType': 'module',
-    },
 
     /***********************************************************
       commmon rules
@@ -291,15 +294,16 @@ module.exports = {
 
     'overrides': [
         {
-            'files': [ '*.ts', '*.tsx' ],
+            'files': [ '*.{ts,tsx}' ],
 
             /* settings */
+
+            'parser': '@typescript-eslint/parser',
 
             'extends': [
                 'plugin:@typescript-eslint/eslint-recommended',
                 'plugin:@typescript-eslint/recommended',
             ],
-            'parser': '@typescript-eslint/parser',
 
             /* rules */
 
