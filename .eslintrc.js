@@ -16,6 +16,7 @@ module.exports = {
 
     'env': {
         'es6': true,
+        'browser': true,
     },
 
     'globals': {
@@ -348,6 +349,7 @@ module.exports = {
             'env': {
                 'es6': true,
                 'node': true,
+                'browser': false,
                 'jest/globals': true,
             },
         },
