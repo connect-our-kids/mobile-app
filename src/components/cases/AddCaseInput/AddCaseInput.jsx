@@ -8,7 +8,7 @@ import {
     FormValidationMessage,
 } from 'react-native-elements';
 
-import styles from './Input.styles';
+import styles from './AddCaseInput.styles';
 
 /**********************************************************/
 

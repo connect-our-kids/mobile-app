@@ -1,10 +1,11 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Text } from 'native-base';
-import constants from '../../helpers/constants';
-import { styles } from '../../styles';
+import constants from '../../../helpers/constants';
+import { styles } from '../../../styles';
 
-const PersonInfoHeader = ({ item, listItem = false }) => {
+export default function PersonInfoHeader({ item, listItem = false }) {
+
     let allAddresses = '';
     let secondLine = '';
     let uri = item.images
@@ -58,6 +59,5 @@ const PersonInfoHeader = ({ item, listItem = false }) => {
             </Col>
         </Row>
     );
-};
 
-export default PersonInfoHeader;
+}

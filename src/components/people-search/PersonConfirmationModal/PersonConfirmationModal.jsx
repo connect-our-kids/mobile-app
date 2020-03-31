@@ -8,10 +8,10 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Button } from 'native-base';
-import constants from '../../helpers/constants';
-import { sendEvent, createOptions } from '../../helpers/createEvent';
+import constants from '../../../helpers/constants';
+import { sendEvent, createOptions } from '../../../helpers/createEvent';
 
-export const ConfirmationModal = ({
+export default function PersonConfirmationModal({
     toggleModal,
     data,
     type,
@@ -19,7 +19,8 @@ export const ConfirmationModal = ({
     setData,
     user,
     index,
-}) => {
+}) {
+
     const handlePressDirections = (data) => {
         let daddr = data;
         if (Platform.OS === 'ios') {
@@ -297,7 +298,7 @@ export const ConfirmationModal = ({
             </View>
         </View>
     );
-};
+}
 
 const options = StyleSheet.create({
     border: {

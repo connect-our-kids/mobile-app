@@ -4,19 +4,19 @@ import { Platform, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import { render, fireEvent } from 'react-native-testing-library';
 
-import SearchForm from './Form';
+import PersonInfo from './PersonInfo';
 
 /**********************************************************/
 
-describe('SearchForm component', () => {
+describe('PersonInfo component', () => {
 
     test('renders', () => {
-        const tree = renderer.create(<SearchForm/>).toJSON();
+        const tree = renderer.create(<PersonInfo/>).toJSON();
         expect(tree.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<SearchForm/>).toJSON();
+        const tree = renderer.create(<PersonInfo/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 

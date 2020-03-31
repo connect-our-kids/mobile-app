@@ -25,11 +25,11 @@ import {
 } from '../store/actions';
 import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
-import PersonInfo from '../components/Person/PersonInfo';
+import PersonInfo from '../components/people-search/PersonInfo';
 import Loader from '../components/Loader';
 import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
-import { ConfirmationModal } from '../components/Person/ConfirmationModal';
+import PersonConfirmationModal from '../components/people-search/PersonConfirmationModal';
 
 class SearchResultScreen extends React.Component {
   static navigationOptions = ({ navigation }) =>
@@ -51,7 +51,6 @@ class SearchResultScreen extends React.Component {
           modalVisible: !this.state.modalVisible,
       });
   };
-
 
   componentDidMount() {
       const {
@@ -136,7 +135,7 @@ class SearchResultScreen extends React.Component {
                       visible={this.state.modalVisible}
                       onRequestClose={this.toggleModal}
                   >
-                      <ConfirmationModal
+                      <PersonConfirmationModal
                           toggleModal={this.toggleModal}
                           type={this.state.type}
                           data={this.state.key}
