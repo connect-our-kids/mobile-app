@@ -1,9 +1,9 @@
 import React from 'react';
-import Button from './Button.jsx';
-import PickFileIcon from './PickFileIcon.jsx';
+import Button from './Button';
+import PickFileIcon from './PickFileIcon';
 import * as DocumentPicker from 'expo-document-picker';
 import convertFileToMedia from './convertFileToMedia';
-import PickFileLabel from './PickFileLabel.jsx';
+import PickFileLabel from './PickFileLabel';
 
 /**********************************************************/
 

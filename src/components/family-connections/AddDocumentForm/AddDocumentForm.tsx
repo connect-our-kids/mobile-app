@@ -13,7 +13,7 @@ import {
 
 // import SwitchToggle from 'react-native-switch-toggle';
 
-import AttachmentIcon from '../Attachment/AttachmentIcon.jsx';
+import AttachmentIcon from '../Attachment/AttachmentIcon';
 import convertMediaToAttachment from './convertMediaToAttachment';
 
 import { connect } from 'react-redux';

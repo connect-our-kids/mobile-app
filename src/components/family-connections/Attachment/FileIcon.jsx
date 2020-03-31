@@ -1,6 +1,6 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import icons from './icons.js';
+import icons from './icons';
 
 /**********************************************************/
 

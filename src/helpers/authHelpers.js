@@ -1,5 +1,5 @@
 import { AuthSession } from 'expo';
-import getEnvVars from '../../environment.tsx';
+import getEnvVars from '../../environment';
 import jwtDecode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';

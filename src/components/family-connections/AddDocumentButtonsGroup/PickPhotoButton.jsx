@@ -3,9 +3,9 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
-import Button from './Button.jsx';
-import PickPhotoIcon from './PickPhotoIcon.jsx';
-import PickPhotoLabel from './PickPhotoLabel.jsx';
+import Button from './Button';
+import PickPhotoIcon from './PickPhotoIcon';
+import PickPhotoLabel from './PickPhotoLabel';
 import convertPhotoToMedia from './convertPhotoToMedia';
 
 /**********************************************************/

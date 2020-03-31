@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import PickFileButton from './PickFileButton.jsx';
-import PickPhotoButton from './PickPhotoButton.jsx';
-import TakePhotoButton from './TakePhotoButton.jsx';
-import styles from './styles.js';
+import PickFileButton from './PickFileButton';
+import PickPhotoButton from './PickPhotoButton';
+import TakePhotoButton from './TakePhotoButton';
+import styles from './styles';
 
 /**********************************************************/
 

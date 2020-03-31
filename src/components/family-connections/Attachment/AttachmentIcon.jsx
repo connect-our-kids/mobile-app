@@ -1,7 +1,7 @@
 import React from 'react';
-import FileIcon from './FileIcon.jsx';
-import ImageIcon from './ImageIcon.jsx';
-import icons from './icons.js';
+import FileIcon from './FileIcon';
+import ImageIcon from './ImageIcon';
+import icons from './icons';
 import mime from 'mime';
 
 /**********************************************************/

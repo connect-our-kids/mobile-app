@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { ListItem, Button, Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import AttachmentIcon from '../Attachment/AttachmentIcon.jsx';
+import AttachmentIcon from '../Attachment/AttachmentIcon';
 import moment from 'moment';
 
 const placeholderImg = require('../../../../assets/profile_placeholder.png');
