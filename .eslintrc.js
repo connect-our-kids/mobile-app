@@ -45,6 +45,23 @@ module.exports = {
         'plugin:jest/style',
     ],
 
+    'settings': {
+
+        'import/extensions': [ '.js', '.jsx', '.ts', '.tsx' ],
+
+        'import/parsers': {
+            '@typescript-eslint/parser': [ '.ts', '.tsx' ],
+        },
+
+        'import/ignore': [
+            /* these modules export dynamically, so 'import/named' falsely reports errors */
+            'react-native-elements',
+            'react-native-gesture-handler',
+            'react-native-picker-dropdown',
+        ],
+
+    },
+
     /***********************************************************
         commmon rules
     ***********************************************************/
