@@ -76,7 +76,7 @@ export function CaseViewScreen(props) {
             return 'Female';
         }
         else if (gender === 'O') {
-            return 'Not Specfied';
+            return 'Not Specified';
         }
         else {
             return null;
