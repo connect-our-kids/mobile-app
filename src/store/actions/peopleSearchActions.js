@@ -11,7 +11,7 @@ import {
     SAVING_RECENT_SEARCHES,
 } from './actionTypes';
 
-import getEnvVars from '../../../environment';
+import { getEnvVars } from '../../../environment';
 import saveToRecentSearches from '../../helpers/saveToRecentSearches';
 import { sendEvent, createOptions } from '../../helpers/createEvent';
 

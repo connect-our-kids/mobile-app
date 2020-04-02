@@ -20,7 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import Intl from 'intl';
-import getEnvVars from '../../../../environment';
+import { getEnvVars } from '../../../../environment';
 import * as yup from 'yup';
 import { Appearance } from 'react-native-appearance';
 

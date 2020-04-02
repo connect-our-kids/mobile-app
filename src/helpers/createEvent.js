@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getEnvVars from '../../environment';
+import { getEnvVars } from '../../environment';
 
 const { eventTrackingURL } = getEnvVars();
 

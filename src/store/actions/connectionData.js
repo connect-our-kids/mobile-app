@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import getEnvVars from '../../../environment';
+import { getEnvVars } from '../../../environment';
 export const GET_ENGAGEMENTS_START = 'GET_ENGAGEMENTS_START';
 export const GET_ENGAGEMENTS_SUCCESS = 'GET_ENGAGEMENTS_SUCCESS';
 export const GET_ENGAGEMENTS_FAILURE = 'GET_ENGAGEMENTS_FAILURE';

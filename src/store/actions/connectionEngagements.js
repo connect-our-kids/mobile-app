@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import getEnvVars from '../../../environment';
+import { getEnvVars } from '../../../environment';
 export const POST_CONNECTION_ENGAGEMENTS_START = 'POST_CONNECTION_ENGAGEMENTS_START';
 export const POST_CONNECTION_ENGAGEMENTS_SUCCESS = 'POST_CONNECTION_ENGAGEMENTS_SUCCESS';
 export const POST_CONNECTION_ENGAGEMENTS_FAILURE = 'POST_CONNECTION_ENGAGEMENTS_FAILURE';

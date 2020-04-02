@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import getEnvVars from '../../../environment';
+import { getEnvVars } from '../../../environment';
 export const GET_CASE_DATA_START = 'GET_CASE_DATA_START';
 export const GET_CASE_DATA_SUCCESS = 'GET_CASE_DATA_SUCCESS';
 export const GET_CASE_DATA_FAILURE = 'GET_CASE_DATA_FAILURE';

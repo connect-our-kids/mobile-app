@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import getEnvVars from '../../environment';
+import { getEnvVars } from '../../environment';
 // import { verifier, challenge } from './auth0Verifiers';
 import Constants from 'expo-constants';
 
