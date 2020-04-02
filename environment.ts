@@ -35,7 +35,6 @@ const ENV: {dev: EnvConfig; staging: EnvConfig; prod: EnvConfig} = {
         auth0RedirectScheme: 'exp://127.0.0.1:19000/--/expo-auth-session',
         peopleSearchURL: 'https://dev.search.connectourkids.org/api/search-v2',
         eventTrackingURL: 'https://dev.search.connectourkids.org/api/sendEvent',
-    // Add other keys you want here
     },
     prod: {
         auth0Domain: 'login.connectourkids.org',
@@ -45,7 +44,6 @@ const ENV: {dev: EnvConfig; staging: EnvConfig; prod: EnvConfig} = {
         familyConnectionsURL: 'https://family.connectourkids.org',
         peopleSearchURL: 'https://search.connectourkids.org/api/search-v2',
         eventTrackingURL: 'https://search.connectourkids.org/api/sendEvent',
-    // Add other keys you want here
     },
 };
 
@@ -53,7 +51,20 @@ export function getEnvVars(env = Constants.manifest.releaseChannel): EnvConfig {
     // This variable is set to true when react-native is running in Dev mode.
     // __DEV__ is true when run locally, but false when published.
 
-    if (env === 'default') { env = 'prod' }
-
-    return __DEV__ ? ENV.dev : ENV[env || 'prod'];
+    if (__DEV__ || env === 'dev') {
+        console.log('Using dev configuration');
+        return ENV.dev;
+    }
+    else if (env === 'staging') {
+        console.log('Using staging configuration');
+        return ENV.staging;
+    }
+    else if (env === 'default' || env === 'prod') {
+        console.log('Using production configuration');
+        return ENV.prod;
+    }
+    else {
+        console.warn(`Invalid environment config: '${env}'. Using production configuration`);
+        return ENV.prod;
+    }
 }
