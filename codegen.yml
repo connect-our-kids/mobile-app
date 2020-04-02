@@ -1,0 +1,7 @@
+overwrite: true
+schema: ./schema.gql
+documents: null
+generates:
+  src/generated/fragmentTypes.ts:
+    plugins:
+      - fragment-matcher
