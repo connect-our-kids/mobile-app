@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 /**********************************************************/
 
 export default StyleSheet.create({
-
     view1: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -14,5 +13,4 @@ export default StyleSheet.create({
         width: 225,
         height: 90,
     },
-
 });

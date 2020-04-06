@@ -20,13 +20,11 @@ export default function PersonConfirmationModal({
     user,
     index,
 }) {
-
     const handlePressDirections = (data) => {
         let daddr = data;
         if (Platform.OS === 'ios') {
             Linking.openURL(`http://maps.apple.com/?daddr=${daddr}`);
-        }
-        else {
+        } else {
             Linking.openURL(`http://maps.google.com/?daddr=${daddr}`);
         }
     };
@@ -36,13 +34,15 @@ export default function PersonConfirmationModal({
             {type === 'email' ? (
                 <View>
                     <View style={options.border}>
-                        <Text style={options.header}>Send Email or Search?</Text>
+                        <Text style={options.header}>
+                            Send Email or Search?
+                        </Text>
                         <TouchableOpacity onPress={() => toggleModal()}>
                             <Text style={options.button}>❌</Text>
                         </TouchableOpacity>
                     </View>
                     <Text style={options.question}>
-            Would you like to send an email, or perform a search?
+                        Would you like to send an email, or perform a search?
                     </Text>
                 </View>
             ) : null}
@@ -56,8 +56,9 @@ export default function PersonConfirmationModal({
                         </TouchableOpacity>
                     </View>
                     <Text style={options.question}>
-            Would you like to call this number, or perform a search? Calling
-            requires a device capable of dialing phone numbers.
+                        Would you like to call this number, or perform a search?
+                        Calling requires a device capable of dialing phone
+                        numbers.
                     </Text>
                 </View>
             ) : null}
@@ -71,8 +72,8 @@ export default function PersonConfirmationModal({
                         </TouchableOpacity>
                     </View>
                     <Text style={options.question}>
-            Would you like to view this address on a map, or perform a search on
-            it?
+                        Would you like to view this address on a map, or perform
+                        a search on it?
                     </Text>
                 </View>
             ) : null}
@@ -86,7 +87,7 @@ export default function PersonConfirmationModal({
                         </TouchableOpacity>
                     </View>
                     <Text style={options.question}>
-            Would you like to view this address on a map?
+                        Would you like to view this address on a map?
                     </Text>
                 </View>
             ) : null}
@@ -100,7 +101,8 @@ export default function PersonConfirmationModal({
                         </TouchableOpacity>
                     </View>
                     <Text style={options.question}>
-            Would you like to view this URL, or perform a search on it?
+                        Would you like to view this URL, or perform a search on
+                        it?
                     </Text>
                 </View>
             ) : null}
@@ -112,52 +114,68 @@ export default function PersonConfirmationModal({
                         style={options.blueButton}
                         onPress={() => {
                             if (type === 'email') {
-                                let options = createOptions(null, 'email', index);
+                                let options = createOptions(
+                                    null,
+                                    'email',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_email_send',
                                     null,
-                                    options,
+                                    options
                                 );
                                 Linking.openURL(`mailto:${data.address}`);
                                 toggleModal();
                             }
 
                             if (type === 'phone') {
-                                let options = createOptions(null, 'phone', index);
+                                let options = createOptions(
+                                    null,
+                                    'phone',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_phone_call',
                                     null,
-                                    options,
+                                    options
                                 );
                                 Linking.openURL(`tel:${data.number}`);
                                 toggleModal();
                             }
 
                             if (type === 'address') {
-                                let options = createOptions(null, 'address', index);
+                                let options = createOptions(
+                                    null,
+                                    'address',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_address_view',
                                     null,
-                                    options,
+                                    options
                                 );
                                 handlePressDirections(data);
                                 toggleModal();
                             }
 
                             if (type === 'address404') {
-                                let options = createOptions(null, 'address', index);
+                                let options = createOptions(
+                                    null,
+                                    'address',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_address_view',
                                     null,
-                                    options,
+                                    options
                                 );
                                 handlePressDirections(data);
                                 toggleModal();
@@ -170,19 +188,23 @@ export default function PersonConfirmationModal({
                                     'click',
                                     'person_url_view',
                                     null,
-                                    options,
+                                    options
                                 );
                                 Linking.openURL(`${data.url}`);
                                 toggleModal();
                             }
                             if (type === 'name') {
-                                let options = createOptions(null, 'relationship', index);
+                                let options = createOptions(
+                                    null,
+                                    'relationship',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_possible_person',
                                     null,
-                                    options,
+                                    options
                                 );
                                 Linking.openURL(`${data}`);
                                 toggleModal();
@@ -194,7 +216,9 @@ export default function PersonConfirmationModal({
                         ) : null}
 
                         {type === 'phone' ? (
-                            <Text style={{ color: 'white' }}>Call this number</Text>
+                            <Text style={{ color: 'white' }}>
+                                Call this number
+                            </Text>
                         ) : null}
 
                         {type === 'address' ? (
@@ -218,13 +242,17 @@ export default function PersonConfirmationModal({
                         onPress={() => {
                             if (type === 'email') {
                                 info = data.address;
-                                let options = createOptions(null, 'email', index);
+                                let options = createOptions(
+                                    null,
+                                    'email',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_email_search',
                                     null,
-                                    options,
+                                    options
                                 );
                                 navigation.goBack();
                                 setData(info, type);
@@ -233,13 +261,17 @@ export default function PersonConfirmationModal({
 
                             if (type === 'phone') {
                                 info = data.display;
-                                let options = createOptions(null, 'phone', index);
+                                let options = createOptions(
+                                    null,
+                                    'phone',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_phone_search',
                                     null,
-                                    options,
+                                    options
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
@@ -248,13 +280,17 @@ export default function PersonConfirmationModal({
 
                             if (type === 'address') {
                                 info = data;
-                                let options = createOptions(null, 'address', index);
+                                let options = createOptions(
+                                    null,
+                                    'address',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'person_address_search',
                                     null,
-                                    options,
+                                    options
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
@@ -269,7 +305,7 @@ export default function PersonConfirmationModal({
                                     'click',
                                     'person_url_search',
                                     null,
-                                    options,
+                                    options
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);
@@ -278,13 +314,17 @@ export default function PersonConfirmationModal({
 
                             if (type === 'name') {
                                 info = data;
-                                let options = createOptions(null, 'relationship', index);
+                                let options = createOptions(
+                                    null,
+                                    'relationship',
+                                    index
+                                );
                                 sendEvent(
                                     user.email,
                                     'click',
                                     'possible_person',
                                     null,
-                                    options,
+                                    options
                                 );
                                 navigation.navigate('PeopleSearch');
                                 setData(info, type);

@@ -18,16 +18,13 @@ function PersonInfoRow({
     setData,
     resetState,
 }) {
-
     if (item[itemKey]) {
-
         let handlePressDirections = (data, postalCode, city) => {
             if (postalCode === undefined) {
                 let address = `${city}, ${data}`;
                 const type = 'address';
                 showConModal(address, type);
-            }
-            else {
+            } else {
                 let address = `${city}, ${data} ${postalCode}`;
                 const type = 'address404';
                 showConModal(address, type);
@@ -35,7 +32,9 @@ function PersonInfoRow({
         };
 
         let handleShowConModal = (key, index) => {
-            if (!isLoggedIn) { startRegister() }
+            if (!isLoggedIn) {
+                startRegister();
+            }
 
             if (isLoggedIn && itemKey === 'emails') {
                 const type = 'email';
@@ -54,18 +53,23 @@ function PersonInfoRow({
                     let type = 'address';
                     console.log('ADDRESS', `${key.display}`);
                     showConModal(address, type, index);
-                }
-                else if (key.house === undefined) {
+                } else if (key.house === undefined) {
                     if (key.street === undefined) {
                         let data = `${key.state}`;
-                        handlePressDirections(data, key['zip_code'], key['city']);
-                    }
-                    else {
+                        handlePressDirections(
+                            data,
+                            key['zip_code'],
+                            key['city']
+                        );
+                    } else {
                         let data = `${key.street} ${key.state}`;
-                        handlePressDirections(data, key['zip_code'], key['city']);
+                        handlePressDirections(
+                            data,
+                            key['zip_code'],
+                            key['city']
+                        );
                     }
-                }
-                else {
+                } else {
                     let address = `${key.display}, ${key.zip_code}`;
                     let type = 'address';
                     console.log('ADDRESS', `${key.display}`);
@@ -94,61 +98,90 @@ function PersonInfoRow({
                 <Col size={70} style={styles.colList}>
                     {item[itemKey].map((key, index) => {
                         if (itemKey === 'addresses') {
-
-                            return (
-                                <TouchableOpacity
-                                    style={styles.colListContainer}
-                                    key={index}
-                                    onPress={() => handleShowConModal(key, index)}
-                                >
-                                    <Text style={styles.colListText}>
-                                        {key.house && renderMaskedOrResult(key.house, 'house')}{' '}
-                                        {key.street
-                      && renderMaskedOrResult(key.street, 'street') + '\n'}
-                                        {key['city'] + ', ' + key['state'] + ' '}
-                                        {renderMaskedOrResult(key.zip_code, 'zip_code')}
-                                        {key['@last_seen'] && (
-                                            <Text style={styles.colListLabelText}>
-                                                {'\n' + key['@last_seen'].split('-')[0]}
-                                            </Text>
-                                        )}
-                                    </Text>
-                                </TouchableOpacity>
-                            );
-
-                        }
-                        else if (itemKey === 'relationships') {
-
                             return (
                                 <TouchableOpacity
                                     style={styles.colListContainer}
                                     key={index}
                                     onPress={() =>
-                                        handleShowConModal(key[itemValue][0].display, index)
+                                        handleShowConModal(key, index)
+                                    }
+                                >
+                                    <Text style={styles.colListText}>
+                                        {key.house &&
+                                            renderMaskedOrResult(
+                                                key.house,
+                                                'house'
+                                            )}{' '}
+                                        {key.street &&
+                                            renderMaskedOrResult(
+                                                key.street,
+                                                'street'
+                                            ) + '\n'}
+                                        {key['city'] +
+                                            ', ' +
+                                            key['state'] +
+                                            ' '}
+                                        {renderMaskedOrResult(
+                                            key.zip_code,
+                                            'zip_code'
+                                        )}
+                                        {key['@last_seen'] && (
+                                            <Text
+                                                style={styles.colListLabelText}
+                                            >
+                                                {'\n' +
+                                                    key['@last_seen'].split(
+                                                        '-'
+                                                    )[0]}
+                                            </Text>
+                                        )}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        } else if (itemKey === 'relationships') {
+                            return (
+                                <TouchableOpacity
+                                    style={styles.colListContainer}
+                                    key={index}
+                                    onPress={() =>
+                                        handleShowConModal(
+                                            key[itemValue][0].display,
+                                            index
+                                        )
                                     }
                                 >
                                     <Text style={styles.colListText}>
                                         {isLoggedIn
-                                            ? renderMaskedOrResult(key[itemValue][0].display, itemKey)
+                                            ? renderMaskedOrResult(
+                                                  key[itemValue][0].display,
+                                                  itemKey
+                                              )
                                             : '**** ********* **'}
                                     </Text>
                                 </TouchableOpacity>
                             );
-
-                        }
-                        else {
-
+                        } else {
                             return (
-                                <TouchableOpacity style={styles.colListContainer} key={index}>
+                                <TouchableOpacity
+                                    style={styles.colListContainer}
+                                    key={index}
+                                >
                                     <Text
                                         style={styles.colListText}
-                                        onPress={() => handleShowConModal(key, index)}
+                                        onPress={() =>
+                                            handleShowConModal(key, index)
+                                        }
                                     >
-                                        {renderMaskedOrResult(key[itemValue], itemKey)}
+                                        {renderMaskedOrResult(
+                                            key[itemValue],
+                                            itemKey
+                                        )}
                                     </Text>
 
                                     {key['@type'] && (
-                                        <Text style={styles.colListLabelText}>{key['@type']}</Text>
+                                        <Text style={styles.colListLabelText}>
+                                            {key['@type']}
+                                        </Text>
                                     )}
 
                                     {key['@last_seen'] ? (
@@ -157,8 +190,14 @@ function PersonInfoRow({
                                         </Text>
                                     ) : (
                                         key['@valid_since'] && (
-                                            <Text style={styles.colListLabelText}>
-                                                {key['@valid_since'].split('-')[0]}
+                                            <Text
+                                                style={styles.colListLabelText}
+                                            >
+                                                {
+                                                    key['@valid_since'].split(
+                                                        '-'
+                                                    )[0]
+                                                }
                                             </Text>
                                         )
                                     )}
@@ -169,14 +208,9 @@ function PersonInfoRow({
                 </Col>
             </Row>
         );
-
-    }
-    else {
-
+    } else {
         return null;
-
     }
-
 }
 
 const mapStateToProps = (state) => {
@@ -185,7 +219,6 @@ const mapStateToProps = (state) => {
     return { isLoggedIn, modalVisible };
 };
 
-export default connect(
-    mapStateToProps,
-    { resetState, showModal },
-)(PersonInfoRow);
+export default connect(mapStateToProps, { resetState, showModal })(
+    PersonInfoRow
+);

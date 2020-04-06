@@ -1,16 +1,31 @@
 {
-    "compilerOptions": {
-       "target": "es5",
-       "module": "system",
-       "declaration": false,
-       "noImplicitAny": false,
-       "removeComments": true,
-       "noLib": false,
-       "jsx": "react",
-       "lib": ["es6"],
-       "allowSyntheticDefaultImports": true,
-       "esModuleInterop": true,
-       "isolatedModules": true,
-       "moduleResolution": "node"
-    }
- }
+   "compilerOptions": {
+      "target": "es5",
+      "module": "system",
+      "outDir": "build",
+      "declaration": false,
+      "noImplicitAny": false,
+      "removeComments": true,
+      "noLib": false,
+      "jsx": "react",
+      "lib": [
+         "es6"
+      ],
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "isolatedModules": true,
+      "moduleResolution": "node",
+      "typeRoots": [
+         "./typings",
+         "./node_modules/@types"
+      ]
+   },
+   "include": [
+      "src/**/*"
+   ],
+   "exclude": [
+      "typings",
+      "node_modules",
+      "**/*.spec.ts"
+   ]
+}

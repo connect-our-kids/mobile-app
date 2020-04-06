@@ -9,15 +9,13 @@ import VideoAgreeModal from './VideoAgreeModal';
 /**********************************************************/
 
 describe('VideoAgreeModal component', () => {
-
     test('renders', () => {
-        const tree = renderer.create(<VideoAgreeModal/>).toJSON();
+        const tree = renderer.create(<VideoAgreeModal />).toJSON();
         expect(tree.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<VideoAgreeModal/>).toJSON();
+        const tree = renderer.create(<VideoAgreeModal />).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

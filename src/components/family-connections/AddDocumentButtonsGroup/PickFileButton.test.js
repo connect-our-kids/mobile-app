@@ -6,30 +6,22 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import PickFileButton from './PickFileButton';
 
-if ([ 'android', 'ios' ].includes(Platform.OS)) {
-
+if (['android', 'ios'].includes(Platform.OS)) {
     /* current tests */
     describe('test PickFileButton component', () => {
-
         it('renders correctly', () => {
-            const tree = renderer
-                .create(<PickFileButton/>)
-                .toJSON();
+            const tree = renderer.create(<PickFileButton />).toJSON();
             expect(tree).toMatchSnapshot();
         });
 
         it('has children', () => {
-            const tree = renderer
-                .create(<PickFileButton/>).toJSON();
+            const tree = renderer.create(<PickFileButton />).toJSON();
             expect(tree.children).toHaveLength(1);
         });
-
     });
 
     describe('onPress fires', () => {
-
         it('checks if fired', () => {
-
             const onPressMock = jest.fn();
 
             const { getByTestId } = render(
@@ -38,18 +30,13 @@ if ([ 'android', 'ios' ].includes(Platform.OS)) {
                         testID={'pick-file-button'}
                         onPress={onPressMock}
                     />
-                </View>,
+                </View>
             );
 
             fireEvent.press(getByTestId('pick-file-button'));
             expect(onPressMock).toHaveBeenCalled();
         });
-
     });
-
-}
-else {
-
+} else {
     /* nothing to see here... */
-
 }

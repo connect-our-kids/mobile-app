@@ -5,7 +5,6 @@ import { WebView } from 'react-native-webview';
 import styles from './Video.styles';
 
 export default function Video({ uri }) {
-
     return (
         <View style={styles.VideoContainer}>
             <WebView
@@ -13,9 +12,8 @@ export default function Video({ uri }) {
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
                 source={{ uri }}
-                allowsInlineMediaPlayback='true'
+                allowsInlineMediaPlayback="true"
             />
         </View>
     );
-
 }

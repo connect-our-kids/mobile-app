@@ -10,9 +10,9 @@ import styles from './styles';
 export default function AddDocumentButtonsGroup({ afterAccept }) {
     return (
         <View style={styles.buttonsGroup}>
-            <PickFileButton afterAccept={afterAccept}/>
-            <PickPhotoButton afterAccept={afterAccept}/>
-            <TakePhotoButton afterAccept={afterAccept}/>
+            <PickFileButton afterAccept={afterAccept} />
+            <PickPhotoButton afterAccept={afterAccept} />
+            <TakePhotoButton afterAccept={afterAccept} />
         </View>
     );
 }

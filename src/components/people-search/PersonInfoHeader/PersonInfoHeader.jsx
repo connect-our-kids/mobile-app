@@ -5,22 +5,17 @@ import constants from '../../../helpers/constants';
 import { styles } from '../../../styles';
 
 export default function PersonInfoHeader({ item, listItem = false }) {
-
     let allAddresses = '';
     let secondLine = '';
     let uri = item.images
-        ? `https://dev.search.connectourkids.org/api/thumbnail?tokens=${
-            item.images[0].thumbnail_token
-        }`
+        ? `https://dev.search.connectourkids.org/api/thumbnail?tokens=${item.images[0].thumbnail_token}`
         : constants.defaultImageUri;
 
     if (item.dob && item.gender) {
         secondLine += `${item.dob.display}, ${item.gender.content}`;
-    }
-    else if (item.gender) {
+    } else if (item.gender) {
         secondLine += `${item.gender.content}`;
-    }
-    else if (item.dob) {
+    } else if (item.dob) {
         secondLine += `${item.dob.display}`;
     }
 
@@ -31,7 +26,7 @@ export default function PersonInfoHeader({ item, listItem = false }) {
     }
 
     return (
-        <Row style={[ styles.rowContainer, { marginBottom: listItem ? 0 : 20 } ]}>
+        <Row style={[styles.rowContainer, { marginBottom: listItem ? 0 : 20 }]}>
             <Col size={30} style={styles.imageContainer}>
                 <Image
                     style={styles.rowImage}
@@ -45,7 +40,12 @@ export default function PersonInfoHeader({ item, listItem = false }) {
                     {item.names && item.names[0].display}
                 </Text>
                 {!!secondLine.length && (
-                    <Text style={[ styles.cardInformationText, { marginBottom: 5 } ]}>
+                    <Text
+                        style={[
+                            styles.cardInformationText,
+                            { marginBottom: 5 },
+                        ]}
+                    >
                         {secondLine}
                     </Text>
                 )}
@@ -59,5 +59,4 @@ export default function PersonInfoHeader({ item, listItem = false }) {
             </Col>
         </Row>
     );
-
 }

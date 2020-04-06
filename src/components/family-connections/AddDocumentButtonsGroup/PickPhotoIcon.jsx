@@ -8,11 +8,5 @@ export default function PickPhotoIcon({
     color = icons.color,
     size = icons.size,
 }) {
-    return (
-        <MaterialIcons
-            name={'add-to-photos'}
-            size={size}
-            color={color}
-        />
-    );
+    return <MaterialIcons name={'add-to-photos'} size={size} color={color} />;
 }

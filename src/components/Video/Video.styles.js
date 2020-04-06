@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 /**********************************************************/
 
 export default StyleSheet.create({
-
     VideoContainer: {
         justifyContent: 'center',
         width: '100%',
@@ -13,6 +12,5 @@ export default StyleSheet.create({
 
     WebViewContainer: {
         marginTop: Platform.OS == 'ios' ? 20 : 0,
-    }
-
+    },
 });

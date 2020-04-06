@@ -3,7 +3,6 @@ import parseBaseNameFromUri from './parseBaseNameFromUri';
 /**********************************************************/
 
 export default function convertPhotoToMedia(photo) {
-
     /*
     typeof photo = {
         cancelled  : boolean,
@@ -16,10 +15,10 @@ export default function convertPhotoToMedia(photo) {
     }
     */
 
-    console.debug ('--- convertPhotoToMedia(photo) => (media) ---');
-    console.debug ('photo:');
-    console.debug (photo);
-    console.debug ('--------');
+    console.debug('--- convertPhotoToMedia(photo) => (media) ---');
+    console.debug('photo:');
+    console.debug(photo);
+    console.debug('--------');
 
     const media = {
         type: photo.type,
@@ -29,11 +28,10 @@ export default function convertPhotoToMedia(photo) {
         height: photo.height,
     };
 
-    console.debug ('--- convertPhotoToMedia(photo) => (media) ---');
-    console.debug ('media:');
-    console.debug (media);
-    console.debug ('--------');
+    console.debug('--- convertPhotoToMedia(photo) => (media) ---');
+    console.debug('media:');
+    console.debug(media);
+    console.debug('--------');
 
     return media;
-
 }

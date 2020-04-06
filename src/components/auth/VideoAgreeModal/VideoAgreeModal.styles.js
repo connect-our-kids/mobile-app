@@ -1,15 +1,10 @@
-import {
-    StyleSheet,
-    Dimensions,
-    Platform,
-} from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 import constants from '../../../helpers/constants';
 
 /**********************************************************/
 
 export default StyleSheet.create({
-
     videoWrapper: {
         height: 300,
         margin: 30,
@@ -76,8 +71,7 @@ export default StyleSheet.create({
     },
 
     WebViewContainer: {
-        marginTop: (Platform.OS === 'ios') ? 20 : 0,
+        marginTop: Platform.OS === 'ios' ? 20 : 0,
         marginBottom: 30,
     },
-
 });

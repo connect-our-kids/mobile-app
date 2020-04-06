@@ -9,15 +9,13 @@ import SocialWorkerModal from './SocialWorkerModal';
 /**********************************************************/
 
 describe('SocialWorkerModal component', () => {
-
     test('renders', () => {
-        const tree = renderer.create(<SocialWorkerModal/>).toJSON();
+        const tree = renderer.create(<SocialWorkerModal />).toJSON();
         expect(tree.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<SocialWorkerModal/>).toJSON();
+        const tree = renderer.create(<SocialWorkerModal />).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

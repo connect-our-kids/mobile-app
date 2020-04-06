@@ -119,3 +119,4 @@ dist
 
 # Apollo Graphql generated files
 src/generated/
+build

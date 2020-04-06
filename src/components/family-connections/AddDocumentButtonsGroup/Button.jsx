@@ -6,10 +6,7 @@ import styles from './styles';
 
 export default function Button({ onPress, children }) {
     return (
-        <TouchableOpacity
-            style={styles.button}
-            onPress={onPress}
-        >
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             {children}
         </TouchableOpacity>
     );

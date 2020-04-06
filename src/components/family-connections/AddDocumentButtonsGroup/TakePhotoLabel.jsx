@@ -3,7 +3,5 @@ import { Text } from 'react-native';
 import styles from './styles';
 
 export default function TakePhotoLabel() {
-    return (
-        <Text style={styles.buttonLabel}>TAKE PHOTO</Text>
-    );
+    return <Text style={styles.buttonLabel}>TAKE PHOTO</Text>;
 }

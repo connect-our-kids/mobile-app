@@ -9,15 +9,13 @@ import HeaderTitle from './HeaderTitle';
 /**********************************************************/
 
 describe('HeaderTitle component', () => {
-
     test('renders', () => {
-        const tree = renderer.create(<HeaderTitle/>).toJSON();
+        const tree = renderer.create(<HeaderTitle />).toJSON();
         expect(tree.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<HeaderTitle/>).toJSON();
+        const tree = renderer.create(<HeaderTitle />).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

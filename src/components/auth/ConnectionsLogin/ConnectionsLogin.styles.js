@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 /**********************************************************/
 
 export default StyleSheet.create({
-
     logInBtns: {
         flexDirection: 'row',
         flex: 1,
@@ -14,7 +13,7 @@ export default StyleSheet.create({
         color: '#0279AC',
         marginTop: 20,
         textAlign: 'center',
-        marginBottom: 20
+        marginBottom: 20,
     },
 
     linkContainer: {
@@ -35,5 +34,4 @@ export default StyleSheet.create({
     btnText: {
         color: '#fff',
     },
-
 });

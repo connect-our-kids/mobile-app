@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import constants from '../../../helpers/constants';
 
 export default StyleSheet.create({
-
     buttonsGroup: {
         display: 'flex',
         justifyContent: 'space-evenly',
@@ -27,5 +26,4 @@ export default StyleSheet.create({
         color: constants.highlightColor,
         alignItems: 'center',
     },
-
 });

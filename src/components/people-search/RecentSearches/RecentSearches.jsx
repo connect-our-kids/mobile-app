@@ -18,27 +18,24 @@ import {
 import constants from '../../../helpers/constants';
 
 class RecentSearches extends Component {
-
     async componentDidMount() {
         try {
             // const storageSearches = await AsyncStorage.getItem('recentSearches');
             let cache = await AsyncStorage.getItem('recentSearchesCache');
             if (cache !== null) {
                 cache = JSON.parse(cache);
-                let searches = [ ...cache.cacheOrder ];
+                let searches = [...cache.cacheOrder];
                 this.props.setRecentSearches(searches);
-            }
-            else {
+            } else {
                 this.props.setRecentSearches([]);
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.log('Recent Searches Error: ', error);
         }
     }
 
     async componentDidUpdate(prevProps) {
-    // set boolean
+        // set boolean
         if (this.props.isSavingRecentSearches) {
             // console.log('CDM INSIDE');
             let cache = await AsyncStorage.getItem('recentSearchesCache');
@@ -54,19 +51,17 @@ class RecentSearches extends Component {
         try {
             await AsyncStorage.removeItem('recentSearchesCache');
             this.props.setRecentSearches([]);
-        }
-        catch (error) {
+        } catch (error) {
             console.log('Clear Recent Searches Error: ', error);
         }
     };
 
     displayRecentSearch = (data) => {
         if (!data.length) {
-        // If a person
+            // If a person
             this.props.populatePerson(data);
             this.props.navigation.navigate('SearchResult');
-        }
-        else {
+        } else {
             this.props.populateSearchResults(data);
         }
     };
@@ -80,23 +75,35 @@ class RecentSearches extends Component {
                     <View>
                         {recentSearches.length ? (
                             <View>
-                                <Text style={styles.recentSearchesText}>Recent Searches</Text>
-                                {recentSearches.map(({ data, searchType, searchInput }, i) => (
-                                    <TouchableOpacity
-                                        key={i}
-                                        style={styles.recentSearchButton}
-                                        onPress={() => this.displayRecentSearch(data)}
-                                    >
-                                        <Text style={styles.recentSearchButtonText}>
-                                            {searchInput}
-                                        </Text>
-                                    </TouchableOpacity>
-                                ))}
+                                <Text style={styles.recentSearchesText}>
+                                    Recent Searches
+                                </Text>
+                                {recentSearches.map(
+                                    ({ data, searchType, searchInput }, i) => (
+                                        <TouchableOpacity
+                                            key={i}
+                                            style={styles.recentSearchButton}
+                                            onPress={() =>
+                                                this.displayRecentSearch(data)
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.recentSearchButtonText
+                                                }
+                                            >
+                                                {searchInput}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )
+                                )}
                                 <Button
                                     style={styles.clearButton}
                                     onPress={this.clearRecentSearches}
                                 >
-                                    <Text style={styles.clearButtonText}>Clear</Text>
+                                    <Text style={styles.clearButtonText}>
+                                        Clear
+                                    </Text>
                                 </Button>
                             </View>
                         ) : null}
@@ -107,11 +114,9 @@ class RecentSearches extends Component {
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
-
     recentSearchesText: {
         fontFamily: `${constants.lotoFamily}`,
     },
@@ -145,11 +150,9 @@ const styles = StyleSheet.create({
         color: '#0279AC',
         fontFamily: `${constants.fontFamily}`,
     },
-
 });
 
 const mapStateToProps = (state) => {
-
     const {
         isSavingRecentSearches,
         recentSearches,
@@ -161,15 +164,11 @@ const mapStateToProps = (state) => {
         recentSearches,
         recentSearchesLoaded,
     };
-
 };
 
-export default connect(
-    mapStateToProps,
-    {
-        populatePerson,
-        populateSearchResults,
-        setRecentSearches,
-        stopSavingRecentSearches,
-    },
-)(RecentSearches);
+export default connect(mapStateToProps, {
+    populatePerson,
+    populateSearchResults,
+    setRecentSearches,
+    stopSavingRecentSearches,
+})(RecentSearches);
