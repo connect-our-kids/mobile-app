@@ -6,7 +6,8 @@ import * as SecureStore from 'expo-secure-store';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { getEnvVars } from '../../../environment';
-
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 const { familyConnectionsURL } = getEnvVars();
 
@@ -29,4 +30,6 @@ const authLink: ApolloLink = setContext(async (_, { headers }) => {
 export const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
+    name: Platform.OS,
+    version: `${Constants.nativeBuildVersion}`,
 });
