@@ -3,10 +3,10 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
-import Button from './Button.jsx';
-import TakePhotoIcon from './TakePhotoIcon.jsx';
+import Button from './Button';
+import TakePhotoIcon from './TakePhotoIcon';
 import convertPhotoToMedia from './convertPhotoToMedia';
-import TakePhotoLabel from './TakePhotoLabel.jsx';
+import TakePhotoLabel from './TakePhotoLabel';
 
 /**********************************************************/
 

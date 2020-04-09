@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import styles from './styles.js';
+import styles from './styles';
 
 /**********************************************************/
 

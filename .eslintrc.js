@@ -1,14 +1,24 @@
 module.exports = {
 
     /***********************************************************
-      common settings
+        common settings
     ***********************************************************/
 
-    'env': {
-        'node': true,
-        'es6': true,
-        'jest/globals': true,
+    'parser': 'babel-eslint',
+
+    'parserOptions': {
+        'sourceType': 'module',
+        'ecmaVersion': 2018,
+        'ecmaFeatures': {
+            'jsx': true,
+        },
     },
+
+    'env': {
+        'es6': true,
+        'browser': true,
+    },
+
     'globals': {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly',
@@ -23,10 +33,12 @@ module.exports = {
         '@typescript-eslint',
         'jest',
     ],
+
     'extends': [
         'eslint:recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
+        'plugin:import/typescript',
         /* 'plugin:jsx-a11y/recommended', */
         'plugin:react/recommended',
         /* 'plugin:react-native-a11y/recommended', */
@@ -34,23 +46,31 @@ module.exports = {
         'plugin:jest/style',
     ],
 
-    'parser': 'babel-eslint',
-    'parserOptions': {
-        'ecmaFeatures': {
-            'jsx': true,
+    'settings': {
+
+        'import/extensions': [ '.js', '.jsx', '.ts', '.tsx' ],
+
+        'import/parsers': {
+            '@typescript-eslint/parser': [ '.ts', '.tsx' ],
         },
-        'ecmaVersion': 2018,
-        'sourceType': 'module',
+
+        'import/ignore': [
+            /* these modules export dynamically, so 'import/named' falsely reports errors */
+            'react-native-elements',
+            'react-native-gesture-handler',
+            'react-native-picker-dropdown',
+        ],
+
     },
 
     /***********************************************************
-      commmon rules
+        commmon rules
     ***********************************************************/
 
     'rules': {
 
         /***************************************
-         style
+            style
         ***************************************/
 
         /* general spacing */
@@ -249,7 +269,7 @@ module.exports = {
         ],
 
         /***************************************
-         react
+            react
         ***************************************/
 
         'react/display-name': [
@@ -263,7 +283,7 @@ module.exports = {
         ],
 
         /***************************************
-         react-native
+            react-native
         ***************************************/
 
         'react-native/no-unused-styles': [
@@ -285,20 +305,25 @@ module.exports = {
     },
 
     /***********************************************************
-      overrides
+        overrides
     ***********************************************************/
 
     'overrides': [
+
+        /***************************************
+            TypeScript
+        ***************************************/
         {
-            'files': [ '*.ts', '*.tsx' ],
+            'files': [ '*.{ts,tsx}' ],
 
             /* settings */
+
+            'parser': '@typescript-eslint/parser',
 
             'extends': [
                 'plugin:@typescript-eslint/eslint-recommended',
                 'plugin:@typescript-eslint/recommended',
             ],
-            'parser': '@typescript-eslint/parser',
 
             /* rules */
 
@@ -310,7 +335,23 @@ module.exports = {
                     'warn',
                 ],
 
-            }
+            },
+        },
+
+        /***************************************
+            testing
+        ***************************************/
+        {
+            'files': [ '*[-.]{test,spec}.{js,jsx,ts,tsx}' ],
+
+            /* settings */
+
+            'env': {
+                'es6': true,
+                'node': true,
+                'browser': false,
+                'jest/globals': true,
+            },
         },
     ],
 

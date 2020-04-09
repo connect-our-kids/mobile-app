@@ -3,7 +3,7 @@ import {
     GET_CASE_CONNECTIONS_SUCCESS,
     GET_CASE_CONNECTIONS_FAILURE,
     CLEAR_CASE_CONNECTIONS,
-} from '../actions/caseConnections.js';
+} from '../actions/caseConnections';
 
 const initialState = {
     caseConnections: [],

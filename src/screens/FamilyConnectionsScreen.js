@@ -44,7 +44,7 @@ import {
 import constants from '../helpers/constants';
 
 // local component imports
-import CaseViewScreen from './CaseViewScreen.js';
+import CaseViewScreen from './CaseViewScreen';
 import ConnectionsLogin from '../components/auth/ConnectionsLogin';
 import Loader from '../components/Loader';
 
