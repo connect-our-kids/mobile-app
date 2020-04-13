@@ -16,15 +16,15 @@
       "isolatedModules": true,
       "moduleResolution": "node",
       "typeRoots": [
-         "./typings",
+         "./typings/import-png.d.ts",
          "./node_modules/@types"
       ]
    },
    "include": [
-      "src/**/*"
+      "src/**/*",
+      "typings/**/*",
    ],
    "exclude": [
-      "typings",
       "node_modules",
       "**/*.spec.ts"
    ]

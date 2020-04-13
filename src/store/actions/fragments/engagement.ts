@@ -1,8 +1,4 @@
-import { DataProxy } from 'apollo-cache';
 import gql from 'graphql-tag';
-import { CreateEngagementDocument } from '../../../generated/globalTypes';
-import { engagementsVariables } from '../../../generated/engagements';
-import { EngagementDetail } from '../../../generated/EngagementDetail';
 
 const COMMON_FRAGMENT = gql`
     fragment EngagementCommonDetail on EngagementCommon {
@@ -128,44 +124,38 @@ export const CREATE_DOC_ENGAGEMENT_MUTATION = gql`
     ${ENGAGEMENT_DETAIL_FRAGMENT}
 `;
 
-export function deleteEngagementCache(
-    caseId: number,
-    engagement: EngagementDetail,
-    cache: DataProxy
-) {
-    const engagements = cache.readQuery<engagements, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
-        variables: { caseId },
-    });
-    if (!engagements) {
-        return;
+export const CREATE_NOTE_ENGAGEMENT_MUTATION = gql`
+    mutation createEngagementNoteMutation(
+        $caseId: Int!
+        $value: CreateEngagementNote!
+    ) {
+        createEngagementNote(caseId: $caseId, value: $value) {
+            ...EngagementDetail
+        }
     }
-    cache.writeQuery<engagements, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
-        variables: { caseId },
-        data: {
-            engagements: engagements.engagements.filter(
-                (e) => e.id !== engagement.id
-            ),
-        },
-    });
-}
+    ${ENGAGEMENT_DETAIL_FRAGMENT}
+`;
 
-export function addEngagementCache(
-    caseId: number,
-    engagement: EngagementDetail,
-    cache: DataProxy
-) {
-    const engagements = cache.readQuery<engagements, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
-        variables: { caseId },
-    });
-    if (!engagements) {
-        return;
+export const CREATE_CALL_ENGAGEMENT_MUTATION = gql`
+    mutation createEngagementCallMutation(
+        $caseId: Int!
+        $value: CreateEngagementCall!
+    ) {
+        createEngagementCall(caseId: $caseId, value: $value) {
+            ...EngagementDetail
+        }
     }
-    cache.writeQuery<engagements, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
-        variables: { caseId },
-        data: { engagements: [engagement, ...engagements.engagements] },
-    });
-}
+    ${ENGAGEMENT_DETAIL_FRAGMENT}
+`;
+
+export const CREATE_EMAIL_ENGAGEMENT_MUTATION = gql`
+    mutation createEngagementEmailMutation(
+        $caseId: Int!
+        $value: CreateEngagementEmail!
+    ) {
+        createEngagementEmail(caseId: $caseId, value: $value) {
+            ...EngagementDetail
+        }
+    }
+    ${ENGAGEMENT_DETAIL_FRAGMENT}
+`;

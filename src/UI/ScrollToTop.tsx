@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Icon } from 'react-native-elements';
+import React from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import constants from '../helpers/constants';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import chevron from '../../assets/chevron.png';
 
@@ -32,14 +30,5 @@ const ScrollToTop = (props) => {
         </TouchableOpacity>
     );
 };
-
-const styles = StyleSheet.create({
-    scrollButton: {
-        position: 'absolute',
-        zIndex: 1000,
-        bottom: 5,
-        right: 46,
-    },
-});
 
 export default ScrollToTop;

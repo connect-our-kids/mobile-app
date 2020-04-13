@@ -20,7 +20,7 @@ export const ADDRESS_DETAIL_FRAGMENT = gql`
     }
 `;
 
-export function emptyAddressDetail(): AddressDetail {
+export function emptyAddressDetail(): Partial<AddressDetail> {
     return {
         __typename: 'PersonAddress',
         isVerified: false,
@@ -45,8 +45,8 @@ export function toAddressInput(address: AddressDetail): AddressInput {
 
 export function translateAddress(
     place: google.maps.GeocoderResult | google.maps.places.PlaceResult
-): AddressDetail {
-    let address: AddressDetail = {
+): Partial<AddressDetail> {
+    let address: Partial<AddressDetail> = {
         ...emptyAddressDetail(),
         raw: place.formatted_address || null,
     };

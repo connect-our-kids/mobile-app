@@ -13,6 +13,12 @@ import {
 import authHelpers from '../helpers/authHelpers';
 import headerConfig from '../helpers/headerConfig';
 
+const styles = StyleSheet.create({
+    registerContainer: {
+        flex: 1,
+    },
+});
+
 const AuthenticationView = (props) => {
     useEffect(() => {
         props.authChecker();
@@ -45,12 +51,6 @@ const AuthenticationView = (props) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    registerContainer: {
-        flex: 1,
-    },
-});
 
 const mapStateToProps = (state) => {
     const { modalVisible, videoAgree, videoVisible } = state.auth;

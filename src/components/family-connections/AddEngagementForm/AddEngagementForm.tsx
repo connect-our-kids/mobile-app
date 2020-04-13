@@ -1,85 +1,145 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-    Button,
     Text,
     ScrollView,
     View,
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    DatePickerIOS,
 } from 'react-native';
-import SwitchToggle from 'react-native-switch-toggle';
-import axios from 'axios';
-import { Feather } from '@expo/vector-icons';
-import { Input } from 'react-native-elements';
-import { getEngagements } from '../../../store/actions/connectionData';
 import constants from '../../../helpers/constants';
-import * as SecureStore from 'expo-secure-store';
 import { connect } from 'react-redux';
-import { postConnectionEngagements } from '../../../store/actions/connectionEngagements';
+import { EngagementTypes } from '../EngagementTypes';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { RootState } from '../../../store/reducers';
+import {
+    createNoteEngagement,
+    createCallEngagement,
+    createEmailEngagement,
+} from '../../../store/actions';
 
-const AddEngagementForm = (props) => {
+const styles = StyleSheet.create({
+    formContainer: {
+        width: '95%',
+        // padding: 4,
+        marginTop: 10,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    saveButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 96,
+        height: 36,
+        borderRadius: 50,
+        borderWidth: 1,
+        marginTop: 20,
+        backgroundColor: constants.highlightColor,
+        borderColor: constants.highlightColor,
+    },
+    buttonText: {
+        fontSize: 14,
+        textTransform: 'uppercase',
+        color: '#fff',
+    },
+});
+
+const getTitle = (dataType: EngagementTypes): string => {
+    switch (dataType) {
+        case 'EngagementCall':
+            return 'LOG CALL';
+        case 'EngagementEmail':
+            return 'LOG Email';
+        case 'EngagementNote':
+            return 'ADD NOTE';
+        case 'EngagementReminder':
+            return 'SET REMINDER';
+        default:
+            // EngagementDocument unhandled on purpose
+            throw new Error(`Unsupported engagement type: ${dataType}`);
+    }
+};
+
+const dataTypePlaceholder = (dataType: EngagementTypes): string => {
+    if (dataType === 'EngagementEmail') {
+        return 'ADD EMAIL';
+    } else {
+        return 'ADD NOTE';
+    }
+};
+
+const noteSizeHelper = (dataType: EngagementTypes): number => {
+    if (dataType === 'EngagementReminder') {
+        return 100;
+    } else {
+        return 165;
+    }
+};
+
+interface StateProps {
+    caseId: number;
+    relationshipId: number;
+    engagementType: EngagementTypes;
+}
+
+interface DispatchProps {
+    createNoteEngagement: typeof createNoteEngagement;
+    createCallEngagement: typeof createCallEngagement;
+    createEmailEngagement: typeof createEmailEngagement;
+}
+
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+export interface AddEngagementFormParams {
+    relationshipId?: number;
+    caseId: number;
+    engagementType: EngagementTypes;
+}
+
+const AddEngagementForm = (props: Props) => {
     const [note, setNote] = useState('');
     const [subject, setSubject] = useState(null);
-    const [isPublic, setIsPublic] = useState(true);
-    const [person, setPerson] = useState(null);
-    const [dueDate, setDueDate] = useState(new Date());
+    const [isPublic] = useState(true);
 
-    const [dataType, setDataType] = useState('');
-
-    const dataTypeTitle = (dataType: string): string => {
-        if (dataType === 'NOTE') {
-            return 'ADD NOTE';
-        } else if (dataType === 'REMINDER') {
-            return 'SET REMINDER';
-        } else if (dataType === 'CALL') {
-            return 'LOG CALL';
-        } else if (dataType === 'EMAIL') {
-            return 'LOG EMAIL';
-        } else {
-            return 'LOG ENGAGEMENT';
+    const createEngagement = () => {
+        switch (props.engagementType) {
+            case 'EngagementCall':
+                props.createCallEngagement(props.caseId, {
+                    relationshipId: props.relationshipId,
+                    isPublic,
+                    note,
+                });
+                break;
+            case 'EngagementEmail':
+                props.createEmailEngagement(props.caseId, {
+                    relationshipId: props.relationshipId,
+                    isPublic,
+                    body: note,
+                    subject,
+                });
+                break;
+            case 'EngagementNote':
+                props.createNoteEngagement(props.caseId, {
+                    relationshipId: props.relationshipId,
+                    isPublic,
+                    note,
+                });
+                break;
+            default:
+                // EngagementDocument unhandled on purpose
+                throw new Error(
+                    `Unsupported engagement type: ${props.engagementType}`
+                );
         }
     };
-
-    const dataTypePlaceholder = (dataType: string): string => {
-        if (dataType === 'EMAIL') {
-            return 'ADD EMAIL';
-        } else {
-            return 'ADD NOTE';
-        }
-    };
-
-    const noteSizeHelper = (dataType: string): number => {
-        if (dataType === 'REMINDER') {
-            return 100;
-        } else {
-            return 165;
-        }
-    };
-
-    // set type of engagement
-    useEffect(() => {
-        setPerson(props.navigation.getParam('id'));
-
-        const dataTypeHelper = (type: string): string => {
-            if (type === 'N') {
-                return 'NOTE';
-            } else if (type === 'R') {
-                return 'REMINDER';
-            } else if (type === 'C') {
-                return 'CALL';
-            } else if (type === 'D') {
-                return 'DOCUMENT';
-            } else if (type === 'E') {
-                return 'EMAIL';
-            } else {
-                return 'OTHER';
-            }
-        };
-
-        setDataType(dataTypeHelper(props.navigation.getParam('data_type')));
-    }, [false]);
 
     return (
         <ScrollView
@@ -101,20 +161,10 @@ const AddEngagementForm = (props) => {
                     }}
                 >
                     <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
-                        {dataTypeTitle(dataType)}
+                        {getTitle(props.engagementType)}
                     </Text>
                 </View>
-
-                {dataType === 'REMINDER' ? (
-                    <View style={{ width: '100%' }}>
-                        <DatePickerIOS
-                            mode="date"
-                            date={dueDate}
-                            onDateChange={(e) => setDueDate(e)}
-                        />
-                    </View>
-                ) : null}
-                {dataType === 'EMAIL' ? (
+                {props.engagementType === 'EngagementEmail' ? (
                     <View
                         style={{
                             minHeight: 25,
@@ -132,14 +182,13 @@ const AddEngagementForm = (props) => {
                             placeholderTextColor={'#AAA9AD'}
                             style={{ padding: 4, fontSize: 15 }}
                             textAlignVertical="top"
-                            name="subject"
                             value={subject}
                         />
                     </View>
                 ) : null}
                 <View
                     style={{
-                        height: noteSizeHelper(dataType),
+                        height: noteSizeHelper(props.engagementType),
                         marginBottom: 5,
                         width: '100%',
                         backgroundColor: 'white',
@@ -152,9 +201,8 @@ const AddEngagementForm = (props) => {
                         onChangeText={(text) => {
                             setNote(text);
                         }}
-                        placeholder={dataTypePlaceholder(dataType)}
+                        placeholder={dataTypePlaceholder(props.engagementType)}
                         placeholderTextColor={'#AAA9AD'}
-                        name="note"
                         style={{
                             padding: 4,
                             width: '100%',
@@ -182,40 +230,7 @@ const AddEngagementForm = (props) => {
                             width: '100%',
                             justifyContent: 'space-between',
                         }}
-                    >
-                        <Text style={{ width: '75%', fontSize: 15 }}>
-                            This Information is Sensitive
-                        </Text>
-                        <View>
-                            <SwitchToggle
-                                switchOn={!isPublic}
-                                backgroundColorOn="#158FB4"
-                                backgroundColorOff="#AAA9AD"
-                                circleColorOn="#0F6580"
-                                circleColorOff="#E5E4E2"
-                                containerStyle={{
-                                    width: 49,
-                                    height: 20,
-                                    borderRadius: 16,
-                                    padding: 0.1,
-                                }}
-                                circleStyle={{
-                                    width: 28,
-                                    height: 28,
-                                    borderRadius: 15,
-                                    shadowColor: '#000',
-                                    shadowOffset: {
-                                        width: 1,
-                                        height: 3,
-                                    },
-                                    shadowOpacity: 0.23,
-                                    shadowRadius: 2.62,
-                                    elevation: 4,
-                                }}
-                                onPress={() => setIsPublic(!isPublic)}
-                            />
-                        </View>
-                    </View>
+                    ></View>
                     <View
                         style={{
                             width: '100%',
@@ -226,14 +241,7 @@ const AddEngagementForm = (props) => {
                         <TouchableOpacity
                             style={styles.saveButton}
                             onPress={() => {
-                                props.postConnectionEngagements(
-                                    person,
-                                    note,
-                                    subject,
-                                    props.navigation.getParam('data_type'),
-                                    dueDate,
-                                    isPublic
-                                );
+                                createEngagement();
                                 props.navigation.goBack();
                             }}
                         >
@@ -246,46 +254,36 @@ const AddEngagementForm = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
-    formContainer: {
-        width: '95%',
-        // padding: 4,
-        marginTop: 10,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
+    // passed in parameter on navigate
+    const relationshipId = ownProps.navigation.getParam(
+        'relationshipId'
+    ) as number;
 
-    saveButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 96,
-        height: 36,
-        backgroundColor: 'lightgray',
-        borderRadius: 50,
-        borderWidth: 1,
-        marginTop: 20,
-        backgroundColor: constants.highlightColor,
-        borderColor: constants.highlightColor,
-    },
-    buttonText: {
-        fontSize: 14,
-        textTransform: 'uppercase',
-        color: '#fff',
-    },
-});
+    // passed in parameter on navigate
+    const engagementType = ownProps.navigation.getParam(
+        'engagementType'
+    ) as EngagementTypes;
 
-const mapStateToProps = (state) => {
-    const { accessToken } = state.auth;
+    // this component only supports the following types
+    if (
+        engagementType !== 'EngagementCall' &&
+        engagementType !== 'EngagementNote' &&
+        engagementType !== 'EngagementEmail'
+    ) {
+        throw new Error(`Unsupported engagement type: ${engagementType}`);
+    }
 
+    const caseId = state.case.results?.details.id;
     return {
-        accessToken,
-        isLoadingEngagements: state.engagements.isLoadingEngagements,
-        engagementsError: state.engagements.engagementsError,
+        caseId,
+        relationshipId,
+        engagementType,
     };
 };
 
-export default connect(mapStateToProps, {
-    postConnectionEngagements,
-    getEngagements,
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
+    createNoteEngagement,
+    createCallEngagement,
+    createEmailEngagement,
 })(AddEngagementForm);

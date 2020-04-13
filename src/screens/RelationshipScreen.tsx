@@ -8,14 +8,12 @@ import {
 } from 'react-native';
 import constants from '../helpers/constants';
 import { connect } from 'react-redux';
-import { clearEngagements, setDetails } from '../store/actions/connectionData';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import {
     Engagement,
     Documents,
 } from '../components/family-connections/RelationshipViewTabs';
 import Loader from '../components/Loader';
-import ScrollToTop from '../UI/ScrollToTop';
 import ConnectionsDetailsView from '../components/family-connections/RelationshipViewTabs/RelationshipDetailsView';
 import AddDocumentButtonsGroup from '../components/family-connections/AddDocumentButtonsGroup';
 import RelationshipListItem from '../components/family-connections/CaseList';
@@ -27,6 +25,9 @@ import { getRelationship } from '../store/actions/relationshipAction';
 import { EngagementDocumentDetail } from '../generated/EngagementDocumentDetail';
 import { EngagementDetail } from '../generated/EngagementDetail';
 import { RelationshipDetailFullFragment } from '../generated/RelationshipDetailFullFragment';
+import { EngagementTypes } from '../components/family-connections/EngagementTypes';
+import { AddEngagementFormParams } from '../components/family-connections/AddEngagementForm/AddEngagementForm';
+import ScrollToTop from '../UI/ScrollToTop';
 
 const styles = StyleSheet.create({
     tabs: {
@@ -135,8 +136,6 @@ interface StateProps {
 
 interface DispatchProps {
     getRelationship: typeof getRelationship;
-    clearEngagements: typeof clearEngagements;
-    setDetails: typeof setDetails;
 }
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -168,7 +167,6 @@ function RelationshipScreen(props: Props): JSX.Element {
     // get once
     useEffect(() => {
         props.getRelationship(props.caseId, props.relationshipId);
-        // TODO props.getDetails(props.navigation.getParam('connectionData').person.pk);
     }, []);
 
     // const leftArrow = '\u2190';
@@ -177,18 +175,12 @@ function RelationshipScreen(props: Props): JSX.Element {
         (engagement) => engagement.__typename !== 'EngagementDocument'
     );
 
-    const navigateToEngagementForm = (
-        type:
-            | 'EngagementCall'
-            | 'EngagementDocument'
-            | 'EngagementEmail'
-            | 'EngagementNote'
-            | 'EngagementReminder'
-    ): boolean => {
-        return props.navigation.navigate('EngagementForm', {
-            data_type: type,
-            id: params.id,
-        });
+    const navigateToEngagementForm = (type: EngagementTypes): boolean => {
+        return props.navigation.navigate('AddEngagementForm', {
+            engagementType: type,
+            relationshipId: props.relationshipId,
+            caseId: props.caseId,
+        } as AddEngagementFormParams);
     };
 
     let scroll: ScrollView;
@@ -588,6 +580,4 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     getRelationship,
-    clearEngagements,
-    setDetails,
 })(RelationshipScreen);

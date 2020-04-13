@@ -3,7 +3,7 @@ import {
     InMemoryCache,
     IntrospectionFragmentMatcher,
 } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import * as SecureStore from 'expo-secure-store';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
@@ -18,12 +18,6 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData: introspectionResult,
 });
 
-const { familyConnectionsURL } = getEnvVars();
-
-const httpLink = createHttpLink({
-    uri: `${familyConnectionsURL}/graphql`,
-});
-
 const authLink: ApolloLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists
     const token = await SecureStore.getItemAsync('cok_access_token');
@@ -36,8 +30,10 @@ const authLink: ApolloLink = setContext(async (_, { headers }) => {
     };
 });
 
+const { familyConnectionsURL } = getEnvVars();
+const uri = `${familyConnectionsURL}/graphql`;
 export const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+    link: authLink.concat(createUploadLink({ uri })),
     cache: new InMemoryCache({
         fragmentMatcher,
         cacheRedirects: {

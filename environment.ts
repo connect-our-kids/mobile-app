@@ -17,7 +17,7 @@ export interface EnvConfig {
     eventTrackingURL: string;
 }
 
-const ENV: {dev: EnvConfig; staging: EnvConfig; prod: EnvConfig} = {
+const ENV: { dev: EnvConfig; staging: EnvConfig; prod: EnvConfig } = {
     dev: {
         auth0Domain: 'login.connectourkids.org',
         auth0ClientId: '3dKTXilDyoCV3YP06e90059KI6bPERYQ',
@@ -40,7 +40,8 @@ const ENV: {dev: EnvConfig; staging: EnvConfig; prod: EnvConfig} = {
         auth0Domain: 'login.connectourkids.org',
         auth0ClientId: 'QzXVCpRPy4m6IOPpm6Jl644nQIvpTknR',
         auth0Audience: 'https://api.connectourkids.org/',
-        auth0RedirectScheme: 'connectourkids://127.0.0.1:19000/--/expo-auth-session',
+        auth0RedirectScheme:
+            'connectourkids://127.0.0.1:19000/--/expo-auth-session',
         familyConnectionsURL: 'https://family.connectourkids.org',
         peopleSearchURL: 'https://search.connectourkids.org/api/search-v2',
         eventTrackingURL: 'https://search.connectourkids.org/api/sendEvent',
@@ -54,17 +55,16 @@ export function getEnvVars(env = Constants.manifest.releaseChannel): EnvConfig {
     if (__DEV__ || env === 'dev') {
         console.log('Using dev configuration');
         return ENV.dev;
-    }
-    else if (env === 'staging') {
+    } else if (env === 'staging') {
         console.log('Using staging configuration');
         return ENV.staging;
-    }
-    else if (env === 'default' || env === 'prod') {
+    } else if (env === 'default' || env === 'prod') {
         console.log('Using production configuration');
         return ENV.prod;
-    }
-    else {
-        console.warn(`Invalid environment config: '${env}'. Using production configuration`);
+    } else {
+        console.warn(
+            `Invalid environment config: '${env}'. Using production configuration`
+        );
         return ENV.prod;
     }
 }

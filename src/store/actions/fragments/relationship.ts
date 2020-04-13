@@ -1,4 +1,3 @@
-import { DataProxy } from 'apollo-cache';
 import gql from 'graphql-tag';
 import {
     PERSON_BIRTHDAY_FRAGMENT,
@@ -7,8 +6,6 @@ import {
     EMAIL_DETAIL_FRAGMENT,
 } from './person';
 import { ADDRESS_DETAIL_FRAGMENT } from './address';
-
-import { RelationshipDetailFull } from '../../../generated/relationshipDetailFull';
 
 export const RELATIONSHIP_STATUS_DETAIL = gql`
     fragment RelationshipStatusDetail on RelationshipStatus {
@@ -116,51 +113,3 @@ export const RELATIONSHIPS_DETAIL_SLIM_QUERY = gql`
 
     ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
 `;
-
-export function deleteRelationshipCache(
-    caseId: number,
-    relationship: RelationshipDetail,
-    cache: DataProxy
-) {
-    const relationships = cache.readQuery<
-        relationshipsDetail,
-        relationshipsDetailVariables
-    >({
-        query: RELATIONSHIPS_DETAIL_SLIM_QUERY,
-        variables: { caseId },
-    });
-    if (!relationships) {
-        return;
-    }
-    cache.writeQuery<relationshipsDetail, relationshipsDetailVariables>({
-        query: RELATIONSHIPS_DETAIL_SLIM_QUERY,
-        variables: { caseId },
-        data: {
-            relationships: relationships.relationships.filter(
-                (r) => r.id !== relationship.id
-            ),
-        },
-    });
-}
-
-export function addRelationshipCache(
-    caseId: number,
-    relationship: RelationshipDetailFull,
-    cache: DataProxy
-) {
-    const relationships = cache.readQuery<
-        relationshipsDetail,
-        relationshipsDetailVariables
-    >({
-        query: RELATIONSHIPS_DETAIL_SLIM_QUERY,
-        variables: { caseId },
-    });
-    if (!relationships) {
-        return;
-    }
-    cache.writeQuery<relationshipsDetail, relationshipsDetailVariables>({
-        query: RELATIONSHIPS_DETAIL_SLIM_QUERY,
-        variables: { caseId },
-        data: { relationships: [relationship, ...relationships.relationships] },
-    });
-}

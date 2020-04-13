@@ -12,11 +12,6 @@ import {
 } from 'react-native';
 
 import AttachmentIcon from '../Attachment/AttachmentIcon';
-import convertMediaToAttachment, {
-    Media,
-    Attachment,
-} from './convertMediaToAttachment';
-
 import { connect } from 'react-redux';
 
 import styles from './AddDocumentForm.styles';
@@ -24,10 +19,12 @@ import constants from '../../../helpers/constants';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { RootState } from '../../../store/reducers';
 import { createDocEngagement } from '../../../store/actions';
+import { Media, Attachment } from './types';
+import convertMediaToAttachment from './convertMediaToAttachment';
 
 interface StateProps {
     caseId: number;
-    relationshipId: number;
+    relationshipId?: number;
     media: Media;
     attachment: Attachment;
 }
@@ -66,10 +63,9 @@ function AddDocumentForm(props: Props): JSX.Element {
                 {/* ATTACHMENT INFO */}
                 <View style={[styles.content, styles.attachmentInfoContainer]}>
                     {props.media.type === 'image' ? (
-                        <Image
-                            source={{ uri: props.attachment.uri }}
-                            resizeMode={'cover'}
-                            style={[styles.attachmentPreview]}
+                        <AttachmentIcon
+                            attachment={props.attachment.name}
+                            size={80}
                         />
                     ) : (
                         <AttachmentIcon
@@ -112,16 +108,13 @@ function AddDocumentForm(props: Props): JSX.Element {
                 <TouchableOpacity
                     style={[styles.content, styles.saveButton]}
                     onPress={(): void => {
-                        props.createDocEngagement(
-                            props.navigation.getParam('id'),
-                            {
-                                relationshipId: props.relationshipId,
-                                title,
-                                isPublic: true,
-                                note: note,
-                                attachment: props.attachment,
-                            }
-                        );
+                        props.createDocEngagement(props.caseId, {
+                            relationshipId: props.relationshipId,
+                            title,
+                            isPublic: true,
+                            note,
+                            attachment: props.media,
+                        });
                         props.navigation.goBack();
                     }}
                 >
@@ -133,9 +126,6 @@ function AddDocumentForm(props: Props): JSX.Element {
 }
 
 function mapStateToProps(state: RootState, ownProps: OwnProps) {
-    // NOTE: If this form is used outside of a relationship, then
-    // relationshipId will be undefined and need to be handled
-    // throughout the code.
     const relationshipId = state.relationship?.results?.id;
     const caseId = state.case.results?.details.id;
 

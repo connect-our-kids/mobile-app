@@ -1,20 +1,6 @@
 import mime from 'mime';
 import parseExtNameFromBaseName from './parseExtNameFromBaseName';
-
-export interface Media {
-    height: number;
-    width: number;
-    name: string;
-    type: string;
-    uri: string;
-}
-
-export interface Attachment {
-    uri: string;
-    type: string;
-    name: string;
-    ext: string;
-}
+import { Attachment, Media } from './types';
 
 export default function convertMediaToAttachment(media: Media): Attachment {
     console.debug('--- convertMediaToAttachment(media) => (attachment) ---');
@@ -28,7 +14,7 @@ export default function convertMediaToAttachment(media: Media): Attachment {
         uri: media.uri,
         /* (maybe) infer MIME type from original file name */
         type: mime.getType(media.name),
-        name: '',
+        name: media.name,
         ext: '',
     };
 
@@ -42,14 +28,6 @@ export default function convertMediaToAttachment(media: Media): Attachment {
 
         /* get actual file extension from name */
         attachment.ext = parseExtNameFromBaseName(media.name);
-    }
-
-    /* when extension exists, use it... */
-    if (attachment.ext) {
-        attachment.name = `attachment.${attachment.ext}`;
-    } else {
-        /* else, use nothing... */
-        attachment.name = 'attachment';
     }
 
     console.debug('--- convertMediaToAttachment(media) => (attachment) ---');

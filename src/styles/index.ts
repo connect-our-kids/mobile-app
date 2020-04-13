@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
     },
     rowLabelText: {
         textAlign: 'right',
-        fontFamily: constants.fontFamily,
     },
     imageContainer: {
         alignItems: 'flex-end',
@@ -30,23 +29,19 @@ export const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     colListText: {
-        fontFamily: constants.fontFamily,
         color: constants.highlightColor,
         width: '100%',
     },
     colListLabelText: {
         fontSize: 12,
         color: '#bbb',
-        fontFamily: constants.fontFamily,
         marginRight: 12,
     },
     cardNameText: {
         fontSize: 20,
-        fontFamily: constants.fontFamily,
         marginBottom: 5,
     },
     cardInformationText: {
-        fontFamily: constants.fontFamily,
         fontSize: 14,
     },
 });

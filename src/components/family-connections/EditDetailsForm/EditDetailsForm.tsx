@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import axios from 'axios';
 import {
@@ -6,20 +6,14 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    Button,
     TextInput,
     // CheckBox,
     Platform,
-    DatePickerAndroid,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Picker } from 'react-native-picker-dropdown';
-import { getDetails } from '../../../store/actions/connectionData';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
-import Intl from 'intl';
 import { getEnvVars } from '../../../../environment';
 import * as yup from 'yup';
 import { Appearance } from 'react-native-appearance';
@@ -127,7 +121,7 @@ function EditDetailsForm(props) {
         setFormErrors({});
         schema
             .validate(formData, { abortEarly: false })
-            .then((valid) => {
+            .then(() => {
                 // checks the formData with Yup schema, if it passes errors are cleared and save function is run
                 setFormErrors({});
                 save();
@@ -155,9 +149,9 @@ function EditDetailsForm(props) {
                     },
                 }
             )
-            .then((res) => {
+            .then(() => {
                 props.setEdit(false);
-                props.getDetails(props.id);
+                // props.getDetails(props.id);
             })
             .catch((err) => {
                 console.log('Unable to edit person', err);
@@ -167,7 +161,7 @@ function EditDetailsForm(props) {
 
     function handleCancel() {
         props.setEdit(false);
-        props.getDetails(props.id);
+        // props.getDetails(props.id);
     }
 
     function handleNew(name) {
@@ -353,7 +347,7 @@ function EditDetailsForm(props) {
                 <Text style={{ marginRight: 10 }}>Deceased</Text>
                 <CheckBox
                     checked={formData.deceased}
-                    onIconPress={(e) =>
+                    onIconPress={() =>
                         handleChange('deceased', !formData.deceased)
                     }
                 />
@@ -491,7 +485,7 @@ function EditDetailsForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={(e) => handleNew('addresses')}
+                    onPress={() => handleNew('addresses')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -550,7 +544,7 @@ function EditDetailsForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={(e) => handleNew('telephones')}
+                    onPress={() => handleNew('telephones')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -596,7 +590,7 @@ function EditDetailsForm(props) {
             <View style={styles.addButtonRow}>
                 <TouchableOpacity
                     style={styles.addButton}
-                    onPress={(e) => handleNew('emails')}
+                    onPress={() => handleNew('emails')}
                 >
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
@@ -895,8 +889,8 @@ const styles = StyleSheet.create({
     buttonLbl: { fontSize: 16, paddingBottom: 12 },
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {};
 };
 
-export default connect(mapStateToProps, { getDetails })(EditDetailsForm);
+export default connect(mapStateToProps, {})(EditDetailsForm);
