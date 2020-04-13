@@ -116,3 +116,7 @@ dist
 # JEST snapshots
 *.snap
 *.snap.*
+
+# Apollo Graphql generated files
+src/generated/
+build

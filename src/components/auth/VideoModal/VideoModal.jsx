@@ -7,11 +7,9 @@ import { Button } from 'native-base';
 
 import WebView from 'react-native-webview';
 
-
 /**********************************************************/
 
 export default function VideoModal(props) {
-
     return (
         <>
             <View style={styles.videoWrapper}>
@@ -28,13 +26,15 @@ export default function VideoModal(props) {
                     block
                     onPress={() => {
                         props.setModalVisible(false);
-                        props.sendEvent(null, 'click', 'post-watch-video-sign-up');
+                        props.sendEvent(
+                            null,
+                            'click',
+                            'post-watch-video-sign-up'
+                        );
                         props.onLogin();
                     }}
                 >
-                    <Text style={styles.btnText}>
-                        Take me to sign up
-                    </Text>
+                    <Text style={styles.btnText}>Take me to sign up</Text>
                 </Button>
                 <Button
                     style={styles.close}
@@ -43,12 +43,9 @@ export default function VideoModal(props) {
                         props.setModalVisible(false);
                     }}
                 >
-                    <Text style={styles.btnText}>
-                        Close
-                    </Text>
+                    <Text style={styles.btnText}>Close</Text>
                 </Button>
             </View>
         </>
     );
-
 }

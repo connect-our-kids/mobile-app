@@ -1,0 +1,752 @@
+scalar Date
+scalar JSON
+scalar Upload
+
+enum Roles {
+  MANAGER
+  EDITOR
+  VIEWER
+  NONE
+}
+
+directive @isAuthenticated on OBJECT | FIELD_DEFINITION
+directive @hasTeam on OBJECT | FIELD_DEFINITION
+directive @hasRole(role: Roles) on OBJECT | FIELD_DEFINITION
+directive @isSiteAdmin on OBJECT | FIELD_DEFINITION
+
+type UserTeam {
+  id: Int!
+  user: User!
+  team: Team!
+  role: Roles!
+}
+
+type CaseRole {
+  user: User!
+  userId: Int!
+  case: Case!
+  caseId: Int!
+  role: Roles!
+}
+
+type User {
+  id: Int!
+  lastLogin: Date
+  isSiteAdmin: Boolean!
+  firstName: String!
+  lastName: String!
+  email: String!
+  isActive: Boolean!
+  createdAt: Date!
+  name: String!
+  picture: String
+  createdBy: User
+  modifiedBy: User
+  updatedAt: Date!
+  sub: String
+  userTeam: UserTeam
+  caseRoles: [CaseRole!]!
+}
+
+type Team {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  name: String!
+  email: String
+  picture: String
+  notes: String
+}
+
+type Person {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  fullName: String!
+  title: String
+  notes: String
+  picture: String
+  gender: String
+  dateOfDeath: Date
+  isDeceased: Boolean!
+  birthMonth: Int
+  birthYear: Int
+  dayOfBirth: Int
+  birthdayRaw: String
+  telephones: [PersonTelephone!]!
+  emails: [PersonEmail!]!
+  addresses: [PersonAddress!]!
+}
+
+type Case {
+  id: Int!
+  person: Person!
+  fosterCare: Date
+  childStatus: ChildStatus
+  caseStatus: CaseStatus!
+  team: Team!
+}
+
+type Relationship {
+  id: Int!
+  case: Case!
+  person: Person!
+  facebook: String
+  jobTitle: String
+  linkedin: String
+  twitter: String
+  employer: String
+  salaryRange: SalaryRange
+  status: RelationshipStatus
+  isSeen: Boolean!
+  ppSearchCount: Int
+  ppSearchImported: Boolean!
+  ppSearchQuery: String
+  ppSearchPointerHash: String
+}
+
+type CaseWorkpad {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  name: String!
+  diagram: String!
+  """
+  SVG of the diagram. This field is created and updated on the front-end anytime the diagram
+  is changed. This will either match the diagram or be an empty string. In the case
+  where svg is empty it indicates that there was a problem that prevented the diagram
+  from being converted to an SVG on the front-end.
+  """
+  svg: String!
+  case: Case!
+}
+
+type PersonTelephone {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  telephone: String!
+  isVerified: Boolean!
+}
+
+interface EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+}
+
+type EngagementCall implements EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+}
+
+type EngagementDocument implements EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+  attachment: String!
+  title: String!
+  thumbnail: String
+  originalFileName: String
+}
+
+type EngagementEmail implements EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+  subject: String!
+}
+
+type EngagementNote implements EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+}
+
+type EngagementReminder implements EngagementCommon {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+
+  case: Case!
+  relationship: Relationship
+  isPublic: Boolean!
+  notes: String!
+  isComplete: Boolean!
+  dueDate: Date
+}
+
+union Engagement = EngagementCall | EngagementDocument | EngagementEmail | EngagementNote | EngagementReminder
+
+type PersonEmail {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  email: String!
+  isVerified: Boolean!
+}
+
+type PersonAddress {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  isVerified: Boolean!
+  country: String
+  countryCode: String
+  formatted: String
+  latitude: Float
+  locality: String!
+  longitude: Float
+  postalCode: String
+  raw: String
+  route: String!
+  state: String
+  stateCode: String
+  streetNumber: String!
+}
+
+type RelationshipStatus {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  colorBlind: Boolean!
+  color: String!
+  createdBy: User
+  modifiedBy: User
+  sortOrder: Int
+}
+
+type CaseStatus {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  createdBy: User
+  modifiedBy: User
+  representsClosure: Boolean!
+  sortOrder: Int
+}
+
+type CaseStatusHistory {
+  id: Int!
+  timestamp: Date!
+  case: Case!
+  caseStatus: CaseStatus!
+  user: User!
+}
+
+type ChildStatus {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  createdBy: User
+  modifiedBy: User
+  sortOrder: Int
+}
+
+type SalaryRange {
+  id: Int!
+  label: String!
+  values: String!
+}
+
+input AddressInput {
+  isVerified: Boolean!
+  country: String
+  countryCode: String
+  formatted: String
+  latitude: Float
+  locality: String!
+  longitude: Float
+  postalCode: String
+  raw: String
+  route: String!
+  state: String
+  stateCode: String
+  streetNumber: String!
+}
+
+input TelephoneInput {
+  isVerified: Boolean!
+  phoneNumber: String!
+}
+
+input EmailInput {
+  isVerified: Boolean!
+  emailAddress: String!
+}
+
+input StringWrapper {
+  val: String
+}
+
+input IntWrapper {
+  val: Int
+}
+
+input DateWrapper {
+  val: Date
+}
+
+input BooleanWrapper {
+  val: Boolean!
+}
+
+input UploadWrapper {
+  val: Upload
+}
+
+input CreateRelationshipInput {
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  title: String
+  notes: String
+  picture: Upload
+  gender: String
+  dateOfDeath: Date
+  isDeceased: Boolean
+  birthMonth: Int
+  birthYear: Int
+  dayOfBirth: Int
+  birthdayRaw: String
+
+  facebook: String
+  linkedin: String
+  twitter: String
+  jobTitle: String
+  employer: String
+  salaryRangeId: Int
+  statusId: Int
+  isSeen: Boolean
+
+  ppSearchImported: Boolean
+
+  addresses: [AddressInput!]
+  emails: [EmailInput!]
+  telephones: [TelephoneInput!]
+}
+
+input UpdateRelationshipInput {
+  firstName: StringWrapper
+  middleName: StringWrapper
+  lastName: StringWrapper
+  suffix: StringWrapper
+  title: StringWrapper
+  notes: StringWrapper
+  picture: UploadWrapper
+  gender: StringWrapper
+  dateOfDeath: DateWrapper
+  isDeceased: Boolean
+  birthMonth: IntWrapper
+  birthYear: IntWrapper
+  dayOfBirth: IntWrapper
+  birthdayRaw: StringWrapper
+
+  facebook: StringWrapper
+  linkedin: StringWrapper
+  twitter: StringWrapper
+  jobTitle: StringWrapper
+  employer: StringWrapper
+  salaryRangeId: IntWrapper
+  statusId: IntWrapper
+  isSeen: Boolean
+
+  ppSearchImported: Boolean
+
+  addresses: [AddressInput!]
+  emails: [EmailInput!]
+  telephones: [TelephoneInput!]
+}
+
+input CreateCaseInput {
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  title: String
+  notes: String
+  picture: Upload
+  gender: String
+  dateOfDeath: Date
+  isDeceased: Boolean
+  birthMonth: Int
+  birthYear: Int
+  dayOfBirth: Int
+  birthdayRaw: String
+  addresses: [AddressInput!]
+
+  fosterCare: Date
+  childStatusId: Int
+  caseStatusId: Int!
+}
+
+input UpdateCaseInput {
+  firstName: StringWrapper
+  middleName: StringWrapper
+  lastName: StringWrapper
+  suffix: StringWrapper
+  title: StringWrapper
+  notes: StringWrapper
+  picture: UploadWrapper
+  gender: StringWrapper
+  dateOfDeath: DateWrapper
+  isDeceased: Boolean
+  birthMonth: IntWrapper
+  birthYear: IntWrapper
+  dayOfBirth: IntWrapper
+  birthdayRaw: StringWrapper
+  addresses: [AddressInput!]
+
+  fosterCare: DateWrapper
+  childStatusId: IntWrapper
+  caseStatusId: Int
+}
+
+input CreateEngagementCall {
+  relationshipId: Int
+  isPublic: Boolean!
+  note: String!
+}
+
+input CreateEngagementDocument {
+  relationshipId: Int
+  isPublic: Boolean!
+  attachment: Upload!
+  title: String!
+  note: String!
+}
+
+input CreateEngagementEmail {
+  relationshipId: Int
+  isPublic: Boolean!
+  subject: String!
+  body: String!
+}
+
+input CreateEngagementNote {
+  relationshipId: Int
+  isPublic: Boolean!
+  note: String!
+}
+
+input UpdateEngagementCall {
+  relationshipId: IntWrapper
+  isPublic: Boolean
+  note: String
+}
+
+input UpdateEngagementDocument {
+  relationshipId: IntWrapper
+  isPublic: Boolean
+  attachment: Upload
+  title: String
+  note: String
+}
+
+input UpdateEngagementEmail {
+  relationshipId: IntWrapper
+  isPublic: Boolean
+  subject: String
+  body: String
+}
+
+input UpdateEngagementNote {
+  relationshipId: IntWrapper
+  isPublic: Boolean
+  note: String
+}
+
+input UpdateProfileInput {
+  firstName: String
+  lastName: String
+  picture: UploadWrapper
+}
+
+input CreateTeamInput {
+  name: String!
+  picture: Upload
+  email: String
+}
+
+input UpdateTeamInput {
+  name: String
+  picture: UploadWrapper
+  email: StringWrapper
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  picture: Upload
+  role: Roles!
+}
+
+input CreateUserInputAdmin {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  picture: Upload
+  role: Roles!
+  teamId: Int = null
+  isActive: Boolean! = true
+  isSiteAdmin: Boolean! = false
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  picture: UploadWrapper
+  role: Roles
+}
+
+input UpdateUserInputAdmin {
+  firstName: String
+  lastName: String
+  picture: UploadWrapper
+  role: Roles
+  teamId: IntWrapper
+  isActive: BooleanWrapper
+  isSiteAdmin: BooleanWrapper
+}
+
+type TypeSchemas {
+  caseStatus: [CaseStatus!]!
+  childStatus: [ChildStatus!]!
+  relationshipStatus: [RelationshipStatus!]!
+  salaryRange: [SalaryRange!]!
+}
+
+enum EngagementDataType {
+  C
+  D
+  E
+  N
+  R
+}
+
+type EngagementCount {
+  type: EngagementDataType!
+  count: Int!
+}
+
+type AddressCountry {
+  id: Int!
+  name: String!
+  countryCode: String!
+  phoneCode: String
+}
+
+type AddressState {
+  id: Int!
+  name: String!
+  countryId: Int!
+  stateCode: String!
+}
+
+type DefaultWorkpad {
+  caseId: Int!
+  workpadId: Int!
+}
+
+type UserSettings {
+  defaultWorkpads: [DefaultWorkpad!]!
+}
+
+enum CaseFilterType {
+  ALL
+  OPEN
+  CLOSED
+}
+
+enum TaskStatusEnum {
+  INPROGRESS
+  FINISHED
+  ERROR
+}
+
+type TaskStatus {
+  id: String!
+  caseId: Int!
+  status: TaskStatusEnum!
+  """
+  errorMessage is a string describing the error. It will only be populated if status is ERROR
+  """
+  errorMessage: String
+  """
+  downloadLink is an URL to the exported case data. It will only be populated if status is FINISHED
+  """
+  downloadLink: String
+}
+
+type CreateTaskResult {
+  id: String!
+  caseId: Int!
+  """
+  Password to the encrypted zip archive of exported case data. This password is only supplied on creation one time.
+  """
+  archivePassword: String!
+}
+
+type Query @isAuthenticated {
+  me: User!
+  userSettings: UserSettings! @hasTeam
+  users: [User!]! @hasTeam
+
+  user(id: Int!): User @hasTeam
+  cases(filter: CaseFilterType): [Case!]! @hasTeam # role filtering handled in resolver
+  case(caseId: Int!): Case @hasTeam @hasRole(role: VIEWER)
+  engagementCounts(caseId: Int!): [EngagementCount!]! @hasTeam @hasRole(role: VIEWER)
+  caseRoles(caseId: Int!): [CaseRole!]! @hasTeam
+  schema: TypeSchemas!
+  relationships(caseId: Int!): [Relationship!]! @hasTeam @hasRole(role: VIEWER)
+  relationship(caseId: Int!, id: Int!): Relationship @hasTeam @hasRole(role: VIEWER)
+  workpads(caseId: Int!): [CaseWorkpad!]! @hasTeam @hasRole(role: VIEWER)
+  workpad(caseId: Int!, workpadId: Int!): CaseWorkpad @hasRole(role: VIEWER)
+  addressCountries: [AddressCountry!]!
+  addressStates(countryId: Int!): [AddressState!]!
+  engagements(caseId: Int!): [Engagement!]! @hasTeam @hasRole(role: VIEWER)
+  """
+  Returns an array of all known tasks (for the requesting user)
+  """
+  caseExportTasks: [TaskStatus!]! @hasTeam @hasRole(role: VIEWER)
+  """
+  Returns specified export task
+  """
+  caseExportTask(id: String!): TaskStatus! @hasTeam @hasRole(role: VIEWER)
+
+  peopleSearch(idToken: String!, accessToken: String!, person: JSON!): JSON! @hasTeam @hasRole(role: EDITOR)
+  peopleSearchDetail(idToken: String!, accessToken: String!, searchPointerHash: String!): JSON! @hasTeam @hasRole(role: EDITOR)
+
+  """
+  Site Admin / Super user queries. These queries require the calling user have isSiteAdmin.
+  User does NOT have to be in a team
+  """
+  # query user by id
+  userAdmin(id: Int!): User @isSiteAdmin
+  # query all users, regardless of team or isActive
+  usersAdmin: [User!]! @isSiteAdmin
+  # query team by id
+  teamAdmin(id: Int!): Team! @isSiteAdmin
+  # query all teams
+  teamsAdmin: [Team!]! @isSiteAdmin
+}
+
+type Mutation @isAuthenticated {
+  updateMyProfile(value: UpdateProfileInput!): User!
+  updateMyTeam(value: UpdateTeamInput!): User! @hasTeam @hasRole(role: MANAGER)
+
+  createUser(value: CreateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
+  updateUser(userId: Int!, value: UpdateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
+  removeUserFromTeam(userId: Int!): User! @hasTeam @hasRole(role: MANAGER)
+
+  setUserDefaultWorkpadId(caseId: Int!, workpadId: Int!): UserSettings! @hasTeam
+
+  createWorkpad(caseId: Int!, name: String!, diagram: String, svg: String): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+  updateWorkpad(caseId: Int!, workpadId: Int!, name: String, diagram: String, svg: String): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+  deleteWorkpad(caseId: Int!, workpadId: Int!): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+
+  """
+  add an email address to a relationship as the last email address by order hint
+  """
+  addEmail(caseId: Int!, relationshipId: Int!, email: String!): Relationship! @hasTeam @hasRole(role: EDITOR)
+  createRelationship(caseId: Int!, value: CreateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
+  updateRelationship(caseId: Int!, relationshipId: Int!, value: UpdateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
+  deleteRelationship(caseId: Int!, relationshipId: Int!): Relationship! @hasTeam @hasRole(role: EDITOR)
+
+  createCase(value: CreateCaseInput!): Case! @hasTeam @hasRole(role: EDITOR)
+  updateCase(caseId: Int!, value: UpdateCaseInput!): Case! @hasTeam @hasRole(role: EDITOR)
+  deleteCase(caseId: Int!): Case! @hasTeam @hasRole(role: MANAGER)
+
+  addCaseRole(caseId: Int!, userId: Int!, role: Roles!): [CaseRole!]! @hasTeam @hasRole(role: MANAGER)
+  removeCaseRole(caseId: Int!, userId: Int!): [CaseRole!]! @hasTeam @hasRole(role: MANAGER)
+
+  # engagement items
+  deleteEngagement(caseId: Int!, engagementId: Int!): Engagement! @hasTeam @hasRole(role: EDITOR)
+  createEngagementCall(caseId: Int!, value: CreateEngagementCall!): EngagementCall! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementCall(caseId: Int!, engagementId: Int!, value: UpdateEngagementCall!): EngagementCall! @hasTeam @hasRole(role: EDITOR)
+  createEngagementDocument(caseId: Int!, value: CreateEngagementDocument!): EngagementDocument! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementDocument(caseId: Int!, engagementId: Int!, value: UpdateEngagementDocument!): EngagementDocument!
+    @hasTeam
+    @hasRole(role: EDITOR)
+  createEngagementEmail(caseId: Int!, value: CreateEngagementEmail!): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementEmail(caseId: Int!, engagementId: Int!, value: UpdateEngagementEmail!): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
+  createEngagementNote(caseId: Int!, value: CreateEngagementNote!): EngagementNote! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementNote(caseId: Int!, engagementId: Int!, value: UpdateEngagementNote!): EngagementNote! @hasTeam @hasRole(role: EDITOR)
+  """
+  Return value is an Export Task ID that can be queryed to see the status of the Task. Use caseExportTask
+  to get status.
+  """
+  createCaseExportTask(caseId: Int!): CreateTaskResult! @hasTeam
+
+  mixpanelTrack(actions: JSON!): Int!
+  mixpanelEngage(userInfo: JSON!): Int!
+
+  """
+  Site Admin / Super user mutations. These queries require the calling user have isSiteAdmin.
+  User does NOT have to be in a team
+  """
+  createUserAdmin(value: CreateUserInputAdmin!): User! @isSiteAdmin
+  updateUserAdmin(userId: Int!, value: UpdateUserInputAdmin!): User! @isSiteAdmin
+  createTeamAdmin(value: CreateTeamInput!): Team! @isSiteAdmin
+  updateTeamAdmin(id: Int!, value: UpdateTeamInput!): Team! @isSiteAdmin
+  deleteTeamAdmin(id: Int!): Team! @isSiteAdmin
+}

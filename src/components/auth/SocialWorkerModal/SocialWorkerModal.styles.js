@@ -1,14 +1,10 @@
-import {
-    StyleSheet,
-    Dimensions,
-} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 import constants from '../../../helpers/constants';
 
 /**********************************************************/
 
 export default StyleSheet.create({
-
     headerContainer: {
         borderBottomColor: constants.highlightColor,
         borderBottomWidth: 1,
@@ -63,5 +59,4 @@ export default StyleSheet.create({
         borderTopWidth: 1,
         marginTop: 20,
     },
-
 });

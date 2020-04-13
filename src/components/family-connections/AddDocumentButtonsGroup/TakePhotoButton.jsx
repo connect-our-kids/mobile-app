@@ -11,10 +11,7 @@ import TakePhotoLabel from './TakePhotoLabel';
 /**********************************************************/
 
 export default function TakePhotoButton({ afterAccept }) {
-
-
     async function getPermissions() {
-
         let hasPermissions = false;
 
         if (Constants.platform.ios || Constants.platform.android) {
@@ -23,11 +20,9 @@ export default function TakePhotoButton({ afterAccept }) {
         }
 
         return hasPermissions;
-
     }
 
     async function takePhoto() {
-
         const photo = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
@@ -38,27 +33,22 @@ export default function TakePhotoButton({ afterAccept }) {
         }
 
         return;
-
     }
 
     async function onPress() {
-
         const hasPermissions = await getPermissions();
 
         if (hasPermissions) {
             await takePhoto();
-        }
-        else {
+        } else {
             Alert.alert('Sorry, we need camera permissions to make this work!');
         }
-
     }
-
 
     return (
         <Button onPress={onPress} testID="take-photo-button">
-            <TakePhotoIcon/>
-            <TakePhotoLabel/>
+            <TakePhotoIcon />
+            <TakePhotoLabel />
         </Button>
     );
 }

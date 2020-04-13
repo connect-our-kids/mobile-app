@@ -8,11 +8,5 @@ export default function PickFileIcon({
     color = icons.color,
     size = icons.size,
 }) {
-    return (
-        <MaterialIcons
-            name={'note-add'}
-            size={size}
-            color={color}
-        />
-    );
+    return <MaterialIcons name={'note-add'} size={size} color={color} />;
 }

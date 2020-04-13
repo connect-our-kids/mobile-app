@@ -11,22 +11,20 @@ import convertPhotoToMedia from './convertPhotoToMedia';
 /**********************************************************/
 
 export default function PickPhotoButton({ afterAccept }) {
-
     async function getPermissions() {
-
         let hasPermissions = false;
 
         if (Constants.platform.ios || Constants.platform.android) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            const { status } = await Permissions.askAsync(
+                Permissions.CAMERA_ROLL
+            );
             hasPermissions = status === 'granted';
         }
 
         return hasPermissions;
-
     }
 
     async function pickPhoto() {
-
         const photo = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
@@ -40,22 +38,21 @@ export default function PickPhotoButton({ afterAccept }) {
     }
 
     async function onPress() {
-
         const hasPermissions = await getPermissions();
 
         if (hasPermissions) {
             await pickPhoto();
+        } else {
+            Alert.alert(
+                'Sorry, we need camera roll permissions to make this work!'
+            );
         }
-        else {
-            Alert.alert('Sorry, we need camera roll permissions to make this work!');
-        }
-
     }
 
     return (
         <Button onPress={onPress} testID="pick-photo-button">
-            <PickPhotoIcon/>
-            <PickPhotoLabel/>
+            <PickPhotoIcon />
+            <PickPhotoLabel />
         </Button>
     );
 }

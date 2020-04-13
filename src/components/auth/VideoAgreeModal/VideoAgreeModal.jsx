@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Button } from 'native-base';
 
@@ -13,7 +9,6 @@ import styles from './VideoAgreeModal.styles';
 /**********************************************************/
 
 export default function VideoAgreeModal(props) {
-
     return (
         <>
             <View style={styles.headerContainer}>
@@ -26,14 +21,12 @@ export default function VideoAgreeModal(props) {
                         props.setModalVisible(false);
                     }}
                 >
-                    <Text style={[ styles.btnText, styles.closeBtn ]}>
-                        ❌
-                    </Text>
+                    <Text style={[styles.btnText, styles.closeBtn]}>❌</Text>
                 </TouchableOpacity>
             </View>
             <Text style={styles.modalTextStyle}>
-                Before you start, we&apos;d like you to watch a two minute video so that you
-                know everything about People Search.
+                Before you start, we&apos;d like you to watch a two minute video
+                so that you know everything about People Search.
             </Text>
             <View style={styles.buttonContainer}>
                 <Button
@@ -44,9 +37,7 @@ export default function VideoAgreeModal(props) {
                         props.advanceModal();
                     }}
                 >
-                    <Text style={styles.btnText}>
-                        Show me the video
-                    </Text>
+                    <Text style={styles.btnText}>Show me the video</Text>
                 </Button>
                 <Button
                     style={styles.noButton}
@@ -57,12 +48,9 @@ export default function VideoAgreeModal(props) {
                         props.sendEvent(null, 'click', 'do-not-watch-video');
                     }}
                 >
-                    <Text style={styles.btnText}>
-                        Skip the video
-                    </Text>
+                    <Text style={styles.btnText}>Skip the video</Text>
                 </Button>
             </View>
         </>
     );
-
 }

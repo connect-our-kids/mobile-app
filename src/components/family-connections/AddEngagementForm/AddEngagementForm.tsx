@@ -20,28 +20,24 @@ import { connect } from 'react-redux';
 import { postConnectionEngagements } from '../../../store/actions/connectionEngagements';
 
 const AddEngagementForm = (props) => {
-    const [ note, setNote ] = useState('');
-    const [ subject, setSubject ] = useState(null);
-    const [ isPublic, setIsPublic ] = useState(true);
-    const [ person, setPerson ] = useState(null);
-    const [ dueDate, setDueDate ] = useState(new Date());
+    const [note, setNote] = useState('');
+    const [subject, setSubject] = useState(null);
+    const [isPublic, setIsPublic] = useState(true);
+    const [person, setPerson] = useState(null);
+    const [dueDate, setDueDate] = useState(new Date());
 
-    const [ dataType, setDataType ] = useState('');
+    const [dataType, setDataType] = useState('');
 
     const dataTypeTitle = (dataType: string): string => {
         if (dataType === 'NOTE') {
             return 'ADD NOTE';
-        }
-        else if (dataType === 'REMINDER') {
+        } else if (dataType === 'REMINDER') {
             return 'SET REMINDER';
-        }
-        else if (dataType === 'CALL') {
+        } else if (dataType === 'CALL') {
             return 'LOG CALL';
-        }
-        else if (dataType === 'EMAIL') {
+        } else if (dataType === 'EMAIL') {
             return 'LOG EMAIL';
-        }
-        else {
+        } else {
             return 'LOG ENGAGEMENT';
         }
     };
@@ -49,8 +45,7 @@ const AddEngagementForm = (props) => {
     const dataTypePlaceholder = (dataType: string): string => {
         if (dataType === 'EMAIL') {
             return 'ADD EMAIL';
-        }
-        else {
+        } else {
             return 'ADD NOTE';
         }
     };
@@ -58,8 +53,7 @@ const AddEngagementForm = (props) => {
     const noteSizeHelper = (dataType: string): number => {
         if (dataType === 'REMINDER') {
             return 100;
-        }
-        else {
+        } else {
             return 165;
         }
     };
@@ -71,26 +65,21 @@ const AddEngagementForm = (props) => {
         const dataTypeHelper = (type: string): string => {
             if (type === 'N') {
                 return 'NOTE';
-            }
-            else if (type === 'R') {
+            } else if (type === 'R') {
                 return 'REMINDER';
-            }
-            else if (type === 'C') {
+            } else if (type === 'C') {
                 return 'CALL';
-            }
-            else if (type === 'D') {
+            } else if (type === 'D') {
                 return 'DOCUMENT';
-            }
-            else if (type === 'E') {
+            } else if (type === 'E') {
                 return 'EMAIL';
-            }
-            else {
+            } else {
                 return 'OTHER';
             }
         };
 
         setDataType(dataTypeHelper(props.navigation.getParam('data_type')));
-    }, [ false ]);
+    }, [false]);
 
     return (
         <ScrollView
@@ -195,7 +184,7 @@ const AddEngagementForm = (props) => {
                         }}
                     >
                         <Text style={{ width: '75%', fontSize: 15 }}>
-              This Information is Sensitive
+                            This Information is Sensitive
                         </Text>
                         <View>
                             <SwitchToggle
@@ -228,7 +217,11 @@ const AddEngagementForm = (props) => {
                         </View>
                     </View>
                     <View
-                        style={{ width: '100%', alignItems: 'flex-end', marginTop: 20 }}
+                        style={{
+                            width: '100%',
+                            alignItems: 'flex-end',
+                            marginTop: 20,
+                        }}
                     >
                         <TouchableOpacity
                             style={styles.saveButton}
@@ -239,7 +232,7 @@ const AddEngagementForm = (props) => {
                                     subject,
                                     props.navigation.getParam('data_type'),
                                     dueDate,
-                                    isPublic,
+                                    isPublic
                                 );
                                 props.navigation.goBack();
                             }}

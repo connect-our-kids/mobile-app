@@ -9,15 +9,13 @@ import PersonInfoHeader from './PersonInfoHeader';
 /**********************************************************/
 
 describe('PersonInfoHeader component', () => {
-
     test('renders', () => {
-        const tree = renderer.create(<PersonInfoHeader/>).toJSON();
+        const tree = renderer.create(<PersonInfoHeader />).toJSON();
         expect(tree.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<PersonInfoHeader/>).toJSON();
+        const tree = renderer.create(<PersonInfoHeader />).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

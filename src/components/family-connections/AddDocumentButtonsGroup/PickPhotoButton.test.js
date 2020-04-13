@@ -5,12 +5,10 @@ import { View, Platform } from 'react-native';
 
 import PickPhotoButton from './PickPhotoButton';
 
-if ([ 'android', 'ios' ].includes(Platform.OS)) {
-
+if (['android', 'ios'].includes(Platform.OS)) {
     /* current tests */
 
     describe('<PickPhotoButton />', () => {
-
         it('selects component', () => {
             const tree = renderer.create(<PickPhotoButton />).toJSON();
             expect(tree.children).toHaveLength(1);
@@ -20,13 +18,10 @@ if ([ 'android', 'ios' ].includes(Platform.OS)) {
             const tree = renderer.create(<PickPhotoButton />).toJSON();
             expect(tree).toMatchSnapshot();
         });
-
     });
 
     describe('onPress fires', () => {
-
         it('checks if fired', () => {
-
             const onPressMock = jest.fn();
 
             const { getByTestId } = render(
@@ -35,20 +30,15 @@ if ([ 'android', 'ios' ].includes(Platform.OS)) {
                         testID={'pick-photo-button'}
                         onPress={onPressMock}
                     />
-                </View>,
+                </View>
             );
 
             fireEvent.press(getByTestId('pick-photo-button'));
             expect(onPressMock).toHaveBeenCalled();
         });
-
     });
-
-}
-else {
-
+} else {
     /* nothing to see here... */
-
 }
 
 // const onPressMock = jest.fn();

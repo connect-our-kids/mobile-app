@@ -11,95 +11,84 @@ import {
     Platform,
 } from 'react-native';
 
-// import SwitchToggle from 'react-native-switch-toggle';
-
 import AttachmentIcon from '../Attachment/AttachmentIcon';
-import convertMediaToAttachment from './convertMediaToAttachment';
+import convertMediaToAttachment, {
+    Media,
+    Attachment,
+} from './convertMediaToAttachment';
 
 import { connect } from 'react-redux';
-import { getEngagements } from '../../../store/actions/connectionData';
-import { postConnectionDocument } from '../../../store/actions/connectionEngagements';
 
 import styles from './AddDocumentForm.styles';
 import constants from '../../../helpers/constants';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { RootState } from '../../../store/reducers';
+import { createDocEngagement } from '../../../store/actions';
 
-/**********************************************************/
-
-export default connect(
-    mapStateToProps,
-    {
-        postConnectionDocument,
-        getEngagements,
-    },
-)(AddDocumentForm);
-
-function mapStateToProps(state: Record<string, any>): Record<string, any> {
-    const { accessToken } = state.auth;
-    const { isLoadingDocs } = state.engagements;
-    return {
-        accessToken,
-        isLoadingEngagements: state.engagements.isLoadingEngagements,
-        engagementsError: state.engagements.engagementsError,
-        isLoadingDocs,
-    };
+interface StateProps {
+    caseId: number;
+    relationshipId: number;
+    media: Media;
+    attachment: Attachment;
 }
 
-/**********************************************************/
+interface DispatchProps {
+    createDocEngagement: typeof createDocEngagement;
+}
 
-function AddDocumentForm(props: Record<string, any>): JSX.Element {
+type Navigation = NavigationScreenProp<NavigationState>;
 
-    // /* DEV */ console.log(props.navigation);
+interface OwnProps {
+    navigation: Navigation;
+}
 
+type Props = StateProps & DispatchProps & OwnProps;
+
+function AddDocumentForm(props: Props): JSX.Element {
     /* handle attachment data */
-    const [ media ] = useState(() => props.navigation.getParam('media'));
-    const [ attachment ] = useState(() => convertMediaToAttachment(media));
 
     /* form input values */
-    const [ title, setTitle ] = useState('');
-    const [ notes, setNotes ] = useState('');
-
-    /* previous form input values -- preserved for backward compatibility */
-    const [ category ] = useState(4); // 1-Education, 2-Friends, 3-Network, 4-Other, 5-Relatives, 6-Sports
-    const [ isPublic ] = useState(true);
+    const [title, setTitle] = useState('');
+    const [note, setNote] = useState('');
 
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <ScrollView
-                style={[ styles.scrollView ]}
-                contentContainerStyle={[ styles.container ]}
+                style={[styles.scrollView]}
+                contentContainerStyle={[styles.container]}
             >
                 {/* HEADER */}
-                <Text style={[ styles.content, styles.header ]}>
+                <Text style={[styles.content, styles.header]}>
                     Add Document
                 </Text>
                 {/* ATTACHMENT INFO */}
-                <View style={[ styles.content, styles.attachmentInfoContainer ]}>
-                    {(media.type === 'image') ? (
+                <View style={[styles.content, styles.attachmentInfoContainer]}>
+                    {props.media.type === 'image' ? (
                         <Image
-                            source={{ uri: attachment.uri }}
+                            source={{ uri: props.attachment.uri }}
                             resizeMode={'cover'}
-                            style={[ styles.attachmentPreview ]}
+                            style={[styles.attachmentPreview]}
                         />
                     ) : (
                         <AttachmentIcon
-                            attachment={attachment.name}
+                            attachment={props.attachment.name}
                             size={80}
                         />
                     )}
-                    <View style={[ styles.attachmentInfo ]}>
-                        <Text style={[ styles.displayText ]}>
-                            Document Type: {media.type}
+                    <View style={[styles.attachmentInfo]}>
+                        <Text style={[styles.displayText]}>
+                            Document Type: {props.media.type}
                         </Text>
-                        <Text style={[ styles.displayText ]}>
-                            File Extension: {attachment.ext}
+                        <Text style={[styles.displayText]}>
+                            File Extension: {props.attachment.ext}
                         </Text>
                     </View>
                 </View>
                 {/* TITLE INPUT */}
                 <TextInput
-                    style={[ styles.content, styles.inputText ]}
+                    style={[styles.content, styles.inputText]}
                     value={title}
                     onChangeText={setTitle}
                     placeholder={'TITLE'}
@@ -108,9 +97,9 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                 />
                 {/* NOTES INPUT */}
                 <TextInput
-                    style={[ styles.content, styles.inputText ]}
-                    value={notes}
-                    onChangeText={setNotes}
+                    style={[styles.content, styles.inputText]}
+                    value={note}
+                    onChangeText={setNote}
                     multiline={true}
                     numberOfLines={4}
                     placeholder={'NOTES'}
@@ -121,65 +110,45 @@ function AddDocumentForm(props: Record<string, any>): JSX.Element {
                 />
                 {/* SAVE BUTTON */}
                 <TouchableOpacity
-                    style={[ styles.content, styles.saveButton ]}
+                    style={[styles.content, styles.saveButton]}
                     onPress={(): void => {
-                        props.postConnectionDocument(
+                        props.createDocEngagement(
                             props.navigation.getParam('id'),
-                            title,
-                            category,
-                            isPublic,
-                            notes,
-                            attachment,
+                            {
+                                relationshipId: props.relationshipId,
+                                title,
+                                isPublic: true,
+                                note: note,
+                                attachment: props.attachment,
+                            }
                         );
                         props.navigation.goBack();
                     }}
                 >
-                    <Text style={[ styles.saveButtonText ]}>
-                        SAVE
-                    </Text>
+                    <Text style={[styles.saveButtonText]}>SAVE</Text>
                 </TouchableOpacity>
-                {/* STAKEHOLDER HAS REQUESTED THE CODE BELOW BE PRESERVERED FOR FUTURE USE */}
-                {/*
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        width: '100%',
-                        justifyContent: 'space-between',
-                        marginTop: 15,
-                    }}
-                >
-                    <Text style={{ width: '75%', fontSize: 15 }}>This Information is Sensitive</Text>
-                    <View>
-                        <SwitchToggle
-                            switchOn={!isPublic}
-                            backgroundColorOn='#158FB4'
-                            backgroundColorOff='#AAA9AD'
-                            circleColorOn='#0F6580'
-                            circleColorOff='#E5E4E2'
-                            containerStyle={{
-                                width: 49,
-                                height: 20,
-                                borderRadius: 16,
-                                padding: 0.1,
-                            }}
-                            circleStyle={{ width: 28,
-                                height: 28,
-                                borderRadius: 15,
-                                shadowColor: '#000',
-                                shadowOffset: {
-                                    width: 1,
-                                    height: 3,
-                                },
-                                shadowOpacity: 0.23,
-                                shadowRadius: 2.62,
-                                elevation: 4 }}
-                            onPress={() => setIsPublic(!isPublic)}
-                        />
-                    </View>
-                </View>
-                */}
             </ScrollView>
         </KeyboardAvoidingView>
     );
-
 }
+
+function mapStateToProps(state: RootState, ownProps: OwnProps) {
+    // NOTE: If this form is used outside of a relationship, then
+    // relationshipId will be undefined and need to be handled
+    // throughout the code.
+    const relationshipId = state.relationship?.results?.id;
+    const caseId = state.case.results?.details.id;
+
+    const media = ownProps.navigation.getParam('media') as Media;
+    const attachment = convertMediaToAttachment(media);
+    return {
+        caseId,
+        relationshipId,
+        media,
+        attachment,
+    };
+}
+
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
+    createDocEngagement,
+})(AddDocumentForm);

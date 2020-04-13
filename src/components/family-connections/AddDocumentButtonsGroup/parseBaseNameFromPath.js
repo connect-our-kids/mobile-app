@@ -1,12 +1,11 @@
 export default function parseBaseNameFromPath(path) {
-
     /*
     clear dir-name from path:
     -   clear characters before and including the LAST '\' or '/'
     */
     const baseName = path.replace(/^.*[\\/]/, '');
 
-    return (baseName !== '' ? baseName : undefined);
+    return baseName !== '' ? baseName : undefined;
 
     /*
     ### EXAMPLES ###
@@ -14,5 +13,4 @@ export default function parseBaseNameFromPath(path) {
     -   '/dir/name/base-name'     -> 'base-name'
     -   '/dir/name/'              -> ''
     */
-
 }

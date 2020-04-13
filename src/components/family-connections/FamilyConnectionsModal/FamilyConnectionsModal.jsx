@@ -14,69 +14,75 @@ import { Button, Input } from 'native-base';
 import constants from '../../../helpers/constants';
 
 class FamilyConnectionsModal extends Component {
-  state = {
-      email: '',
-  };
+    state = {
+        email: '',
+    };
 
-  handleInput = (text) => {
-      this.setState({
-          email: text,
-      });
-  };
+    handleInput = (text) => {
+        this.setState({
+            email: text,
+        });
+    };
 
-  resetInput = () => {
-      this.setState({ email: '' });
-  };
+    resetInput = () => {
+        this.setState({ email: '' });
+    };
 
-  render() {
-      return (
-          <>
-              <View style={styles.headerContainer}>
-                  <Text style={styles.modalHeaderStyle}>
-            Interested in staying updated?
-                  </Text>
-                  <TouchableOpacity
-                      style={styles.close}
-                      onPress={() => {
-                          this.props.closeModal();
-                      }}
-                  >
-                      <Text style={styles.closeBtn}>❌</Text>
-                  </TouchableOpacity>
-              </View>
-              <Text style={styles.modalTextStyle}>
-          Our Family Connections feature is coming soon. If you'd like to be
-          added to our email list to be informed about updates, press the Yes
-          button below.
-              </Text>
-              <View style={styles.buttonContainer}>
-                  {!this.props.email && (
-                      <Input
-                          style={styles.textInput}
-                          onChangeText={(text) => this.handleInput(text)}
-                          placeholder="sample@email.com"
-                          value={this.state.email}
-                      />
-                  )}
-                  <Button
-                      style={styles.yesButton}
-                      disabled={!this.props.email && this.state.email === ''}
-                      block
-                      onPress={() => {
-                          trackingEmail = this.state.email;
-                          this.props.trackInterest(trackingEmail);
-                          this.resetInput();
-                      }}
-                  >
-                      <Text style={styles.btnText}>Yes, add my email to the list</Text>
-                  </Button>
-                  <Button style={styles.noButton} block onPress={this.props.closeModal}>
-                      <Text style={styles.btnText}>Don't add my email</Text>
-                  </Button>
-              </View>
-          </>
-      );
-  }
+    render() {
+        return (
+            <>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.modalHeaderStyle}>
+                        Interested in staying updated?
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.close}
+                        onPress={() => {
+                            this.props.closeModal();
+                        }}
+                    >
+                        <Text style={styles.closeBtn}>❌</Text>
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.modalTextStyle}>
+                    Our Family Connections feature is coming soon. If you'd like
+                    to be added to our email list to be informed about updates,
+                    press the Yes button below.
+                </Text>
+                <View style={styles.buttonContainer}>
+                    {!this.props.email && (
+                        <Input
+                            style={styles.textInput}
+                            onChangeText={(text) => this.handleInput(text)}
+                            placeholder="sample@email.com"
+                            value={this.state.email}
+                        />
+                    )}
+                    <Button
+                        style={styles.yesButton}
+                        disabled={!this.props.email && this.state.email === ''}
+                        block
+                        onPress={() => {
+                            trackingEmail = this.state.email;
+                            this.props.trackInterest(trackingEmail);
+                            this.resetInput();
+                        }}
+                    >
+                        <Text style={styles.btnText}>
+                            Yes, add my email to the list
+                        </Text>
+                    </Button>
+                    <Button
+                        style={styles.noButton}
+                        block
+                        onPress={this.props.closeModal}
+                    >
+                        <Text style={styles.btnText}>Don't add my email</Text>
+                    </Button>
+                </View>
+            </>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

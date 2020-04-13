@@ -12,7 +12,6 @@ export default function PersonInfo({
     navigation,
     setData,
 }) {
-
     return (
         <Grid style={styles.container}>
             <PersonInfoHeader item={item} />
@@ -58,11 +57,10 @@ export default function PersonInfo({
                 itemValue="names"
                 title="Relationships"
                 navigation={navigation}
-                setData = { setData }
+                setData={setData}
             />
         </Grid>
     );
-
 }
 
 const styles = StyleSheet.create({
