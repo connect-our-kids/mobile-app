@@ -2,7 +2,6 @@
   /***************************************
     ESLint
   ***************************************/
-
   "eslint.enable": true,
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
@@ -13,23 +12,20 @@
     "enable": true,
     "location": "separateLine",
   },
-
   /***************************************
     Editor
   ***************************************/
-
   /* files */
   // "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
-
   /* editing */
   "editor.detectIndentation": true,
-
   /* formatting */
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
+    "source.fixAll.markdownlint": true
   },
   "[javascript]": {
     /* protect from other formatting extensions */
@@ -51,6 +47,5 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": false,
   },
-
   /**************************************/
 }
