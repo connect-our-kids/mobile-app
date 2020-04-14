@@ -6,10 +6,8 @@ import { Button } from 'native-base';
 
 import MainText from '../../../UI/MainText';
 import ScreenContainer from '../../../UI/ScreenContainer';
-import authHelpers from '../../../helpers/authHelpers';
+import { handleLogin } from '../../../helpers/authHelpers';
 import styles from './ConnectionsLogin.styles';
-
-import { sendEvent } from '../../../helpers/createEvent';
 
 export default function ConnectionsLogin(props): JSX.Element {
     function learnMorePressed(): void {
@@ -51,12 +49,7 @@ export default function ConnectionsLogin(props): JSX.Element {
                     <Button
                         style={styles.buttonStyle}
                         block
-                        onPress={(): void =>
-                            authHelpers.handleLogin(
-                                authHelpers._loginWithAuth0,
-                                props.setUserCreds
-                            )
-                        }
+                        onPress={async () => handleLogin(props.setUserCreds)}
                     >
                         <Text style={styles.btnText}>Login</Text>
                     </Button>

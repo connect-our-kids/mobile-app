@@ -13,7 +13,6 @@ import { Container, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
-    eventTrack,
     fetchPerson,
     resetPerson,
     setModalVisible,
@@ -23,18 +22,74 @@ import {
     showModal,
     getInfo,
 } from '../store/actions';
-import headerConfig from '../helpers/headerConfig';
-import constants from '../helpers/constants';
 import PersonInfo from '../components/people-search/PersonInfo';
 import Loader from '../components/Loader';
-import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
 import PersonConfirmationModal from '../components/people-search/PersonConfirmationModal';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { RootState } from '../store/reducers';
+import { handleLogin } from '../helpers/authHelpers';
 
-class SearchResultScreen extends React.Component {
-    static navigationOptions = ({ navigation }) =>
-        headerConfig('People Search', navigation);
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        margin: 5,
+    },
+    button: {
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+    },
+    buttonText: {
+        color: '#0279AC',
+        fontWeight: '500',
+    },
 
+    link: {
+        color: '#64aab8',
+        lineHeight: 17,
+        padding: 15,
+        backgroundColor: 'rgb(216,236,240)',
+        borderRadius: 10,
+        marginBottom: 20,
+    },
+});
+
+interface StateProps {
+    accessToken;
+    error;
+    idToken;
+    isFetching;
+    isLoggedIn;
+    person;
+    possiblePersons;
+    user;
+    modalVisible;
+    videoAgree;
+    videoVisible;
+    getInfo;
+}
+
+interface DispatchProps {
+    fetchPerson: typeof fetchPerson;
+    resetPerson: typeof resetPerson;
+    setModalVisible: typeof setModalVisible;
+    setAgreeModalVisible: typeof setAgreeModalVisible;
+    setUserCreds: typeof setUserCreds;
+    setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
+    showModal: typeof showModal;
+    getInfo: typeof getInfo;
+}
+
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+class SearchResultScreen extends React.Component<Props> {
     state = {
         requestObject: {},
         modalVisible: false,
@@ -85,14 +140,14 @@ class SearchResultScreen extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: Props) {
         if (
             prevProps.isLoggedIn === false &&
             this.props.isLoggedIn === true &&
             this.state.requestObject
         ) {
             this.props.resetPerson();
-            let requestObject = { ...this.state.requestObject };
+            const requestObject = { ...this.state.requestObject };
             requestObject['authToken'] = this.props.accessToken;
             requestObject['idToken'] = this.props.idToken;
             this.props.fetchPerson(
@@ -153,12 +208,7 @@ class SearchResultScreen extends React.Component {
                     setVideoPlayerModalVisible={
                         this.props.setVideoPlayerModalVisible
                     }
-                    onLogin={() =>
-                        authHelpers.handleLogin(
-                            authHelpers._loginWithAuth0,
-                            this.props.setUserCreds
-                        )
-                    }
+                    onLogin={async () => handleLogin(this.props.setUserCreds)}
                 />
                 <SafeAreaView>
                     <ScrollView>
@@ -194,7 +244,7 @@ class SearchResultScreen extends React.Component {
                                     </Text>
                                 </TouchableHighlight>
                             )}
-                            {this.props.error && <ErrorMessage />}
+                            {/* TODO display error message {this.props.error && <ErrorMessage />} */}
                             {!person ? (
                                 <Loader />
                             ) : (
@@ -216,74 +266,7 @@ class SearchResultScreen extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        margin: 5,
-    },
-    loginContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    header: {
-        flexDirection: 'row',
-        textAlign: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 25,
-    },
-
-    intro: {
-        padding: 10,
-
-        fontFamily: constants.fontFamily,
-        fontSize: 18,
-    },
-
-    textInput: {
-        borderColor: '#64aab8',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        flex: 2,
-    },
-
-    textInputSmall: {
-        flex: 1,
-    },
-    nameInput: {
-        flexDirection: 'row',
-    },
-    button: {
-        margin: 10,
-        padding: 10,
-        backgroundColor: '#fff',
-    },
-
-    tab: {
-        backgroundColor: 'white',
-    },
-
-    buttonText: {
-        color: '#0279AC',
-        fontWeight: '500',
-    },
-
-    link: {
-        color: '#64aab8',
-        lineHeight: 17,
-        padding: 15,
-        backgroundColor: 'rgb(216,236,240)',
-        borderRadius: 10,
-        marginBottom: 20,
-    },
-    matchesText: {
-        fontSize: 20,
-        color: '#508DB3',
-        marginBottom: 20,
-    },
-});
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState): StateProps => {
     const { error, isFetching, person, possiblePersons } = state.people;
     const {
         accessToken,
@@ -310,8 +293,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {
-    eventTrack,
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     fetchPerson,
     resetPerson,
     setModalVisible,

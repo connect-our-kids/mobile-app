@@ -132,6 +132,7 @@ module.exports = {
         ],
         'react-native/no-raw-text': [
             'warn',
+            {skip: ['MainText']}    // NOTE add custom View components that use Text component inside of them to avoid warning
         ],
 
     },

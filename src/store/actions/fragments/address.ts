@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { AddressDetail } from '../../../generated/AddressDetail';
-import { AddressInput } from '../../../generated/globalTypes';
 
 export const ADDRESS_DETAIL_FRAGMENT = gql`
     fragment AddressDetail on PersonAddress {
@@ -36,11 +35,6 @@ export function emptyAddressDetail(): Partial<AddressDetail> {
         latitude: null,
         longitude: null,
     };
-}
-
-export function toAddressInput(address: AddressDetail): AddressInput {
-    const { __typename, ...input } = address;
-    return input;
 }
 
 export function translateAddress(

@@ -1,8 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { View, Button, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { render, fireEvent } from 'react-native-testing-library';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import PickFileButton from './PickFileButton';
 

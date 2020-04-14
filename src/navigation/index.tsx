@@ -1,3 +1,7 @@
+// @ts-nocheck
+// NOTE Typescript definitions for Navigation have some issues. Disabling
+// Typescript checking until they are sorted out
+
 import React from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
@@ -12,26 +16,18 @@ import constants from '../helpers/constants';
 import AuthenticationView from '../screens/AuthenticationScreen';
 import CaseScreen from '../screens/CaseScreen';
 import RelationshipScreen from '../screens/RelationshipScreen';
-import AddEngagementForm from '../components/family-connections/AddEngagementForm';
 import AddDocumentForm from '../components/family-connections/AddDocumentForm';
 import logoImg from '../../assets/logo.png';
 import CustomDrawer from './CustomDrawer';
+import AddEngagementForm from '../components/family-connections/AddEngagementForm/AddEngagementForm';
 
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
 // If you add new screens into the app, you'll need to add them into the appropriate stacks below in order for React Navigation to know how to route the user.
 // refer to React navigation docs for more details: https://reactnavigation.org/docs/en/bottom-tab-navigator.html
 // Custom drawer code can be found in navigation > CustomDrawer.js
 
-// const state = store.getState()
-// console.log(state)
 const leftArrow = '\u2190';
 
-// const handleEdit = () => {
-//   setEditing(true);
-// }
-
-// const state = store.getState()
-// console.log(state)
 // Following StackNavigators are in BottomNav:
 const FamilyConnectionsNavigator = createStackNavigator({
     FamilyConnections: {
@@ -361,6 +357,7 @@ const BottomNavigator = createBottomTabNavigator(
             screen: PeopleSearchNavigator,
             navigationOptions: {
                 tabBarLabel: 'PEOPLE SEARCH',
+                // eslint-disable-next-line react/display-name
                 tabBarIcon: ({ tintColor }) => (
                     <View
                         style={{
@@ -382,6 +379,7 @@ const BottomNavigator = createBottomTabNavigator(
             screen: FamilyConnectionsNavigator,
             navigationOptions: {
                 tabBarLabel: 'FAMILY CONNECTIONS',
+                // eslint-disable-next-line react/display-name
                 tabBarIcon: ({ tintColor }) => (
                     <Ionicons name="md-people" size={36} color={tintColor} />
                 ),
@@ -392,6 +390,7 @@ const BottomNavigator = createBottomTabNavigator(
             screen: CustomDrawerNavigator,
             navigationOptions: {
                 tabBarLabel: 'MORE',
+                // eslint-disable-next-line react/display-name
                 tabBarIcon: ({ tintColor }) => (
                     <Ionicons name="ios-menu" size={36} color={tintColor} />
                 ),

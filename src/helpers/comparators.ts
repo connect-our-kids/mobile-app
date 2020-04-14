@@ -1,9 +1,4 @@
-import { casesDetail_cases_person } from '../generated/casesDetail';
-
-export const name = (
-    a: casesDetail_cases_person,
-    b: casesDetail_cases_person
-) => {
+export const name = (a: { fullName: string }, b: { fullName: string }) => {
     const A = a.fullName.toUpperCase();
     const B = b.fullName.toUpperCase();
     let comparison = 0;
@@ -15,9 +10,12 @@ export const name = (
     return comparison;
 };
 
-export const lastName = (a, b) => {
-    const A = a.last_name.toUpperCase();
-    const B = b.last_name.toUpperCase();
+export const lastName = (
+    a: { lastName: string | null },
+    b: { lastName: string | null }
+) => {
+    const A = a.lastName.toUpperCase();
+    const B = b.lastName.toUpperCase();
     let comparison = 0;
     if (A > B) {
         comparison = 1;
@@ -27,9 +25,9 @@ export const lastName = (a, b) => {
     return comparison;
 };
 
-export const created = (a, b) => {
-    const A = a.created_at;
-    const B = b.created_at;
+export const created = (a: { createdAt: any }, b: { createdAt: any }) => {
+    const A = a.createdAt;
+    const B = b.createdAt;
     let comparison = 0;
     if (A > B) {
         comparison = 1;
@@ -39,9 +37,9 @@ export const created = (a, b) => {
     return comparison;
 };
 
-export const updated = (a, b) => {
-    const A = a.updated_at;
-    const B = b.updated_at;
+export const updated = (a: { updatedAt: any }, b: { updatedAt: any }) => {
+    const A = a.updatedAt;
+    const B = b.updatedAt;
     let comparison = 0;
     if (A > B) {
         comparison = 1;

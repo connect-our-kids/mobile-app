@@ -204,7 +204,6 @@ class SearchForm extends Component {
     };
 
     tabChanged = (event) => {
-        console.log('tab index: ', event.i);
         this.setState({ ...this.state, tabPage: event.i });
     };
 

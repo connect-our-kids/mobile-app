@@ -6,10 +6,10 @@ test('clear characters before and including the LAST  or /', () => {
     );
 });
 
-it('clear characters before and including the LAST  or /', () => {
+it('clear characters before and including the LAST  or / 2', () => {
     expect(parseBaseNameFromPath('/dir/name/base-name')).toBe('base-name');
 });
 
-it('clear characters before and including the LAST  or /', () => {
+it('clear characters before and including the LAST  or / 3', () => {
     expect(parseBaseNameFromPath('/dir/name/')).toBeFalsy();
 });

@@ -67,7 +67,6 @@ interface DispatchProps {
 type Navigation = NavigationScreenProp<NavigationState>;
 
 interface OwnProps {
-    // TODO
     navigation: Navigation;
 }
 
@@ -162,7 +161,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         }
     }, [props.accessToken]);
 
-    const setModalVisible = (visible) => {
+    const setModalVisible = (visible: boolean) => {
         setState({ ...state, modalVisible: visible });
     };
 

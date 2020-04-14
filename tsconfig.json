@@ -7,10 +7,12 @@
       "noImplicitAny": false,
       "removeComments": true,
       "noLib": false,
-      "jsx": "react",
+      "jsx": "react-native",
       "lib": [
-         "es6"
+         "dom",
+         "ESNext"
       ],
+      "skipLibCheck": true,
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
       "isolatedModules": true,
@@ -25,7 +27,7 @@
       "typings/**/*",
    ],
    "exclude": [
-      "node_modules",
+      "./node_modules/*",
       "**/*.spec.ts"
    ]
 }

@@ -2,12 +2,8 @@ import { AuthSession } from 'expo';
 import { getEnvVars } from '../../environment';
 import jwtDecode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
-import * as LocalAuthentication from 'expo-local-authentication';
 import Constants from 'expo-constants';
-import getRefreshToken from './getRefreshToken';
-import getNewAccessToken from './getNewAccessToken';
 import AuthSessionCustom from './AuthSessionCustom';
-// import { verifier, challenge } from './auth0Verifiers'
 import { Platform } from 'react-native';
 
 const {
@@ -17,7 +13,7 @@ const {
     auth0RedirectScheme,
 } = getEnvVars();
 
-const toQueryString = (params) => {
+const toQueryString = (params: Record<string, string>): string => {
     return (
         '?' +
         Object.entries(params)
@@ -27,29 +23,6 @@ const toQueryString = (params) => {
             )
             .join('&')
     );
-};
-
-const setItem = async (key, value, options) => {
-    try {
-        await SecureStore.setItemAsync(key, JSON.stringify(value), options);
-    } catch (e) {
-        console.log(`error storing ${key}`, e);
-    }
-};
-
-const handleLogin = async (AuthSession, callBack) => {
-    // for handleLogin, you'll likely want to implement 2 login flows - i.e. initialLogin below and another one... perhaps reLogin...
-    // the idea is that the first time a user logs in, it will call initialLogin, and then other times, you'll want to call
-    // another request that will use a refresh token from Auth0 to get a new access token.
-    // This is desired by Travis to make a more seamless login/re-login experience for the user.
-    // We began this process below and initialLogin is the only 'actual' working login flow
-
-    await initialLogin();
-
-    const id_token = await SecureStore.getItemAsync('cok_id_token');
-    const decoded = jwtDecode(id_token);
-    const { name, email } = decoded;
-    callBack(decoded, id_token);
 };
 
 const initialLogin = async () => {
@@ -86,10 +59,8 @@ const initialLogin = async () => {
     console.log(response);
 
     if (response.error) {
-        Alert(
-            'Authentication error',
-            response.error_description || 'something went wrong'
-        );
+        // TODO notify user
+        console.log(`Failed to login. Error: ${response.error_description}`);
         return;
     }
     // if user cancels login process, terminate method
@@ -101,7 +72,7 @@ const initialLogin = async () => {
     // SET THE TIME TOKEN EXPIRES IN EXPO SECURE STORE
     // Set each token to the expo secure store. These are accessed all throughout the application AND in almost every Redux Action
     const expiresAt = response.expires_in * 1000 + new Date().getTime();
-    await setItem('expiresAt', expiresAt);
+    await SecureStore.setItemAsync('expiresAt', String(expiresAt));
     await SecureStore.setItemAsync('cok_auth_code', response.params.code);
     await SecureStore.setItemAsync('cok_id_token', response.params.id_token);
     await SecureStore.setItemAsync(
@@ -110,8 +81,16 @@ const initialLogin = async () => {
     );
 };
 
-export default {
-    toQueryString,
-    setItem,
-    handleLogin,
+export const handleLogin = async (callBack) => {
+    // for handleLogin, you'll likely want to implement 2 login flows - i.e. initialLogin below and another one... perhaps reLogin...
+    // the idea is that the first time a user logs in, it will call initialLogin, and then other times, you'll want to call
+    // another request that will use a refresh token from Auth0 to get a new access token.
+    // This is desired by Travis to make a more seamless login/re-login experience for the user.
+    // We began this process below and initialLogin is the only 'actual' working login flow
+
+    await initialLogin();
+
+    const id_token = await SecureStore.getItemAsync('cok_id_token');
+    const decoded = jwtDecode(id_token);
+    callBack(decoded, id_token);
 };

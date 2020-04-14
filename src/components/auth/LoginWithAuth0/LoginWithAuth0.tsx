@@ -2,11 +2,10 @@ import React from 'react';
 
 import Login from '../Login';
 
-import authHelpers from '../../../helpers/authHelpers';
-
 import { connect } from 'react-redux';
 
 import { setUserCreds, logOut, clearUserCases } from '../../../store/actions';
+import { handleLogin } from '../../../helpers/authHelpers';
 
 /**********************************************************/
 
@@ -21,18 +20,8 @@ function LoginWithAuth0(props): JSX.Element {
         <Login
             idToken={props.idToken ? props.idToken : null}
             navigation={props.navigation}
-            onLogin={(): void =>
-                authHelpers.handleLogin(
-                    authHelpers._loginWithAuth0,
-                    props.setUserCreds
-                )
-            }
-            onRegister={(): void =>
-                authHelpers.handleLogin(
-                    authHelpers._loginWithAuth0,
-                    props.setUserCreds
-                )
-            }
+            onLogin={async () => handleLogin(props.setUserCreds)}
+            onRegister={async () => handleLogin(props.setUserCreds)}
             email={props.user ? props.user.email : null}
             isLoggedIn={props.isLoggedIn}
             logOut={props.logOut}

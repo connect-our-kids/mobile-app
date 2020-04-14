@@ -49,8 +49,8 @@ export const sendEvent = (
         });
 };
 
-export const createOptions = (listLength, noun, index) => {
-    let options = {};
+export const createOptions = (listLength, noun, index): Record<string, any> => {
+    const options: Record<string, any> = {};
     if (listLength === null) {
         options[`${noun}Index`] = index;
 

@@ -8,11 +8,9 @@ import {
     FETCH_SEARCH_RESULT_FAILURE,
     RESET_PERSON,
     RESET_STATE,
-    SAVING_RECENT_SEARCHES,
 } from './actionTypes';
 
 import { getEnvVars } from '../../../environment';
-import saveToRecentSearches from '../../helpers/saveToRecentSearches';
 import { sendEvent, createOptions } from '../../helpers/createEvent';
 
 const { peopleSearchURL } = getEnvVars();
@@ -26,7 +24,7 @@ export const fetchPerson = (body, email) => (dispatch) => {
                 type: FETCH_PERSON_SUCCESS,
                 payload: res.data.person,
             });
-            options = createOptions(0, null, null);
+            const options = createOptions(0, null, null);
             sendEvent(email, 'search', 'person', 'success', options);
         })
         .catch((err) => {

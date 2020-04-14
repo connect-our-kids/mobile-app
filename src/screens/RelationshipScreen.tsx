@@ -28,6 +28,7 @@ import { RelationshipDetailFullFragment } from '../generated/RelationshipDetailF
 import { EngagementTypes } from '../components/family-connections/EngagementTypes';
 import { AddEngagementFormParams } from '../components/family-connections/AddEngagementForm/AddEngagementForm';
 import ScrollToTop from '../UI/ScrollToTop';
+import { caseDetailFull_engagements_EngagementDocument } from '../generated/caseDetailFull';
 
 const styles = StyleSheet.create({
     tabs: {
@@ -574,7 +575,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         engagements: engagements,
         documents: engagements.filter(
             (engagement) => engagement.__typename === 'EngagementDocument'
-        ),
+        ) as caseDetailFull_engagements_EngagementDocument[],
     };
 };
 

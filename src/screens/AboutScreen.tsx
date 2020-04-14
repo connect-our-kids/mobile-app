@@ -1,30 +1,18 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, Linking, StatusBar, View } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import * as SecureStore from 'expo-secure-store';
 import { setUserCreds, logOut } from '../store/actions';
 import { connect } from 'react-redux';
-import jwtDecode from 'jwt-decode';
 import { Divider } from 'react-native-elements';
-import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
 import Video from '../components/Video';
 import MainText from '../UI/MainText';
-import NavigationButton from '../UI/NavigationButton';
-import ScreenContainer from '../UI/ScreenContainer';
-import appJSON from '../../app.json';
+import Constants from 'expo-constants';
 
 class AboutScreen extends Component {
-    static navigationOptions = ({ navigation }) =>
-        headerConfig('About', navigation);
-
     render() {
-        function getYear() {
-            const year = new Date();
-            return year.getFullYear();
-        }
-
-        const version = appJSON.expo.version;
+        // TODO replace with expo library
+        const version = Constants.nativeAppVersion;
 
         return (
             <View
@@ -53,7 +41,6 @@ class AboutScreen extends Component {
                         <Video uri={constants.aboutURI} />
                         <Text
                             style={{
-                                fontFamily: constants.fontFamily,
                                 color: constants.highlightColor,
                                 fontSize: 14,
                                 marginBottom: 15,

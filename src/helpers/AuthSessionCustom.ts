@@ -5,6 +5,49 @@ import * as ExpoWebBrowser from 'expo-web-browser';
 
 const BASE_URL = 'https://auth.expo.io';
 let _authLock = false;
+
+function getDefaultReturnUrl() {
+    return Linking.makeUrl('expo-auth-session');
+}
+
+async function _openWebBrowserAsync(startUrl, returnUrl) {
+    // $FlowIssue: Flow thinks the awaited result can be a promise
+    const result = await ExpoWebBrowser.openAuthSessionAsync(
+        startUrl,
+        returnUrl
+    );
+    if (result.type === 'cancel' || result.type === 'dismiss') {
+        return { type: result.type };
+    }
+    return result;
+}
+
+function parseUrl(url) {
+    const parts = url.split('#');
+    const hash = parts[1];
+    const partsWithoutHash = parts[0].split('?');
+    const queryString = partsWithoutHash[partsWithoutHash.length - 1];
+    // Get query string (?hello=world)
+    const parsedSearch = qs.parse(queryString);
+    // Pull errorCode off of params
+    const { errorCode } = parsedSearch;
+    delete parsedSearch.errorCode;
+    // Get hash (#abc=example)
+    let parsedHash = {};
+    if (parts[1]) {
+        parsedHash = qs.parse(hash);
+    }
+    // Merge search and hash
+    const params = {
+        ...parsedSearch,
+        ...parsedHash,
+    };
+    return {
+        errorCode,
+        params,
+    };
+}
+
 async function startAsync(options) {
     const returnUrl = options.returnUrl || getDefaultReturnUrl();
     const authUrl = options.authUrl;
@@ -49,7 +92,7 @@ async function startAsync(options) {
             throw new Error('Unexpected AuthSession result with missing type');
         }
     }
-    let { params, errorCode } = parseUrl(result.url);
+    const { params, errorCode } = parseUrl(result.url);
     return {
         type: errorCode ? 'error' : 'success',
         params,
@@ -60,56 +103,7 @@ async function startAsync(options) {
 function dismiss() {
     ExpoWebBrowser.dismissAuthSession();
 }
-async function _openWebBrowserAsync(startUrl, returnUrl) {
-    // $FlowIssue: Flow thinks the awaited result can be a promise
-    let result = await ExpoWebBrowser.openAuthSessionAsync(startUrl, returnUrl);
-    if (result.type === 'cancel' || result.type === 'dismiss') {
-        return { type: result.type };
-    }
-    return result;
-}
-function getStartUrl(authUrl, returnUrl) {
-    let queryString = qs.stringify({
-        authUrl,
-        returnUrl,
-    });
-    return `${getRedirectUrl()}/start?${queryString}`;
-}
-function getRedirectUrl() {
-    const redirectUrl = `${BASE_URL}/${Constants.manifest.id}`;
-    if (__DEV__) {
-        _warnIfAnonymous(Constants.manifest.id, redirectUrl);
-    }
-    return redirectUrl;
-}
-function getDefaultReturnUrl() {
-    return Linking.makeUrl('expo-auth-session');
-}
-function parseUrl(url) {
-    let parts = url.split('#');
-    let hash = parts[1];
-    let partsWithoutHash = parts[0].split('?');
-    let queryString = partsWithoutHash[partsWithoutHash.length - 1];
-    // Get query string (?hello=world)
-    let parsedSearch = qs.parse(queryString);
-    // Pull errorCode off of params
-    let { errorCode } = parsedSearch;
-    delete parsedSearch.errorCode;
-    // Get hash (#abc=example)
-    let parsedHash = {};
-    if (parts[1]) {
-        parsedHash = qs.parse(hash);
-    }
-    // Merge search and hash
-    let params = {
-        ...parsedSearch,
-        ...parsedHash,
-    };
-    return {
-        errorCode,
-        params,
-    };
-}
+
 function _warnIfAnonymous(id, url) {
     if (id.startsWith('@anonymous/')) {
         console.warn(
@@ -117,6 +111,23 @@ function _warnIfAnonymous(id, url) {
         );
     }
 }
+
+function getRedirectUrl() {
+    const redirectUrl = `${BASE_URL}/${Constants.manifest.id}`;
+    if (__DEV__) {
+        _warnIfAnonymous(Constants.manifest.id, redirectUrl);
+    }
+    return redirectUrl;
+}
+
+function getStartUrl(authUrl, returnUrl) {
+    const queryString = qs.stringify({
+        authUrl,
+        returnUrl,
+    });
+    return `${getRedirectUrl()}/start?${queryString}`;
+}
+
 export default {
     dismiss,
     getRedirectUrl,
@@ -124,4 +135,3 @@ export default {
     getDefaultReturnUrl,
     startAsync,
 };
-// # sourceMappingURL=AuthSession.js.map

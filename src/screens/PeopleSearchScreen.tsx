@@ -1,3 +1,6 @@
+// @ts-nocheck
+// NOTE Ignoring typescript errors so we can enable typescript checking across the repo
+// in the CI system. That will prevent more errors from being added.
 import React from 'react';
 import {
     SafeAreaView,
@@ -6,7 +9,6 @@ import {
     View,
     TouchableHighlight,
     StatusBar,
-    Modal,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -22,22 +24,79 @@ import {
 } from '../store/actions';
 
 import { Container } from 'native-base';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 
 import PersonRow from '../components/people-search/PersonRow';
-import headerConfig from '../helpers/headerConfig';
 import constants from '../helpers/constants';
 import SearchForm from '../components/people-search/SearchForm';
 import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader';
 
-import authHelpers from '../helpers/authHelpers';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
+import { handleLogin } from '../helpers/authHelpers';
+import { RootState } from '../store/reducers';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
-class PeopleSearchScreen extends React.Component {
-    static navigationOptions = ({ navigation }) =>
-        headerConfig('People Search', navigation);
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        margin: 5,
+    },
+    intro: {
+        paddingTop: 20,
+        paddingLeft: 10,
+        fontSize: 18,
+    },
+    link: {
+        color: `${constants.highlightColor}`,
+        lineHeight: 17,
+        padding: 15,
+        backgroundColor: 'rgb(216,236,240)',
+        borderRadius: 10,
+        marginBottom: 20,
+    },
+    matchesText: {
+        fontSize: 20,
+        color: `${constants.highlightColor}`,
+        marginBottom: 20,
+        marginLeft: 10,
+    },
+});
 
+interface StateProps {
+    error;
+    isFetching;
+    isLoggedIn;
+    person;
+    possiblePersons;
+    modalVisible;
+    videoAgree;
+    videoVisible;
+    user;
+    info;
+    queryType;
+}
+
+interface DispatchProps {
+    fetchPerson: typeof fetchPerson;
+    fetchSearchResult: typeof fetchSearchResult;
+    resetState: typeof resetState;
+    setModalVisible: typeof setModalVisible;
+    setAgreeModalVisible: typeof setAgreeModalVisible;
+    setUserCreds: typeof setUserCreds;
+    setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
+    getInfo: typeof getInfo;
+}
+
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+class PeopleSearchScreen extends React.Component<Props> {
     state = {
         data: this.props.info,
         type: this.props.type,
@@ -46,8 +105,6 @@ class PeopleSearchScreen extends React.Component {
         terms: false,
         privacy: false,
     };
-
-    componentDidMount() {}
 
     handleEncodeURI = (person) => {
         return encodeURI(JSON.stringify(person));
@@ -146,7 +203,7 @@ class PeopleSearchScreen extends React.Component {
     };
 
     render() {
-        const { isLoggedIn, navigation } = this.props;
+        const { isLoggedIn } = this.props;
         return (
             <Container style={styles.container}>
                 <SafeAreaView>
@@ -160,11 +217,8 @@ class PeopleSearchScreen extends React.Component {
                         setVideoPlayerModalVisible={
                             this.props.setVideoPlayerModalVisible
                         }
-                        onLogin={() =>
-                            authHelpers.handleLogin(
-                                authHelpers._loginWithAuth0,
-                                this.props.setUserCreds
-                            )
+                        onLogin={async () =>
+                            handleLogin(this.props.setUserCreds)
                         }
                     />
 
@@ -204,14 +258,14 @@ class PeopleSearchScreen extends React.Component {
                                         />
                                     </View>
 
-                                    {this.state.errorMessage?.length > 0 ? (
+                                    {this.props.error?.length > 0 ? (
                                         <View
                                             style={{
                                                 backgroundColor: '#fff3cd',
                                                 padding: 15,
                                             }}
                                         >
-                                            {this.state.errorMessage}
+                                            {this.props.error}
                                         </View>
                                     ) : null}
 
@@ -252,45 +306,9 @@ class PeopleSearchScreen extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        margin: 5,
-    },
-    intro: {
-        paddingTop: 20,
-        paddingLeft: 10,
-        fontFamily: constants.fontFamily,
-        fontSize: 18,
-    },
-    link: {
-        color: `${constants.highlightColor}`,
-        lineHeight: 17,
-        padding: 15,
-        backgroundColor: 'rgb(216,236,240)',
-        borderRadius: 10,
-        marginBottom: 20,
-    },
-    matchesText: {
-        fontSize: 20,
-        color: `${constants.highlightColor}`,
-        marginBottom: 20,
-        marginLeft: 10,
-    },
-});
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState): StateProps => {
+    const { error, isFetching, person, possiblePersons } = state.people;
     const {
-        error,
-        isFetching,
-        person,
-        possiblePersons,
-        data,
-        query,
-    } = state.people;
-    const {
-        // accessToken,
-        // idToken,
         isLoggedIn,
         user,
         modalVisible,
@@ -298,9 +316,7 @@ const mapStateToProps = (state) => {
         videoVisible,
     } = state.auth;
     return {
-        // accessToken,
         error,
-        // idToken,
         isFetching,
         isLoggedIn,
         person,
@@ -311,12 +327,10 @@ const mapStateToProps = (state) => {
         user,
         info: state.confirmationModal.info,
         queryType: state.confirmationModal.queryType,
-        data,
-        query,
     };
 };
 
-export default connect(mapStateToProps, {
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     fetchPerson,
     fetchSearchResult,
     resetState,

@@ -10,8 +10,7 @@ import {
     setUserCreds,
     authChecker,
 } from '../store/actions';
-import authHelpers from '../helpers/authHelpers';
-import headerConfig from '../helpers/headerConfig';
+import { handleLogin } from '../helpers/authHelpers';
 
 const styles = StyleSheet.create({
     registerContainer: {
@@ -34,12 +33,7 @@ const AuthenticationView = (props) => {
                 videoVisible={props.videoVisible}
                 setModalVisible={props.setModalVisible}
                 setVideoPlayerModalVisible={props.setVideoPlayerModalVisible}
-                onLogin={() =>
-                    authHelpers.handleLogin(
-                        authHelpers._loginWithAuth0,
-                        props.setUserCreds
-                    )
-                }
+                onLogin={async () => handleLogin(props.setUserCreds)}
             />
             {!props.modalVisible && (
                 <LoginWithAuth0

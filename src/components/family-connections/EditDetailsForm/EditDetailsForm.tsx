@@ -1,3 +1,7 @@
+// @ts-nocheck
+// NOTE: Ignoring Typescript errors for this file because it is not currently used.
+// When this feature is enabled remove the ts-nocheck line
+
 import React, { useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import axios from 'axios';
@@ -7,7 +11,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    // CheckBox,
     Platform,
 } from 'react-native';
 import { CheckBox } from 'react-native-elements';
@@ -63,6 +66,191 @@ const schema = yup.object().shape({
     linkedin: yup.string().url().nullable(),
 });
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '90%',
+        //    marginHorizontal: 10 /// used to be 90% width
+    },
+    header: {
+        marginTop: 50,
+        marginBottom: 30,
+        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
+        borderBottomWidth: 0.5,
+        fontSize: 2.3,
+    },
+    textInput: {
+        width: '100%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginTop: 10, // /// used to be margin
+        marginBottom: 20,
+    },
+    textInputLong: {
+        width: '80%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderBottomWidth: 1,
+        padding: 10,
+        marginTop: 5,
+    },
+    textInputShort: {
+        width: '40%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderBottomWidth: 1,
+        padding: 10,
+        marginTop: 5,
+    },
+    textInputTel: {
+        width: '80%',
+        fontSize: 18,
+        color: '#444444',
+        paddingBottom: 10,
+        marginTop: 5,
+    },
+    textInputEmail: {
+        width: '70%',
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginTop: 10, // /// used to be margin
+        marginBottom: 20,
+    },
+    doubleField: {
+        width: '90%',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginLeft: -10,
+        marginBottom: 20,
+    },
+    picker: {
+        color: '#444444',
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginTop: 10,
+        marginBottom: 20,
+        paddingVertical: Platform.OS === 'ios' ? 16 : 4,
+        paddingHorizontal: Platform.OS === 'ios' ? 10.5 : 0,
+    },
+    pickerText: {
+        fontSize: Platform.OS === 'ios' ? 14 : null,
+        paddingTop: Platform.OS === 'ios' ? 2.5 : null,
+        color: '#444444',
+    },
+    dob_gen: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 5,
+        // height on iOS
+        // ActionSheet
+    },
+    datePicker: {
+        borderColor: 'rgba(24, 23, 21, 0.5)',
+        borderWidth: 1,
+        borderRadius: 5,
+        justifyContent: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: Platform.OS === 'ios' ? 16.3 : 20,
+        height: Platform.OS === 'ios' ? 49 : 60,
+    },
+    addButton: {
+        backgroundColor: '#0279AC',
+        borderRadius: 20,
+        height: 30,
+        width: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        marginBottom: 10,
+        paddingBottom: 2,
+        paddingLeft: 1,
+    },
+    delButton: {
+        backgroundColor: '#DB272A',
+        borderRadius: 20,
+        height: 30,
+        width: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        marginBottom: 10,
+        paddingBottom: 2,
+        paddingLeft: 1,
+    },
+    addButtonRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 15,
+    },
+    delButtonRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '30%',
+    },
+    delTelButtonRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        width: '30%',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 20,
+    },
+    saveButton: {
+        width: 150,
+        marginVertical: 15,
+        // marginHorizontal: 10,
+        padding: 15,
+        backgroundColor: '#0279AC',
+        color: '#fff',
+        borderRadius: 5,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    cancelButton: {
+        width: 150,
+        marginVertical: 15,
+        // marginHorizontal: 10,
+        padding: 14,
+        backgroundColor: '#fff',
+        color: '#0279AC',
+        borderColor: '#0279AC',
+        borderWidth: 1,
+        borderRadius: 5,
+        fontSize: 20,
+        textAlign: 'center',
+    },
+    errorBox: {
+        justifyContent: 'center',
+        backgroundColor: '#ff9494',
+        borderRadius: 5,
+        padding: 10,
+        marginHorizontal: 10,
+        marginVertical: 15,
+    },
+    errorText: {
+        color: '#DB272A',
+    },
+    hr: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
+        marginTop: 5,
+        marginBottom: 12,
+    },
+    buttonLbl: { fontSize: 16, paddingBottom: 12 },
+});
+
 function EditDetailsForm(props) {
     const [token, setToken] = useState('');
     const [formData, setFormData] = useState(props.details);
@@ -116,25 +304,6 @@ function EditDetailsForm(props) {
         }
     }
 
-    function handleSave() {
-        // let currentErrors = {}
-        setFormErrors({});
-        schema
-            .validate(formData, { abortEarly: false })
-            .then(() => {
-                // checks the formData with Yup schema, if it passes errors are cleared and save function is run
-                setFormErrors({});
-                save();
-            })
-            .catch((error) => {
-                let errObj = {};
-                error.errors.forEach((err) => {
-                    errObj = { ...errObj, ...errorValidatorFormatter(err) };
-                });
-                setFormErrors(errObj);
-            });
-    }
-
     function save() {
         const form = new FormData();
         form.append('person', JSON.stringify(formData));
@@ -156,6 +325,25 @@ function EditDetailsForm(props) {
             .catch((err) => {
                 console.log('Unable to edit person', err);
                 setError(true);
+            });
+    }
+
+    function handleSave() {
+        // let currentErrors = {}
+        setFormErrors({});
+        schema
+            .validate(formData, { abortEarly: false })
+            .then(() => {
+                // checks the formData with Yup schema, if it passes errors are cleared and save function is run
+                setFormErrors({});
+                save();
+            })
+            .catch((error) => {
+                let errObj = {};
+                error.errors.forEach((err) => {
+                    errObj = { ...errObj, ...errorValidatorFormatter(err) };
+                });
+                setFormErrors(errObj);
             });
     }
 
@@ -654,7 +842,7 @@ function EditDetailsForm(props) {
                 onChangeText={(text) => handleChange('twitter', text)}
                 placeholder="Twitter"
             />
-            <Text style={styles.errorText}>{formErrors.facebook}</Text>
+            <Text style={styles.errorText}>{formErrors.twitter}</Text>
 
             <Text>LinkedIn</Text>
             <TextInput
@@ -663,7 +851,7 @@ function EditDetailsForm(props) {
                 onChangeText={(text) => handleChange('linkedin', text)}
                 placeholder="LinkedIn"
             />
-            <Text style={styles.errorText}>{formErrors.facebook}</Text>
+            <Text style={styles.errorText}>{formErrors.linkedin}</Text>
 
             {error ? (
                 <View style={styles.errorBox}>
@@ -692,202 +880,6 @@ function EditDetailsForm(props) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '90%',
-        //    marginHorizontal: 10 /// used to be 90% width
-    },
-    header: {
-        marginTop: 50,
-        marginBottom: 30,
-        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
-        borderBottomWidth: 0.5,
-        fontSize: 2.3,
-    },
-    textInput: {
-        width: '100%',
-        color: '#444444',
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginTop: 10, // /// used to be margin
-        marginBottom: 20,
-    },
-    textInputLong: {
-        width: '80%',
-        color: '#444444',
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderBottomWidth: 1,
-        padding: 10,
-        marginTop: 5,
-    },
-    textInputShort: {
-        width: '40%',
-        color: '#444444',
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderBottomWidth: 1,
-        padding: 10,
-        marginTop: 5,
-    },
-    textInputTel: {
-        width: '80%',
-        fontSize: 18,
-        color: '#444444',
-        paddingBottom: 10,
-        marginTop: 5,
-    },
-    textInputEmail: {
-        width: '70%',
-        color: '#444444',
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginTop: 10, // /// used to be margin
-        marginBottom: 20,
-    },
-    doubleField: {
-        width: '90%',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginLeft: -10,
-        marginBottom: 20,
-    },
-    picker: {
-        color: '#444444',
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginTop: 10,
-        marginBottom: 20,
-        paddingVertical: Platform.OS === 'ios' ? 16 : 4,
-        paddingHorizontal: Platform.OS === 'ios' ? 10.5 : 0,
-    },
-    pickerText: {
-        fontSize: Platform.OS === 'ios' ? 14 : null,
-        paddingTop: Platform.OS === 'ios' ? 2.5 : null,
-        color: '#444444',
-    },
-    dob_gen: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 5,
-        // height on iOS
-        // ActionSheet
-    },
-    dob_gen_item: {
-        width: '45%',
-    },
-    datePicker: {
-        borderColor: 'rgba(24, 23, 21, 0.5)',
-        borderWidth: 1,
-        borderRadius: 5,
-        justifyContent: 'center',
-        paddingHorizontal: 15,
-        paddingVertical: Platform.OS === 'ios' ? 16.3 : 20,
-        height: Platform.OS === 'ios' ? 49 : 60,
-    },
-    addButton: {
-        backgroundColor: '#0279AC',
-        borderRadius: 20,
-        height: 30,
-        width: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
-        marginBottom: 10,
-        paddingBottom: 2,
-        paddingLeft: 1,
-    },
-    delButton: {
-        backgroundColor: '#DB272A',
-        borderRadius: 20,
-        height: 30,
-        width: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
-        marginBottom: 10,
-        paddingBottom: 2,
-        paddingLeft: 1,
-    },
-    addButtonRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 15,
-    },
-    delButtonRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '30%',
-    },
-    delTelButtonRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        width: '30%',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 20,
-    },
-    addressInfo: {
-        width: '80%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    addressDetail: {
-        width: '55%',
-    },
-    saveButton: {
-        width: 150,
-        marginVertical: 15,
-        // marginHorizontal: 10,
-        padding: 15,
-        backgroundColor: '#0279AC',
-        color: '#fff',
-        borderRadius: 5,
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    cancelButton: {
-        width: 150,
-        marginVertical: 15,
-        // marginHorizontal: 10,
-        padding: 14,
-        backgroundColor: '#fff',
-        color: '#0279AC',
-        borderColor: '#0279AC',
-        borderWidth: 1,
-        borderRadius: 5,
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    errorBox: {
-        justifyContent: 'center',
-        backgroundColor: '#ff9494',
-        borderRadius: 5,
-        padding: 10,
-        marginHorizontal: 10,
-        marginVertical: 15,
-    },
-    errorText: {
-        color: '#DB272A',
-    },
-    hr: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
-        marginTop: 5,
-        marginBottom: 12,
-    },
-    buttonLbl: { fontSize: 16, paddingBottom: 12 },
-});
 
 const mapStateToProps = () => {
     return {};

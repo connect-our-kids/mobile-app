@@ -2,13 +2,15 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
-    "build": "npm run codegen",
+    "prebuild": "npm run codegen",
+    "build": "tsc",
+    "postbuild": "expo doctor",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint ./src || true",
+    "lint": "eslint --max-warnings 0 ./src",
     "test": "jest --watch --changedSince=origin/master",
     "test:all": "jest --watchAll",
     "test:debug": "jest --watch --onlyChanged --runInBand",
@@ -88,6 +90,7 @@
     "@types/react-dom": "^16.9.5",
     "@types/react-native": "^0.61.23",
     "@types/react-redux": "^7.1.7",
+    "@types/yup": "^0.26.36",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "apollo": "^2.26.0",
@@ -110,6 +113,7 @@
     "prettier": "^2.0.4",
     "react-native-testing-library": "^1.13.0",
     "react-test-renderer": "^16.13.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "yarn": "^1.22.4"
   }
 }
