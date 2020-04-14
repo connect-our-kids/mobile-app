@@ -21,9 +21,9 @@ jobs:
       - name: build
         run: |
           npm run build
+          npm run lint
       - name: test
         run: |
-          npm run lint
           npm run test:coverage
         env:
           CI: true
