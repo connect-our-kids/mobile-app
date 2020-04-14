@@ -53,13 +53,10 @@ export function getEnvVars(env = Constants.manifest.releaseChannel): EnvConfig {
     // __DEV__ is true when run locally, but false when published.
 
     if (__DEV__ || env === 'dev') {
-        console.log('Using dev configuration');
         return ENV.dev;
     } else if (env === 'staging') {
-        console.log('Using staging configuration');
         return ENV.staging;
     } else if (env === 'default' || env === 'prod') {
-        console.log('Using production configuration');
         return ENV.prod;
     } else {
         console.warn(

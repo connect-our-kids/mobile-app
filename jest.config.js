@@ -4,14 +4,12 @@
 
 function getBaseConfig() {
     return {
-
         /***************************************
             CODE TRANSFORMATION (transpilation)
         ***************************************/
 
         /* DO test... */
-        'moduleFileExtensions': [
-
+        moduleFileExtensions: [
             /* JSON */
             'json',
 
@@ -22,38 +20,32 @@ function getBaseConfig() {
             /* TypeScript */
             'ts',
             'tsx',
-
         ],
 
         /* DO transform... */
-        'transform': {
-
+        transform: {
             /* JavaScript */
             '^.+\\.(js|jsx)$': 'babel-jest',
 
             /* TypeScript */
             '^.+\\.(ts|tsx)$': 'babel-jest',
-
         },
 
         /**************************************/
-
     };
 }
 
 function getBaseCoverageConfig() {
     return {
-
         /***************************************
             CODE COVERAGE
         ***************************************/
 
         /* DO NOT collect (by default) */
-        'collectCoverage': false,
+        collectCoverage: false,
 
         /* DO count files matching... */
-        'collectCoverageFrom': [
-
+        collectCoverageFrom: [
             /* JavaScript files */
             '**/*.{js,jsx}',
 
@@ -73,37 +65,32 @@ function getBaseCoverageConfig() {
 
             /* builds */
             '!<rootDir>/build/**',
-
         ],
 
         /**************************************/
-
     };
 }
 
 /**********************************************************/
 
 module.exports = {
-
     /* Limit testing to... */
-    'projects': [
-
+    projects: [
         /* Android */
         {
-            'preset': 'jest-expo/android',
+            preset: 'jest-expo/android',
 
-            ...(getBaseConfig()),
-            ...(getBaseCoverageConfig()),
+            ...getBaseConfig(),
+            ...getBaseCoverageConfig(),
         },
 
         /* iOS */
         {
-            'preset': 'jest-expo/ios',
+            preset: 'jest-expo/ios',
 
-            ...(getBaseConfig()),
-            ...(getBaseCoverageConfig()),
+            ...getBaseConfig(),
+            ...getBaseCoverageConfig(),
         },
-
     ],
-
+    testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 };

@@ -14,7 +14,7 @@
     "test": "jest --watch --changedSince=origin/master",
     "test:all": "jest --watchAll",
     "test:debug": "jest --watch --onlyChanged --runInBand",
-    "test:coverage": "jest --coverage=true",
+    "test:coverage": "jest --coverage=true || true",
     "test:update-snapshots": "jest --updateSnapshot",
     "codegen": "rm -rf src/generated && npx apollo client:codegen --target=typescript --tagName=gql --addTypename --outputFlat=src/generated && graphql-codegen"
   },
@@ -82,6 +82,7 @@
     "@graphql-codegen/cli": "^1.13.1",
     "@graphql-codegen/fragment-matcher": "^1.13.1",
     "@types/apollo-upload-client": "^8.1.3",
+    "@types/enzyme": "^3.10.5",
     "@types/googlemaps": "^3.39.3",
     "@types/jest": "^25.1.4",
     "@types/mime": "^2.0.1",
@@ -90,6 +91,8 @@
     "@types/react-dom": "^16.9.5",
     "@types/react-native": "^0.61.23",
     "@types/react-redux": "^7.1.7",
+    "@types/react-test-renderer": "^16.9.2",
+    "@types/redux-mock-store": "^1.0.2",
     "@types/yup": "^0.26.36",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
@@ -97,6 +100,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "babel-preset-expo": "^8.0.0",
+    "enzyme": "^3.11.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-nibble": "^5.1.0",
@@ -113,6 +117,7 @@
     "prettier": "^2.0.4",
     "react-native-testing-library": "^1.13.0",
     "react-test-renderer": "^16.13.1",
+    "redux-mock-store": "^1.5.4",
     "typescript": "^3.8.3",
     "yarn": "^1.22.4"
   }
