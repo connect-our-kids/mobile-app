@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import constants from '../../../helpers/constants';
 import { connect } from 'react-redux';
-import { EngagementTypes } from '../EngagementTypes';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { RootState } from '../../../store/reducers';
 import {
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const getTitle = (dataType: EngagementTypes): string => {
+const getTitle = (dataType: AddEngagementFormEngagementTypes): string => {
     switch (dataType) {
         case 'EngagementCall':
             return 'LOG CALL';
@@ -54,15 +53,14 @@ const getTitle = (dataType: EngagementTypes): string => {
             return 'LOG Email';
         case 'EngagementNote':
             return 'ADD NOTE';
-        case 'EngagementReminder':
-            return 'SET REMINDER';
         default:
-            // EngagementDocument unhandled on purpose
             throw new Error(`Unsupported engagement type: ${dataType}`);
     }
 };
 
-const dataTypePlaceholder = (dataType: EngagementTypes): string => {
+const dataTypePlaceholder = (
+    dataType: AddEngagementFormEngagementTypes
+): string => {
     if (dataType === 'EngagementEmail') {
         return 'ADD EMAIL';
     } else {
@@ -70,18 +68,10 @@ const dataTypePlaceholder = (dataType: EngagementTypes): string => {
     }
 };
 
-const noteSizeHelper = (dataType: EngagementTypes): number => {
-    if (dataType === 'EngagementReminder') {
-        return 100;
-    } else {
-        return 165;
-    }
-};
-
 interface StateProps {
     caseId: number;
     relationshipId: number;
-    engagementType: EngagementTypes;
+    engagementType: AddEngagementFormEngagementTypes;
 }
 
 interface DispatchProps {
@@ -98,10 +88,15 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
+export type AddEngagementFormEngagementTypes =
+    | 'EngagementCall'
+    | 'EngagementEmail'
+    | 'EngagementNote';
+
 export interface AddEngagementFormParams {
     relationshipId?: number;
     caseId: number;
-    engagementType: EngagementTypes;
+    engagementType: AddEngagementFormEngagementTypes;
 }
 
 const AddEngagementForm = (props: Props) => {
@@ -188,7 +183,7 @@ const AddEngagementForm = (props: Props) => {
                 ) : null}
                 <View
                     style={{
-                        height: noteSizeHelper(props.engagementType),
+                        height: 165,
                         marginBottom: 5,
                         width: '100%',
                         backgroundColor: 'white',
@@ -263,7 +258,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     // passed in parameter on navigate
     const engagementType = ownProps.navigation.getParam(
         'engagementType'
-    ) as EngagementTypes;
+    ) as AddEngagementFormEngagementTypes;
 
     // this component only supports the following types
     if (
