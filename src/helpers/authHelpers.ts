@@ -1,4 +1,4 @@
-import { AuthSession } from 'expo';
+import * as AuthSession from 'expo-auth-session';
 import { getEnvVars } from '../../environment';
 import jwtDecode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
