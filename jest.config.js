@@ -79,6 +79,11 @@ module.exports = {
         /* Android */
         {
             preset: 'jest-expo/android',
+            testMatch: ['<rootDir>/src/**/*[-.]{test,spec}.{js,jsx,ts,tsx}'],
+            testPathIgnorePatterns: [
+                '<rootDir>/node_modules/',
+                '<rootDir>/build/',
+            ],
 
             ...getBaseConfig(),
             ...getBaseCoverageConfig(),
@@ -87,10 +92,14 @@ module.exports = {
         /* iOS */
         {
             preset: 'jest-expo/ios',
+            testMatch: ['<rootDir>/src/**/*[-.]{test,spec}.{js,jsx,ts,tsx}'],
+            testPathIgnorePatterns: [
+                '<rootDir>/node_modules/',
+                '<rootDir>/build/',
+            ],
 
             ...getBaseConfig(),
             ...getBaseCoverageConfig(),
         },
     ],
-    testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 };
