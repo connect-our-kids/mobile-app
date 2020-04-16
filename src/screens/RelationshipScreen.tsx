@@ -146,7 +146,6 @@ interface DispatchProps {
 type Navigation = NavigationScreenProp<NavigationState>;
 
 interface OwnProps {
-    // TODO
     navigation: Navigation;
 }
 
@@ -188,7 +187,7 @@ function RelationshipScreen(props: Props): JSX.Element {
         } as AddEngagementFormParams);
     };
 
-    let scroll: ScrollView;
+    let scroll: ScrollView | null = null;
 
     return props.isLoading || !props.relationship ? (
         <View style={{ ...styles.topView }}>
@@ -208,7 +207,7 @@ function RelationshipScreen(props: Props): JSX.Element {
                         borderRadius: 35,
                     }}
                     onPress={(): void => {
-                        scroll.scrollTo(options);
+                        scroll?.scrollTo(options);
                     }}
                 />
             ) : null}
@@ -567,21 +566,31 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         'relationshipId'
     ) as number;
 
-    const caseId = state.case.results?.details.id;
+    const caseId = state.case.results?.details?.id;
+
+    if (!caseId) {
+        throw new Error('Case id not specified');
+    }
+
     // engagements are at the case level. Filter to ones relevant
     // to this relationship/connection
-    const engagements = state.case.results?.engagements.filter(
-        (engagement) => engagement.relationship?.id === relationshipId
-    );
+    const engagements =
+        state.case.results?.engagements.filter(
+            (engagement) => engagement.relationship?.id === relationshipId
+        ) ?? [];
+
+    const documents =
+        engagements?.filter(
+            (engagement) => engagement.__typename === 'EngagementDocument'
+        ) ?? [];
+
     return {
         caseId,
         relationshipId,
         isLoading: state.relationship.isLoading,
         relationship: state.relationship.results,
         engagements: engagements,
-        documents: engagements.filter(
-            (engagement) => engagement.__typename === 'EngagementDocument'
-        ) as caseDetailFull_engagements_EngagementDocument[],
+        documents: documents as caseDetailFull_engagements_EngagementDocument[],
     };
 };
 

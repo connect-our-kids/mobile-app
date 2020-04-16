@@ -4,6 +4,7 @@
       "module": "system",
       "outDir": "build",
       "declaration": false,
+      "strictNullChecks": true,
       "noImplicitAny": false,
       "removeComments": true,
       "noLib": false,

@@ -12,7 +12,7 @@ describe('PersonInfoHeader component', () => {
                 <PersonInfoHeader {...{ item: undefined, listItem: false }} />
             )
             .toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {

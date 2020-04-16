@@ -77,7 +77,7 @@ describe('AddEngagementForm component', () => {
                 </Provider>
             )
             .toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('renders - call', () => {
@@ -90,7 +90,7 @@ describe('AddEngagementForm component', () => {
                 </Provider>
             )
             .toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('renders - email', () => {
@@ -103,7 +103,7 @@ describe('AddEngagementForm component', () => {
                 </Provider>
             )
             .toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {

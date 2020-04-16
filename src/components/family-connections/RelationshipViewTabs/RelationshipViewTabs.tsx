@@ -145,7 +145,9 @@ export const Documents = (props: DocumentsProps): JSX.Element => {
                 }
                 subtitle={
                     <View>
-                        <Text>{props.document.createdBy.name}</Text>
+                        {props.document.createdBy ? (
+                            <Text>{props.document.createdBy.name}</Text>
+                        ) : null}
                         <Text>
                             {moment(props.document.createdAt).format(
                                 'MMM Do YYYY, h:mm a'

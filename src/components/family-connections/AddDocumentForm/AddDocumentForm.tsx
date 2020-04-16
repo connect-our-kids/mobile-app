@@ -6,7 +6,6 @@ import {
     View,
     TouchableOpacity,
     TextInput,
-    Image,
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
@@ -127,7 +126,10 @@ function AddDocumentForm(props: Props): JSX.Element {
 
 function mapStateToProps(state: RootState, ownProps: OwnProps) {
     const relationshipId = state.relationship?.results?.id;
-    const caseId = state.case.results?.details.id;
+    const caseId = state.case.results?.details?.id;
+    if (!caseId) {
+        throw new Error('Case id not specified');
+    }
 
     const media = ownProps.navigation.getParam('media') as Media;
     const attachment = convertMediaToAttachment(media);

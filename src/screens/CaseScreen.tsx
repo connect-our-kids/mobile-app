@@ -47,7 +47,6 @@ interface DispatchProps {
 type Navigation = NavigationScreenProp<NavigationState>;
 
 interface OwnProps {
-    // TODO
     navigation: Navigation;
 }
 
@@ -119,7 +118,7 @@ const CaseScreen = (props: Props) => {
     };
 
     // ------FILTER functionality------
-    const filteredConnections = () => {
+    const filteredConnections = (caseToFilter: caseDetailFull) => {
         // ------STATUS FILTER functionality------
         // if no filters are set, do nothing
         // if (props.caseConnections === undefined) {
@@ -134,15 +133,15 @@ const CaseScreen = (props: Props) => {
             !filtersSelected[4] &&
             !filtersSelected[5]
         ) {
-            return genderFilter(props.case.relationships);
+            return genderFilter(caseToFilter.relationships);
         } else {
             // remove everyone without a status
-            const noStatus = props.case.relationships.filter(
+            const noStatus = caseToFilter.relationships.filter(
                 (connection) => !connection.status
             );
 
             // people with statuses only
-            let filteredList = props.case.relationships.filter(
+            let filteredList = caseToFilter.relationships.filter(
                 (connection) => connection.status
             );
 
@@ -150,32 +149,32 @@ const CaseScreen = (props: Props) => {
                 // if filter1 not selected, remove everyone with filter1
                 filteredList = filteredList.filter(
                     (connection) =>
-                        connection.status.name !== 'Family Candidate'
+                        connection.status?.name !== 'Family Candidate'
                 );
             }
             if (!filtersSelected[2]) {
                 // if filter2 not selected, remove everyone with filter2
                 filteredList = filteredList.filter(
-                    (connection) => connection.status.name !== 'Highlight'
+                    (connection) => connection.status?.name !== 'Highlight'
                 );
             }
             if (!filtersSelected[3]) {
                 // if filter3 not selected, remove everyone with filter3
                 filteredList = filteredList.filter(
-                    (connection) => connection.status.name !== 'No-Go'
+                    (connection) => connection.status?.name !== 'No-Go'
                 );
             }
             if (!filtersSelected[4]) {
                 // if filter4 not selected, remove everyone with filter4
                 filteredList = filteredList.filter(
-                    (connection) => connection.status.name !== 'Of Interest'
+                    (connection) => connection.status?.name !== 'Of Interest'
                 );
             }
             if (!filtersSelected[5]) {
                 // if filter5 not selected, remove everyone with filter5
                 filteredList = filteredList.filter(
                     (connection) =>
-                        connection.status.name !== 'Support Candidate'
+                        connection.status?.name !== 'Support Candidate'
                 );
             }
             if (filtersSelected[0]) {
@@ -190,13 +189,15 @@ const CaseScreen = (props: Props) => {
     // ------SEARCH BAR functionality - filters by case first_name or last_name---------
     let searchedConnections: caseDetailFull_relationships[] = [];
     if (!props.isLoadingCase && props.case) {
-        searchedConnections = filteredConnections().filter((result) => {
-            return (
-                result.person.fullName
-                    .toLowerCase()
-                    .indexOf(searchKeywords.toLowerCase()) !== -1
-            );
-        });
+        searchedConnections = filteredConnections(props.case).filter(
+            (result) => {
+                return (
+                    result.person.fullName
+                        .toLowerCase()
+                        .indexOf(searchKeywords.toLowerCase()) !== -1
+                );
+            }
+        );
     }
 
     const styles = StyleSheet.create({
@@ -211,7 +212,7 @@ const CaseScreen = (props: Props) => {
         },
     });
 
-    let scroll: ScrollView;
+    let scroll: ScrollView | null = null;
 
     return (
         <SafeAreaView
@@ -229,14 +230,14 @@ const CaseScreen = (props: Props) => {
                             right: 46,
                         }}
                         onPress={() => {
-                            scroll.scrollTo({ x: 0, y: 0, animated: true });
+                            scroll?.scrollTo({ x: 0, y: 0, animated: true });
                         }}
                     />
                 ) : null}
 
                 {props.isLoadingCase ? (
                     <Loader />
-                ) : props.case ? (
+                ) : props.case?.details ? (
                     <ScrollView
                         scrollsToTop
                         ref={(a) => {
@@ -254,11 +255,11 @@ const CaseScreen = (props: Props) => {
                     >
                         <View>
                             <ListItem
-                                title={props.case.details.person.fullName}
+                                title={props.case.details?.person.fullName}
                                 titleStyle={{ fontSize: 18 }}
                                 subtitle={
                                     <View>
-                                        {props.case.details.person.gender ? (
+                                        {props.case.details?.person.gender ? (
                                             <Text style={{ color: '#434245' }}>
                                                 {genderAssignment(
                                                     props.case.details.person
@@ -266,19 +267,21 @@ const CaseScreen = (props: Props) => {
                                                 )}
                                             </Text>
                                         ) : null}
-                                        {props.case.details.person.birthdayRaw
+                                        {props.case.details.person
+                                            .birthdayRaw &&
+                                        props.case.details.person.birthdayRaw
                                             ?.length > 0 ? (
                                             <Text style={{ color: '#434245' }}>
                                                 Date of Birth:{' '}
                                                 {
-                                                    props.case.details.person
+                                                    props.case.details?.person
                                                         .birthdayRaw
                                                 }
                                             </Text>
                                         ) : null}
                                         {props.case.details.person.addresses
-                                            .length > 0 &&
-                                        props.case.details.person.addresses[0]
+                                            ?.length > 0 &&
+                                        props.case.details?.person.addresses[0]
                                             .raw ? (
                                             <Text style={{ color: '#434245' }}>
                                                 {
@@ -410,16 +413,13 @@ const CaseScreen = (props: Props) => {
                                             return (
                                                 <RelationshipListItem
                                                     pressed={() => {
+                                                        const params: RelationshipScreenParams = {
+                                                            relationshipId:
+                                                                connection.id,
+                                                        };
                                                         props.navigation.navigate(
                                                             'RelationshipScreen',
-                                                            {
-                                                                caseId:
-                                                                    props.case
-                                                                        .details
-                                                                        .id,
-                                                                relationshipId:
-                                                                    connection.id,
-                                                            } as RelationshipScreenParams
+                                                            { ...params }
                                                         );
                                                         setIsScrolling(false);
                                                     }}

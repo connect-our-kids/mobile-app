@@ -38,7 +38,7 @@ const initialLogin = async () => {
         audience: auth0Audience,
         response_type: 'code id_token token', // id_token will return a JWT token
         scope: 'offline_access openid profile email', // retrieve the user's profile
-        device: Constants.deviceName,
+        device: Constants.deviceName ?? '',
         prompt: 'consent',
         nonce: 'nonce', // ideally, this will be a random value
     });

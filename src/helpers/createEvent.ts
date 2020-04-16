@@ -15,11 +15,11 @@ export const sendUserInfo = (emailAddress) => {
 };
 
 export const sendEvent = (
-    emailAddress,
-    verb,
-    noun,
-    outcome = null,
-    options = null
+    emailAddress: string | undefined | null,
+    verb: string,
+    noun: string,
+    outcome: string | null = null,
+    options: Record<string, any> | null = null
 ) => {
     if (emailAddress === null) {
         emailAddress = 'anonymous@unknown.org';

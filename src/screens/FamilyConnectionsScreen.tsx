@@ -54,7 +54,7 @@ interface StateProps {
     loadingUser: boolean;
     cases: casesDetailSlim_cases[];
     isLoadingCases: boolean;
-    casesError: string;
+    casesError?: string;
 }
 
 interface DispatchProps {
@@ -205,11 +205,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 
     if (state.filters.last) {
         console.log('Sorting by last name');
-        filteredCases.sort((a, b) =>
-            a.person.lastName.localeCompare(b.person.lastName, undefined, {
+        filteredCases.sort((a, b) => {
+            const aLastName = a.person.lastName || '';
+            const bLastName = b.person.lastName || '';
+            return aLastName.localeCompare(bLastName, undefined, {
                 sensitivity: 'accent',
-            })
-        );
+            });
+        });
     } else if (state.filters.created) {
         // TODO
         filteredCases.sort((a, b) =>
@@ -232,7 +234,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     const SearchedCases = filteredCases.filter((result) => {
         return (
             result.person.firstName
-                .toLowerCase()
+                ?.toLowerCase()
                 .indexOf(state.searchKeywords.toLowerCase()) !== -1
         );
     });
@@ -251,7 +253,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         }
     }
 
-    let scroll: ScrollView;
+    let scroll: ScrollView | null = null;
 
     return props.isLoadingCases ? (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
@@ -621,7 +623,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                                 right: 46,
                             }}
                             onPress={() => {
-                                scroll.scrollTo(options);
+                                scroll?.scrollTo(options);
                             }}
                         />
                     ) : null}

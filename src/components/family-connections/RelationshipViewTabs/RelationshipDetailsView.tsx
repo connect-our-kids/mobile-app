@@ -219,7 +219,8 @@ export default function ConnectionsDetailsView({
                                                       > =>
                                                           Linking.openURL(
                                                               `https://www.google.com/maps/search/?api=1&query=${encodeURI(
-                                                                  address.raw
+                                                                  address.raw ??
+                                                                      ''
                                                               )}`
                                                           )
                                                       }

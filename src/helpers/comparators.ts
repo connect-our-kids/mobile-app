@@ -14,8 +14,8 @@ export const lastName = (
     a: { lastName: string | null },
     b: { lastName: string | null }
 ) => {
-    const A = a.lastName.toUpperCase();
-    const B = b.lastName.toUpperCase();
+    const A = a.lastName?.toUpperCase() ?? '';
+    const B = b.lastName?.toUpperCase() ?? '';
     let comparison = 0;
     if (A > B) {
         comparison = 1;
