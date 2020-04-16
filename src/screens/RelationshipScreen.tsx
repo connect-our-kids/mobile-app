@@ -27,10 +27,14 @@ import { EngagementDetail } from '../generated/EngagementDetail';
 import { RelationshipDetailFullFragment } from '../generated/RelationshipDetailFullFragment';
 import { EngagementTypes } from '../components/family-connections/EngagementTypes';
 import { AddEngagementFormParams } from '../components/family-connections/AddEngagementForm/AddEngagementForm';
-import ScrollToTop from '../UI/ScrollToTop';
+import ScrollToTop from '../components/family-connections/ScrollToTop/ScrollToTop';
 import { caseDetailFull_engagements_EngagementDocument } from '../generated/caseDetailFull';
 
 const styles = StyleSheet.create({
+    topView: {
+        backgroundColor: constants.backgroundColor,
+        height: '100%',
+    },
     tabs: {
         width: '100%',
         flexDirection: 'row',
@@ -187,9 +191,11 @@ function RelationshipScreen(props: Props): JSX.Element {
     let scroll: ScrollView;
 
     return props.isLoading || !props.relationship ? (
-        <Loader />
+        <View style={{ ...styles.topView }}>
+            <Loader />
+        </View>
     ) : (
-        <View>
+        <View style={{ ...styles.topView }}>
             {isScrolling ? (
                 <ScrollToTop
                     style={{

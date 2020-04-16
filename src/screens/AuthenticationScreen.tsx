@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import LoginWithAuth0 from '../components/auth/LoginWithAuth0';
 import { connect } from 'react-redux';
@@ -11,9 +11,17 @@ import {
     authChecker,
 } from '../store/actions';
 import { handleLogin } from '../helpers/authHelpers';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import constants from '../helpers/constants';
 
 const styles = StyleSheet.create({
+    safeAreaView: {
+        backgroundColor: constants.backgroundColor,
+        flex: 1, // fill screen
+        margin: 5,
+    },
     registerContainer: {
+        backgroundColor: constants.backgroundColor,
         flex: 1,
     },
 });
@@ -25,23 +33,27 @@ const AuthenticationView = (props) => {
 
     return (
         <View style={styles.registerContainer}>
-            <StatusBar barStyle="dark-content" />
-            <RegisterModalsContainer
-                modalVisible={props.modalVisible}
-                setAgreeModalVisible={props.setAgreeModalVisible}
-                videoAgree={props.videoAgree}
-                videoVisible={props.videoVisible}
-                setModalVisible={props.setModalVisible}
-                setVideoPlayerModalVisible={props.setVideoPlayerModalVisible}
-                onLogin={async () => handleLogin(props.setUserCreds)}
-            />
-            {!props.modalVisible && (
-                <LoginWithAuth0
-                    idToken={props.idToken}
-                    navigation={props.navigation}
+            <SafeAreaView style={styles.safeAreaView}>
+                <StatusBar barStyle="dark-content" />
+                <RegisterModalsContainer
+                    modalVisible={props.modalVisible}
+                    setAgreeModalVisible={props.setAgreeModalVisible}
+                    videoAgree={props.videoAgree}
+                    videoVisible={props.videoVisible}
                     setModalVisible={props.setModalVisible}
+                    setVideoPlayerModalVisible={
+                        props.setVideoPlayerModalVisible
+                    }
+                    onLogin={async () => handleLogin(props.setUserCreds)}
                 />
-            )}
+                {!props.modalVisible && (
+                    <LoginWithAuth0
+                        idToken={props.idToken}
+                        navigation={props.navigation}
+                        setModalVisible={props.setModalVisible}
+                    />
+                )}
+            </SafeAreaView>
         </View>
     );
 };

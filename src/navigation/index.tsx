@@ -1,10 +1,10 @@
-// @ts-nocheck
-// NOTE Typescript definitions for Navigation have some issues. Disabling
-// Typescript checking until they are sorted out
-
 import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { Image } from 'react-native';
+import {
+    createAppContainer,
+    createSwitchNavigator,
+    NavigationScreenConfig,
+} from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,7 +18,7 @@ import CaseScreen from '../screens/CaseScreen';
 import RelationshipScreen from '../screens/RelationshipScreen';
 import AddDocumentForm from '../components/family-connections/AddDocumentForm';
 import logoImg from '../../assets/logo.png';
-import CustomDrawer from './CustomDrawer';
+import MoreScreen from '../screens/MoreScreen';
 import AddEngagementForm from '../components/family-connections/AddEngagementForm/AddEngagementForm';
 
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
@@ -26,172 +26,75 @@ import AddEngagementForm from '../components/family-connections/AddEngagementFor
 // refer to React navigation docs for more details: https://reactnavigation.org/docs/en/bottom-tab-navigator.html
 // Custom drawer code can be found in navigation > CustomDrawer.js
 
-const leftArrow = '\u2190';
+// use this on the three top level screens (People Search, Family Connections, and More)
+const topLevelScreenNavigationOptions: NavigationScreenConfig<
+    Record<string, unknown>,
+    unknown
+> = {
+    headerStyle: {
+        height: constants.headerHeight,
+        backgroundColor: constants.backgroundColor,
+    },
+    // eslint-disable-next-line react/display-name
+    headerTitle: () => (
+        <Image
+            source={logoImg}
+            style={{ width: 225, height: 90 }}
+            resizeMode="contain"
+        />
+    ),
+};
+
+// use this on sublevel screens, such as Case, Connection, and document views
+const subLevelScreenNavigationOptions: NavigationScreenConfig<
+    Record<string, unknown>,
+    unknown
+> = {
+    headerTintColor: constants.highlightColor,
+    headerStyle: {
+        height: constants.headerHeight,
+        backgroundColor: constants.backgroundColor,
+    },
+    headerBackTitleStyle: {
+        color: constants.highlightColor,
+    },
+    headerTitleStyle: {
+        display: 'none',
+    },
+};
 
 // Following StackNavigators are in BottomNav:
 const FamilyConnectionsNavigator = createStackNavigator({
     FamilyConnections: {
         screen: FamilyConnectionsScreen,
-        initialRouteName: 'FamilyConnections',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: 'white',
-                height: 52,
-                color: 'black',
-            },
-            headerLeft: (
-                <Image
-                    source={logoImg}
-                    style={{ width: 225, height: 90 }}
-                    resizeMode="contain"
-                />
-            ),
-        },
+        navigationOptions: topLevelScreenNavigationOptions,
     },
     CaseView: {
         screen: CaseScreen,
-        initialRouteName: 'FamilyConnections',
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{ padding: 7.5 }}
-                        onPressIn={() => {
-                            navigation.goBack();
-                        }}
-                    >
-                        <Text
-                            style={{
-                                paddingTop: 10,
-                                paddingBottom: 10,
-                                marginLeft: 5,
-                                fontSize: 20,
-                                color: '#0F6580',
-                            }}
-                        >
-                            {leftArrow} Back to cases
-                        </Text>
-                    </TouchableOpacity>
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back to Cases',
         },
     },
     RelationshipScreen: {
         screen: RelationshipScreen,
-        initialRouteName: 'FamilyConnections',
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{ padding: 7.5 }}
-                        onPressIn={() => {
-                            navigation.goBack();
-                        }}
-                    >
-                        <Text
-                            style={{
-                                paddingTop: 10,
-                                paddingBottom: 10,
-                                marginLeft: 5,
-                                fontSize: 20,
-                                color: '#0F6580',
-                            }}
-                        >
-                            {leftArrow} Back to case
-                        </Text>
-                    </TouchableOpacity>
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back to Case',
         },
     },
     AddEngagementForm: {
         screen: AddEngagementForm,
-        initialRouteName: 'FamilyConnections',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{
-                            width: 64,
-                            height: 64,
-                            marginLeft: 10,
-                            marginBottom: 15,
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        <Ionicons
-                            name="md-arrow-back"
-                            size={32}
-                            color="#AAA9AD"
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        />
-                    </TouchableOpacity>
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back to Connection',
         },
     },
     DocumentForm: {
         screen: AddDocumentForm,
-        initialRouteName: 'FamilyConnections',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{
-                            width: 64,
-                            height: 64,
-                            marginLeft: 10,
-                            marginBottom: 15,
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        <Ionicons
-                            name="md-arrow-back"
-                            size={32}
-                            color="#AAA9AD"
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        />
-                    </TouchableOpacity>
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back to Connection',
         },
     },
 });
@@ -199,35 +102,13 @@ const FamilyConnectionsNavigator = createStackNavigator({
 const PeopleSearchNavigator = createStackNavigator({
     PeopleSearch: {
         screen: PeopleSearchScreen,
-        initialRouteName: 'PeopleSearch',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: 'white',
-                height: 52,
-            },
-            headerLeft: (
-                <Image
-                    source={logoImg}
-                    style={{ width: 225, height: 90 }}
-                    resizeMode="contain"
-                />
-            ),
-        },
+        navigationOptions: topLevelScreenNavigationOptions,
     },
     SearchResult: {
         screen: SearchResultScreen,
-        initialRouteName: 'PeopleSearch',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back to Search',
         },
     },
 });
@@ -236,115 +117,22 @@ const PeopleSearchNavigator = createStackNavigator({
 
 const CustomDrawerNavigator = createStackNavigator({
     More: {
-        screen: CustomDrawer,
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: 'white',
-                height: 52,
-            },
-            headerLeft: (
-                <Image
-                    source={logoImg}
-                    style={{ width: 225, height: 90 }}
-                    resizeMode="contain"
-                />
-            ),
-        },
+        screen: MoreScreen,
+        navigationOptions: topLevelScreenNavigationOptions,
     },
     MyAccount: {
         screen: AuthenticationView,
-        initialRouteName: 'MyAccount',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{
-                            width: 64,
-                            height: 64,
-                            marginLeft: 10,
-                            marginBottom: 15,
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        <Ionicons
-                            name="md-arrow-back"
-                            size={32}
-                            color="#AAA9AD"
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        />
-                    </TouchableOpacity>
-                ),
-                headerTitle: (
-                    <Image
-                        source={logoImg}
-                        style={{ width: 225, height: 90 }}
-                        resizeMode="contain"
-                    />
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back',
         },
     },
     About: {
         screen: AboutScreen,
         // initialRouteName: 'About',
-        defaultNavigationOptions: {
-            headerStyle: {
-                height: constants.headerHeight,
-                backgroundColor: constants.highlightColor,
-            },
-        },
-        navigationOptions: ({ navigation }) => {
-            return {
-                headerStyle: {
-                    backgroundColor: 'white',
-                    height: 52,
-                },
-                headerLeft: (
-                    <TouchableOpacity
-                        style={{
-                            width: 64,
-                            height: 64,
-                            marginLeft: 10,
-                            marginBottom: 15,
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        <Ionicons
-                            name="md-arrow-back"
-                            size={32}
-                            color="#AAA9AD"
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
-                        />
-                    </TouchableOpacity>
-                ),
-                headerTitle: (
-                    <Image
-                        source={logoImg}
-                        style={{ width: 225, height: 90 }}
-                        resizeMode="contain"
-                    />
-                ),
-            };
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerBackTitle: 'Back',
         },
     },
 });
@@ -359,18 +147,7 @@ const BottomNavigator = createBottomTabNavigator(
                 tabBarLabel: 'PEOPLE SEARCH',
                 // eslint-disable-next-line react/display-name
                 tabBarIcon: ({ tintColor }) => (
-                    <View
-                        style={{
-                            borderTop: 1,
-                            borderColor: 'blue',
-                        }}
-                    >
-                        <Ionicons
-                            name="md-search"
-                            size={36}
-                            color={tintColor}
-                        />
-                    </View>
+                    <Ionicons name="md-search" size={36} color={tintColor} />
                 ),
             },
         },
@@ -422,10 +199,4 @@ const AppBottomSwitchNavigator = createSwitchNavigator({
 });
 
 const AppContainer = createAppContainer(AppBottomSwitchNavigator);
-
-// const mapStateToProps = state => ({
-//  detailsTab: state.connection.detailsTab
-// });
-
-// export default connect(mapStateToProps,{})(AppContainer);
 export default AppContainer;

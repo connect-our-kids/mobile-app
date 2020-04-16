@@ -48,11 +48,9 @@ export default StyleSheet.create({
     modalHeaderStyle: {
         color: constants.highlightColor,
         fontSize: 20,
-        fontFamily: constants.fontFamily,
     },
 
     modalTextStyle: {
-        fontFamily: constants.fontFamily,
         paddingHorizontal: 20,
         fontSize: 18,
         lineHeight: 25,

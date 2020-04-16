@@ -1,11 +1,6 @@
 import React from 'react';
-
 import { View, Text, Linking } from 'react-native';
-
-import { Button } from 'native-base';
-
-import MainText from '../../../UI/MainText';
-import ScreenContainer from '../../../UI/ScreenContainer';
+import { Button, Container } from 'native-base';
 import { handleLogin } from '../../../helpers/authHelpers';
 import styles from './ConnectionsLogin.styles';
 
@@ -23,27 +18,27 @@ export default function ConnectionsLogin(props): JSX.Element {
     }
 
     return (
-        <ScreenContainer>
-            <MainText>
+        <Container style={styles.container}>
+            <Text style={styles.mainText}>
                 Family Connections is a free tool that helps social workers,
                 family recruiters, and CASA volunteers identify and engage
                 extended family members of children in foster care.
-            </MainText>
+            </Text>
             <Text style={styles.linkText} onPress={learnMorePressed}>
                 Learn More About Family Connections
             </Text>
-            <MainText>
+            <Text style={styles.mainText}>
                 Your team manager can request access, and invite their team
                 members into a secure team account.
-            </MainText>
+            </Text>
 
             <Text style={styles.linkText} onPress={signUpPressed}>
                 Request Team Access
             </Text>
-            <MainText>
+            <Text style={styles.mainText}>
                 If you have been invited to use Family Connections, you can
                 login.
-            </MainText>
+            </Text>
             <View style={styles.linkContainer}>
                 <View style={styles.logInBtns}>
                     <Button
@@ -55,6 +50,6 @@ export default function ConnectionsLogin(props): JSX.Element {
                     </Button>
                 </View>
             </View>
-        </ScreenContainer>
+        </Container>
     );
 }

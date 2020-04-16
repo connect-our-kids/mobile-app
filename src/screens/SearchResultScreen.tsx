@@ -9,7 +9,7 @@ import {
     StatusBar,
 } from 'react-native';
 
-import { Container, Button } from 'native-base';
+import { Container } from 'native-base';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
@@ -29,22 +29,16 @@ import PersonConfirmationModal from '../components/people-search/PersonConfirmat
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { RootState } from '../store/reducers';
 import { handleLogin } from '../helpers/authHelpers';
+import constants from '../helpers/constants';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: constants.backgroundColor,
+    },
+    safeAreaView: {
+        backgroundColor: constants.backgroundColor,
         margin: 5,
     },
-    button: {
-        margin: 10,
-        padding: 10,
-        backgroundColor: '#fff',
-    },
-    buttonText: {
-        color: '#0279AC',
-        fontWeight: '500',
-    },
-
     link: {
         color: '#64aab8',
         lineHeight: 17,
@@ -210,27 +204,8 @@ class SearchResultScreen extends React.Component<Props> {
                     }
                     onLogin={async () => handleLogin(this.props.setUserCreds)}
                 />
-                <SafeAreaView>
+                <SafeAreaView style={{ ...styles.safeAreaView }}>
                     <ScrollView>
-                        <View>
-                            <Button
-                                style={styles.button}
-                                onPress={() => this.props.navigation.goBack()}
-                            >
-                                <Text
-                                    style={{
-                                        ...styles.buttonText,
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
-                                        marginLeft: 5,
-                                        fontSize: 20,
-                                        color: '#0279AC',
-                                    }}
-                                >
-                                    {'\u2190 Back to Search'}
-                                </Text>
-                            </Button>
-                        </View>
                         <View>
                             {!isLoggedIn && (
                                 <TouchableHighlight

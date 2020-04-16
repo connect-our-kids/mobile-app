@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Col, Row, Text } from 'native-base';
-import { styles } from '../../../styles';
+import styles from './PersonInfoRow.styles';
 import renderMaskedOrResult from '../../../helpers/renderMaskedOrResult';
 import { connect } from 'react-redux';
 import { resetState, showModal } from '../../../store/actions';

@@ -23,7 +23,6 @@ import {
     getInfo,
 } from '../store/actions';
 
-import { Container } from 'native-base';
 import { FlatList } from 'react-native-gesture-handler';
 
 import PersonRow from '../components/people-search/PersonRow';
@@ -38,9 +37,8 @@ import { RootState } from '../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        margin: 5,
+    safeAreaView: {
+        backgroundColor: constants.backgroundColor,
     },
     intro: {
         paddingTop: 20,
@@ -205,103 +203,95 @@ class PeopleSearchScreen extends React.Component<Props> {
     render() {
         const { isLoggedIn } = this.props;
         return (
-            <Container style={styles.container}>
-                <SafeAreaView>
-                    <StatusBar barStyle="dark-content" />
-                    <RegisterModalsContainer
-                        modalVisible={this.props.modalVisible}
-                        setAgreeModalVisible={this.props.setAgreeModalVisible}
-                        videoAgree={this.props.videoAgree}
-                        videoVisible={this.props.videoVisible}
-                        setModalVisible={this.props.setModalVisible}
-                        setVideoPlayerModalVisible={
-                            this.props.setVideoPlayerModalVisible
-                        }
-                        onLogin={async () =>
-                            handleLogin(this.props.setUserCreds)
-                        }
-                    />
+            <SafeAreaView style={{ ...styles.safeAreaView }}>
+                <StatusBar barStyle="dark-content" />
+                <RegisterModalsContainer
+                    modalVisible={this.props.modalVisible}
+                    setAgreeModalVisible={this.props.setAgreeModalVisible}
+                    videoAgree={this.props.videoAgree}
+                    videoVisible={this.props.videoVisible}
+                    setModalVisible={this.props.setModalVisible}
+                    setVideoPlayerModalVisible={
+                        this.props.setVideoPlayerModalVisible
+                    }
+                    onLogin={async () => handleLogin(this.props.setUserCreds)}
+                />
 
-                    {!isLoggedIn && (
-                        <TouchableHighlight onPress={this.startRegister}>
-                            <Text style={styles.link}>
-                                This is a preview with limited results. Social
-                                workers, family recruiters, and CASA volunteers
-                                can have completely free access. Touch here to
-                                find out more.
-                            </Text>
-                        </TouchableHighlight>
-                    )}
-                    <>
-                        <FlatList
-                            style={{ height: '100%' }}
-                            ListHeaderComponent={
+                {!isLoggedIn && (
+                    <TouchableHighlight onPress={this.startRegister}>
+                        <Text style={styles.link}>
+                            This is a preview with limited results. Social
+                            workers, family recruiters, and CASA volunteers can
+                            have completely free access. Touch here to find out
+                            more.
+                        </Text>
+                    </TouchableHighlight>
+                )}
+                <>
+                    <FlatList
+                        style={{ height: '100%' }}
+                        ListHeaderComponent={
+                            <View>
                                 <View>
-                                    <View>
-                                        <Text style={styles.intro}>
-                                            Find A Person By...
-                                        </Text>
-                                    </View>
-
-                                    <View>
-                                        <SearchForm
-                                            handleSearch={
-                                                this.handleSearchRequest
-                                            }
-                                            resetReduxState={
-                                                this.resetReduxState
-                                            }
-                                            data={this.props.data}
-                                            sendSearchErrorMessage={
-                                                this.showSearchErrorMessage
-                                            }
-                                        />
-                                    </View>
-
-                                    {this.props.error?.length > 0 ? (
-                                        <View
-                                            style={{
-                                                backgroundColor: '#fff3cd',
-                                                padding: 15,
-                                            }}
-                                        >
-                                            {this.props.error}
-                                        </View>
-                                    ) : null}
-
-                                    {this.props.isFetching && <Loader />}
-
-                                    {this.props.possiblePersons.length ? (
-                                        <Text style={styles.matchesText}>
-                                            Possible Matches
-                                        </Text>
-                                    ) : null}
+                                    <Text style={styles.intro}>
+                                        Find A Person By...
+                                    </Text>
                                 </View>
-                            }
-                            data={this.props.possiblePersons}
-                            renderItem={({ item }) => {
-                                return (
-                                    <PersonRow
-                                        item={item}
-                                        handlePress={() =>
-                                            this.props.navigation.navigate(
-                                                'SearchResult',
-                                                {
-                                                    searchPointer:
-                                                        item[
-                                                            '@search_pointer_hash'
-                                                        ],
-                                                }
-                                            )
+
+                                <View>
+                                    <SearchForm
+                                        handleSearch={this.handleSearchRequest}
+                                        resetReduxState={this.resetReduxState}
+                                        data={this.props.data}
+                                        sendSearchErrorMessage={
+                                            this.showSearchErrorMessage
                                         }
                                     />
-                                );
-                            }}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </>
-                </SafeAreaView>
-            </Container>
+                                </View>
+
+                                {this.props.error?.length > 0 ? (
+                                    <View
+                                        style={{
+                                            backgroundColor: '#fff3cd',
+                                            padding: 15,
+                                        }}
+                                    >
+                                        {this.props.error}
+                                    </View>
+                                ) : null}
+
+                                {this.props.isFetching && <Loader />}
+
+                                {this.props.possiblePersons.length ? (
+                                    <Text style={styles.matchesText}>
+                                        Possible Matches
+                                    </Text>
+                                ) : null}
+                            </View>
+                        }
+                        data={this.props.possiblePersons}
+                        renderItem={({ item }) => {
+                            return (
+                                <PersonRow
+                                    item={item}
+                                    handlePress={() =>
+                                        this.props.navigation.navigate(
+                                            'SearchResult',
+                                            {
+                                                searchPointer:
+                                                    item[
+                                                        '@search_pointer_hash'
+                                                    ],
+                                            }
+                                        )
+                                    }
+                                />
+                            );
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </>
+            </SafeAreaView>
         );
     }
 }

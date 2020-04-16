@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import constants from '../helpers/constants';
+import constants from '../../../helpers/constants';
 
-export const styles = StyleSheet.create({
+/**********************************************************/
+
+export default StyleSheet.create({
     gridContainer: {
         padding: 20,
         alignItems: 'center',

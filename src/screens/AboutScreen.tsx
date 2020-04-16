@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Divider } from 'react-native-elements';
 import constants from '../helpers/constants';
 import Video from '../components/Video';
-import MainText from '../UI/MainText';
 import Constants from 'expo-constants';
 
 class AboutScreen extends Component {
@@ -20,9 +19,15 @@ class AboutScreen extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: '100%',
+                    backgroundColor: constants.backgroundColor,
                 }}
             >
-                <SafeAreaView style={{ width: '95%' }}>
+                <SafeAreaView
+                    style={{
+                        width: '95%',
+                        backgroundColor: constants.backgroundColor,
+                    }}
+                >
                     <ScrollView
                         contentContainerStyle={{
                             justifyContent: 'center',
@@ -31,12 +36,18 @@ class AboutScreen extends Component {
                             height: '100%',
                         }}
                     >
-                        <MainText>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                lineHeight: 26,
+                                marginBottom: 4,
+                            }}
+                        >
                             Connect Our Kids makes free tools for social
                             workers, family recruiters, and CASA volunteers
                             engaged in permanency searches for kids in foster
                             care.
-                        </MainText>
+                        </Text>
 
                         <Video uri={constants.aboutURI} />
                         <Text

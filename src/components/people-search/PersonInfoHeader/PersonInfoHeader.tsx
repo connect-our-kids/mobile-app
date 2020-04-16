@@ -2,12 +2,12 @@ import React from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Text } from 'native-base';
 import constants from '../../../helpers/constants';
-import { styles } from '../../../styles';
+import styles from './PersonInfoHeader.styles';
 
 export default function PersonInfoHeader({ item, listItem = false }) {
     let allAddresses = '';
     let secondLine = '';
-    let uri = item.images
+    const uri = item.images
         ? `https://dev.search.connectourkids.org/api/thumbnail?tokens=${item.images[0].thumbnail_token}`
         : constants.defaultImageUri;
 

@@ -32,7 +32,7 @@ import ConnectionsLogin from '../components/auth/ConnectionsLogin';
 import Loader from '../components/Loader';
 
 // 3rd party imports like icons & scroll functionality
-import ScrollToTop from '../UI/ScrollToTop';
+import ScrollToTop from '../components/family-connections/ScrollToTop/ScrollToTop';
 import { MaterialIcons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
 
@@ -75,6 +75,10 @@ type Props = StateProps & DispatchProps & OwnProps;
 // this is like a local "store" -- used to initialize some state values, accessed in [state] hook
 const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     const styles = StyleSheet.create({
+        safeAreaView: {
+            backgroundColor: constants.backgroundColor,
+            flex: 1, // fill screen
+        },
         searchBar: {
             marginRight: 5,
             marginLeft: 5,
@@ -250,9 +254,11 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     let scroll: ScrollView;
 
     return props.isLoadingCases ? (
-        <Loader />
+        <SafeAreaView style={{ ...styles.safeAreaView }}>
+            <Loader />
+        </SafeAreaView>
     ) : props.cases[0] ? (
-        <SafeAreaView>
+        <SafeAreaView style={{ ...styles.safeAreaView }}>
             <View
                 style={{
                     flexDirection: 'row',

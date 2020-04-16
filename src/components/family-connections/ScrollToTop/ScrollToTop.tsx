@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import constants from '../helpers/constants';
+import constants from '../../../helpers/constants';
 
-import chevron from '../../assets/chevron.png';
+import chevron from '../../../../assets/chevron.png';
 
 const ScrollToTop = (props) => {
     // by spreading props and styles in an array, we can pass it custom styles to override or add to these base styles when we use this component

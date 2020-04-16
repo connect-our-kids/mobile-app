@@ -8,7 +8,15 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'space-evenly',
     },
-
+    container: {
+        backgroundColor: '#fff',
+        padding: 20,
+    },
+    mainText: {
+        fontSize: 16,
+        lineHeight: 26,
+        marginBottom: 4,
+    },
     linkText: {
         color: '#0279AC',
         marginTop: 20,
