@@ -5,12 +5,15 @@ export interface CasesState {
     results: casesDetailSlim_cases[];
     isLoadingCases: boolean;
     error?: string;
+    isAddingCase: boolean;
+    addingCaseError?: string;
+    lastAddedCase?: casesDetailSlim_cases;
 }
 
 const initialState: CasesState = {
     results: [],
-    isLoadingCases: true,
-    error: undefined,
+    isLoadingCases: false,
+    isAddingCase: false,
 };
 
 export const casesReducer = (
@@ -22,7 +25,7 @@ export const casesReducer = (
             return {
                 ...state,
                 isLoadingCases: true,
-                error: '',
+                error: undefined,
             };
 
         case CasesTypes.GET_USER_CASES_SUCCESS:
@@ -43,6 +46,30 @@ export const casesReducer = (
             return {
                 ...state,
                 results: [],
+            };
+
+        case CasesTypes.CREATE_CASE:
+            return {
+                ...state,
+                isAddingCase: true,
+                lastAddedCase: undefined,
+                addingCaseError: undefined,
+            };
+
+        case CasesTypes.CREATE_CASE_FAILURE:
+            return {
+                ...state,
+                isAddingCase: false,
+                lastAddedCase: undefined,
+                addingCaseError: action.error,
+            };
+
+        case CasesTypes.CREATE_CASE_SUCCESS:
+            return {
+                ...state,
+                isAddingCase: false,
+                lastAddedCase: action.case,
+                addingCaseError: undefined,
             };
 
         default:

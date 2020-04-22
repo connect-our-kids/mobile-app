@@ -5,16 +5,20 @@ import { RELATIONSHIP_DETAIL_SLIM_FRAGMENT } from './relationship';
 import { ENGAGEMENT_DETAIL_FRAGMENT, ENGAGEMENTS_QUERY } from './engagement';
 import { EngagementDetail } from '../../../generated/EngagementDetail';
 import {
-    engagements,
+    engagements as engagementsType,
     engagementsVariables,
 } from '../../../generated/engagements';
 import {
     caseDetailFull,
     caseDetailFullVariables,
 } from '../../../generated/caseDetailFull';
+import {
+    casesDetailSlim,
+    casesDetailSlim_cases,
+} from '../../../generated/casesDetailSlim';
 
 export const CASE_DETAIL_SLIM_FRAGMENT = gql`
-    fragment CaseDetailSlim on Case {
+    fragment CaseDetailSlimFragment on Case {
         id
         person {
             ...PersonSlimFragment
@@ -37,7 +41,7 @@ export const CASE_DETAIL_SLIM_FRAGMENT = gql`
 export const CASES_DETAIL_SLIM_QUERY = gql`
     query casesDetailSlim {
         cases {
-            ...CaseDetailSlim
+            ...CaseDetailSlimFragment
         }
     }
 
@@ -83,6 +87,31 @@ export const CASE_DETAIL_FULL_QUERY = gql`
     ${ENGAGEMENT_DETAIL_FRAGMENT}
 `;
 
+export const CREATE_CASE_MUTATION = gql`
+    mutation createCaseMutation($value: CreateCaseInput!) {
+        createCase(value: $value) {
+            ...CaseDetailSlimFragment
+        }
+    }
+
+    ${CASE_DETAIL_SLIM_FRAGMENT}
+`;
+
+export function addCaseCache(caseIn: casesDetailSlim_cases, cache: DataProxy) {
+    const casesCache = cache.readQuery<casesDetailSlim>({
+        query: CASES_DETAIL_SLIM_QUERY,
+    });
+    if (!casesCache) {
+        return;
+    }
+    cache.writeQuery<casesDetailSlim>({
+        query: CASES_DETAIL_SLIM_QUERY,
+        data: {
+            cases: [caseIn, ...casesCache.cases],
+        },
+    });
+}
+
 export function addEngagementCache(
     caseId: number,
     engagement: EngagementDetail,
@@ -110,14 +139,14 @@ export function deleteEngagementCache(
     engagement: EngagementDetail,
     cache: DataProxy
 ) {
-    const engagements = cache.readQuery<engagements, engagementsVariables>({
+    const engagements = cache.readQuery<engagementsType, engagementsVariables>({
         query: ENGAGEMENTS_QUERY,
         variables: { caseId },
     });
     if (!engagements) {
         return;
     }
-    cache.writeQuery<engagements, engagementsVariables>({
+    cache.writeQuery<engagementsType, engagementsVariables>({
         query: ENGAGEMENTS_QUERY,
         variables: { caseId },
         data: {
