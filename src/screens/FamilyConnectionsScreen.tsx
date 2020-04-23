@@ -600,7 +600,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             </Modal>
 
             {/* Case List View Starts Here */}
-            <View style={{ paddingBottom: 142 }}>
+            <View>
                 <View>
                     {isScrolling ? (
                         <ScrollToTop

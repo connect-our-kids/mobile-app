@@ -5,10 +5,13 @@ export interface CaseDataState {
     results?: caseDetailFull;
     isLoading: boolean;
     error?: string;
+    isLoadingEngagements: boolean;
+    engagementErrorToggle: boolean;
+
 }
 
 export const caseReducer = (
-    state: CaseDataState = { isLoading: false },
+    state: CaseDataState = { isLoading: false, isLoadingEngagements: false, engagementErrorToggle: false },
     action: CaseActionTypes
 ): CaseDataState => {
     switch (action.type) {
@@ -38,7 +41,51 @@ export const caseReducer = (
             return {
                 ...state,
             };
-
+        case CaseTypes.CREATE_CALL_ENGAGEMENT:
+            return{
+                ...state,
+                isLoadingEngagements: true
+            };
+        case CaseTypes.CREATE_NOTE_ENGAGEMENT:
+            return{
+                ...state,
+                isLoadingEngagements: true
+            };
+        case CaseTypes.CREATE_EMAIL_ENGAGEMENT:
+            return{
+                ...state,
+                isLoadingEngagements: true
+            };
+        case CaseTypes.CREATE_NOTE_ENGAGEMENT_SUCCESS:
+            return {
+                ...state,
+                isLoadingEngagements: false
+                };
+        case CaseTypes.CREATE_CALL_ENGAGEMENT_SUCCESS:
+            return {
+                ...state,
+                isLoadingEngagements: false
+                    };
+        case CaseTypes.CREATE_EMAIL_ENGAGEMENT_SUCCESS:
+            return {
+                ...state,
+                isLoadingEngagements: false
+                };
+        case CaseTypes.CREATE_NOTE_ENGAGEMENT_FAILURE:
+            return {
+                ...state,
+                engagementErrorToggle: true
+                };
+        case CaseTypes.CREATE_CALL_ENGAGEMENT_FAILURE:
+            return {
+                ...state,
+                engagementErrorToggle: true
+                };
+        case CaseTypes.CREATE_EMAIL_ENGAGEMENT_FAILURE:
+            return {
+                ...state,
+                engagementErrorToggle: true
+                };
         default:
             return state;
     }

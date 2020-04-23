@@ -12,7 +12,7 @@ import { logOut, authChecker, clearUserCases } from '../store/actions';
 import { connect } from 'react-redux';
 import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingBottom: 15,
         paddingTop: 15,
+        marginRight: 'auto',
+        paddingLeft: 15,
     },
     withBorder: {
         borderColor: 'rgba(24, 23, 21, 0.1)',
@@ -86,6 +88,7 @@ const MoreScreen = (props) => {
                         style={[styles.linkBox, styles.withBorder]}
                         onPress={() => props.navigation.navigate('MyAccount')}
                     >
+                        <Ionicons name="md-person" size={32} color="#0279AC" />
                         <Text style={[styles.text]}>My Account</Text>
                         <Text style={styles.arrow}>❯</Text>
                     </TouchableOpacity>
@@ -93,6 +96,11 @@ const MoreScreen = (props) => {
                         style={[styles.linkBox, styles.withBorder]}
                         onPress={() => props.navigation.navigate('About')}
                     >
+                        <Ionicons
+                            name="md-information-circle-outline"
+                            size={32}
+                            color="#0279AC"
+                        />
                         <Text style={[styles.text]}>About</Text>
                         <Text style={styles.arrow}>❯</Text>
                     </TouchableOpacity>
@@ -104,6 +112,7 @@ const MoreScreen = (props) => {
                             )
                         }
                     >
+                        <Ionicons name="md-cog" size={32} color="#0279AC" />
                         <Text style={[styles.text]}>Support</Text>
                         <MaterialIcons
                             name={'launch'}
@@ -118,6 +127,7 @@ const MoreScreen = (props) => {
                             )
                         }
                     >
+                        <Ionicons name="md-key" size={32} color="#0279AC" />
                         <Text style={[styles.text]}>Privacy Policy</Text>
                         <MaterialIcons
                             name={'launch'}
@@ -132,6 +142,7 @@ const MoreScreen = (props) => {
                             )
                         }
                     >
+                        <Ionicons name="md-paper" size={32} color="#0279AC" />
                         <Text style={styles.text}>Terms of Service</Text>
                         <MaterialIcons
                             name={'launch'}

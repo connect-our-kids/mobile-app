@@ -227,6 +227,11 @@ class SearchForm extends Component {
                     >
                         <View style={styles.nameInputFullWidth}>
                             <View style={styles.peopleSearch}>
+                                <Ionicons
+                                    name="md-person"
+                                    size={32}
+                                    color="#0279AC"
+                                />
                                 <Input
                                     placeholder="First Middle Last Name"
                                     placeholderTextColor="rgba(24,23,21,.5)"
@@ -240,6 +245,11 @@ class SearchForm extends Component {
                                 />
                             </View>
                             <View style={styles.peopleSearch}>
+                                <Ionicons
+                                    name="md-map"
+                                    size={32}
+                                    color="#0279AC"
+                                />
                                 <Input
                                     placeholder="City, State (Optional)"
                                     placeholderTextColor="rgba(24,23,21,.5)"
@@ -267,6 +277,12 @@ class SearchForm extends Component {
                         style={[{ flex: 0 }]}
                     >
                         <View style={styles.searchBar}>
+                            <Ionicons
+                                name="md-mail"
+                                size={32}
+                                color="#0279AC"
+                                style={styles.ioniconscentered}
+                            />
                             <SearchBar
                                 placeholder="Email Address"
                                 placeholderTextColor="rgba(24,23,21,.5)"
@@ -291,8 +307,15 @@ class SearchForm extends Component {
                         textStyle={styles.textStyle}
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
+                        style={[{ flex: 0 }]}
                     >
-                        <View>
+                        <View style={styles.searchBar}>
+                            <Ionicons
+                                name="md-pin"
+                                size={32}
+                                color="#0279AC"
+                                style={styles.ioniconscentered}
+                            />
                             <SearchBar
                                 placeholder="Mailing Address"
                                 placeholderTextColor="rgba(24,23,21,.5)"
@@ -317,8 +340,15 @@ class SearchForm extends Component {
                         textStyle={styles.textStyle}
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
+                        style={[{ flex: 0 }]}
                     >
-                        <View>
+                        <View style={styles.searchBar}>
+                            <Ionicons
+                                name="md-call"
+                                size={32}
+                                color="#0279AC"
+                                style={styles.ioniconscentered}
+                            />
                             <SearchBar
                                 placeholder="Phone Number"
                                 placeholderTextColor="rgba(24,23,21,.5)"
@@ -343,8 +373,15 @@ class SearchForm extends Component {
                         textStyle={styles.textStyle}
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
+                        style={[{ flex: 0 }]}
                     >
-                        <View>
+                        <View style={styles.searchBar}>
+                            <Ionicons
+                                name="md-globe"
+                                size={32}
+                                color="#0279AC"
+                                style={styles.ioniconscentered}
+                            />
                             <SearchBar
                                 placeholder="URL"
                                 placeholderTextColor="rgba(24,23,21,.5)"
@@ -442,7 +479,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderStyle: 'solid',
         borderRadius: 4,
-        width: '95%',
+        width: '85%',
         marginTop: 45,
         marginRight: 12,
         marginLeft: 12,
@@ -523,6 +560,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingBottom: '5%',
+    },
+    ioniconscentered: {
+        marginTop: '11%',
     },
 });
 

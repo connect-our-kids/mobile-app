@@ -10,7 +10,6 @@ import {
 
 const initialState = {
     engagementsData: {},
-    isLoadingEngagements: false,
     engagementsError: '',
     docsData: {},
     isLoadingDocs: false,
@@ -22,21 +21,18 @@ export const connectionEngagementsReducer = (state = initialState, action) => {
         case POST_CONNECTION_ENGAGEMENTS_START:
             return {
                 ...state,
-                isLoadingEngagements: true,
                 engagementsError: '',
             };
 
         case POST_CONNECTION_ENGAGEMENTS_SUCCESS:
             return {
                 ...state,
-                isLoadingEngagements: false,
                 engagementsData: action.payload,
             };
 
         case POST_CONNECTION_ENGAGEMENTS_FAILURE:
             return {
                 ...state,
-                isLoadingEngagements: false,
                 engagementsError:
                     'Error adding engagement. Please try again later.',
             };

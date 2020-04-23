@@ -1,7 +1,7 @@
 # Workspace & local settings
 # .vscode/settings.json
 .expo/
-
+.DS_Store
 # Logs
 logs
 *.log
