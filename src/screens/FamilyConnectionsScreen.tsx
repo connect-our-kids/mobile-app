@@ -247,7 +247,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         <SafeAreaView style={{ ...styles.safeAreaView }}>
             <Loader />
         </SafeAreaView>
-    ) : props.cases[0] ? (
+    ) : props.cases.length > 0 ? (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
             <View
                 style={{
@@ -701,7 +701,7 @@ const mapStateToProps = (state: RootState): StateProps => {
     return {
         accessToken: state.auth.accessToken,
         loadingUser: state.auth.loadingUser,
-        cases: state.cases.results,
+        cases: state.cases.results ?? [], // TODO this is a temporary fie. state.cases.results should never be undefined
         isLoadingCases: state.cases.isLoadingCases,
         casesError: state.cases.error,
     };
