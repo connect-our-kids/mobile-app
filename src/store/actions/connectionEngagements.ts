@@ -1,6 +1,6 @@
-import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { getEnvVars } from '../../../environment';
+import { getAuthToken } from '../../helpers/auth';
 export const POST_CONNECTION_ENGAGEMENTS_START =
     'POST_CONNECTION_ENGAGEMENTS_START';
 export const POST_CONNECTION_ENGAGEMENTS_SUCCESS =
@@ -27,7 +27,7 @@ export const postConnectionEngagements = (
     dueDate,
     isPublic
 ) => (dispatch) => {
-    SecureStore.getItemAsync('cok_access_token').then((accessToken) => {
+    getAuthToken().then((accessToken) => {
         const body = {
             subject: subject ? subject : '',
             notes: note,
@@ -82,7 +82,7 @@ export const postConnectionDocument = (
         return formBody;
     };
 
-    SecureStore.getItemAsync('cok_access_token').then((accessToken) => {
+    getAuthToken().then((accessToken) => {
         dispatch({ type: POST_CONNECTION_DOCUMENT_START });
         axios
             .post(

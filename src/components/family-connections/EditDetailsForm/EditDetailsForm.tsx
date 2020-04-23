@@ -16,7 +16,6 @@ import {
 import { CheckBox } from 'react-native-elements';
 import { Picker } from 'react-native-picker-dropdown';
 import { connect } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import { getEnvVars } from '../../../../environment';
 import * as yup from 'yup';
 import { Appearance } from 'react-native-appearance';
@@ -257,14 +256,6 @@ function EditDetailsForm(props) {
     const [error, setError] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [showCal, setShowCal] = useState(false);
-
-    SecureStore.getItemAsync('cok_access_token')
-        .then((res) => {
-            setToken(res);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
 
     function handleChange(name, value, options = {}) {
         setFormData((formData) => {

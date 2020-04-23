@@ -8,11 +8,14 @@ import {
     Animated,
 } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { logOut, authChecker, clearUserCases } from '../store/actions';
+import { logout, login } from '../store/actions';
 import { connect } from 'react-redux';
 import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { RootState } from '../store/reducers';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { AuthState } from '../store/reducers/authReducer';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -73,12 +76,28 @@ const styles = StyleSheet.create({
     },
 });
 
-const MoreScreen = (props) => {
+interface StateProps {
+    auth: AuthState;
+}
+
+interface DispatchProps {
+    login: typeof login;
+    logout: typeof logout;
+}
+
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+const MoreScreen = (props: Props) => {
+    // refresh auth one time at page load
     useEffect(() => {
-        // if (props.loadingUser) {
-        props.authChecker();
-        // }
-    }, [props.loadingUser]);
+        props.login(true);
+    }, []);
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
@@ -160,12 +179,11 @@ const MoreScreen = (props) => {
                     ]}
                 >
                     {/* // conditional based on whether user is logged in */}
-                    {props.isLoggedIn && props.idToken ? (
+                    {props.auth.isLoggedIn ? (
                         <>
                             <TouchableOpacity
                                 onPress={() => {
-                                    props.logOut();
-                                    props.clearUserCases();
+                                    props.logout();
                                 }}
                             >
                                 <View style={styles.logout}>
@@ -182,20 +200,13 @@ const MoreScreen = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    const { user, isLoggedIn, authToken, idToken, loadingUser } = state.auth;
-
+const mapStateToProps = (state: RootState) => {
     return {
-        user,
-        isLoggedIn,
-        authToken,
-        idToken,
-        loadingUser,
+        auth: state.auth,
     };
 };
 
-export default connect(mapStateToProps, {
-    logOut,
-    authChecker,
-    clearUserCases,
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
+    login,
+    logout,
 })(MoreScreen);

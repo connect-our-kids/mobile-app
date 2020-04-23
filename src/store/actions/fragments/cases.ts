@@ -125,7 +125,7 @@ export function addEngagementCache(
         return;
     }
     cache.writeQuery<caseDetailFull, caseDetailFullVariables>({
-        query: ENGAGEMENTS_QUERY,
+        query: CASE_DETAIL_FULL_QUERY,
         variables: { caseId },
         data: {
             ...caseCache,

@@ -44,7 +44,7 @@ export const sendEvent = (
             return res;
         })
         .catch((err) => {
-            console.error('Event Tracking Error: ', err);
+            console.log('Event Tracking Error: ', err);
             return err;
         });
 };

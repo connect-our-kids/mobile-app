@@ -8,7 +8,7 @@ import { caseReducer } from './caseReducer';
 import { connectionEngagementsReducer as engagements } from './connectionEngagementsReducer';
 import { relationshipReducer } from './relationshipReducer';
 
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
     auth,
     people,
     confirmationModal,

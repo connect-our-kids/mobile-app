@@ -977,7 +977,7 @@ const CaseScreen = (props: Props) => {
                         </Modal>
                     </ScrollView>
                 ) : (
-                    <Loader style={{ flex: 1, flexGrow: 1 }} />
+                    <Loader />
                 )}
             </View>
         </SafeAreaView>

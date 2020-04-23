@@ -12,30 +12,63 @@ import {
 
 import { getEnvVars } from '../../../environment';
 import { sendEvent, createOptions } from '../../helpers/createEvent';
+import { getAuthToken, getIdTokenFromSecureStorage } from '../../helpers/auth';
+import { ThunkResult } from '../store';
 
 const { peopleSearchURL } = getEnvVars();
 
-export const fetchPerson = (body, email) => (dispatch) => {
+export const fetchPerson = (
+    body: Record<string, unknown>,
+    email: string
+): ThunkResult<void> => async (dispatch) => {
     dispatch({ type: FETCH_PERSON });
-    axios
-        .post(`${peopleSearchURL}`, body)
-        .then((res) => {
+    // getting tokens is allowed to fail as we can send this query
+    // without authentication
+    try {
+        body['authToken'] = await getAuthToken();
+        body['idToken'] = (await getIdTokenFromSecureStorage())?.rawToken;
+    } catch (error) {
+        // ignore
+    }
+
+    try {
+        const result = await axios.post(`${peopleSearchURL}`, body);
+        if (result.status >= 200 && result.status <= 300) {
             dispatch({
                 type: FETCH_PERSON_SUCCESS,
-                payload: res.data.person,
+                payload: result.data.person,
             });
             const options = createOptions(0, null, null);
             sendEvent(email, 'search', 'person', 'success', options);
-        })
-        .catch((err) => {
-            dispatch({ type: FETCH_PERSON_FAILURE, payload: err });
+        } else {
+            dispatch({
+                type: FETCH_PERSON_FAILURE,
+                payload: result.statusText,
+            });
             sendEvent(email, 'search', 'person', 'failed');
-        });
+        }
+    } catch (error) {
+        dispatch({ type: FETCH_PERSON_FAILURE, payload: error });
+        sendEvent(email, 'search', 'person', 'failed');
+    }
 };
 
-export const fetchSearchResult = (body, cb, email) => (dispatch) => {
+export const fetchSearchResult = (
+    body: Record<string, unknown>,
+    cb: () => void, // TODO this is not the correct way to get results. They should be dispatched to store
+    email: string
+): ThunkResult<void> => async (dispatch) => {
     console.log('fetchSearchResult ', body, 'cb ', cb, 'email ', email);
     dispatch({ type: FETCH_SEARCH_RESULT });
+    // getting tokens is allowed to fail as we can send this query
+    // without authentication
+    try {
+        body['authToken'] = await getAuthToken();
+        body['idToken'] = (await getIdTokenFromSecureStorage())?.rawToken;
+    } catch (error) {
+        // ignore
+    }
+
     let isPerson = false;
     let options;
     axios

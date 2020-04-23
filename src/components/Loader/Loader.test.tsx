@@ -1,17 +1,19 @@
 import React from 'react';
+
 import renderer from 'react-test-renderer';
-import Login from './Login';
+
+import Loader from './Loader';
 
 /**********************************************************/
 
-describe('Login component', () => {
+describe('Loader component', () => {
     test('renders', () => {
-        const tree = renderer.create(<Login />).toJSON();
+        const tree = renderer.create(<Loader />).toJSON();
         expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {
-        const tree = renderer.create(<Login />).toJSON();
+        const tree = renderer.create(<Loader />).toJSON();
         expect(tree).toMatchSnapshot();
     });
 });

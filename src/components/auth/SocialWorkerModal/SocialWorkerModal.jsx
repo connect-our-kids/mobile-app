@@ -37,7 +37,7 @@ export default function SocialWorkerModal(props) {
                             'click',
                             'yes-i-am-a-social-worker'
                         );
-                        props.advanceModal();
+                        props.advanceModal(true);
                     }}
                 >
                     <Text style={styles.btnText}>

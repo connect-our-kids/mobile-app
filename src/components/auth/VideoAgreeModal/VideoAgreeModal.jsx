@@ -34,7 +34,7 @@ export default function VideoAgreeModal(props) {
                     block
                     onPress={() => {
                         props.sendEvent(null, 'click', 'watch-video');
-                        props.advanceModal();
+                        props.advanceModal(true);
                     }}
                 >
                     <Text style={styles.btnText}>Show me the video</Text>

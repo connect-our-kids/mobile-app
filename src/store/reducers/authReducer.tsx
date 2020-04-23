@@ -1,84 +1,110 @@
-import {
-    SET_USER_CREDS,
-    LOG_OUT,
-    SET_MODAL_VISIBLE,
-    SET_VIDEO_AGREE_VISIBLE,
-    SET_VIDEO_PLAYER_VISIBLE,
-    SET_LOGGED_IN_STATUS,
-    SET_ACCESS_TOKEN,
-    SET_ID_TOKEN,
-} from '../actions/actionTypes';
-import * as SecureStore from 'expo-secure-store';
+import { AuthTypes, AuthActionTypes } from '../actions';
+import { IdToken } from '../../helpers/auth';
 
-const initialState = {
-    user: null,
-    error: null,
+export interface AuthState {
+    isLoggedIn: boolean;
+    isLoggingIn: boolean;
+    loginError?: string;
+    user?: IdToken;
+    isLoggingOut: boolean;
+    logoutError?: string;
+    modalVisible: boolean; // TODO move to local storage
+    videoAgree: boolean; // TODO move to local storage
+    videoVisible: boolean; // TODO move to local storage
+}
+
+const initialState: AuthState = {
     isLoggedIn: false,
-    loadingUser: true,
-    accessToken: null,
-    expiresIn: null,
-    idToken: null,
+    isLoggingIn: false,
+    isLoggingOut: false,
     modalVisible: false,
     videoAgree: false,
     videoVisible: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (
+    state = initialState,
+    action: AuthActionTypes
+): AuthState => {
     switch (action.type) {
-        case SET_USER_CREDS:
+        case AuthTypes.LOGIN_START:
+            console.log(`Login start`);
             return {
                 ...state,
-                user: action.decodedToken,
+                isLoggingIn: true,
+            };
+        case AuthTypes.LOGIN_SUCCESS:
+            console.log(`Login success`);
+            return {
+                ...state,
                 isLoggedIn: true,
-                accessToken: action.auth0Data.access_token,
-                idToken: action.auth0Data.id_token,
-                expiresIn: action.auth0Data.expires_in,
-                error: null,
-                loadingUser: true,
+                isLoggingIn: false,
+                loginError: undefined,
+                user: action.user,
             };
-        case SET_ID_TOKEN:
+        case AuthTypes.LOGIN_FAILURE:
+            console.log(`Login failure`);
             return {
                 ...state,
-                // isLoggedIn: true,
-                idToken: action.payload,
-                // loadingUser: true
+                isLoggedIn: false,
+                isLoggingIn: false,
+                loginError: action.error,
             };
-        case SET_ACCESS_TOKEN:
+        case AuthTypes.CLEAR_LOGIN_ERROR:
+            console.log(`Clear login error`);
             return {
                 ...state,
-                // isLoggedIn: true,
-                accessToken: action.payload,
-                // loadingUser: true
+                loginError: undefined,
             };
-        case SET_LOGGED_IN_STATUS:
+        case AuthTypes.LOG_OUT_START:
+            console.log(`logout start`);
             return {
                 ...state,
-                isLoggedIn: action.payload,
-                loadingUser: false,
+                isLoggingOut: true,
             };
-        case SET_MODAL_VISIBLE:
+        case AuthTypes.LOG_OUT_SUCCESS:
+            console.log(`logout success`);
             return {
                 ...state,
-                modalVisible: action.payload,
+                isLoggingOut: false,
+                isLoggedIn: false,
+                loginError: undefined,
+                logoutError: undefined,
+                user: undefined,
+            };
+        case AuthTypes.LOG_OUT_FAILURE:
+            console.log(`Logout failure`);
+            return {
+                ...state,
+                isLoggingOut: false,
+                logoutError: action.error,
+            };
+        // TODO move to local state
+        case AuthTypes.SET_MODAL_VISIBLE:
+            console.log(`set modal visible`);
+            return {
+                ...state,
+                modalVisible: action.visible,
                 videoAgree: false,
                 videoVisible: false,
             };
-        case SET_VIDEO_AGREE_VISIBLE:
+        // TODO move to local state
+        case AuthTypes.SET_VIDEO_AGREE_VISIBLE:
+            console.log(`set video agree visible`);
             return {
                 ...state,
-                videoAgree: true,
+                videoAgree: action.visible,
             };
-        case SET_VIDEO_PLAYER_VISIBLE:
+        // TODO move to local state
+        case AuthTypes.SET_VIDEO_PLAYER_VISIBLE:
+            console.log(`set video player visible`);
             return {
                 ...state,
                 videoAgree: false,
-                videoVisible: true,
+                videoVisible: action.visible,
             };
-        case LOG_OUT:
-            SecureStore.deleteItemAsync('cok_access_token');
-            SecureStore.deleteItemAsync('cok_id_token');
-            return initialState;
         default:
+            console.log('authreducer default');
             return state;
     }
 };

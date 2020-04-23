@@ -11,16 +11,15 @@ import {
     StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import {
     fetchPerson,
     fetchSearchResult,
     resetState,
     setModalVisible,
     setAgreeModalVisible,
-    setUserCreds,
     setVideoPlayerModalVisible,
     getInfo,
+    login,
 } from '../store/actions';
 
 import { FlatList } from 'react-native-gesture-handler';
@@ -32,7 +31,6 @@ import { sendEvent } from '../helpers/createEvent';
 import Loader from '../components/Loader';
 
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
-import { handleLogin } from '../helpers/authHelpers';
 import { RootState } from '../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
@@ -81,7 +79,6 @@ interface DispatchProps {
     resetState: typeof resetState;
     setModalVisible: typeof setModalVisible;
     setAgreeModalVisible: typeof setAgreeModalVisible;
-    setUserCreds: typeof setUserCreds;
     setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
     getInfo: typeof getInfo;
 }
@@ -104,29 +101,26 @@ class PeopleSearchScreen extends React.Component<Props> {
         privacy: false,
     };
 
+    componentDidMount() {
+        console.log('useEffect: PeopleSearch');
+        /**
+         * login(true) is safe to call anytime
+         * Inside the function it ensures only one execution at a
+         * time.
+         */
+        this.props.login(true);
+    }
+
     handleEncodeURI = (person) => {
         return encodeURI(JSON.stringify(person));
     };
 
     handleSearchRequest = async (person, searchType) => {
-        const accessToken = await SecureStore.getItemAsync('cok_access_token');
-        const idToken = await SecureStore.getItemAsync('cok_id_token');
-        const {
-            // accessToken,
-            fetchSearchResult,
-            // idToken,
-            isLoggedIn,
-            navigation,
-            user,
-        } = this.props;
+        const { fetchSearchResult, navigation, user } = this.props;
 
         const body = {};
         const requestObject = {};
 
-        if (isLoggedIn) {
-            requestObject['authToken'] = accessToken;
-            requestObject['idToken'] = idToken;
-        }
         body['searchType'] = searchType;
 
         requestObject['person'] = this.handleEncodeURI(person);
@@ -214,7 +208,7 @@ class PeopleSearchScreen extends React.Component<Props> {
                     setVideoPlayerModalVisible={
                         this.props.setVideoPlayerModalVisible
                     }
-                    onLogin={async () => handleLogin(this.props.setUserCreds)}
+                    onLogin={async () => this.props.login()}
                 />
 
                 {!isLoggedIn && (
@@ -326,7 +320,7 @@ export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     resetState,
     setModalVisible,
     setAgreeModalVisible,
-    setUserCreds,
     setVideoPlayerModalVisible,
     getInfo,
+    login,
 })(PeopleSearchScreen);

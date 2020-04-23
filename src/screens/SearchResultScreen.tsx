@@ -17,10 +17,10 @@ import {
     resetPerson,
     setModalVisible,
     setAgreeModalVisible,
-    setUserCreds,
     setVideoPlayerModalVisible,
     showModal,
     getInfo,
+    login,
 } from '../store/actions';
 import PersonInfo from '../components/people-search/PersonInfo';
 import Loader from '../components/Loader';
@@ -28,7 +28,6 @@ import RegisterModalsContainer from '../components/auth/RegisterModalsContainer'
 import PersonConfirmationModal from '../components/people-search/PersonConfirmationModal';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { RootState } from '../store/reducers';
-import { handleLogin } from '../helpers/authHelpers';
 import constants from '../helpers/constants';
 
 const styles = StyleSheet.create({
@@ -50,9 +49,7 @@ const styles = StyleSheet.create({
 });
 
 interface StateProps {
-    accessToken;
     error;
-    idToken;
     isFetching;
     isLoggedIn;
     person;
@@ -69,10 +66,10 @@ interface DispatchProps {
     resetPerson: typeof resetPerson;
     setModalVisible: typeof setModalVisible;
     setAgreeModalVisible: typeof setAgreeModalVisible;
-    setUserCreds: typeof setUserCreds;
     setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
     showModal: typeof showModal;
     getInfo: typeof getInfo;
+    login: typeof login;
 }
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -101,14 +98,7 @@ class SearchResultScreen extends React.Component<Props> {
     };
 
     componentDidMount() {
-        const {
-            accessToken,
-            fetchPerson,
-            idToken,
-            isLoggedIn,
-            person,
-            resetPerson,
-        } = this.props;
+        const { fetchPerson, isLoggedIn, person, resetPerson } = this.props;
 
         if (this.props.navigation.state.params) {
             const requestObject = {};
@@ -120,15 +110,12 @@ class SearchResultScreen extends React.Component<Props> {
             const { searchPointer } = this.props.navigation.state.params;
             requestObject['search_pointer_hash'] = searchPointer;
 
-            if (isLoggedIn) {
-                requestObject['authToken'] = accessToken;
-                requestObject['idToken'] = idToken;
-            } else {
+            if (!isLoggedIn) {
                 this.setState({ requestObject });
             }
 
             fetchPerson(
-                JSON.stringify(requestObject),
+                requestObject,
                 this.props.user ? this.props.user.email : null
             );
         }
@@ -142,10 +129,8 @@ class SearchResultScreen extends React.Component<Props> {
         ) {
             this.props.resetPerson();
             const requestObject = { ...this.state.requestObject };
-            requestObject['authToken'] = this.props.accessToken;
-            requestObject['idToken'] = this.props.idToken;
             this.props.fetchPerson(
-                JSON.stringify(requestObject),
+                requestObject,
                 this.props.user ? this.props.user.email : null
             );
             this.setState({ requestObject: {} });
@@ -202,7 +187,7 @@ class SearchResultScreen extends React.Component<Props> {
                     setVideoPlayerModalVisible={
                         this.props.setVideoPlayerModalVisible
                     }
-                    onLogin={async () => handleLogin(this.props.setUserCreds)}
+                    onLogin={async () => this.props.login()}
                 />
                 <SafeAreaView style={{ ...styles.safeAreaView }}>
                     <ScrollView>
@@ -244,8 +229,6 @@ class SearchResultScreen extends React.Component<Props> {
 const mapStateToProps = (state: RootState): StateProps => {
     const { error, isFetching, person, possiblePersons } = state.people;
     const {
-        accessToken,
-        idToken,
         isLoggedIn,
         user,
         modalVisible,
@@ -253,9 +236,7 @@ const mapStateToProps = (state: RootState): StateProps => {
         videoVisible,
     } = state.auth;
     return {
-        accessToken,
         error,
-        idToken,
         isFetching,
         isLoggedIn,
         person,
@@ -273,8 +254,8 @@ export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     resetPerson,
     setModalVisible,
     setAgreeModalVisible,
-    setUserCreds,
     setVideoPlayerModalVisible,
     showModal,
     getInfo,
+    login,
 })(SearchResultScreen);

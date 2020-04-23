@@ -7,10 +7,8 @@ import {
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    setUserCreds,
-    authChecker,
+    login,
 } from '../store/actions';
-import { handleLogin } from '../helpers/authHelpers';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import constants from '../helpers/constants';
 
@@ -28,8 +26,8 @@ const styles = StyleSheet.create({
 
 const AuthenticationView = (props) => {
     useEffect(() => {
-        props.authChecker();
-    }, [props.loadingUser]);
+        props.login(true);
+    }, []);
 
     return (
         <View style={styles.registerContainer}>
@@ -44,15 +42,9 @@ const AuthenticationView = (props) => {
                     setVideoPlayerModalVisible={
                         props.setVideoPlayerModalVisible
                     }
-                    onLogin={async () => handleLogin(props.setUserCreds)}
+                    onLogin={async () => props.login()}
                 />
-                {!props.modalVisible && (
-                    <LoginWithAuth0
-                        idToken={props.idToken}
-                        navigation={props.navigation}
-                        setModalVisible={props.setModalVisible}
-                    />
-                )}
+                {!props.modalVisible && <LoginWithAuth0 />}
             </SafeAreaView>
         </View>
     );
@@ -75,6 +67,5 @@ export default connect(mapStateToProps, {
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    setUserCreds,
-    authChecker,
+    login,
 })(AuthenticationView);

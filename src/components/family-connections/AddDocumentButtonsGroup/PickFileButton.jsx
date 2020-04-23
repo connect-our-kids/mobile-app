@@ -23,7 +23,7 @@ export default function PickFileButton({ afterAccept }) {
                 }
             })
             .catch((error) => {
-                console.error('--- There was a problem selecting a file. ---');
+                console.log('--- There was a problem selecting a file. ---');
                 console.log(error);
             });
     }

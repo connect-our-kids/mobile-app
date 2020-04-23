@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { setUserCreds, logOut } from '../store/actions';
+import { logout } from '../store/actions';
 import { connect } from 'react-redux';
 import { Divider } from 'react-native-elements';
 import constants from '../helpers/constants';
@@ -10,7 +10,6 @@ import Constants from 'expo-constants';
 
 class AboutScreen extends Component {
     render() {
-        // TODO replace with expo library
         const version = Constants.nativeAppVersion;
 
         return (
@@ -96,4 +95,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { setUserCreds, logOut })(AboutScreen);
+export default connect(mapStateToProps, { logOut: logout })(AboutScreen);

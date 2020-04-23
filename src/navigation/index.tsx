@@ -129,7 +129,6 @@ const CustomDrawerNavigator = createStackNavigator({
     },
     About: {
         screen: AboutScreen,
-        // initialRouteName: 'About',
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
             headerBackTitle: 'Back',
