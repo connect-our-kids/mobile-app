@@ -117,3 +117,7 @@ dist
 # Apollo Graphql generated files
 src/generated/
 build
+
+# VSCode configuration
+.vscode/.react
+.vscode/launch.json
