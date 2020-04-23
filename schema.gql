@@ -74,7 +74,7 @@ type Person {
   title: String
   notes: String
   picture: String
-  gender: String
+  gender: String!
   dateOfDeath: Date
   isDeceased: Boolean!
   birthMonth: Int
@@ -139,6 +139,7 @@ type PersonTelephone {
   modifiedBy: User
   telephone: String!
   isVerified: Boolean!
+  isHidden: Boolean!
 }
 
 interface EngagementCommon {
@@ -236,6 +237,7 @@ type PersonEmail {
   modifiedBy: User
   email: String!
   isVerified: Boolean!
+  isHidden: Boolean!
 }
 
 type PersonAddress {
@@ -245,6 +247,7 @@ type PersonAddress {
   createdBy: User
   modifiedBy: User
   isVerified: Boolean!
+  isHidden: Boolean!
   country: String
   countryCode: String
   formatted: String
@@ -308,6 +311,7 @@ type SalaryRange {
 
 input AddressInput {
   isVerified: Boolean!
+  isHidden: Boolean!
   country: String
   countryCode: String
   formatted: String
@@ -324,11 +328,13 @@ input AddressInput {
 
 input TelephoneInput {
   isVerified: Boolean!
+  isHidden: Boolean!
   phoneNumber: String!
 }
 
 input EmailInput {
   isVerified: Boolean!
+  isHidden: Boolean!
   emailAddress: String!
 }
 
@@ -392,7 +398,7 @@ input UpdateRelationshipInput {
   title: StringWrapper
   notes: StringWrapper
   picture: UploadWrapper
-  gender: StringWrapper
+  gender: String
   dateOfDeath: DateWrapper
   isDeceased: Boolean
   birthMonth: IntWrapper
@@ -446,7 +452,7 @@ input UpdateCaseInput {
   title: StringWrapper
   notes: StringWrapper
   picture: UploadWrapper
-  gender: StringWrapper
+  gender: String
   dateOfDeath: DateWrapper
   isDeceased: Boolean
   birthMonth: IntWrapper
@@ -472,6 +478,7 @@ input CreateEngagementDocument {
   attachment: Upload!
   title: String!
   note: String!
+  imageToPdf: Boolean = false
 }
 
 input CreateEngagementEmail {
@@ -499,6 +506,7 @@ input UpdateEngagementDocument {
   attachment: Upload
   title: String
   note: String
+  imageToPdf: Boolean = false
 }
 
 input UpdateEngagementEmail {
@@ -540,15 +548,19 @@ input CreateUserInput {
   role: Roles!
 }
 
+input UserTeamInput {
+  teamId: Int!
+  role: Roles!
+}
+
 input CreateUserInputAdmin {
   firstName: String!
   lastName: String!
   emailAddress: String!
   picture: Upload
-  role: Roles!
-  teamId: Int = null
-  isActive: Boolean! = true
-  isSiteAdmin: Boolean! = false
+  team: UserTeamInput
+  isActive: Boolean!
+  isSiteAdmin: Boolean!
 }
 
 input UpdateUserInput {
@@ -573,6 +585,7 @@ type TypeSchemas {
   childStatus: [ChildStatus!]!
   relationshipStatus: [RelationshipStatus!]!
   salaryRange: [SalaryRange!]!
+  gender(teamId: Int!): [String!]! @hasTeam # ensure user is member of requested team
 }
 
 enum EngagementDataType {

@@ -8,7 +8,6 @@ import {
     Platform,
 } from 'react-native';
 import EditDetailsForm from '../EditDetailsForm';
-import * as GenderUtil from '../../../helpers/genderUtil';
 import { RelationshipDetailFullFragment } from '../../../generated/RelationshipDetailFullFragment';
 
 export default function ConnectionsDetailsView({
@@ -179,9 +178,7 @@ export default function ConnectionsDetailsView({
                     <View style={styles.textView}>
                         <Text style={styles.labelText}>Gender</Text>
                         <Text style={styles.contentText}>
-                            {GenderUtil.genderEnumToString(
-                                details.person.gender
-                            )}
+                            {details.person.gender}
                         </Text>
                     </View>
                 ) : null}

@@ -135,19 +135,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     const [sort, setSort] = useState('Full Name'); // sort results of Family Connections, can be changed to several other values
     const [rtn, setRtn] = useState('RETURN'); // MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
 
-    const genderAssignment = (gender) => {
-        // also exists in the CaseView component
-        if (gender === 'M') {
-            return 'Male';
-        } else if (gender === 'F') {
-            return 'Female';
-        } else if (gender === 'O') {
-            return '';
-        } else {
-            return '';
-        }
-    };
-
     // run this once
     useEffect(() => {
         Platform.OS === 'android' ? setRtn('') : null; // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
@@ -186,6 +173,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     ) {
         // if nothing is selected -- do nothing
     } else {
+        // TODO this needs to be updated for new genders
         if (!state.filters.male) {
             filteredCases = filteredCases.filter(
                 (c) => c.person.gender !== 'M'
@@ -652,9 +640,9 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                                     key={index}
                                     title={result.person.fullName}
                                     titleStyle={{ color: '#5A6064' }}
-                                    subtitle={`${genderAssignment(
+                                    subtitle={`${
                                         result.person.gender
-                                    )}\n${birthdayToSubtitle(
+                                    }\n${birthdayToSubtitle(
                                         result.person
                                     )}`.trim()}
                                     subtitleStyle={{ color: '#9FABB3' }}

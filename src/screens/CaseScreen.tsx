@@ -64,9 +64,9 @@ const CaseScreen = (props: Props) => {
         3: false,
         4: false,
         5: false,
-        6: false, // male
-        7: false, // female
-        8: false, // unspecified gender
+        6: false, // male  TODO update for new genders
+        7: false, // female TODO update for new genders
+        8: false, // unspecified gender TODO update for new genders
         name: true,
         last: false,
         DOB: false,
@@ -85,18 +85,7 @@ const CaseScreen = (props: Props) => {
         setSearchKeywords(e);
     };
 
-    const genderAssignment = (gender: string | null): string | null => {
-        if (gender === 'M') {
-            return 'Male';
-        } else if (gender === 'F') {
-            return 'Female';
-        } else if (gender === 'O') {
-            return 'Not Specified';
-        } else {
-            return null;
-        }
-    };
-
+    // TODO this is wrong with new genders
     const genderFilter = (arr: caseDetailFull_relationships[]) => {
         // ------GENDER FILTER functionality------
         if (!filtersSelected[6] && !filtersSelected[7] && !filtersSelected[8]) {
@@ -261,10 +250,10 @@ const CaseScreen = (props: Props) => {
                                     <View>
                                         {props.case.details?.person.gender ? (
                                             <Text style={{ color: '#434245' }}>
-                                                {genderAssignment(
+                                                {
                                                     props.case.details.person
                                                         .gender
-                                                )}
+                                                }
                                             </Text>
                                         ) : null}
                                         {props.case.details.person

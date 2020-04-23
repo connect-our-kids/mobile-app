@@ -3,7 +3,6 @@ import styles from './CaseList.styles';
 import { View, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import sage from 's-age';
-import * as GenderUtil from '../../../helpers/genderUtil';
 import placeholderImg from '../../../../assets/profile_placeholder.png';
 import {
     RelationshipDetailSlim,
@@ -31,7 +30,7 @@ function generateSubTitle(person: RelationshipDetailSlim_person) {
         if (value.length > 0) {
             value += '\r\n';
         }
-        value += GenderUtil.genderEnumToString(person.gender);
+        value += person.gender;
     }
 
     if (person.dayOfBirth && person.birthMonth && person.birthYear) {
