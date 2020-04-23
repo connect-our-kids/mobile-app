@@ -333,40 +333,6 @@ function RelationshipScreen(props: Props): JSX.Element {
                                     </Text>
                                 </Text>
                             </View>
-                            <View
-                                style={[
-                                    styles.documentsTab,
-                                    tabs.docs ? styles.documentsSelected : null,
-                                ]}
-                            >
-                                <Text
-                                    style={[
-                                        {
-                                            color: '#444444',
-                                            fontSize: 17.5,
-                                            paddingBottom: 9,
-                                        },
-                                        tabs.docs
-                                            ? { color: '#444444' }
-                                            : { color: '#444444' },
-                                    ]}
-                                    onPress={() => {
-                                        setTabs({
-                                            engagement: false,
-                                            docs: true,
-                                            details: false,
-                                        });
-                                    }}
-                                >
-                                    <Text
-                                        style={
-                                            tabs.docs ? styles.thatBlue : null
-                                        }
-                                    >
-                                        Documents
-                                    </Text>
-                                </Text>
-                            </View>
                         </View>
 
                         {tabs.engagement ? (
