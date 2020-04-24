@@ -202,6 +202,15 @@ export const createDocEngagement = (
         >({
             mutation: CREATE_DOC_ENGAGEMENT_MUTATION, // TODO mutation here
             variables: { caseId, value },
+            update: (cache, result) => {
+                if (result.data) {
+                    addEngagementCache(
+                        caseId,
+                        result.data.createEngagementDocument,
+                        cache
+                    );
+                }
+            },
         })
         .then(
             () => {

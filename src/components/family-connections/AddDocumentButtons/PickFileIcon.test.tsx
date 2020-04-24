@@ -9,7 +9,7 @@ import PickFileIcon from './PickFileIcon';
 describe('PickFileIcon component', () => {
     test('renders', () => {
         const tree = renderer.create(<PickFileIcon />).toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {

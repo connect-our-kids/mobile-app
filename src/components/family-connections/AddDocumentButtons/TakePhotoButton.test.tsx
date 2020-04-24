@@ -10,12 +10,32 @@ if (['android', 'ios'].includes(Platform.OS)) {
 
     describe('<TakePhotoButton />', () => {
         it('selects component', () => {
-            const tree = renderer.create(<TakePhotoButton />).toJSON();
-            expect(tree.children).toHaveLength(1);
+            const tree = renderer
+                .create(
+                    <TakePhotoButton
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                    />
+                )
+                .toJSON();
+            expect(tree?.children).toHaveLength(1);
         });
 
         it('Matches snapshot of component', () => {
-            const tree = renderer.create(<TakePhotoButton />).toJSON();
+            const tree = renderer
+                .create(
+                    <TakePhotoButton
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                    />
+                )
+                .toJSON();
             expect(tree).toMatchSnapshot();
         });
     });
@@ -27,8 +47,13 @@ if (['android', 'ios'].includes(Platform.OS)) {
             const { getByTestId } = render(
                 <View>
                     <TakePhotoButton
-                        testID={'take-photo-button'}
-                        onPress={onPressMock}
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                        /*testID={'take-photo-button'}
+                        onPress={onPressMock}*/
                     />
                 </View>
             );

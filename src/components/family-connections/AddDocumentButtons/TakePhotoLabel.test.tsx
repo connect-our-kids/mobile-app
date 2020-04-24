@@ -9,7 +9,7 @@ import TakePhotoLabel from './TakePhotoLabel';
 describe('TakePhotoLabel component', () => {
     test('renders', () => {
         const tree = renderer.create(<TakePhotoLabel />).toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {

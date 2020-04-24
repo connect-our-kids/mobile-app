@@ -2,14 +2,6 @@ import { StyleSheet } from 'react-native';
 import constants from '../../../helpers/constants';
 
 export default StyleSheet.create({
-    buttonsGroup: {
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        flexDirection: 'row',
-        padding: 4,
-        width: '100%',
-    },
-
     button: {
         flexGrow: 0,
         // backgroundColor: constants.highlightColor,

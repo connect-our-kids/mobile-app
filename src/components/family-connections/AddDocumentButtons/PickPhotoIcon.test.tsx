@@ -9,7 +9,7 @@ import PickPhotoIcon from './PickPhotoIcon';
 describe('PickPhotoIcon component', () => {
     test('renders', () => {
         const tree = renderer.create(<PickPhotoIcon />).toJSON();
-        expect(tree.children).toHaveLength(1);
+        expect(tree?.children).toHaveLength(1);
     });
 
     test('matches snapshot', () => {

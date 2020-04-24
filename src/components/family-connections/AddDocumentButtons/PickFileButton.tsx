@@ -2,12 +2,16 @@ import React from 'react';
 import Button from './Button';
 import PickFileIcon from './PickFileIcon';
 import * as DocumentPicker from 'expo-document-picker';
-import convertFileToMedia from './convertFileToMedia';
 import PickFileLabel from './PickFileLabel';
+import { DocumentInfo } from './types';
 
 /**********************************************************/
 
-export default function PickFileButton({ afterAccept }) {
+export default function PickFileButton({
+    afterAccept,
+}: {
+    afterAccept: (document: DocumentInfo) => void;
+}) {
     function pickFile() {
         DocumentPicker.getDocumentAsync({
             /* MIME type */
@@ -19,7 +23,7 @@ export default function PickFileButton({ afterAccept }) {
         })
             .then((file) => {
                 if (file.type === 'success') {
-                    afterAccept(convertFileToMedia(file));
+                    afterAccept(file);
                 }
             })
             .catch((error) => {
@@ -29,7 +33,7 @@ export default function PickFileButton({ afterAccept }) {
     }
 
     return (
-        <Button onPress={pickFile} testID="pick-file-button">
+        <Button onPress={pickFile} /*testID="pick-file-button"*/>
             <PickFileIcon />
             <PickFileLabel />
         </Button>

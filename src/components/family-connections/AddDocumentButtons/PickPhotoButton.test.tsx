@@ -10,12 +10,32 @@ if (['android', 'ios'].includes(Platform.OS)) {
 
     describe('<PickPhotoButton />', () => {
         it('selects component', () => {
-            const tree = renderer.create(<PickPhotoButton />).toJSON();
-            expect(tree.children).toHaveLength(1);
+            const tree = renderer
+                .create(
+                    <PickPhotoButton
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                    />
+                )
+                .toJSON();
+            expect(tree?.children).toHaveLength(1);
         });
 
         it('matches snapshot of component', () => {
-            const tree = renderer.create(<PickPhotoButton />).toJSON();
+            const tree = renderer
+                .create(
+                    <PickPhotoButton
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                    />
+                )
+                .toJSON();
             expect(tree).toMatchSnapshot();
         });
     });
@@ -27,8 +47,13 @@ if (['android', 'ios'].includes(Platform.OS)) {
             const { getByTestId } = render(
                 <View>
                     <PickPhotoButton
-                        testID={'pick-photo-button'}
-                        onPress={onPressMock}
+                        {...{
+                            afterAccept: (image) => {
+                                return;
+                            },
+                        }}
+                        /*testID={'pick-photo-button'}
+                        onPress={onPressMock}*/
                     />
                 </View>
             );

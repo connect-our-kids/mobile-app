@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import mime from 'mime';
 import {
     Text,
     ScrollView,
@@ -8,6 +8,7 @@ import {
     TextInput,
     KeyboardAvoidingView,
     Platform,
+    Image,
 } from 'react-native';
 
 import AttachmentIcon from '../Attachment/AttachmentIcon';
@@ -18,14 +19,19 @@ import constants from '../../../helpers/constants';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { RootState } from '../../../store/reducers';
 import { createDocEngagement } from '../../../store/actions';
-import { Media, Attachment } from './types';
-import convertMediaToAttachment from './convertMediaToAttachment';
+import { DocumentInfo } from '../AddDocumentButtons/types';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
+import { ReactNativeFile } from 'apollo-upload-client';
 
 interface StateProps {
     caseId: number;
     relationshipId?: number;
-    media: Media;
-    attachment: Attachment;
+    image?: ImageInfo; // either this or document will be specified, not both
+    document?: DocumentInfo; // either this or image will be specified, not both
+    fileName: string;
+    fileType: string;
+    size?: string;
+    attachment: ReactNativeFile;
 }
 
 interface DispatchProps {
@@ -40,9 +46,24 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-function AddDocumentForm(props: Props): JSX.Element {
-    /* handle attachment data */
+function humanFileSize(bytes: number, si: boolean): string {
+    const thresh = si ? 1000 : 1024;
+    if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    const units = si
+        ? ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    let u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+    const digitsAfterDecimal = units[u].startsWith('K') ? 0 : 1;
+    return bytes.toFixed(digitsAfterDecimal) + ' ' + units[u];
+}
 
+function AddDocumentForm(props: Props): JSX.Element {
     /* form input values */
     const [title, setTitle] = useState('');
     const [note, setNote] = useState('');
@@ -61,10 +82,11 @@ function AddDocumentForm(props: Props): JSX.Element {
                 </Text>
                 {/* ATTACHMENT INFO */}
                 <View style={[styles.content, styles.attachmentInfoContainer]}>
-                    {props.media.type === 'image' ? (
-                        <AttachmentIcon
-                            attachment={props.attachment.name}
-                            size={80}
+                    {props.image ? (
+                        <Image
+                            source={{ uri: props.image.uri }}
+                            resizeMode={'cover'}
+                            style={[styles.attachmentPreview]}
                         />
                     ) : (
                         <AttachmentIcon
@@ -74,11 +96,16 @@ function AddDocumentForm(props: Props): JSX.Element {
                     )}
                     <View style={[styles.attachmentInfo]}>
                         <Text style={[styles.displayText]}>
-                            Document Type: {props.media.type}
+                            Name: {props.fileName}
                         </Text>
                         <Text style={[styles.displayText]}>
-                            File Extension: {props.attachment.ext}
+                            Type: {props.fileType}
                         </Text>
+                        {props.size ? (
+                            <Text style={[styles.displayText]}>
+                                Size: {props.size}
+                            </Text>
+                        ) : null}
                     </View>
                 </View>
                 {/* TITLE INPUT */}
@@ -112,7 +139,7 @@ function AddDocumentForm(props: Props): JSX.Element {
                             title,
                             isPublic: true,
                             note,
-                            attachment: props.media,
+                            attachment: props.attachment,
                         });
                         props.navigation.goBack();
                     }}
@@ -131,12 +158,40 @@ function mapStateToProps(state: RootState, ownProps: OwnProps) {
         throw new Error('Case id not specified');
     }
 
-    const media = ownProps.navigation.getParam('media') as Media;
-    const attachment = convertMediaToAttachment(media);
+    const isImageInfo = (media: unknown): media is ImageInfo =>
+        (media as ImageInfo)?.width !== undefined;
+
+    const isDocumentInfo = (media: unknown): media is DocumentInfo =>
+        (media as DocumentInfo)?.size !== undefined;
+
+    const input = ownProps.navigation.getParam('media') as
+        | ImageInfo
+        | DocumentInfo;
+
+    const image = isImageInfo(input) ? input : undefined;
+    const document = isDocumentInfo(input) ? input : undefined;
+
+    const fileName = isImageInfo(input)
+        ? input.uri.split('/').pop() ?? 'Unknown'
+        : input.name;
+
+    const size = document ? humanFileSize(document.size, true) : undefined;
+    const fileType = mime.getType(input.uri) ?? 'Unknown';
+
+    const attachment = new ReactNativeFile({
+        uri: input.uri,
+        type: fileType,
+        name: fileName,
+    });
+
     return {
         caseId,
         relationshipId,
-        media,
+        image,
+        document,
+        fileName,
+        fileType,
+        size,
         attachment,
     };
 }

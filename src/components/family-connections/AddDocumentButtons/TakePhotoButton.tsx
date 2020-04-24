@@ -5,16 +5,18 @@ import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
 import Button from './Button';
 import TakePhotoIcon from './TakePhotoIcon';
-import convertPhotoToMedia from './convertPhotoToMedia';
 import TakePhotoLabel from './TakePhotoLabel';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
-/**********************************************************/
-
-export default function TakePhotoButton({ afterAccept }) {
+export default function TakePhotoButton({
+    afterAccept,
+}: {
+    afterAccept: (image: ImageInfo) => void;
+}) {
     async function getPermissions() {
         let hasPermissions = false;
 
-        if (Constants.platform.ios || Constants.platform.android) {
+        if (Constants.platform?.ios || Constants.platform?.android) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA);
             hasPermissions = status === 'granted';
         }
@@ -29,7 +31,7 @@ export default function TakePhotoButton({ afterAccept }) {
         });
 
         if (!photo.cancelled) {
-            afterAccept(convertPhotoToMedia(photo));
+            afterAccept(photo);
         }
 
         return;
@@ -46,7 +48,7 @@ export default function TakePhotoButton({ afterAccept }) {
     }
 
     return (
-        <Button onPress={onPress} testID="take-photo-button">
+        <Button onPress={onPress} /*testID="take-photo-button"*/>
             <TakePhotoIcon />
             <TakePhotoLabel />
         </Button>

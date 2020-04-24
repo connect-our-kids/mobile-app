@@ -6,15 +6,19 @@ import { Alert } from 'react-native';
 import Button from './Button';
 import PickPhotoIcon from './PickPhotoIcon';
 import PickPhotoLabel from './PickPhotoLabel';
-import convertPhotoToMedia from './convertPhotoToMedia';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
 /**********************************************************/
 
-export default function PickPhotoButton({ afterAccept }) {
+export default function PickPhotoButton({
+    afterAccept,
+}: {
+    afterAccept: (image: ImageInfo) => void;
+}) {
     async function getPermissions() {
         let hasPermissions = false;
 
-        if (Constants.platform.ios || Constants.platform.android) {
+        if (Constants.platform?.ios || Constants.platform?.android) {
             const { status } = await Permissions.askAsync(
                 Permissions.CAMERA_ROLL
             );
@@ -31,7 +35,7 @@ export default function PickPhotoButton({ afterAccept }) {
         });
 
         if (!photo.cancelled) {
-            afterAccept(convertPhotoToMedia(photo));
+            afterAccept(photo);
         }
 
         return;
@@ -50,7 +54,7 @@ export default function PickPhotoButton({ afterAccept }) {
     }
 
     return (
-        <Button onPress={onPress} testID="pick-photo-button">
+        <Button onPress={onPress} /* testID="pick-photo-button" */>
             <PickPhotoIcon />
             <PickPhotoLabel />
         </Button>
