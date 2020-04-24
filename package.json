@@ -16,7 +16,8 @@
     "test:debug": "jest --watch --onlyChanged --runInBand",
     "test:coverage": "jest --coverage=true || true",
     "test:update-snapshots": "jest --updateSnapshot",
-    "codegen": "rm -rf src/generated && npx apollo client:codegen --target=typescript --tagName=gql --addTypename --outputFlat=src/generated && graphql-codegen"
+    "codegen": "rm -rf src/generated && npx apollo client:codegen --target=typescript --tagName=gql --addTypename --outputFlat=src/generated && graphql-codegen",
+    "publish:ios": "expo build:ios --release-channel prod && expo upload:ios"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
