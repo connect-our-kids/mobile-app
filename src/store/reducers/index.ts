@@ -6,6 +6,7 @@ import { recentSearchesReducer as recentSearches } from './recentSearchesReducer
 import { casesReducer } from './casesReducer';
 import { caseReducer } from './caseReducer';
 import { relationshipReducer } from './relationshipReducer';
+import { schemaReducer } from './schemaReducer';
 
 const rootReducer = combineReducers({
     auth,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     cases: casesReducer,
     case: caseReducer,
     relationship: relationshipReducer,
+    schema: schemaReducer,
 });
 export default rootReducer;
 
