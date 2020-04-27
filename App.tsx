@@ -3,16 +3,10 @@ import { Provider } from 'react-redux';
 import Navigator from './src/navigation';
 import { StatusBar } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import reducer from './src/store/reducers/index';
-import thunk from 'redux-thunk';
-import { client } from './src/apollo';
+import { login } from './src/store/actions';
+import { store } from './src/store/store';
 
-const store = createStore(
-    reducer,
-    composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ client })))
-);
+store.dispatch(login(true));
 
 export default function App(): JSX.Element {
     return (

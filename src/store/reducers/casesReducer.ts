@@ -45,7 +45,9 @@ export const casesReducer = (
         case CasesTypes.CLEAR_USER_CASES:
             return {
                 ...state,
+                isLoadingCases: false,
                 results: [],
+                error: undefined,
             };
 
         case CasesTypes.CREATE_CASE:

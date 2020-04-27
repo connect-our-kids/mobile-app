@@ -32,11 +32,14 @@ import {
 import { RelationshipScreenParams } from './RelationshipScreen';
 import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ConnectionsLogin from '../components/auth/ConnectionsLogin';
+import { AuthState } from '../store/reducers/authReducer';
 
 interface StateProps {
     case?: caseDetailFull;
     isLoadingCase: boolean;
     caseError?: string;
+    auth: AuthState;
 }
 
 interface DispatchProps {
@@ -200,6 +203,10 @@ const CaseScreen = (props: Props) => {
             fontWeight: 'normal',
         },
     });
+
+    if (!props.auth.isLoggedIn) {
+        return <ConnectionsLogin />;
+    }
 
     let scroll: ScrollView | null = null;
 
@@ -989,6 +996,7 @@ const mapStateToProps = (state: RootState) => {
         case: state.case.results,
         isLoadingCase: state.case.isLoading,
         caseError: state.case.error,
+        auth: state.auth,
     };
 };
 

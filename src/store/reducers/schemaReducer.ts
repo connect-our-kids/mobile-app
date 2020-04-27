@@ -39,6 +39,9 @@ export const schemaReducer = (
         case SchemaTypes.CLEAR_SCHEMA:
             return {
                 ...state,
+                isLoading: false,
+                results: undefined,
+                error: undefined,
             };
 
         default:

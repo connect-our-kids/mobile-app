@@ -43,6 +43,9 @@ export const caseReducer = (
         case CaseTypes.CLEAR_CASE:
             return {
                 ...state,
+                isLoading: false,
+                results: undefined,
+                error: undefined,
             };
         case CaseTypes.CREATE_CALL_ENGAGEMENT:
             return {

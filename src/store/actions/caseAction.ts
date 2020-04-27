@@ -32,9 +32,9 @@ import {
     createEngagementEmailMutation,
     createEngagementEmailMutationVariables,
 } from '../../generated/createEngagementEmailMutation';
-import { RootState } from '../reducers';
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { ThunkResult } from '../store';
 
 export enum CaseTypes {
     GET_CASE_START = 'GET_CASE_START',
@@ -146,9 +146,9 @@ export interface CaseDispatch {
     (arg0: CaseActionTypes): void;
 }
 
-export const getCase = (caseId: number) => (
+export const getCase = (caseId: number): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.GET_CASE_START });
@@ -189,7 +189,9 @@ export const getCase = (caseId: number) => (
         );
 };
 
-export const clearCase = () => (dispatch: CaseDispatch): void => {
+export const clearCase = (): ThunkResult<void> => (
+    dispatch: CaseDispatch
+): void => {
     dispatch({ type: CaseTypes.CLEAR_CASE });
     // TODO actually clear data
 };
@@ -197,9 +199,9 @@ export const clearCase = () => (dispatch: CaseDispatch): void => {
 export const createDocEngagement = (
     caseId: number,
     value: CreateEngagementDocument
-) => (
+): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.CREATE_DOC_ENGAGEMENT });
@@ -249,9 +251,9 @@ export const createDocEngagement = (
 export const createNoteEngagement = (
     caseId: number,
     value: CreateEngagementNote
-) => (
+): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.CREATE_NOTE_ENGAGEMENT });
@@ -301,9 +303,9 @@ export const createNoteEngagement = (
 export const createCallEngagement = (
     caseId: number,
     value: CreateEngagementCall
-) => (
+): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.CREATE_CALL_ENGAGEMENT });
@@ -353,9 +355,9 @@ export const createCallEngagement = (
 export const createEmailEngagement = (
     caseId: number,
     value: CreateEngagementEmail
-) => (
+): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.CREATE_EMAIL_ENGAGEMENT });

@@ -19,6 +19,7 @@ export const USER_FULL_FRAGMENT = gql`
         email
         firstName
         lastName
+        name
         picture
         isSiteAdmin
         userTeam {

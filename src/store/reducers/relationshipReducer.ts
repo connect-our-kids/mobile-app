@@ -40,6 +40,9 @@ export const relationshipReducer = (
         case RelationshipTypes.CLEAR_RELATIONSHIP:
             return {
                 ...state,
+                isLoading: false,
+                results: undefined,
+                error: undefined,
             };
 
         default:

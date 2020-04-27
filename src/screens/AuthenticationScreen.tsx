@@ -44,7 +44,7 @@ const AuthenticationView = (props) => {
                     }
                     onLogin={async () => props.login()}
                 />
-                {!props.modalVisible && <LoginWithAuth0 />}
+                {!props.modalVisible && <LoginWithAuth0 {...props} />}
             </SafeAreaView>
         </View>
     );

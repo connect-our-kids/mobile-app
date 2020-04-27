@@ -5,8 +5,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'native-base';
 import { Avatar, Divider } from 'react-native-elements';
 import { sendEvent } from '../../../helpers/createEvent';
-import { AuthState } from '../../../store/reducers/authReducer';
 import { RootState } from '../../../store/reducers';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
 const styles = StyleSheet.create({
     logInButtons: {
@@ -131,7 +131,11 @@ const styles = StyleSheet.create({
 });
 
 interface StateProps {
-    auth: AuthState;
+    isLoggedIn: boolean;
+    picture?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
 }
 
 interface DispatchProps {
@@ -140,42 +144,40 @@ interface DispatchProps {
     setModalVisible: typeof setModalVisible;
 }
 
-type Props = StateProps & DispatchProps;
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 function LoginWithAuth0(props: Props): JSX.Element {
-    return (
-        <View style={styles.view1}>
-            <View style={styles.view2}>
-                {props.auth.user && props.auth.user.picture ? (
-                    <Avatar
-                        rounded
-                        size="large"
-                        source={{ uri: props.auth.user.picture }}
-                    />
-                ) : null}
+    if (props.isLoggedIn) {
+        return (
+            <View style={styles.view1}>
+                <View style={styles.view2}>
+                    {props.picture ? (
+                        <Avatar
+                            rounded
+                            size="large"
+                            source={{ uri: props.picture }}
+                        />
+                    ) : null}
 
-                <Text>
-                    {props.auth.isLoggedIn &&
-                    props.auth.user &&
-                    props.auth.user.email
-                        ? 'Welcome back, ' + props.auth.user.given_name + '!'
-                        : 'Welcome to Connect Our Kids!'}
-                </Text>
+                    <Text style={{ paddingTop: 10 }}>
+                        {props.firstName
+                            ? 'Welcome back, ' + props.firstName + '!'
+                            : 'Welcome to Connect Our Kids!'}
+                    </Text>
 
-                {props.auth.isLoggedIn &&
-                props.auth.user &&
-                props.auth.user.email ? (
                     <Divider style={styles.divider} />
-                ) : null}
-            </View>
+                </View>
 
-            {props.auth.isLoggedIn && props.auth.user ? (
                 <View style={styles.view3}>
                     <Text style={styles.view3Text}>Information</Text>
                 </View>
-            ) : null}
 
-            {props.auth.isLoggedIn && props.auth.user ? (
                 <View style={styles.view4}>
                     <View style={styles.view5}>
                         <Text style={styles.view5Text}>First Name</Text>
@@ -184,38 +186,18 @@ function LoginWithAuth0(props: Props): JSX.Element {
                     </View>
                     <View style={styles.view6}>
                         <View style={styles.view7}>
-                            <Text style={styles.text}>
-                                {props.auth.isLoggedIn &&
-                                props.auth.user &&
-                                props.auth.user.given_name
-                                    ? props.auth.user.given_name
-                                    : null}
-                            </Text>
+                            <Text style={styles.text}>{props.firstName}</Text>
                         </View>
                         <View style={styles.view8And9}>
-                            <Text style={styles.text}>
-                                {props.auth.isLoggedIn &&
-                                props.auth.user &&
-                                props.auth.user.family_name
-                                    ? props.auth.user.family_name
-                                    : null}
-                            </Text>
+                            <Text style={styles.text}>{props.lastName}</Text>
                         </View>
                         <View style={styles.view8And9}>
-                            <Text style={styles.text}>
-                                {props.auth.isLoggedIn &&
-                                props.auth.user &&
-                                props.auth.user.email
-                                    ? props.auth.user.email
-                                    : null}
-                            </Text>
+                            <Text style={styles.text}>{props.email}</Text>
                         </View>
                     </View>
                 </View>
-            ) : null}
-            <View style={styles.linkContainer}>
-                <View style={styles.logInButtons}>
-                    {props.auth.isLoggedIn ? (
+                <View style={styles.linkContainer}>
+                    <View style={styles.logInButtons}>
                         <View style={styles.view10}>
                             <Button
                                 style={[styles.button, styles.view10Button]}
@@ -227,7 +209,15 @@ function LoginWithAuth0(props: Props): JSX.Element {
                                 <Text style={styles.logOutText}>Log Out</Text>
                             </Button>
                         </View>
-                    ) : (
+                    </View>
+                </View>
+            </View>
+        );
+    } else {
+        return (
+            <View style={styles.view1}>
+                <View style={styles.linkContainer}>
+                    <View style={styles.logInButtons}>
                         <View style={styles.logInButtons}>
                             <Button
                                 style={styles.buttonStyle}
@@ -239,7 +229,7 @@ function LoginWithAuth0(props: Props): JSX.Element {
                             <Button
                                 style={styles.buttonStyle}
                                 block
-                                onPress={(): void => {
+                                onPress={() => {
                                     props.setModalVisible(true);
                                     sendEvent(null, 'click', 'sign-up');
                                 }}
@@ -247,18 +237,24 @@ function LoginWithAuth0(props: Props): JSX.Element {
                                 <Text style={styles.btnText}>Sign Up</Text>
                             </Button>
                         </View>
-                    )}
+                    </View>
                 </View>
             </View>
-        </View>
-    );
+        );
+    }
 }
 
-function mapStateToProps(state: RootState) {
-    return { auth: state.auth };
-}
+const mapStateToProps = (state: RootState) => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn,
+        picture: state.me.results?.picture ?? state.auth.user?.email,
+        firstName: state.me.results?.firstName ?? state.auth.user?.given_name,
+        lastName: state.me.results?.lastName ?? state.auth.user?.family_name,
+        email: state.me.results?.email ?? state.auth.user?.email,
+    };
+};
 
-export default connect<StateProps, DispatchProps, {}>(mapStateToProps, {
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     logout,
     login,
     setModalVisible,

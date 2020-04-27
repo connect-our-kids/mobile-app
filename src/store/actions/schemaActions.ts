@@ -1,12 +1,12 @@
 import { STATIC_DATA_QUERY } from './fragments/schema';
 import { GraphQLError } from 'graphql';
-import { RootState } from '../reducers';
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import {
     staticDataQuery,
     staticDataQueryVariables,
 } from '../../generated/staticDataQuery';
+import { ThunkResult } from '../store';
 
 export enum SchemaTypes {
     GET_SCHEMA_START = 'GET_SCHEMA_START',
@@ -44,9 +44,9 @@ interface SchemaDispatch {
 }
 
 // this action grabs all schema for a specified user
-export const getSchema = (teamId: number) => (
+export const getSchema = (teamId: number): ThunkResult<void> => (
     dispatch: SchemaDispatch,
-    getState: () => RootState,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ) => {
     dispatch({ type: SchemaTypes.GET_SCHEMA_START });
@@ -78,7 +78,9 @@ export const getSchema = (teamId: number) => (
         );
 };
 
-export const clearSchema = () => (dispatch: SchemaDispatch): void => {
+export const clearSchema = (): ThunkResult<void> => (
+    dispatch: SchemaDispatch
+): void => {
     dispatch({ type: SchemaTypes.CLEAR_SCHEMA });
     // TODO actually clear data
 };

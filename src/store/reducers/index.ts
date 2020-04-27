@@ -9,7 +9,7 @@ import { relationshipReducer } from './relationshipReducer';
 import { schemaReducer } from './schemaReducer';
 import { meReducer } from './meReducer';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     auth,
     people,
     confirmationModal,
@@ -20,6 +20,5 @@ const rootReducer = combineReducers({
     schema: schemaReducer,
     me: meReducer,
 });
-export default rootReducer;
 
 export type RootState = ReturnType<typeof rootReducer>;

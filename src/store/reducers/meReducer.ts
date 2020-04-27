@@ -39,6 +39,9 @@ export const meReducer = (
         case MeTypes.CLEAR_ME:
             return {
                 ...state,
+                isLoading: false,
+                results: undefined,
+                error: undefined,
             };
 
         default:

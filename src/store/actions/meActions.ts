@@ -1,10 +1,11 @@
 import { GraphQLError } from 'graphql';
-import { RootState } from '../reducers';
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { ME_QUERY } from './fragments/me';
 import { meQuery } from '../../generated/meQuery';
 import { UserFullFragment } from '../../generated/UserFullFragment';
+import { ThunkResult } from '../store';
+import { getSchema } from './schemaActions';
 
 export enum MeTypes {
     GET_ME_START = 'GET_ME_START',
@@ -37,14 +38,11 @@ export type MeActionTypes =
     | GetMeFailureAction
     | ClearMeAction;
 
-interface MeDispatch {
-    (arg0: MeActionTypes): void;
-}
-
-// this action grabs all Me for a specified user
-export const getMe = () => (
-    dispatch: MeDispatch,
-    getState: () => RootState,
+// this action calls the me query which return user information
+// about the currently logged in user
+export const getMe = (): ThunkResult<void> => (
+    dispatch,
+    getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ) => {
     dispatch({ type: MeTypes.GET_ME_START });
@@ -61,6 +59,10 @@ export const getMe = () => (
                     type: MeTypes.GET_ME_SUCCESS,
                     me: result.data.me,
                 });
+                const teamId = result.data.me.userTeam?.team.id;
+                if (teamId !== undefined) {
+                    dispatch(getSchema(teamId));
+                }
             },
             (error: GraphQLError | Error) => {
                 console.log(
@@ -75,7 +77,7 @@ export const getMe = () => (
         );
 };
 
-export const clearMe = () => (dispatch: MeDispatch): void => {
+export const clearMe = (): ThunkResult<void> => (dispatch): void => {
     dispatch({ type: MeTypes.CLEAR_ME });
     // TODO actually clear data
 };

@@ -42,6 +42,7 @@ import {
     casesDetailSlim_cases_person,
 } from '../generated/casesDetailSlim';
 import { AuthState } from '../store/reducers/authReducer';
+import { UserFullFragment_userTeam_team } from '../generated/UserFullFragment';
 // unicode arrow
 const leftArrow = '\u2190';
 
@@ -50,6 +51,7 @@ interface StateProps {
     cases: casesDetailSlim_cases[];
     isLoadingCases: boolean;
     casesError?: string;
+    team?: UserFullFragment_userTeam_team;
 }
 
 interface DispatchProps {
@@ -239,13 +241,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 
     let scroll: ScrollView | null = null;
 
-    // show login if we are not logged in
-    /* if (!props.auth.isLoggedIn) {
-        return <ConnectionsLogin />;
-    }
-*/
-    console.log(JSON.stringify(props.auth, null, 2));
-    return !props.auth.isLoggedIn ? (
+    return !props.auth.isLoggedIn || !props.team ? (
         <ConnectionsLogin />
     ) : props.isLoadingCases ? (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
@@ -704,6 +700,7 @@ const mapStateToProps = (state: RootState) => {
         auth: state.auth,
         isLoadingCases: state.cases.isLoadingCases,
         casesError: state.cases.error,
+        team: state.me.results?.userTeam?.team,
     };
 };
 

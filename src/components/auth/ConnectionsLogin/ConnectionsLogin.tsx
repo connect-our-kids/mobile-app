@@ -9,6 +9,7 @@ import constants from '../../../helpers/constants';
 import Loader from '../../Loader';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { UserFullFragment_userTeam_team } from '../../../generated/UserFullFragment';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
 
 interface StateProps {
     auth: AuthState;
+    team?: UserFullFragment_userTeam_team;
 }
 
 interface DispatchProps {
@@ -130,7 +132,7 @@ function ConnectionsLogin(props: Props): JSX.Element {
                 <Loader />
             </SafeAreaView>
         );
-    } else if (props.auth.isLoggedIn) {
+    } else if (props.auth.isLoggedIn && props.team) {
         return (
             <SafeAreaView style={{ ...styles.safeAreaView }}>
                 <Text>You are now logged in</Text>
@@ -186,25 +188,28 @@ function ConnectionsLogin(props: Props): JSX.Element {
                     Your team manager can request access, and invite their team
                     members into a secure team account.
                 </Text>
-
                 <Text style={styles.linkText} onPress={signUpPressed}>
                     Request Team Access
                 </Text>
-                <Text style={styles.mainText}>
-                    If you have been invited to use Family Connections, you can
-                    login.
-                </Text>
-                <View style={styles.linkContainer}>
-                    <View style={styles.logInBtns}>
-                        <Button
-                            style={styles.buttonStyle}
-                            block
-                            onPress={async () => props.login()}
-                        >
-                            <Text style={styles.btnText}>Login</Text>
-                        </Button>
+                {!props.auth.isLoggedIn && (
+                    <Text style={styles.mainText}>
+                        If you have been invited to use Family Connections, you
+                        can login.
+                    </Text>
+                )}
+                {!props.auth.isLoggedIn && (
+                    <View style={styles.linkContainer}>
+                        <View style={styles.logInBtns}>
+                            <Button
+                                style={styles.buttonStyle}
+                                block
+                                onPress={async () => props.login()}
+                            >
+                                <Text style={styles.btnText}>Login</Text>
+                            </Button>
+                        </View>
                     </View>
-                </View>
+                )}
             </Container>
         </SafeAreaView>
     );
@@ -213,6 +218,7 @@ function ConnectionsLogin(props: Props): JSX.Element {
 const mapStateToProps = (state: RootState) => {
     return {
         auth: state.auth,
+        team: state.me.results?.userTeam?.team,
     };
 };
 

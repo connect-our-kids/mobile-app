@@ -6,11 +6,11 @@ import {
 import { createUploadLink } from 'apollo-upload-client';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
-import { getEnvVars } from '../environment';
+import { getEnvVars } from '../../environment';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
-import introspectionResult from './generated/fragmentTypes';
-import { getAuthToken } from './helpers/auth';
+import introspectionResult from '../generated/fragmentTypes';
+import { getAuthToken } from '../helpers/auth';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData: introspectionResult,

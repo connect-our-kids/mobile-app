@@ -32,6 +32,8 @@ import PickFileButton from '../components/family-connections/AddDocumentButtons/
 import PickPhotoButton from '../components/family-connections/AddDocumentButtons/PickPhotoButton';
 import TakePhotoButton from '../components/family-connections/AddDocumentButtons/TakePhotoButton';
 import { createDocEngagement } from '../store/actions';
+import { AuthState } from '../store/reducers/authReducer';
+import ConnectionsLogin from '../components/auth/ConnectionsLogin';
 
 const styles = StyleSheet.create({
     topView: {
@@ -142,12 +144,13 @@ const styles = StyleSheet.create({
 });
 
 interface StateProps {
-    caseId: number;
+    caseId?: number;
     relationshipId: number;
     relationship?: RelationshipDetailFullFragment;
     isLoading: boolean;
     documents: EngagementDocumentDetail[];
     engagements: EngagementDetail[];
+    auth: AuthState;
 }
 
 interface DispatchProps {
@@ -182,7 +185,9 @@ function RelationshipScreen(props: Props): JSX.Element {
 
     // get once
     useEffect(() => {
-        props.getRelationship(props.caseId, props.relationshipId);
+        if (props.caseId) {
+            props.getRelationship(props.caseId, props.relationshipId);
+        }
     }, []);
 
     // const leftArrow = '\u2190';
@@ -200,6 +205,10 @@ function RelationshipScreen(props: Props): JSX.Element {
     };
 
     let scroll: ScrollView | null = null;
+
+    if (!props.auth.isLoggedIn) {
+        return <ConnectionsLogin />;
+    }
 
     return props.isLoading || !props.relationship ? (
         <View style={{ ...styles.topView }}>
@@ -598,10 +607,6 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
 
     const caseId = state.case.results?.details?.id;
 
-    if (!caseId) {
-        throw new Error('Case id not specified');
-    }
-
     // engagements are at the case level. Filter to ones relevant
     // to this relationship/connection
     const engagements =
@@ -621,6 +626,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         relationship: state.relationship.results,
         engagements: engagements,
         documents: documents as caseDetailFull_engagements_EngagementDocument[],
+        auth: state.auth,
     };
 };
 
