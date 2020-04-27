@@ -321,7 +321,7 @@ export async function getAuthToken(): Promise<string> {
     throw new Error('Unable to get auth token');
 }
 
-interface AuthorizationCodeGrantResponse extends Record<string, any> {
+interface AuthorizationCodeGrantResponse {
     access_token: string;
     refresh_token: string;
     id_token: string;
@@ -365,8 +365,8 @@ export async function loginInternal(): Promise<
             response_type: 'code id_token', // id_token will return a JWT token
             scope: 'offline_access openid profile email', // retrieve the user's profile
             device: Constants.deviceName ?? 'Unknown',
-            prompt: 'consent',
-            nonce: 'nonce', // TODO ideally, this will be a random value
+            prompt: 'login',
+            nonce: Math.random().toString(36), // ideally, this will be a random value
         });
 
         // TODO only print this if environment is dev/staging
