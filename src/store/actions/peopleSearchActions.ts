@@ -58,7 +58,6 @@ export const fetchSearchResult = (
     cb: () => void, // TODO this is not the correct way to get results. They should be dispatched to store
     email: string
 ): ThunkResult<void> => async (dispatch) => {
-    console.log('fetchSearchResult ', body, 'cb ', cb, 'email ', email);
     dispatch({ type: FETCH_SEARCH_RESULT });
     // getting tokens is allowed to fail as we can send this query
     // without authentication
@@ -72,7 +71,7 @@ export const fetchSearchResult = (
     let isPerson = false;
     let options;
     axios
-        .post(`${peopleSearchURL}`, body.requestObject)
+        .post(`${peopleSearchURL}`, body)
         .then((res) => {
             if (res.data.possible_persons) {
                 options = createOptions(

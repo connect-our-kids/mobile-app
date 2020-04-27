@@ -118,13 +118,7 @@ class PeopleSearchScreen extends React.Component<Props> {
     handleSearchRequest = async (person, searchType) => {
         const { fetchSearchResult, navigation, user } = this.props;
 
-        const body = {};
-        const requestObject = {};
-
-        body['searchType'] = searchType;
-
-        requestObject['person'] = this.handleEncodeURI(person);
-        body['requestObject'] = JSON.stringify(requestObject);
+        const body = { person: JSON.stringify(person) };
 
         if (this.props.person || this.props.possiblePersons.length) {
             this.props.resetState();
@@ -142,7 +136,7 @@ class PeopleSearchScreen extends React.Component<Props> {
         if (!person) {
             await this.handlePersonRequest(searchPointer);
         }
-        await this.props.navigation.navigate('SearchResult', {
+        this.props.navigation.navigate('SearchResult', {
             person: person,
         });
     };
