@@ -5,7 +5,6 @@ import { confirmationModalReducer as confirmationModal } from './confirmationMod
 import { recentSearchesReducer as recentSearches } from './recentSearchesReducer';
 import { casesReducer } from './casesReducer';
 import { caseReducer } from './caseReducer';
-import { connectionEngagementsReducer as engagements } from './connectionEngagementsReducer';
 import { relationshipReducer } from './relationshipReducer';
 
 const rootReducer = combineReducers({
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
     cases: casesReducer,
     case: caseReducer,
     relationship: relationshipReducer,
-    engagements,
 });
 export default rootReducer;
 

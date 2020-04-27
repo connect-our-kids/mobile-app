@@ -1,4 +1,3 @@
-import { client } from './apollo';
 import {
     CASES_DETAIL_SLIM_QUERY,
     CREATE_CASE_MUTATION,
@@ -14,6 +13,9 @@ import {
     createCaseMutation,
     createCaseMutationVariables,
 } from '../../generated/createCaseMutation';
+import { RootState } from '../reducers';
+import ApolloClient from 'apollo-client';
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 export enum CasesTypes {
     GET_USER_CASES_START = 'GET_USER_CASES_START',
@@ -71,7 +73,11 @@ export interface CreateCaseFailureAction {
 }
 
 // this action grabs all cases for a specified user
-export const getCases = () => (dispatch: CasesDispatch) => {
+export const getCases = () => (
+    dispatch: CasesDispatch,
+    getState: () => RootState,
+    { client }: { client: ApolloClient<NormalizedCacheObject> }
+) => {
     dispatch({ type: CasesTypes.GET_USER_CASES_START });
     console.log('Loading cases...');
 
@@ -99,7 +105,9 @@ export const getCases = () => (dispatch: CasesDispatch) => {
 };
 
 export const createCase = (value: CreateCaseInput) => (
-    dispatch: CasesDispatch
+    dispatch: CasesDispatch,
+    getState: () => RootState,
+    { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CasesTypes.CREATE_CASE });
     console.log(`Creating case...`);
