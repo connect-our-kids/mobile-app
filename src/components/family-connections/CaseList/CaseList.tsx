@@ -2,12 +2,12 @@ import React from 'react';
 import styles from './CaseList.styles';
 import { View, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import sage from 's-age';
 import placeholderImg from '../../../../assets/profile_placeholder.png';
 import {
     RelationshipDetailSlim,
     RelationshipDetailSlim_person,
 } from '../../../generated/RelationshipDetailSlim';
+import { createPersonSubtitle } from '../../../helpers/personSubtitle';
 
 /**********************************************************/
 
@@ -20,35 +20,11 @@ function getTextColor(relationship: RelationshipDetailSlim) {
 }
 
 function generateSubTitle(person: RelationshipDetailSlim_person) {
-    let value = person.title;
-
-    if (!value) {
-        value = '';
+    if (person.title) {
+        return `${person.title}\r\n${createPersonSubtitle(person)}`;
+    } else {
+        return `${createPersonSubtitle(person)}`;
     }
-
-    if (person.gender) {
-        if (value.length > 0) {
-            value += '\r\n';
-        }
-        value += person.gender;
-    }
-
-    if (person.dayOfBirth && person.birthMonth && person.birthYear) {
-        if (value.length > 0) {
-            value += ', ';
-        }
-
-        value +=
-            sage(
-                new Date(
-                    person.birthYear,
-                    person.birthMonth - 1,
-                    person.dayOfBirth
-                )
-            ) + ' Years Old';
-    }
-
-    return value;
 }
 
 export default function RelationshipListItem(props: {

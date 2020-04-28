@@ -37,12 +37,10 @@ import { RadioButton } from 'react-native-paper';
 import placeholderImg from '../../assets/profile_placeholder.png';
 import { RootState } from '../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
-import {
-    casesDetailSlim_cases,
-    casesDetailSlim_cases_person,
-} from '../generated/casesDetailSlim';
+import { casesDetailSlim_cases } from '../generated/casesDetailSlim';
 import { AuthState } from '../store/reducers/authReducer';
 import { UserFullFragment_userTeam_team } from '../generated/UserFullFragment';
+import { createPersonSubtitle } from '../helpers/personSubtitle';
 // unicode arrow
 const leftArrow = '\u2190';
 
@@ -224,20 +222,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                 .indexOf(state.searchKeywords.toLowerCase()) !== -1
         );
     });
-
-    function birthdayToSubtitle(person: casesDetailSlim_cases_person) {
-        if (person.birthYear && person.birthMonth && person.dayOfBirth) {
-            return `Birth: ${person.birthMonth}/${person.dayOfBirth}/${person.birthYear}`;
-        } else if (person.birthYear && person.birthMonth) {
-            return `Birth: ${person.birthMonth}/${person.birthYear}`;
-        } else if (person.birthYear) {
-            return `Birth: ${person.birthYear}`;
-        } else if (person.birthdayRaw) {
-            return `Birth: ${person.birthdayRaw}`;
-        } else {
-            return '';
-        }
-    }
 
     let scroll: ScrollView | null = null;
 
@@ -642,11 +626,9 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                                     key={index}
                                     title={result.person.fullName}
                                     titleStyle={{ color: '#5A6064' }}
-                                    subtitle={`${
-                                        result.person.gender
-                                    }\n${birthdayToSubtitle(
+                                    subtitle={createPersonSubtitle(
                                         result.person
-                                    )}`.trim()}
+                                    )}
                                     subtitleStyle={{ color: '#9FABB3' }}
                                     leftAvatar={
                                         <View

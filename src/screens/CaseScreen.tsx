@@ -34,6 +34,7 @@ import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ConnectionsLogin from '../components/auth/ConnectionsLogin';
 import { AuthState } from '../store/reducers/authReducer';
+import { createPersonSubtitle } from '../helpers/personSubtitle';
 
 interface StateProps {
     case?: caseDetailFull;
@@ -255,26 +256,11 @@ const CaseScreen = (props: Props) => {
                                 titleStyle={{ fontSize: 18 }}
                                 subtitle={
                                     <View>
-                                        {props.case.details?.person.gender ? (
-                                            <Text style={{ color: '#434245' }}>
-                                                {
-                                                    props.case.details.person
-                                                        .gender
-                                                }
-                                            </Text>
-                                        ) : null}
-                                        {props.case.details.person
-                                            .birthdayRaw &&
-                                        props.case.details.person.birthdayRaw
-                                            ?.length > 0 ? (
-                                            <Text style={{ color: '#434245' }}>
-                                                Date of Birth:{' '}
-                                                {
-                                                    props.case.details?.person
-                                                        .birthdayRaw
-                                                }
-                                            </Text>
-                                        ) : null}
+                                        <Text style={{ color: '#434245' }}>
+                                            {createPersonSubtitle(
+                                                props.case.details.person
+                                            )}
+                                        </Text>
                                         {props.case.details.person.addresses
                                             ?.length > 0 &&
                                         props.case.details?.person.addresses[0]
