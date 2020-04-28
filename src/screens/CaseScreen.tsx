@@ -35,6 +35,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ConnectionsLogin from '../components/auth/ConnectionsLogin';
 import { AuthState } from '../store/reducers/authReducer';
 import { createPersonSubtitle } from '../helpers/personSubtitle';
+import moment from 'moment';
 
 interface StateProps {
     case?: caseDetailFull;
@@ -274,8 +275,11 @@ const CaseScreen = (props: Props) => {
                                         ) : null}
                                         {props.case.details.fosterCare ? (
                                             <Text style={{ color: '#434245' }}>
-                                                Case Initiation:{' '}
-                                                {props.case.details.fosterCare}
+                                                Case Initiation:
+                                                {moment(
+                                                    props.case.details
+                                                        .fosterCare
+                                                ).format(' LL')}
                                             </Text>
                                         ) : null}
                                     </View>
