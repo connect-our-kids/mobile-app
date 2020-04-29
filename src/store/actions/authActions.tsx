@@ -10,6 +10,7 @@ import { getMe, clearMe } from './meActions';
 import { clearCase } from './caseAction';
 import { clearSchema } from './schemaActions';
 import { clearRelationship } from './relationshipAction';
+import * as Sentry from 'sentry-expo';
 
 export enum AuthTypes {
     LOG_OUT_START = 'LOG_OUT_START',
@@ -121,8 +122,12 @@ export const logout = (): ThunkResult<void> => async (
     dispatch(clearMe());
     dispatch(clearSchema());
     dispatch(clearRelationship());
-    // clear the family connections navigator stack so we start
+    // TODO clear the family connections navigator stack so we start
     // at the cases view
+
+    // clear user info from sentry
+    Sentry.configureScope((scope) => scope.setUser(null));
+
     if (logOutResult.error) {
         console.log(`Failed to log out. Error: ${logOutResult.error}`);
         dispatch({
@@ -178,6 +183,14 @@ export const login = (refreshOnly = false): ThunkResult<void> => async (
             type: AuthTypes.LOGIN_SUCCESS,
             user: isLoggedIn.idTokenDecoded,
         });
+        // add user info to sentry
+        Sentry.configureScope(function (scope) {
+            scope.setUser({
+                email: isLoggedIn.idTokenDecoded.email,
+                id: isLoggedIn.idTokenDecoded.sub,
+                username: isLoggedIn.idTokenDecoded.name,
+            });
+        });
         dispatch(getMe());
         return;
     }
@@ -215,6 +228,15 @@ export const login = (refreshOnly = false): ThunkResult<void> => async (
             dispatch({
                 type: AuthTypes.LOGIN_SUCCESS,
                 user: loginResult.idToken,
+            });
+
+            // add user info to sentry
+            Sentry.configureScope(function (scope) {
+                scope.setUser({
+                    email: loginResult.idToken.email,
+                    id: loginResult.idToken.sub,
+                    username: loginResult.idToken.name,
+                });
             });
             dispatch(getMe());
             break;

@@ -79,6 +79,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "sentry-expo": "^2.0.3",
     "uri-js": "^4.2.2",
     "yup": "^0.28.4"
   },
