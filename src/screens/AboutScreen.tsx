@@ -49,38 +49,7 @@ class AboutScreen extends Component {
                         </Text>
 
                         <Video uri={constants.aboutURI} />
-                        <Text
-                            style={{
-                                color: constants.highlightColor,
-                                fontSize: 14,
-                                marginBottom: 15,
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Video not loading?
-                            <Text
-                                style={{
-                                    textDecorationLine: 'underline',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                Tap here.
-                            </Text>
-                        </Text>
-                        <Divider
-                            style={{ height: 1, backgroundColor: '#E5E4E2' }}
-                        />
-
-                        <Text>{`V${version}`}</Text>
-                        <Text
-                            style={{
-                                fontSize: 12,
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                textAlign: 'center',
-                                color: '#AAA9AD',
-                            }}
-                        ></Text>
+                        <Text>{`Version: ${version}`}</Text>
                     </ScrollView>
                 </SafeAreaView>
             </View>
