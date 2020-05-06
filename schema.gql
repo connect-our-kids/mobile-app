@@ -6,6 +6,7 @@ enum Roles {
   MANAGER
   EDITOR
   VIEWER
+  CASE_CREATOR
   NONE
 }
 
@@ -670,6 +671,7 @@ type Query @isAuthenticated {
   engagementCounts(caseId: Int!): [EngagementCount!]! @hasTeam @hasRole(role: VIEWER)
   caseRoles(caseId: Int!): [CaseRole!]! @hasTeam
   schema: TypeSchemas!
+  relationshipsCount(caseId: Int!): Int! @hasTeam @hasRole(role: VIEWER)
   relationships(caseId: Int!): [Relationship!]! @hasTeam @hasRole(role: VIEWER)
   relationship(caseId: Int!, id: Int!): Relationship @hasTeam @hasRole(role: VIEWER)
   workpads(caseId: Int!): [CaseWorkpad!]! @hasTeam @hasRole(role: VIEWER)
@@ -724,8 +726,9 @@ type Mutation @isAuthenticated {
   createRelationship(caseId: Int!, value: CreateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
   updateRelationship(caseId: Int!, relationshipId: Int!, value: UpdateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
   deleteRelationship(caseId: Int!, relationshipId: Int!): Relationship! @hasTeam @hasRole(role: EDITOR)
+  relationshipPeopleSearch(caseId: Int!, relationshipId: Int!): Relationship! @hasTeam @hasRole(role: EDITOR)
 
-  createCase(value: CreateCaseInput!): Case! @hasTeam @hasRole(role: EDITOR)
+  createCase(value: CreateCaseInput!): Case! @hasTeam @hasRole(role: CASE_CREATOR)
   updateCase(caseId: Int!, value: UpdateCaseInput!): Case! @hasTeam @hasRole(role: EDITOR)
   deleteCase(caseId: Int!): Case! @hasTeam @hasRole(role: MANAGER)
 
