@@ -36,6 +36,7 @@ import {
     createDocEngagement,
     docClearError,
     docClearSuccess,
+    clearEngagementSuccess,
 } from '../store/actions';
 import { AuthState } from '../store/reducers/authReducer';
 import ConnectionsLogin from '../components/auth/ConnectionsLogin';
@@ -195,6 +196,8 @@ interface StateProps {
     documentError?: string;
     documentSuccess: boolean;
     documentSuccessID?: number;
+    engagementSuccess: boolean;
+    engagementSuccessID?: number;
     auth: AuthState;
 }
 
@@ -203,6 +206,7 @@ interface DispatchProps {
     createDocEngagement: typeof createDocEngagement;
     docClearError: typeof docClearError;
     docClearSuccess: typeof docClearSuccess;
+    clearEngagementSuccess: typeof clearEngagementSuccess;
 }
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -251,7 +255,6 @@ function RelationshipScreen(props: Props): JSX.Element {
     });
     const [options] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
     const [isScrolling, setIsScrolling] = useState(false);
-
     useEffect(() => {
         if (props.caseId) {
             props.getRelationship(props.caseId, props.relationshipId);
@@ -264,6 +267,13 @@ function RelationshipScreen(props: Props): JSX.Element {
             }, 1600);
         }
     }, [props.documentSuccess]);
+    useEffect(() => {
+        if (props.engagementSuccess) {
+            setTimeout(() => {
+                props.clearEngagementSuccess();
+            }, 1600);
+        }
+    }, [props.engagementSuccess]);
 
     // const leftArrow = '\u2190';
 
@@ -580,6 +590,12 @@ function RelationshipScreen(props: Props): JSX.Element {
                                                             engagement={
                                                                 engagement
                                                             }
+                                                            newEngagement={
+                                                                props.engagementSuccess
+                                                            }
+                                                            newEngagementID={
+                                                                props.engagementSuccessID
+                                                            }
                                                         />
                                                     </View>
                                                 );
@@ -728,6 +744,8 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const documentError = state.case.documentError;
     const documentSuccessID = state.case.addedDocumentID;
     const documentSuccess = state.case.documentSuccess;
+    const engagementSuccessID = state.case.addedEngagementID;
+    const engagementSuccess = state.case.engagementSuccess;
     return {
         caseId,
         relationshipId,
@@ -738,6 +756,8 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         documentError,
         documentSuccessID,
         documentSuccess,
+        engagementSuccessID,
+        engagementSuccess,
         auth: state.auth,
     };
 };
@@ -745,6 +765,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     getRelationship,
     createDocEngagement,
+    clearEngagementSuccess,
     docClearError,
     docClearSuccess,
 })(RelationshipScreen);

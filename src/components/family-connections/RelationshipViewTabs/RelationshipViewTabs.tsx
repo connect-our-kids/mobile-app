@@ -57,74 +57,116 @@ const getDataIcon = (engagement: engagements_engagements): JSX.Element => {
 
 interface EngagementsProps {
     engagement: engagements_engagements;
+    newEngagement?: boolean;
+    newEngagementID?: number;
 }
 
 export const Engagement = (props: EngagementsProps): JSX.Element => {
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+
+    const fadeIn = () => {
+        // Will change fadeAnim value to 1 in 5 seconds
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1600,
+            useNativeDriver: false,
+        }).start();
+    };
+
+    useEffect(() => {
+        if (
+            props.engagement.id === props.newEngagementID &&
+            props.newEngagement
+        ) {
+            fadeIn();
+        }
+    }, [props.newEngagement]);
+
     return (
-        <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginBottom: 20,
-            }}
-            key={props.engagement.id}
+        <Animated.View
+            style={
+                props.engagement.id === props.newEngagementID &&
+                props.newEngagement
+                    ? {
+                          opacity: fadeAnim, // Bind opacity to animated value
+                      }
+                    : {}
+            }
         >
-            {props.engagement.createdBy?.picture ? (
-                <Image
-                    style={{
-                        height: 50,
-                        width: 50,
-                        borderRadius: 25,
-                        overflow: 'hidden',
-                        marginLeft: 5,
-                        marginRight: 15,
-                        marginTop: 5,
-                    }}
-                    source={{ uri: props.engagement.createdBy?.picture }}
-                    defaultSource={placeholderImg}
-                />
-            ) : (
-                <Image
-                    style={{
-                        height: 50,
-                        width: 50,
-                        borderRadius: 25,
-                        overflow: 'hidden',
-                        marginLeft: 5,
-                        marginRight: 15,
-                        marginTop: 5,
-                    }}
-                    source={placeholderImg}
-                />
-            )}
-            <View>
-                <Text style={{ fontSize: 16 }}>
-                    {props.engagement.createdBy?.name}{' '}
-                    {getDataIcon(props.engagement)}
-                </Text>
-                {props.engagement.__typename === 'EngagementEmail' &&
-                props.engagement.subject ? (
-                    <Text>Subject: {props.engagement.subject}</Text>
-                ) : null}
-                {props.engagement.__typename === 'EngagementDocument' &&
-                props.engagement.title ? (
-                    <Text>Title: {props.engagement.title}</Text>
-                ) : null}
-                <Text numberOfLines={1}>{getNotes(props.engagement)}</Text>
-                <Text style={{ color: 'gray' }}>
-                    {moment(props.engagement.createdAt).format(
-                        'MMM Do YYYY, h:mm a'
-                    )}
-                </Text>
-            </View>
-            {/* <View>
+            <View
+                style={[
+                    {
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        marginBottom: 20,
+                        width: 390,
+                    },
+                    props.engagement.id === props.newEngagementID &&
+                    props.newEngagement
+                        ? {
+                              backgroundColor: colors.primary,
+                          }
+                        : {},
+                ]}
+                key={props.engagement.id}
+            >
+                {props.engagement.createdBy?.picture ? (
+                    <Image
+                        style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            overflow: 'hidden',
+                            marginLeft: 5,
+                            marginRight: 15,
+                            marginTop: 5,
+                        }}
+                        source={{ uri: props.engagement.createdBy?.picture }}
+                        defaultSource={placeholderImg}
+                    />
+                ) : (
+                    <Image
+                        style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            overflow: 'hidden',
+                            marginLeft: 5,
+                            marginRight: 15,
+                            marginTop: 5,
+                        }}
+                        source={placeholderImg}
+                    />
+                )}
+                <View>
+                    <Text style={{ fontSize: 16 }}>
+                        {props.engagement.createdBy?.name}{' '}
+                        {getDataIcon(props.engagement)}
+                    </Text>
+                    {props.engagement.__typename === 'EngagementEmail' &&
+                    props.engagement.subject ? (
+                        <Text>Subject: {props.engagement.subject}</Text>
+                    ) : null}
+                    {props.engagement.__typename === 'EngagementDocument' &&
+                    props.engagement.title ? (
+                        <Text>Title: {props.engagement.title}</Text>
+                    ) : null}
+                    <Text numberOfLines={1}>{getNotes(props.engagement)}</Text>
+                    <Text style={{ color: 'gray' }}>
+                        {moment(props.engagement.createdAt).format(
+                            'MMM Do YYYY, h:mm a'
+                        )}
+                    </Text>
+                </View>
+                {/* <View>
     <Text style={{fontSize: 16}}>{props.engagement.createdBy.full_name} {getDataIcon()} {props.engagement.data_type === 'R' && props.engagement.due_date ? `Due: ${props.engagement.due_date.substring(0, 10)}` : null}</Text>
         {props.engagement.subject ? <Text>Subject: {props.engagement.subject}</Text> : null}
         <Text>{props.engagement.note}</Text>
         <Text style={{color: 'gray'}}>{moment(props.engagement.created_at).format('MMM Do YYYY, h:mm a')}</Text>
       </View> */}
-        </View>
+            </View>
+        </Animated.View>
     );
 };
 
@@ -150,8 +192,6 @@ export const Documents = (props: DocumentsProps): JSX.Element => {
     useEffect(() => {
         if (props.document.id === props.newDocumentID && props.newDocument) {
             fadeIn();
-
-            console.log('test');
         }
     }, [props.newDocument]);
 

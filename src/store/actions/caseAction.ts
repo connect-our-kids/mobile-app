@@ -46,6 +46,7 @@ export enum CaseTypes {
     CREATE_DOC_ENGAGEMENT = 'CREATE_DOC_ENGAGEMENT',
     CREATE_DOC_ENGAGEMENT_SUCCESS = 'CREATE_DOC_ENGAGEMENT_SUCCESS',
     CREATE_DOC_ENGAGEMENT_FAILURE = 'CREATE_DOC_ENGAGEMENT_FAILURE',
+    CLEAR_ENGAGEMENT_SUCCESS = 'CLEAR_ENGAGEMENT_SUCCESS',
     CREATE_NOTE_ENGAGEMENT = 'CREATE_NOTE_ENGAGEMENT',
     CREATE_NOTE_ENGAGEMENT_SUCCESS = 'CREATE_NOTE_ENGAGEMENT_SUCCESS',
     CREATE_NOTE_ENGAGEMENT_FAILURE = 'CREATE_NOTE_ENGAGEMENT_FAILURE',
@@ -83,6 +84,10 @@ export interface DocumentClearSuccessAction {
     type: CaseTypes.CLEAR_DOCUMENT_SUCCESS;
 }
 
+export interface EngagementClearSuccessAction {
+    type: CaseTypes.CLEAR_ENGAGEMENT_SUCCESS;
+}
+
 export interface CreateDocEngagementAction {
     type: CaseTypes.CREATE_DOC_ENGAGEMENT;
 }
@@ -103,6 +108,7 @@ export interface CreateNoteEngagementAction {
 
 export interface CreateNoteEngagementSuccessAction {
     type: CaseTypes.CREATE_NOTE_ENGAGEMENT_SUCCESS;
+    noteID?: number;
 }
 
 export interface CreateNoteEngagementFailureAction {
@@ -116,6 +122,7 @@ export interface CreateCallEngagementAction {
 
 export interface CreateCallEngagementSuccessAction {
     type: CaseTypes.CREATE_CALL_ENGAGEMENT_SUCCESS;
+    callID?: number;
 }
 
 export interface CreateCallEngagementFailureAction {
@@ -128,6 +135,7 @@ export interface CreateEmailEngagementAction {
 
 export interface CreateEmailEngagementSuccessAction {
     type: CaseTypes.CREATE_EMAIL_ENGAGEMENT_SUCCESS;
+    emailID?: number;
 }
 
 export interface CreateEmailEngagementFailureAction {
@@ -145,6 +153,7 @@ export type CaseActionTypes =
     | CreateDocEngagementAction
     | CreateDocEngagementSuccessAction
     | CreateDocEngagementFailureAction
+    | EngagementClearSuccessAction
     | CreateNoteEngagementAction
     | CreateNoteEngagementSuccessAction
     | CreateNoteEngagementFailureAction
@@ -240,7 +249,6 @@ export const createDocEngagement = (
         .then(
             (res) => {
                 console.log(`Creating document for ${caseId}: success`);
-                console.log('lookhere', res.data?.createEngagementDocument.id);
 
                 dispatch({
                     type: CaseTypes.CREATE_DOC_ENGAGEMENT_SUCCESS,
@@ -307,10 +315,11 @@ export const createNoteEngagement = (
             },
         })
         .then(
-            () => {
+            (res) => {
                 console.log(`Creating note for ${caseId}: success`);
                 dispatch({
                     type: CaseTypes.CREATE_NOTE_ENGAGEMENT_SUCCESS,
+                    noteID: res.data?.createEngagementNote.id,
                 });
             },
             (error: GraphQLError | Error) => {
@@ -359,10 +368,11 @@ export const createCallEngagement = (
             },
         })
         .then(
-            () => {
+            (res) => {
                 console.log(`Creating call for ${caseId}: success`);
                 dispatch({
                     type: CaseTypes.CREATE_CALL_ENGAGEMENT_SUCCESS,
+                    callID: res.data?.createEngagementCall.id,
                 });
             },
             (error: GraphQLError | Error) => {
@@ -411,10 +421,11 @@ export const createEmailEngagement = (
             },
         })
         .then(
-            () => {
+            (res) => {
                 console.log(`Creating email for ${caseId}: success`);
                 dispatch({
                     type: CaseTypes.CREATE_EMAIL_ENGAGEMENT_SUCCESS,
+                    emailID: res.data?.createEngagementEmail.id,
                 });
             },
             (error: GraphQLError | Error) => {
@@ -432,4 +443,11 @@ export const createEmailEngagement = (
                 });
             }
         );
+};
+
+export const clearEngagementSuccess = () => (dispatch: CaseDispatch): void => {
+    //new engagement back to false
+    dispatch({
+        type: CaseTypes.CLEAR_ENGAGEMENT_SUCCESS,
+    });
 };

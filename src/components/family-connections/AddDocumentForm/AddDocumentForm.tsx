@@ -9,11 +9,13 @@ import {
     KeyboardAvoidingView,
     Platform,
     Image,
+    Modal,
 } from 'react-native';
 
 import AttachmentIcon from '../Attachment/AttachmentIcon';
 import { connect } from 'react-redux';
 
+import Loader from '../../Loader/Loader';
 import styles from './AddDocumentForm.styles';
 import constants from '../../../helpers/constants';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
@@ -32,6 +34,7 @@ interface StateProps {
     fileType: string;
     size?: string;
     attachment: ReactNativeFile;
+    isLoadingDocuments: boolean;
 }
 
 interface DispatchProps {
@@ -146,6 +149,16 @@ function AddDocumentForm(props: Props): JSX.Element {
                 >
                     <Text style={[styles.saveButtonText]}>SAVE</Text>
                 </TouchableOpacity>
+                <Modal
+                    animationType={'fade'}
+                    transparent={true}
+                    visible={props.isLoadingDocuments}
+                >
+                    <View style={styles.modal}>
+                        <Text>Adding Document...</Text>
+                        <Loader />
+                    </View>
+                </Modal>
             </ScrollView>
         </KeyboardAvoidingView>
     );
@@ -157,6 +170,8 @@ function mapStateToProps(state: RootState, ownProps: OwnProps) {
     if (!caseId) {
         throw new Error('Case id not specified');
     }
+
+    const isLoadingDocuments = state.case.isLoadingDocuments;
 
     const isImageInfo = (media: unknown): media is ImageInfo =>
         (media as ImageInfo)?.width !== undefined;
@@ -187,6 +202,7 @@ function mapStateToProps(state: RootState, ownProps: OwnProps) {
     return {
         caseId,
         relationshipId,
+        isLoadingDocuments,
         image,
         document,
         fileName,

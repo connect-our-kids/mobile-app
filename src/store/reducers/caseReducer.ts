@@ -8,6 +8,9 @@ export interface CaseDataState {
     addedDocumentID?: number;
     documentError?: string;
     documentSuccess: boolean;
+    isLoadingDocuments: boolean;
+    addedEngagementID?: number;
+    engagementSuccess: boolean;
     isLoadingEngagements: boolean;
     engagementErrorToggle: boolean;
 }
@@ -15,9 +18,11 @@ export interface CaseDataState {
 export const caseReducer = (
     state: CaseDataState = {
         isLoading: false,
+        isLoadingDocuments: false,
         isLoadingEngagements: false,
         engagementErrorToggle: false,
         documentSuccess: false,
+        engagementSuccess: false,
     },
     action: CaseActionTypes
 ): CaseDataState => {
@@ -52,10 +57,17 @@ export const caseReducer = (
                 error: undefined,
             };
 
+        case CaseTypes.CREATE_DOC_ENGAGEMENT:
+            return {
+                ...state,
+                isLoadingDocuments: true,
+            };
+
         case CaseTypes.CREATE_DOC_ENGAGEMENT_FAILURE:
             return {
                 ...state,
                 documentError: action.error,
+                isLoadingDocuments: false,
             };
 
         case CaseTypes.CLEAR_DOCUMENT_ERROR:
@@ -69,6 +81,7 @@ export const caseReducer = (
                 ...state,
                 documentSuccess: true,
                 addedDocumentID: action.documentID,
+                isLoadingDocuments: false,
             };
 
         case CaseTypes.CLEAR_DOCUMENT_SUCCESS:
@@ -99,18 +112,30 @@ export const caseReducer = (
             return {
                 ...state,
                 isLoadingEngagements: false,
+                addedEngagementID: action.noteID,
+                engagementSuccess: true,
             };
 
         case CaseTypes.CREATE_CALL_ENGAGEMENT_SUCCESS:
             return {
                 ...state,
                 isLoadingEngagements: false,
+                addedEngagementID: action.callID,
+                engagementSuccess: true,
             };
 
         case CaseTypes.CREATE_EMAIL_ENGAGEMENT_SUCCESS:
             return {
                 ...state,
                 isLoadingEngagements: false,
+                addedEngagementID: action.emailID,
+                engagementSuccess: true,
+            };
+
+        case CaseTypes.CLEAR_ENGAGEMENT_SUCCESS:
+            return {
+                ...state,
+                engagementSuccess: false,
             };
 
         case CaseTypes.CREATE_NOTE_ENGAGEMENT_FAILURE:
