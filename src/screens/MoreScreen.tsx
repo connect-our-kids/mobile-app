@@ -6,10 +6,12 @@ import {
     View,
     Linking,
     Animated,
+    Image,
+    Modal,
 } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { logout, login } from '../store/actions';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginLeft: 30,
+        paddingLeft: 30,
     },
     arrow: {
         color: 'rgba(24, 23, 21, 0.3)',
@@ -74,6 +76,37 @@ const styles = StyleSheet.create({
     logoutText: {
         color: '#0279AC',
     },
+    modal: {
+        margin: 50,
+        marginTop: 425,
+        backgroundColor: 'white',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 35,
+        alignItems: 'center',
+        alignContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    modalText: {
+        textTransform: 'uppercase',
+        color: '#fff',
+    },
+    saveButton: {
+        backgroundColor: '#0279AC',
+        padding: 10,
+        width: '50%',
+        marginTop: 25,
+        borderRadius: 25,
+        alignItems: 'center',
+    },
 });
 
 interface StateProps {
@@ -98,6 +131,7 @@ const MoreScreen = (props: Props) => {
     useEffect(() => {
         props.login(true);
     }, []);
+    const dispatch = useDispatch();
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
@@ -178,7 +212,7 @@ const MoreScreen = (props: Props) => {
                         { justifyContent: 'center', alignItems: 'center' },
                     ]}
                 >
-                    {/* // conditional based on whether user is logged in */}
+                    {/* // conditional based on whether users logout failed or was successful, with loader */}
                     {props.auth.isLoggedIn ? (
                         <>
                             <TouchableOpacity
@@ -186,14 +220,82 @@ const MoreScreen = (props: Props) => {
                                     props.logout();
                                 }}
                             >
-                                <View style={styles.logout}>
-                                    <Text style={styles.logoutText}>
-                                        Log Out
-                                    </Text>
-                                </View>
+                                {/* conditional based on logout failing  */}
+                                {props.auth.isLoggingOut ? (
+                                    <Image
+                                        source={require('../../assets/loading.gif')}
+                                        style={{ width: 80, height: 80 }}
+                                    />
+                                ) : (
+                                    <>
+                                        <Modal
+                                            animationType={'fade'}
+                                            transparent={true}
+                                            visible={props.auth.loggedOutfail}
+                                            onRequestClose={() => {
+                                                console.log(
+                                                    'Modal has been closed.'
+                                                );
+                                            }}
+                                        >
+                                            <View style={styles.modal}>
+                                                <Text>
+                                                    Error while logging out!
+                                                </Text>
+                                                <TouchableOpacity
+                                                    style={styles.saveButton}
+                                                    onPress={() => {
+                                                        dispatch({
+                                                            type:
+                                                                'LOG_OUT_MODAL_CLOSED',
+                                                        });
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={styles.modalText}
+                                                    >
+                                                        Okay
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </Modal>
+                                        <View style={styles.logout}>
+                                            <Text style={styles.logoutText}>
+                                                Log Out
+                                            </Text>
+                                        </View>
+                                    </>
+                                )}
                             </TouchableOpacity>
                         </>
-                    ) : null}
+                    ) : (
+                        <>
+                            <Modal
+                                animationType={'fade'}
+                                transparent={true}
+                                visible={props.auth.loggedOutSuccess}
+                                onRequestClose={() => {
+                                    console.log('Modal has been closed.');
+                                }}
+                            >
+                                <View style={styles.modal}>
+                                    <Text>Successfully logged out!</Text>
+                                    <TouchableOpacity
+                                        style={styles.saveButton}
+                                        onPress={() => {
+                                            dispatch({
+                                                type: 'LOG_OUT_MODAL_CLOSED',
+                                            });
+                                        }}
+                                    >
+                                        <Text style={styles.modalText}>
+                                            Okay
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Modal>
+                        </>
+                    )}
                 </View>
             </Animated.View>
         </SafeAreaView>

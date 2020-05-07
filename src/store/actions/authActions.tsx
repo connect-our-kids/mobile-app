@@ -22,7 +22,8 @@ export enum AuthTypes {
     CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR',
     SET_MODAL_VISIBLE = 'SET_MODAL_VISIBLE', // TODO move to local state in component
     SET_VIDEO_AGREE_VISIBLE = 'SET_VIDEO_AGREE_VISIBLE', // TODO move to local state in component
-    SET_VIDEO_PLAYER_VISIBLE = 'SET_VIDEO_PLAYER_VISIBLE', // TODO move to local state in component
+    SET_VIDEO_PLAYER_VISIBLE = 'SET_VIDEO_PLAYER_VISIBLE', // TODO move to local state in component,
+    LOG_OUT_MODAL_CLOSED = 'LOG_OUT_MODAL_CLOSED',
 }
 
 export interface AuthLogOutStartAction {
@@ -31,6 +32,10 @@ export interface AuthLogOutStartAction {
 
 export interface AuthLogOutSuccessAction {
     type: AuthTypes.LOG_OUT_SUCCESS;
+}
+
+export interface AuthLogOutModalClosedAction {
+    type: AuthTypes.LOG_OUT_MODAL_CLOSED;
 }
 
 export interface AuthLogOutFailureAction {
@@ -87,7 +92,8 @@ export type AuthActionTypes =
     | ClearLoginErrorAction
     | AuthSetModalVisibleAction // TODO move to local state
     | AuthSetVideoAgreeVisibleAction // TODO move to local state
-    | AuthSetVideoPlayerVisibleAction; // TODO move to local state
+    | AuthSetVideoPlayerVisibleAction // TODO move to local state
+    | AuthLogOutModalClosedAction;
 
 export const logout = (): ThunkResult<void> => async (
     dispatch,

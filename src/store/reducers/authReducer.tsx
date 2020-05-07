@@ -4,6 +4,8 @@ import { IdToken } from '../../helpers/auth';
 export interface AuthState {
     isLoggedIn: boolean;
     isLoggingIn: boolean;
+    loggedOutSuccess: boolean;
+    loggedOutfail: boolean;
     loginError?: string;
     user?: IdToken;
     isLoggingOut: boolean;
@@ -20,6 +22,8 @@ const initialState: AuthState = {
     modalVisible: false,
     videoAgree: false,
     videoVisible: false,
+    loggedOutSuccess: false,
+    loggedOutfail: false,
 };
 
 export const authReducer = (
@@ -65,12 +69,20 @@ export const authReducer = (
                 loginError: undefined,
                 logoutError: undefined,
                 user: undefined,
+                loggedOutSuccess: true,
+            };
+        case AuthTypes.LOG_OUT_MODAL_CLOSED:
+            return {
+                ...state,
+                loggedOutSuccess: false,
+                loggedOutfail: false,
             };
         case AuthTypes.LOG_OUT_FAILURE:
             return {
                 ...state,
                 isLoggingOut: false,
                 logoutError: action.error,
+                loggedOutfail: true,
             };
         // TODO move to local state
         case AuthTypes.SET_MODAL_VISIBLE:

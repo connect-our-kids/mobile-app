@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { logout, login, setModalVisible } from '../../../store/actions';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Button } from 'native-base';
 import { Avatar, Divider } from 'react-native-elements';
 import { sendEvent } from '../../../helpers/createEvent';
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
 
 interface StateProps {
     isLoggedIn: boolean;
+    isLoggingOut: boolean;
     picture?: string;
     firstName?: string;
     lastName?: string;
@@ -199,15 +200,28 @@ function LoginWithAuth0(props: Props): JSX.Element {
                 <View style={styles.linkContainer}>
                     <View style={styles.logInButtons}>
                         <View style={styles.view10}>
-                            <Button
-                                style={[styles.button, styles.view10Button]}
-                                onPress={() => {
-                                    props.logout();
-                                }}
-                                block
-                            >
-                                <Text style={styles.logOutText}>Log Out</Text>
-                            </Button>
+                            {props.isLoggingOut ? (
+                                <Image
+                                    source={require('../../../../assets/loading.gif')}
+                                    style={{
+                                        width: 80,
+                                        height: 80,
+                                        alignSelf: 'center',
+                                    }}
+                                />
+                            ) : (
+                                <Button
+                                    style={[styles.button, styles.view10Button]}
+                                    onPress={() => {
+                                        props.logout();
+                                    }}
+                                    block
+                                >
+                                    <Text style={styles.logOutText}>
+                                        Log Out
+                                    </Text>
+                                </Button>
+                            )}
                         </View>
                     </View>
                 </View>
@@ -247,6 +261,7 @@ function LoginWithAuth0(props: Props): JSX.Element {
 const mapStateToProps = (state: RootState) => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        isLoggingOut: state.auth.isLoggingOut,
         picture: state.me.results?.picture ?? state.auth.user?.email,
         firstName: state.me.results?.firstName ?? state.auth.user?.given_name,
         lastName: state.me.results?.lastName ?? state.auth.user?.family_name,
