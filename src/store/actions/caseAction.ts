@@ -41,6 +41,8 @@ export enum CaseTypes {
     GET_CASE_SUCCESS = 'GET_CASE_SUCCESS',
     GET_CASE_FAILURE = 'GET_CASE_FAILURE',
     CLEAR_CASE = 'CLEAR_CASE',
+    CLEAR_DOCUMENT_ERROR = 'CLEAR_DOCUMENT_ERROR',
+    CLEAR_DOCUMENT_SUCCESS = 'CLEAR_DOCUMENT_SUCCESS',
     CREATE_DOC_ENGAGEMENT = 'CREATE_DOC_ENGAGEMENT',
     CREATE_DOC_ENGAGEMENT_SUCCESS = 'CREATE_DOC_ENGAGEMENT_SUCCESS',
     CREATE_DOC_ENGAGEMENT_FAILURE = 'CREATE_DOC_ENGAGEMENT_FAILURE',
@@ -73,12 +75,21 @@ export interface CaseClearAction {
     type: CaseTypes.CLEAR_CASE;
 }
 
+export interface DocumentClearErrorAction {
+    type: CaseTypes.CLEAR_DOCUMENT_ERROR;
+}
+
+export interface DocumentClearSuccessAction {
+    type: CaseTypes.CLEAR_DOCUMENT_SUCCESS;
+}
+
 export interface CreateDocEngagementAction {
     type: CaseTypes.CREATE_DOC_ENGAGEMENT;
 }
 
 export interface CreateDocEngagementSuccessAction {
     type: CaseTypes.CREATE_DOC_ENGAGEMENT_SUCCESS;
+    documentID?: number;
 }
 
 export interface CreateDocEngagementFailureAction {
@@ -129,6 +140,8 @@ export type CaseActionTypes =
     | CaseSuccessAction
     | CaseFailureAction
     | CaseClearAction
+    | DocumentClearErrorAction
+    | DocumentClearSuccessAction
     | CreateDocEngagementAction
     | CreateDocEngagementSuccessAction
     | CreateDocEngagementFailureAction
@@ -225,10 +238,13 @@ export const createDocEngagement = (
             },
         })
         .then(
-            () => {
+            (res) => {
                 console.log(`Creating document for ${caseId}: success`);
+                console.log('lookhere', res.data?.createEngagementDocument.id);
+
                 dispatch({
                     type: CaseTypes.CREATE_DOC_ENGAGEMENT_SUCCESS,
+                    documentID: res.data?.createEngagementDocument.id,
                 });
             },
             (error: GraphQLError | Error) => {
@@ -246,6 +262,20 @@ export const createDocEngagement = (
                 });
             }
         );
+};
+
+export const docClearSuccess = () => (dispatch: CaseDispatch): void => {
+    //new document back to false
+    dispatch({
+        type: CaseTypes.CLEAR_DOCUMENT_SUCCESS,
+    });
+};
+
+export const docClearError = () => (dispatch: CaseDispatch): void => {
+    //resets document error to undefined
+    dispatch({
+        type: CaseTypes.CLEAR_DOCUMENT_ERROR,
+    });
 };
 
 export const createNoteEngagement = (

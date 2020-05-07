@@ -1,10 +1,6 @@
 import React from 'react';
-import { Image } from 'react-native';
-import {
-    createAppContainer,
-    createSwitchNavigator,
-    NavigationScreenConfig,
-} from 'react-navigation';
+import { Image, View, Platform } from 'react-native';
+import { createAppContainer, NavigationScreenConfig } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,6 +16,7 @@ import AddDocumentForm from '../components/family-connections/AddDocumentForm';
 import logoImg from '../../assets/logo.png';
 import MoreScreen from '../screens/MoreScreen';
 import AddEngagementForm from '../components/family-connections/AddEngagementForm/AddEngagementForm';
+import styles from './styles';
 
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
 // If you add new screens into the app, you'll need to add them into the appropriate stacks below in order for React Navigation to know how to route the user.
@@ -37,11 +34,13 @@ const topLevelScreenNavigationOptions: NavigationScreenConfig<
     },
     // eslint-disable-next-line react/display-name
     headerTitle: () => (
-        <Image
-            source={logoImg}
-            style={{ width: 225, height: 90 }}
-            resizeMode="contain"
-        />
+        <View style={styles.headerStyles}>
+            <Image
+                style={styles.headerImgStyles}
+                source={logoImg}
+                resizeMode="contain"
+            />
+        </View>
     ),
 };
 
@@ -55,11 +54,16 @@ const subLevelScreenNavigationOptions: NavigationScreenConfig<
         height: constants.headerHeight,
         backgroundColor: constants.backgroundColor,
     },
-    headerBackTitleStyle: {
-        color: constants.highlightColor,
-    },
     headerTitleStyle: {
-        display: 'none',
+        color: constants.highlightColor,
+        fontSize: 17,
+        margin: 0,
+        padding: 0,
+        fontWeight: '100',
+    },
+    headerTitleAlign: 'left',
+    headerTitleContainerStyle: {
+        left: 50,
     },
 };
 
@@ -67,19 +71,20 @@ const subLevelScreenNavigationOptions: NavigationScreenConfig<
 const FamilyConnectionsNavigator = createStackNavigator({
     FamilyConnections: {
         screen: FamilyConnectionsScreen,
-        navigationOptions: topLevelScreenNavigationOptions,
     },
     CaseView: {
         screen: CaseScreen,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
-            headerBackTitle: 'Back to Cases',
+            headerTitle: Platform.OS === 'android' ? 'Back to Cases' : '',
+            headerBackTitle: Platform.OS === 'android' ? ' ' : 'Back to Cases',
         },
     },
     RelationshipScreen: {
         screen: RelationshipScreen,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Case' : '',
             headerBackTitle: 'Back to Case',
         },
     },
@@ -87,6 +92,7 @@ const FamilyConnectionsNavigator = createStackNavigator({
         screen: AddEngagementForm,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Connection' : '',
             headerBackTitle: 'Back to Connection',
         },
     },
@@ -94,6 +100,7 @@ const FamilyConnectionsNavigator = createStackNavigator({
         screen: AddDocumentForm,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Connection' : '',
             headerBackTitle: 'Back to Connection',
         },
     },
@@ -108,6 +115,7 @@ const PeopleSearchNavigator = createStackNavigator({
         screen: SearchResultScreen,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Search' : '',
             headerBackTitle: 'Back to Search',
         },
     },
@@ -122,6 +130,8 @@ const MoreNavigator = createStackNavigator({
         screen: AuthenticationView,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back' : '',
+
             headerBackTitle: 'Back',
         },
     },
@@ -130,6 +140,7 @@ const MoreNavigator = createStackNavigator({
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
             headerBackTitle: 'Back',
+            headerTitle: Platform.OS === 'android' ? 'Back' : '',
         },
     },
 });
