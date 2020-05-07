@@ -23,6 +23,7 @@ type UserTeam {
 }
 
 type CaseRole {
+  id: Int!
   user: User!
   userId: Int!
   case: Case!

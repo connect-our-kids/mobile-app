@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 
 export const USER_FULL_FRAGMENT = gql`
     fragment CaseRoleFragment on CaseRole {
+        id
         caseId
         role
     }
