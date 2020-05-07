@@ -71,6 +71,7 @@ const subLevelScreenNavigationOptions: NavigationScreenConfig<
 const FamilyConnectionsNavigator = createStackNavigator({
     FamilyConnections: {
         screen: FamilyConnectionsScreen,
+        navigationOptions: topLevelScreenNavigationOptions,
     },
     CaseView: {
         screen: CaseScreen,
