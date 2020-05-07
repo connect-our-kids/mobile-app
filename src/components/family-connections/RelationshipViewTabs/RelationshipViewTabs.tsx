@@ -1,14 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import {
-    Text,
-    View,
-    Image,
-    Linking,
-    Animated,
-    StyleProp,
-    ViewStyle,
-} from 'react-native';
+import { Text, View, Image, Linking, Animated } from 'react-native';
 import { ListItem, colors } from 'react-native-elements';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import AttachmentIcon from '../Attachment/AttachmentIcon';
@@ -19,7 +11,6 @@ import {
 } from '../../../generated/engagements';
 
 import placeholderImg from '../../../../assets/profile_placeholder.png';
-import { color, Value } from 'react-native-reanimated';
 
 const getNotes = (engagement: engagements_engagements): string => {
     switch (engagement.__typename) {

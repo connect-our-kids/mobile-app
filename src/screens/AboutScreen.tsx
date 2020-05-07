@@ -3,7 +3,6 @@ import { SafeAreaView, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { logout } from '../store/actions';
 import { connect } from 'react-redux';
-import { Divider } from 'react-native-elements';
 import constants from '../helpers/constants';
 import Video from '../components/Video';
 import Constants from 'expo-constants';

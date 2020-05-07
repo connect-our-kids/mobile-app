@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Linking, StyleSheet, Modal } from 'react-native';
 import { Button, Container } from 'native-base';
 import { login, clearLoginError } from '../../../store/actions';
