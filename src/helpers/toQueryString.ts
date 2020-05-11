@@ -1,4 +1,4 @@
-export default (params: Record<string, any>) => {
+export default (params: Record<string, never>) => {
     return (
         '?' +
         Object.entries(params)

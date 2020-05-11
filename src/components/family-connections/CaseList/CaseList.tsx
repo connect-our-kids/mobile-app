@@ -9,8 +9,6 @@ import {
 } from '../../../generated/RelationshipDetailSlim';
 import { createPersonSubtitle } from '../../../helpers/personSubtitle';
 
-/**********************************************************/
-
 function getBackgroundColor(relationship: RelationshipDetailSlim) {
     return relationship.status === null ? 'white' : relationship.status.color;
 }

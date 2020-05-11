@@ -31,8 +31,6 @@ import ScrollToTop from '../components/family-connections/ScrollToTop/ScrollToTo
 import { MaterialIcons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
 
-/**********************************************************/
-
 // placeholder image for non-logged in users?
 import placeholderImg from '../../assets/profile_placeholder.png';
 import { RootState } from '../store/reducers';

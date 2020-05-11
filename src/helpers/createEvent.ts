@@ -19,7 +19,7 @@ export const sendEvent = (
     verb: string,
     noun: string,
     outcome: string | null = null,
-    options: Record<string, any> | null = null
+    options: Record<string, unknown> | null = null
 ) => {
     if (emailAddress === null) {
         emailAddress = 'anonymous@unknown.org';
@@ -49,8 +49,12 @@ export const sendEvent = (
         });
 };
 
-export const createOptions = (listLength, noun, index): Record<string, any> => {
-    const options: Record<string, any> = {};
+export const createOptions = (
+    listLength,
+    noun,
+    index
+): Record<string, unknown> => {
+    const options: Record<string, unknown> = {};
     if (listLength === null) {
         options[`${noun}Index`] = index;
 

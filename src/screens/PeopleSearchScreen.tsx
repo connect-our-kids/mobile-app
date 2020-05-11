@@ -1,6 +1,4 @@
 // @ts-nocheck
-// NOTE Ignoring typescript errors so we can enable typescript checking across the repo
-// in the CI system. That will prevent more errors from being added.
 import React from 'react';
 import {
     SafeAreaView,
@@ -81,6 +79,7 @@ interface DispatchProps {
     setAgreeModalVisible: typeof setAgreeModalVisible;
     setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
     getInfo: typeof getInfo;
+    login: typeof login;
 }
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -94,7 +93,6 @@ type Props = StateProps & DispatchProps & OwnProps;
 class PeopleSearchScreen extends React.Component<Props> {
     state = {
         data: this.props.info,
-        type: this.props.type,
         videoPlayerOpen: false,
         modalVisible: false,
         terms: false,
@@ -115,7 +113,7 @@ class PeopleSearchScreen extends React.Component<Props> {
         return encodeURI(JSON.stringify(person));
     };
 
-    handleSearchRequest = async (person, searchType) => {
+    handleSearchRequest = async (person) => {
         const { fetchSearchResult, navigation, user } = this.props;
 
         const body = { person: JSON.stringify(person) };
@@ -129,16 +127,6 @@ class PeopleSearchScreen extends React.Component<Props> {
             () => navigation.navigate('SearchResult'),
             user ? user.email : null
         );
-    };
-
-    handleNavigateToResult = async (searchPointer) => {
-        const { person } = this.state;
-        if (!person) {
-            await this.handlePersonRequest(searchPointer);
-        }
-        this.props.navigation.navigate('SearchResult', {
-            person: person,
-        });
     };
 
     openVideo = () => {

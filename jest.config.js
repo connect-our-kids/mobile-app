@@ -84,6 +84,9 @@ module.exports = {
                 '<rootDir>/node_modules/',
                 '<rootDir>/build/',
             ],
+            transformIgnorePatterns: [
+                'node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@sentry.*|unimodules-permissions-interface)',
+            ],
 
             ...getBaseConfig(),
             ...getBaseCoverageConfig(),
@@ -96,6 +99,9 @@ module.exports = {
             testPathIgnorePatterns: [
                 '<rootDir>/node_modules/',
                 '<rootDir>/build/',
+            ],
+            transformIgnorePatterns: [
+                'node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base|@sentry.*|unimodules-permissions-interface)',
             ],
 
             ...getBaseConfig(),

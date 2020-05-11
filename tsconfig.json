@@ -19,6 +19,7 @@
       "esModuleInterop": true,
       "isolatedModules": true,
       "moduleResolution": "node",
+      "sourceMap": true,
       "typeRoots": [
          "./typings/import-png.d.ts",
          "./node_modules/@types"

@@ -6,9 +6,9 @@ export const format = (telephoneObject) => {
             telephoneNumber = telephoneNumber.slice(2);
         }
         if (telephoneNumber.length == 10) {
-            let areaCode = telephoneNumber.slice(0, 3);
-            let prefix = telephoneNumber.slice(3, 6);
-            let lineNumber = telephoneNumber.slice(6, 10);
+            const areaCode = telephoneNumber.slice(0, 3);
+            const prefix = telephoneNumber.slice(3, 6);
+            const lineNumber = telephoneNumber.slice(6, 10);
             return `(${areaCode})${prefix}-${lineNumber}`;
         } else {
             return telephoneNumber;

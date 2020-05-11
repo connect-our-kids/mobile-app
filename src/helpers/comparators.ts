@@ -25,6 +25,7 @@ export const lastName = (
     return comparison;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const created = (a: { createdAt: any }, b: { createdAt: any }) => {
     const A = a.createdAt;
     const B = b.createdAt;
@@ -37,7 +38,7 @@ export const created = (a: { createdAt: any }, b: { createdAt: any }) => {
     return comparison;
 };
 
-export const updated = (a: { updatedAt: any }, b: { updatedAt: any }) => {
+export const updated = (a: { updatedAt: never }, b: { updatedAt: never }) => {
     const A = a.updatedAt;
     const B = b.updatedAt;
     let comparison = 0;

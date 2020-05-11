@@ -167,7 +167,7 @@ function AddDocumentForm(props: Props): JSX.Element {
 function mapStateToProps(state: RootState, ownProps: OwnProps) {
     const relationshipId = state.relationship?.results?.id;
     const caseId = state.case.results?.details?.id;
-    if (!caseId) {
+    if (caseId === undefined) {
         throw new Error('Case id not specified');
     }
 

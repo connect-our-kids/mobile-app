@@ -5,8 +5,6 @@ import * as DocumentPicker from 'expo-document-picker';
 import PickFileLabel from './PickFileLabel';
 import { DocumentInfo } from './types';
 
-/**********************************************************/
-
 export default function PickFileButton({
     afterAccept,
 }: {

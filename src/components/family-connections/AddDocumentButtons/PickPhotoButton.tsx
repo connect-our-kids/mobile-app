@@ -8,8 +8,6 @@ import PickPhotoIcon from './PickPhotoIcon';
 import PickPhotoLabel from './PickPhotoLabel';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 
-/**********************************************************/
-
 export default function PickPhotoButton({
     afterAccept,
 }: {

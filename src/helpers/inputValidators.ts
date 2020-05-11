@@ -1,9 +1,9 @@
 export const isName = (name) => {
     if (name.length) {
-        let numberOfWords = name.trim().split(' ').length;
-        let isNumberOfWordsTwoOrThree =
+        const numberOfWords = name.trim().split(' ').length;
+        const isNumberOfWordsTwoOrThree =
             numberOfWords === 2 || numberOfWords === 3;
-        let nameIsNotANumber = name.replace(/[^0-9]+/g, '').length === 0;
+        const nameIsNotANumber = name.replace(/[^0-9]+/g, '').length === 0;
 
         return isNumberOfWordsTwoOrThree && nameIsNotANumber;
     }
@@ -12,7 +12,7 @@ export const isName = (name) => {
 
 export const isEmail = (email) => {
     if (email.length) {
-        let isValidEmail = email.trim().split('@').length;
+        const isValidEmail = email.trim().split('@').length;
         return isValidEmail === 2;
     }
     return false;
@@ -20,7 +20,7 @@ export const isEmail = (email) => {
 
 export const isCityState = (citystate) => {
     if (citystate.length) {
-        let isValidCityState = citystate.trim().split(' ').length;
+        const isValidCityState = citystate.trim().split(' ').length;
         return isValidCityState === 2;
     }
     return false;
@@ -28,7 +28,7 @@ export const isCityState = (citystate) => {
 
 export const isAddress = (address) => {
     if (address.length) {
-        let isValidAddress = address.trim().split(' ').length;
+        const isValidAddress = address.trim().split(' ').length;
         return isValidAddress > 3;
     }
     return false;
@@ -36,7 +36,7 @@ export const isAddress = (address) => {
 
 export const isPhone = (phone) => {
     if (phone.length) {
-        let numbersOnly = phone.replace(/[^0-9]+/g, '');
+        const numbersOnly = phone.replace(/[^0-9]+/g, '');
 
         return numbersOnly.length === 10;
     }

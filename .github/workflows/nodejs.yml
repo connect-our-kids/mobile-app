@@ -7,23 +7,25 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x, 13.x, 14.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: No javascript sources
+        run: npm run checkNoJavascript
       - name: install node packages
-        run: npm ci
-      - name: build
+        run: npm ci --loglevel verbose || npm ci --loglevel verbose
+      - name: Build
         run: |
           npm run build
           npm run lint
-      - name: test
-        run: |
-          npm run test:coverage
+      - name: Test
+        run: npm run test:coverage
         env:
           CI: true

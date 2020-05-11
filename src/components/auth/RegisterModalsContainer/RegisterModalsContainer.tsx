@@ -9,8 +9,6 @@ import styles from './RegisterModalsContainer.styles';
 
 import { sendEvent } from '../../../helpers/createEvent';
 
-/**********************************************************/
-
 export default function RegisterModalsContainer(props): JSX.Element {
     return (
         <Modal
@@ -54,5 +52,3 @@ export default function RegisterModalsContainer(props): JSX.Element {
         </Modal>
     );
 }
-
-/**********************************************************/

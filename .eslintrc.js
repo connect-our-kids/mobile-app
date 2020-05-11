@@ -50,6 +50,8 @@ module.exports = {
         'prettier',
     ],
 
+    "ignorePatterns": ["/src/generated", "**/*.md", "/node_modules/**/*.*"],
+
     'settings': {
         "react": {
             "createClass": "createReactClass", // Regex for Component Factory to use,

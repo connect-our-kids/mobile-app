@@ -110,10 +110,6 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# JEST snapshots
-*.snap
-*.snap.*
-
 # Apollo Graphql generated files
 src/generated/
 build

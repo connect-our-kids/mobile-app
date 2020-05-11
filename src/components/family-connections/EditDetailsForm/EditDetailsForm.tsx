@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
 });
 
 function EditDetailsForm(props) {
-    const [token, setToken] = useState('');
+    const [token] = useState('');
     const [formData, setFormData] = useState(props.details);
     const [error, setError] = useState(false);
     const [formErrors, setFormErrors] = useState({});

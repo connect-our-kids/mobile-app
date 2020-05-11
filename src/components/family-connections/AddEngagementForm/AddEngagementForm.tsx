@@ -383,7 +383,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     }
 
     const caseId = state.case.results?.details?.id;
-    if (!caseId) {
+    if (caseId === undefined) {
         throw new Error(`No case id specified`);
     }
 

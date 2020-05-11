@@ -4,8 +4,6 @@ import ImageIcon from './ImageIcon';
 import icons from './icons';
 import mime from 'mime';
 
-/**********************************************************/
-
 export default function AttachmentIcon({
     attachment,
     size = icons.size,

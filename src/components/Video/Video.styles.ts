@@ -1,7 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
 
-/**********************************************************/
-
 export default StyleSheet.create({
     VideoContainer: {
         justifyContent: 'center',
