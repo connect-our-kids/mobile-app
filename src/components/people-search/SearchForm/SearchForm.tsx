@@ -120,22 +120,22 @@ const formatRequestObject = (
             if (input.location.trim()) {
                 return {
                     names: [{ raw: input.name }],
-                    addresses: [{ raw: this.state.location.trim() }],
+                    addresses: [{ raw: input.location.trim() }],
                 };
             } else {
                 return { names: [{ raw: input.name }] };
             }
 
         case 'email':
-            return { emails: [{ address: inputValue }] };
+            return { emails: [{ address: input.email }] };
         case 'address':
-            return { addresses: [{ raw: inputValue }] };
+            return { addresses: [{ raw: input.address }] };
         case 'phone':
             return {
-                phones: [{ number: inputValue.replace(/[^0-9]+/g, '') }],
+                phones: [{ number: input.phone.replace(/[^0-9]+/g, '') }],
             };
         case 'url':
-            return { urls: [{ url: inputValue }] };
+            return { urls: [{ url: input.url }] };
     }
 };
 
