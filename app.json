@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "2.0.18",
+    "version": "2.0.19",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -29,7 +29,7 @@
     },
     "android": {
       "package": "com.connectOurKids",
-      "versionCode": 2
+      "versionCode": 3
     },
     "description": "Connect Our Kids is on a mission to find permanent loving homes for the 100,000 children waiting to be adopted in the United States. We deliver free technology to social workers, CASA volunteers, and family recruiters to magnify their impact. People Search helps you quickly find contact information for more than 3 billion people. Every foster child has an extended family. We'll help you and your team collaborate to find those extended family members quickly.",
     "hooks": {
