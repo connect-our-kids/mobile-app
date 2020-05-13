@@ -212,9 +212,15 @@ const CaseScreen = (props: Props) => {
 
     let scroll: ScrollView | null = null;
 
+    console.log(props.case?.details);
+
     return (
         <SafeAreaView
-            style={{ backgroundColor: constants.backgroundColor, flex: 1 }}
+            style={{
+                backgroundColor: constants.backgroundColor,
+                flex: 1,
+                paddingTop: 0,
+            }}
         >
             <View
                 style={{ backgroundColor: constants.backgroundColor, flex: 1 }}
@@ -251,10 +257,11 @@ const CaseScreen = (props: Props) => {
                         onScrollToTop={() => setIsScrolling(false)}
                         scrollEventThrottle={16}
                     >
-                        <View>
+                        <View style={{ height: 95 }}>
                             <ListItem
                                 title={props.case.details?.person.fullName}
                                 titleStyle={{ fontSize: 18 }}
+                                style={{ height: 50 }}
                                 subtitle={
                                     <View>
                                         <Text style={{ color: '#434245' }}>
@@ -267,19 +274,18 @@ const CaseScreen = (props: Props) => {
                                         props.case.details?.person.addresses[0]
                                             .raw ? (
                                             <Text style={{ color: '#434245' }}>
-                                                {
-                                                    props.case.details.person
-                                                        .addresses[0].raw
-                                                }
+                                                {`${props.case.details.person.addresses[0].locality}, ${props.case.details.person.addresses[0].state}`}
                                             </Text>
                                         ) : null}
                                         {props.case.details.fosterCare ? (
                                             <Text style={{ color: '#434245' }}>
-                                                Case Initiation:
-                                                {moment(
-                                                    props.case.details
-                                                        .fosterCare
-                                                ).format(' LL')}
+                                                {`Case started ${moment().from(
+                                                    [
+                                                        props.case.details
+                                                            .fosterCare,
+                                                    ],
+                                                    true
+                                                )} ago`}
                                             </Text>
                                         ) : null}
                                     </View>
@@ -393,6 +399,9 @@ const CaseScreen = (props: Props) => {
                                         </View>
                                     </TouchableHighlight>
                                 </View>
+
+                                {/* List of Connections to Child Starts Here */}
+
                                 {searchedConnections &&
                                     searchedConnections.map(
                                         (connection, index) => {

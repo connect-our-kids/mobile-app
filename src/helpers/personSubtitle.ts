@@ -28,9 +28,9 @@ function birthdayAsMoment(
         birthday = moment(`${person.birthYear}`, 'YYYY');
     } else if (person.birthdayRaw) {
         // try to parse just year out
-        const regex = /[^\d]*([\d]{4})[^\d]*/i;
+        const regex = /([\d]{4})/i;
         const match = person.birthdayRaw.match(regex);
-        if (match && match.length === 1) {
+        if (match) {
             const year = Number(match[1]);
             if (year > 1800 && year <= moment().year()) {
                 birthday = moment([year]);
@@ -78,11 +78,15 @@ function toAgeString(person: PersonSubtitleDetails): string | undefined {
 export function createPersonSubtitle(person: PersonSubtitleDetails) {
     const ageString = toAgeString(person);
 
-    if (ageString) {
+    if (ageString && person.gender === 'Unspecified') {
+        return ageString;
+    } else if (person.birthdayRaw && person.gender === 'Unspecified') {
+        return `Birth: ${person.birthdayRaw}`;
+    } else if (ageString && person.gender !== 'Unspecified') {
         return `${person.gender}, ${ageString}`;
-    } else if (person.birthdayRaw) {
+    } else if (person.birthdayRaw && person.gender !== 'Unspecified') {
         return `${person.gender}, Birth: ${person.birthdayRaw}`;
     } else {
-        return person.gender;
+        return '';
     }
 }
