@@ -279,13 +279,15 @@ const CaseScreen = (props: Props) => {
                                         ) : null}
                                         {props.case.details.fosterCare ? (
                                             <Text style={{ color: '#434245' }}>
-                                                {`Case started ${moment().from(
-                                                    [
-                                                        props.case.details
-                                                            .fosterCare,
-                                                    ],
-                                                    true
-                                                )} ago`}
+                                                {`Case started ${moment
+                                                    .utc()
+                                                    .from(
+                                                        [
+                                                            props.case.details
+                                                                .fosterCare,
+                                                        ],
+                                                        true
+                                                    )} ago`}
                                             </Text>
                                         ) : null}
                                     </View>
