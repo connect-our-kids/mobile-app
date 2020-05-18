@@ -16,6 +16,7 @@ import {
     casesDetailSlim,
     casesDetailSlim_cases,
 } from '../../../generated/casesDetailSlim';
+import { relationshipsDetailSlim_relationships } from '../../../generated/relationshipsDetailSlim';
 
 export const CASE_DETAIL_SLIM_FRAGMENT = gql`
     fragment CaseDetailSlimFragment on Case {
@@ -86,6 +87,42 @@ export const CASE_DETAIL_FULL_QUERY = gql`
     ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
     ${ENGAGEMENT_DETAIL_FRAGMENT}
 `;
+
+export const CREATE_RELATIONSHIP_MUTATION = gql`
+    mutation createRelationshipMutation(
+        $caseId: Int!
+        $value: CreateRelationshipInput!
+    ) {
+        createRelationship(caseId: $caseId, value: $value) {
+            ...RelationshipDetailSlim
+        }
+    }
+
+    ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
+`;
+
+export function addRelationshipToCache(
+    caseId: number,
+    relationshipIn: relationshipsDetailSlim_relationships,
+    cache: DataProxy
+) {
+    const caseCache = cache.readQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
+        variables: { caseId },
+    });
+    if (!caseCache) {
+        return;
+    }
+    cache.writeQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
+        variables: { caseId },
+        data: {
+            details: caseCache.details,
+            engagements: caseCache.engagements,
+            relationships: [relationshipIn, ...caseCache.relationships],
+        },
+    });
+}
 
 export const CREATE_CASE_MUTATION = gql`
     mutation createCaseMutation($value: CreateCaseInput!) {
