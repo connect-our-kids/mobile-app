@@ -1,4 +1,9 @@
-import { CASE_DETAIL_FULL_QUERY, addEngagementCache } from './fragments/cases';
+import {
+    CASE_DETAIL_FULL_QUERY,
+    addEngagementCache,
+    addRelationshipToCache,
+    CREATE_RELATIONSHIP_MUTATION,
+} from './fragments/cases';
 import { GraphQLError } from 'graphql';
 import {
     caseDetailFull,
@@ -19,6 +24,7 @@ import {
     CreateEngagementNote,
     CreateEngagementCall,
     CreateEngagementEmail,
+    CreateRelationshipInput,
 } from '../../generated/globalTypes';
 import {
     createEngagementNoteMutation,
@@ -35,11 +41,20 @@ import {
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { ThunkResult } from '../store';
+import {
+    createRelationshipMutation,
+    createRelationshipMutationVariables,
+    createRelationshipMutation_createRelationship,
+} from '../../generated/createRelationshipMutation';
 
 export enum CaseTypes {
     GET_CASE_START = 'GET_CASE_START',
     GET_CASE_SUCCESS = 'GET_CASE_SUCCESS',
     GET_CASE_FAILURE = 'GET_CASE_FAILURE',
+    CREATE_RELATIONSHIP_START = 'CREATE_RELATIONSHIP_START',
+    CREATE_RELATIONSHIP_SUCCESS = 'CREATE_RELATIONSHIP_SUCCESS',
+    CREATE_RELATIONSHIP_FAILURE = 'CREATE_RELATIONSHIP_FAILURE',
+    CREATE_RELATIONSHIP_CLEAR = 'CREATE_RELATIONSHIP_CLEAR',
     CLEAR_CASE = 'CLEAR_CASE',
     CLEAR_DOCUMENT_ERROR = 'CLEAR_DOCUMENT_ERROR',
     CLEAR_DOCUMENT_SUCCESS = 'CLEAR_DOCUMENT_SUCCESS',
@@ -70,6 +85,24 @@ export interface CaseSuccessAction {
 export interface CaseFailureAction {
     type: CaseTypes.GET_CASE_FAILURE;
     error: string;
+}
+
+export interface CreateRelationshipStartAction {
+    type: CaseTypes.CREATE_RELATIONSHIP_START;
+}
+
+export interface CreateRelationshipSuccessAction {
+    type: CaseTypes.CREATE_RELATIONSHIP_SUCCESS;
+    relationship: createRelationshipMutation_createRelationship;
+}
+
+export interface CreateRelationshipFailureAction {
+    type: CaseTypes.CREATE_RELATIONSHIP_FAILURE;
+    error: string;
+}
+
+export interface CreateRelationshipClearAction {
+    type: CaseTypes.CREATE_RELATIONSHIP_CLEAR;
 }
 
 export interface CaseClearAction {
@@ -148,6 +181,10 @@ export type CaseActionTypes =
     | CaseSuccessAction
     | CaseFailureAction
     | CaseClearAction
+    | CreateRelationshipStartAction
+    | CreateRelationshipSuccessAction
+    | CreateRelationshipFailureAction
+    | CreateRelationshipClearAction
     | DocumentClearErrorAction
     | DocumentClearSuccessAction
     | CreateDocEngagementAction
@@ -170,16 +207,11 @@ export interface CaseDispatch {
 
 export const getCase = (caseId: number): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState,
+    _getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.GET_CASE_START });
     console.log(`Loading case ${caseId}...`);
-
-    // get token
-    // if (no token) {
-
-    //}
 
     client
         .watchQuery<caseDetailFull, caseDetailFullVariables>({
@@ -218,12 +250,83 @@ export const clearCase = (): ThunkResult<void> => (
     // TODO actually clear data
 };
 
+export const createRelationship = (
+    caseId: number,
+    value: CreateRelationshipInput
+): ThunkResult<void> => (
+    dispatch: CaseDispatch,
+    _getState,
+    { client }: { client: ApolloClient<NormalizedCacheObject> }
+): void => {
+    dispatch({ type: CaseTypes.CREATE_RELATIONSHIP_START });
+    console.log(`Creating relationship for case ${caseId}...`);
+
+    client
+        .mutate<
+            createRelationshipMutation,
+            createRelationshipMutationVariables
+        >({
+            mutation: CREATE_RELATIONSHIP_MUTATION, // TODO mutation here
+            variables: { caseId, value },
+            update: (cache, result) => {
+                if (result.data) {
+                    addRelationshipToCache(
+                        caseId,
+                        result.data.createRelationship,
+                        cache
+                    );
+                }
+            },
+        })
+        .then(
+            (res) => {
+                if (res.data) {
+                    console.log(
+                        `Creating relationship for case ${caseId}: success`
+                    );
+
+                    dispatch({
+                        type: CaseTypes.CREATE_RELATIONSHIP_SUCCESS,
+                        relationship: res.data.createRelationship,
+                    });
+                } else {
+                    console.log(
+                        `Creating relationship for case ${caseId}: error: no data`
+                    );
+                    dispatch({
+                        type: CaseTypes.CREATE_RELATIONSHIP_FAILURE,
+                        error: 'no data',
+                    });
+                }
+            },
+            (error: GraphQLError | Error) => {
+                console.log(
+                    `Creating relationship for case ${caseId}: error: ${JSON.stringify(
+                        error,
+                        null,
+                        2
+                    )}`
+                );
+                dispatch({
+                    type: CaseTypes.CREATE_RELATIONSHIP_FAILURE,
+                    error: error.message,
+                });
+            }
+        );
+};
+
+export const clearCreateRelationship = (): ThunkResult<void> => (
+    dispatch: CaseDispatch
+): void => {
+    dispatch({ type: CaseTypes.CREATE_RELATIONSHIP_CLEAR });
+};
+
 export const createDocEngagement = (
     caseId: number,
     value: CreateEngagementDocument
 ): ThunkResult<void> => (
     dispatch: CaseDispatch,
-    getState,
+    _getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: CaseTypes.CREATE_DOC_ENGAGEMENT });

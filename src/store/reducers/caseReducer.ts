@@ -1,5 +1,6 @@
 import { CaseTypes, CaseActionTypes } from '../actions/caseAction';
 import { caseDetailFull } from '../../generated/caseDetailFull';
+import { createRelationshipMutation_createRelationship } from '../../generated/createRelationshipMutation';
 
 export interface CaseDataState {
     results?: caseDetailFull;
@@ -13,6 +14,9 @@ export interface CaseDataState {
     engagementSuccess: boolean;
     isLoadingEngagements: boolean;
     engagementErrorToggle: boolean;
+    isCreatingRelationship: boolean;
+    creatingRelationshipError?: string;
+    lastCreatedRelationship?: createRelationshipMutation_createRelationship;
 }
 
 export const caseReducer = (
@@ -23,6 +27,7 @@ export const caseReducer = (
         engagementErrorToggle: false,
         documentSuccess: false,
         engagementSuccess: false,
+        isCreatingRelationship: false,
     },
     action: CaseActionTypes
 ): CaseDataState => {
@@ -57,6 +62,37 @@ export const caseReducer = (
                 error: undefined,
             };
 
+        case CaseTypes.CREATE_RELATIONSHIP_START:
+            return {
+                ...state,
+                isCreatingRelationship: true,
+                lastCreatedRelationship: undefined,
+                error: undefined,
+            };
+
+        case CaseTypes.CREATE_RELATIONSHIP_SUCCESS:
+            return {
+                ...state,
+                isCreatingRelationship: false,
+                lastCreatedRelationship: action.relationship,
+                error: undefined,
+            };
+
+        case CaseTypes.CREATE_RELATIONSHIP_FAILURE:
+            return {
+                ...state,
+                isCreatingRelationship: false,
+                lastCreatedRelationship: undefined,
+                error: action.error,
+            };
+
+        case CaseTypes.CREATE_RELATIONSHIP_CLEAR:
+            return {
+                ...state,
+                isCreatingRelationship: false,
+                lastCreatedRelationship: undefined,
+                error: undefined,
+            };
         case CaseTypes.CREATE_DOC_ENGAGEMENT:
             return {
                 ...state,
