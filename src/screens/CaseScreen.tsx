@@ -86,7 +86,7 @@ const CaseScreen = (props: Props) => {
         Platform.OS === 'android' ? setRtn('') : null;
     }, []);
 
-    const handleKeywordChange = (e) => {
+    const handleKeywordChange = (e: string) => {
         setSearchKeywords(e);
     };
 

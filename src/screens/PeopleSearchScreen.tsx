@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import {
     SafeAreaView,
@@ -10,13 +9,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
-    fetchPerson,
-    fetchSearchResult,
+    generalSearch,
     resetState,
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    getInfo,
     login,
 } from '../store/actions';
 
@@ -31,6 +28,7 @@ import Loader from '../components/Loader';
 import RegisterModalsContainer from '../components/auth/RegisterModalsContainer';
 import { RootState } from '../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { SearchValues } from '../components/people-search/SearchForm/SearchForm';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -58,27 +56,24 @@ const styles = StyleSheet.create({
 });
 
 interface StateProps {
-    error;
-    isFetching;
-    isLoggedIn;
-    person;
-    possiblePersons;
-    modalVisible;
-    videoAgree;
-    videoVisible;
-    user;
-    info;
-    queryType;
+    error?: string;
+    isFetching: boolean;
+    isLoggedIn: boolean;
+    person?: Record<string, unknown>;
+    possiblePersons: Record<string, unknown>[];
+    modalVisible: boolean;
+    videoAgree: boolean;
+    videoVisible: boolean;
+    email: string | null | undefined;
+    searchValues?: SearchValues;
 }
 
 interface DispatchProps {
-    fetchPerson: typeof fetchPerson;
-    fetchSearchResult: typeof fetchSearchResult;
+    fetchSearchResult: typeof generalSearch;
     resetState: typeof resetState;
     setModalVisible: typeof setModalVisible;
     setAgreeModalVisible: typeof setAgreeModalVisible;
     setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
-    getInfo: typeof getInfo;
     login: typeof login;
 }
 
@@ -91,64 +86,44 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 class PeopleSearchScreen extends React.Component<Props> {
-    state = {
-        data: this.props.info,
+    state: {
+        videoPlayerOpen: boolean;
+        modalVisible: boolean;
+        terms: boolean;
+        privacy: boolean;
+    } = {
         videoPlayerOpen: false,
         modalVisible: false,
         terms: false,
         privacy: false,
     };
 
-    componentDidMount() {
-        console.log('useEffect: PeopleSearch');
-        /**
-         * login(true) is safe to call anytime
-         * Inside the function it ensures only one execution at a
-         * time.
-         */
-        this.props.login(true);
-    }
-
-    handleEncodeURI = (person) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleEncodeURI = (person: any) => {
         return encodeURI(JSON.stringify(person));
     };
 
-    handleSearchRequest = async (person) => {
-        const { fetchSearchResult, navigation, user } = this.props;
-
+    handleSearchRequest = (person: Record<string, unknown>) => {
+        console.log('handle search request');
         const body = { person: JSON.stringify(person) };
 
-        if (this.props.person || this.props.possiblePersons.length) {
+        if (this.props.person || this.props.possiblePersons?.length) {
             this.props.resetState();
         }
 
-        fetchSearchResult(
-            body,
-            () => navigation.navigate('SearchResult'),
-            user ? user.email : null
+        this.props.fetchSearchResult(body, () =>
+            this.props.navigation.navigate('SearchResult')
         );
     };
 
     openVideo = () => {
         this.setState({ videoPlayerOpen: true });
-        sendEvent(
-            this.props.isLoggedIn
-                ? this.props.user.email
-                : 'anonymous@unknown.org',
-            'open',
-            'introduction-video'
-        );
+        sendEvent(this.props.email, 'open', 'introduction-video');
     };
 
     closeVideo = () => {
         this.setState({ videoPlayerOpen: false });
-        sendEvent(
-            this.props.isLoggedIn
-                ? this.props.user.email
-                : 'anonymous@unknown.org',
-            'close',
-            'introduction-video'
-        );
+        sendEvent(this.props.email, 'close', 'introduction-video');
     };
 
     closeModal = () => {
@@ -159,7 +134,8 @@ class PeopleSearchScreen extends React.Component<Props> {
         this.setState({ modalVisible: true });
     };
 
-    controlModal = (key, value) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    controlModal = (key: any, value: any) => {
         this.setState({ [key]: value });
     };
 
@@ -172,8 +148,8 @@ class PeopleSearchScreen extends React.Component<Props> {
         this.props.setModalVisible(true);
     };
 
-    showSearchErrorMessage = (message) => {
-        this.setState({ ...this.state, errorMessgae: message });
+    showSearchErrorMessage = (message: string) => {
+        this.setState({ ...this.state, errorMessage: message });
     };
 
     render() {
@@ -216,29 +192,32 @@ class PeopleSearchScreen extends React.Component<Props> {
 
                                 <View>
                                     <SearchForm
-                                        handleSearch={this.handleSearchRequest}
-                                        resetReduxState={this.resetReduxState}
-                                        data={this.props.data}
-                                        sendSearchErrorMessage={
-                                            this.showSearchErrorMessage
-                                        }
+                                        onSearch={this.handleSearchRequest}
+                                        onClear={() => {
+                                            // clear navigate parameters
+                                            this.props.navigation.setParams({
+                                                searchValues: undefined,
+                                            });
+                                            this.resetReduxState;
+                                        }}
+                                        searchValues={this.props.searchValues}
                                     />
                                 </View>
 
-                                {this.props.error?.length > 0 ? (
+                                {this.props.error ? (
                                     <View
                                         style={{
                                             backgroundColor: '#fff3cd',
                                             padding: 15,
                                         }}
                                     >
-                                        {this.props.error}
+                                        <Text>{this.props.error}</Text>
                                     </View>
                                 ) : null}
 
                                 {this.props.isFetching && <Loader />}
 
-                                {this.props.possiblePersons.length ? (
+                                {this.props.possiblePersons?.length ? (
                                     <Text style={styles.matchesText}>
                                         Possible Matches
                                     </Text>
@@ -272,17 +251,15 @@ class PeopleSearchScreen extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: RootState): StateProps => {
-    const { error, isFetching, person, possiblePersons } = state.people;
-    const {
-        isLoggedIn,
-        user,
-        modalVisible,
-        videoAgree,
-        videoVisible,
-    } = state.auth;
+const mapStateToProps = (state: RootState, ownProps: OwnProps): StateProps => {
+    const searchValues = ownProps.navigation.getParam('searchValues') as
+        | SearchValues
+        | undefined;
+
+    const { errorMessage, isFetching, person, possiblePersons } = state.people;
+    const { isLoggedIn, modalVisible, videoAgree, videoVisible } = state.auth;
     return {
-        error,
+        error: errorMessage,
         isFetching,
         isLoggedIn,
         person,
@@ -290,19 +267,16 @@ const mapStateToProps = (state: RootState): StateProps => {
         modalVisible,
         videoAgree,
         videoVisible,
-        user,
-        info: state.confirmationModal.info,
-        queryType: state.confirmationModal.queryType,
+        email: state.auth?.user?.email,
+        searchValues,
     };
 };
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
-    fetchPerson,
-    fetchSearchResult,
+    fetchSearchResult: generalSearch,
     resetState,
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    getInfo,
     login,
 })(PeopleSearchScreen);

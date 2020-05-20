@@ -1,77 +1,65 @@
-import {
-    FETCH_PEOPLE_SUCCESS,
-    FETCH_PERSON,
-    FETCH_PERSON_FAILURE,
-    FETCH_PERSON_SUCCESS,
-    FETCH_SEARCH_RESULT,
-    FETCH_SEARCH_RESULT_FAILURE,
-    RESET_PERSON,
-    RESET_STATE,
-    POPULATE_SEARCH_RESULTS,
-    POPULATE_PERSON,
-} from '../actions/actionTypes';
+import { PeopleSearchActionTypes, PeopleSearchTypes } from '../actions';
 
-const initialState = {
-    error: null,
+export interface PeopleSearchState {
+    isFetching: boolean;
+    person?: Record<string, unknown>;
+    possiblePersons: Record<string, unknown>[];
+    errorMessage?: string;
+}
+
+const initialState: PeopleSearchState = {
     isFetching: false,
-    person: null,
     possiblePersons: [],
-    errorMessage: 'yes!',
 };
 
-export const peopleSearchReducer = (state = initialState, action) => {
+export const peopleSearchReducer = (
+    state = initialState,
+    action: PeopleSearchActionTypes
+): PeopleSearchState => {
     switch (action.type) {
-        case FETCH_PERSON:
-        case FETCH_SEARCH_RESULT:
+        case PeopleSearchTypes.FETCH_PERSON:
             return {
                 ...state,
                 isFetching: true,
             };
-        case FETCH_PEOPLE_SUCCESS:
+        case PeopleSearchTypes.FETCH_SEARCH_RESULT:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case PeopleSearchTypes.FETCH_PEOPLE_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                possiblePersons: [...action.payload],
-                error: null,
+                possiblePersons: [...action.result],
+                errorMessage: undefined,
             };
-        case FETCH_PERSON_SUCCESS:
+        case PeopleSearchTypes.FETCH_PERSON_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                person: { ...action.payload },
-                error: null,
+                person: { ...action.person },
+                errorMessage: undefined,
             };
-        case FETCH_PERSON_FAILURE:
+        case PeopleSearchTypes.FETCH_PERSON_FAILURE:
             return {
                 ...state,
                 isFetching: false,
             };
-        case FETCH_SEARCH_RESULT_FAILURE:
-            console.log(' There was a FETCH_SEARCH_RESULT_FAILURE: ', action);
+        case PeopleSearchTypes.FETCH_SEARCH_RESULT_FAILURE:
             return {
-                error: action.payload,
                 isFetching: false,
-                person: null,
+                person: undefined,
                 possiblePersons: [],
                 errorMessage: 'There was a problem performing the search',
             };
-        case RESET_PERSON:
+        case PeopleSearchTypes.RESET_PERSON:
             return {
                 ...state,
-                person: null,
+                person: undefined,
             };
-        case RESET_STATE:
+        case PeopleSearchTypes.RESET_STATE:
             return initialState;
-        case POPULATE_SEARCH_RESULTS:
-            return {
-                ...state,
-                possiblePersons: [...action.payload],
-            };
-        case POPULATE_PERSON:
-            return {
-                ...state,
-                person: { ...action.payload },
-            };
         default:
             return state;
     }

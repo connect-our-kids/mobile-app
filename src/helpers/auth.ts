@@ -344,6 +344,46 @@ interface LoginResultError {
     error: string;
 }
 
+function buildErrorMessage(
+    input:
+        | {
+              type: string;
+              params?: undefined;
+              errorCode?: undefined;
+              url?: undefined;
+          }
+        | {
+              type: string;
+              params: {
+                  [key: string]: string;
+              };
+              errorCode: string | null;
+              url: string;
+          }
+): string {
+    if (input.type === 'locked') {
+        // android only. multiple auth requests in flight
+        return 'Attempting to login more than once at the same time';
+    }
+    if (input.params?.error_description) {
+        return input.params.error_description;
+    }
+    if (input.params?.error) {
+        return input.params.error;
+    }
+    if (input.errorCode) {
+        return `Code = ${input.errorCode}`;
+    }
+    if (input.type !== 'success') {
+        return `Unknown response type of '${input.type}`;
+    }
+    if (!input.params?.code || !input.params?.id_token) {
+        // incorrect shape of response
+        return `Response to authorization does not contain code and or id_token`;
+    }
+    return `Unknown error`;
+}
+
 /**
  * Perform OAuth Login using Auth0. Do NOT call this directly. Use
  * the login action in authActions instead.
@@ -355,12 +395,13 @@ export async function loginInternal(): Promise<
     LoginResultError | LoginResultCancelled | LoginResultSuccess
 > {
     try {
+        const redirectUri =
+            Platform.OS != 'ios'
+                ? AuthSession.getRedirectUrl()
+                : auth0RedirectScheme;
         const authorizeParams = toQueryString({
             client_id: auth0ClientId,
-            redirect_uri:
-                Platform.OS != 'ios'
-                    ? AuthSession.getRedirectUrl()
-                    : auth0RedirectScheme,
+            redirect_uri: redirectUri,
             audience: auth0Audience,
             response_type: 'code id_token', // id_token will return a JWT token
             scope: 'offline_access openid profile email', // retrieve the user's profile
@@ -371,7 +412,7 @@ export async function loginInternal(): Promise<
 
         // TODO only print this if environment is dev/staging
         console.log('Send the following URL to Travis');
-        console.log(AuthSession.getRedirectUrl());
+        console.log(redirectUri);
         const authUrl = `https://${auth0Domain}/authorize` + authorizeParams;
 
         // Perform the authentication - AuthSessionCustom creates an authentication session in your browser behind the scenes.
@@ -385,40 +426,23 @@ export async function loginInternal(): Promise<
         console.debug('AuthSession Response:');
         console.debug(JSON.stringify(authorizeResponse, null, 2));
 
-        if (authorizeResponse.params?.error) {
-            console.debug(
-                `Failed to login. Error: ${authorizeResponse?.error_description}`
-            );
-            return {
-                result: 'error',
-                error: `${authorizeResponse.params?.error}: ${
-                    authorizeResponse.params.error_description ??
-                    'Unknown error'
-                }`,
-            };
-        }
-        // if user cancels login process, terminate method
-        else if (
+        if (
             authorizeResponse.type === 'dismiss' ||
             authorizeResponse.type === 'cancel'
         ) {
             // user cancelled
             return { result: 'cancelled' };
-        } else if (authorizeResponse.type !== 'success') {
-            return {
-                result: 'error',
-                error: `Unknown response code of '${authorizeResponse.type}'`,
-            };
-        }
-        // check shape of data
-        else if (
-            !authorizeResponse.params.code ||
-            !authorizeResponse.params.id_token
+        } else if (
+            authorizeResponse.type !== 'success' ||
+            authorizeResponse.params?.error_description ||
+            authorizeResponse.params?.error ||
+            authorizeResponse.errorCode ||
+            !authorizeResponse.params?.code ||
+            !authorizeResponse.params?.id_token
         ) {
-            // incorrect shape of response
             return {
                 result: 'error',
-                error: `Response to authorization does not contain code and or id_token`,
+                error: buildErrorMessage(authorizeResponse),
             };
         }
 
@@ -436,13 +460,10 @@ export async function loginInternal(): Promise<
                     : auth0RedirectScheme,
         };
 
-        console.log(`Sending authorization_code response`);
         const tokenResponse = await Axios.post<AuthorizationCodeGrantResponse>(
             `https://${auth0Domain}/oauth/token`,
             tokenParams
         );
-        console.debug('Token response:');
-        console.debug(JSON.stringify(tokenResponse.data, null, 2));
 
         // check shape of data
         if (!tokenResponse.data) {
@@ -453,13 +474,9 @@ export async function loginInternal(): Promise<
             };
         }
 
-        console.log(authorizeResponse.params.id_token);
-
         const decodedIdToken = jwtDecode<IdToken>(
             authorizeResponse.params.id_token
         );
-
-        console.log('after decode id token');
 
         if (decodedIdToken === undefined) {
             return {
@@ -468,18 +485,24 @@ export async function loginInternal(): Promise<
             };
         }
 
-        console.log('before store all token');
         await storeAllTokensInSecureStorage({
             idToken: authorizeResponse.params.id_token,
             accessToken: tokenResponse.data.access_token,
             refreshToken: tokenResponse.data.refresh_token,
         });
 
-        console.log('after store all tokens');
         return { result: 'success', idToken: decodedIdToken };
     } catch (error) {
-        console.log('Caught error');
-        JSON.stringify(error, null, 2);
-        return error.message ?? 'unknown error';
+        console.log(
+            `Unhandled error when logging in. Error: ${JSON.stringify(
+                error,
+                null,
+                2
+            )}`
+        );
+        return {
+            result: 'error',
+            error: error.message ?? 'unknown error',
+        };
     }
 }

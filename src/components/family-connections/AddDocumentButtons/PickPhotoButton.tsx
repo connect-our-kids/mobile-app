@@ -3,10 +3,11 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
-import Button from './Button';
 import PickPhotoIcon from './PickPhotoIcon';
 import PickPhotoLabel from './PickPhotoLabel';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
+import styles from './styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function PickPhotoButton({
     afterAccept,
@@ -52,9 +53,12 @@ export default function PickPhotoButton({
     }
 
     return (
-        <Button onPress={onPress} /* testID="pick-photo-button" */>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={onPress} /* testID="pick-photo-button" */
+        >
             <PickPhotoIcon />
             <PickPhotoLabel />
-        </Button>
+        </TouchableOpacity>
     );
 }

@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import qs from 'qs';
 import { Linking } from 'expo';
 import * as ExpoWebBrowser from 'expo-web-browser';
+import assert from 'assert';
 
 const BASE_URL = 'https://auth.expo.io';
 let _authLock = false;
@@ -10,7 +11,7 @@ function getDefaultReturnUrl() {
     return Linking.makeUrl('expo-auth-session');
 }
 
-async function _openWebBrowserAsync(startUrl, returnUrl) {
+async function _openWebBrowserAsync(startUrl: string, returnUrl: string) {
     // $FlowIssue: Flow thinks the awaited result can be a promise
     const result = await ExpoWebBrowser.openAuthSessionAsync(
         startUrl,
@@ -22,33 +23,44 @@ async function _openWebBrowserAsync(startUrl, returnUrl) {
     return result;
 }
 
-function parseUrl(url) {
+export function getQueryParams(
+    url: string
+): { errorCode: string | null; params: { [key: string]: string } } {
     const parts = url.split('#');
     const hash = parts[1];
     const partsWithoutHash = parts[0].split('?');
     const queryString = partsWithoutHash[partsWithoutHash.length - 1];
+
     // Get query string (?hello=world)
-    const parsedSearch = qs.parse(queryString);
+    const parsedSearch = qs.parse(queryString, { parseArrays: false });
+
     // Pull errorCode off of params
-    const { errorCode } = parsedSearch;
+    const errorCode = (parsedSearch.errorCode ?? null) as string | null;
+    assert(
+        typeof errorCode === 'string' || errorCode === null,
+        `The "errorCode" parameter must be a string if specified`
+    );
     delete parsedSearch.errorCode;
+
     // Get hash (#abc=example)
     let parsedHash = {};
     if (parts[1]) {
         parsedHash = qs.parse(hash);
     }
+
     // Merge search and hash
     const params = {
         ...parsedSearch,
         ...parsedHash,
     };
+
     return {
         errorCode,
         params,
     };
 }
 
-async function startAsync(options) {
+async function startAsync(options: { returnUrl?: string; authUrl: string }) {
     const returnUrl = options.returnUrl || getDefaultReturnUrl();
     const authUrl = options.authUrl;
     // const startUrl = getStartUrl(authUrl, returnUrl);
@@ -81,18 +93,25 @@ async function startAsync(options) {
         // WebBrowser session complete, unset lock
         _authLock = false;
     }
+
     // Handle failures
     if (!result) {
         throw new Error('Unexpected missing AuthSession result');
     }
-    if (!result.url) {
+
+    // do a type check for url field
+    const hasUrl = (input: unknown): input is { url: string } => {
+        return !!input && !!(input as { url: string }).url;
+    };
+
+    if (!hasUrl(result)) {
         if (result.type) {
             return result;
         } else {
             throw new Error('Unexpected AuthSession result with missing type');
         }
     }
-    const { params, errorCode } = parseUrl(result.url);
+    const { params, errorCode } = getQueryParams(result.url);
     return {
         type: errorCode ? 'error' : 'success',
         params,
@@ -104,7 +123,7 @@ function dismiss() {
     ExpoWebBrowser.dismissAuthSession();
 }
 
-function _warnIfAnonymous(id, url) {
+function _warnIfAnonymous(id: string, url: string) {
     if (id.startsWith('@anonymous/')) {
         console.warn(
             `You are not currently signed in to Expo on your development machine. As a result, the redirect URL for AuthSession will be "${url}". If you are using an OAuth provider that requires whitelisting redirect URLs, we recommend that you do not whitelist this URL -- instead, you should sign in to Expo to acquired a unique redirect URL. Additionally, if you do decide to publish this app using Expo, you will need to register an account to do it.`
@@ -120,7 +139,7 @@ function getRedirectUrl() {
     return redirectUrl;
 }
 
-function getStartUrl(authUrl, returnUrl) {
+function getStartUrl(authUrl: string, returnUrl: string) {
     const queryString = qs.stringify({
         authUrl,
         returnUrl,

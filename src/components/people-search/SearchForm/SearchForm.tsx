@@ -1,22 +1,16 @@
-// @ts-nocheck
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, Tabs, Tab, Input } from 'native-base';
 import { SearchBar } from 'react-native-elements';
 import {
-    isName,
-    isEmail,
-    isAddress,
-    isPhone,
-    isUrl,
+    isValidName,
+    isValidEmail,
+    isValidAddress,
+    isValidPhone,
+    isValidUrl,
 } from '../../../helpers/inputValidators';
-import { connect } from 'react-redux';
-import {
-    getInfo,
-    stopSearchMe,
-    sendSearchErrorMessage,
-} from '../../../store/actions';
 import { Ionicons } from '@expo/vector-icons';
+import * as _ from 'lodash';
 
 const styles = StyleSheet.create({
     container: {
@@ -102,19 +96,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: '5%',
     },
-    ioniconscentered: {
+    ioniconsCentered: {
         marginTop: '11%',
     },
 });
 
-const formatRequestObject = (
-    input:
-        | { type: 'name'; name: string; location: string }
-        | { type: 'email'; email: string }
-        | { type: 'address'; address: string }
-        | { type: 'phone'; phone: string }
-        | { type: 'url'; url: string }
-) => {
+export type SearchValues =
+    | { type: 'name'; name: string; location: string }
+    | { type: 'email'; email: string }
+    | { type: 'address'; address: string }
+    | { type: 'phone'; phone: string }
+    | { type: 'url'; url: string };
+
+const formatRequestObject = (input: SearchValues) => {
     switch (input.type) {
         case 'name':
             if (input.location.trim()) {
@@ -139,147 +133,197 @@ const formatRequestObject = (
     }
 };
 
-class SearchForm extends Component {
-    state = {
-        name: '',
-        location: '',
-        email: '',
-        address: '',
-        phone: '',
-        url: '',
-        tabPage: 0,
-        showNoInputMessage: false,
-    };
+enum SearchTab {
+    name = 0,
+    email = 1,
+    address = 2,
+    phone = 3,
+    url = 4,
+}
 
-    componentDidUpdate() {
+interface LocalState {
+    name: string;
+    location: string;
+    email: string;
+    address: string;
+    phone: string;
+    url: string;
+    tabPage: SearchTab;
+    showNoInputMessage: boolean;
+}
+
+const defaultState: LocalState = {
+    name: '',
+    location: '',
+    email: '',
+    address: '',
+    phone: '',
+    url: '',
+    tabPage: SearchTab.name,
+    showNoInputMessage: false,
+};
+
+interface OwnProps {
+    onSearch: (search: Record<string, unknown>) => void;
+    onClear: () => void;
+    searchValues?: SearchValues;
+}
+
+type Props = OwnProps;
+
+export class SearchForm extends Component<Props, LocalState> {
+    state = defaultState;
+
+    componentDidUpdate(prev: OwnProps) {
+        if (!_.isEqual(this.props.searchValues, prev.searchValues)) {
+            if (this.props.searchValues) {
+                switch (this.props.searchValues.type) {
+                    case 'email':
+                        this.setState(
+                            {
+                                ...this.state,
+                                email: this.props.searchValues.email,
+                                tabPage: SearchTab.email,
+                            },
+                            this.handleFormSubmit
+                        );
+                        break;
+                    case 'phone':
+                        this.setState(
+                            {
+                                ...this.state,
+                                phone: this.props.searchValues.phone,
+                                tabPage: SearchTab.phone,
+                            },
+                            this.handleFormSubmit
+                        );
+                        break;
+                    case 'address':
+                        this.setState(
+                            {
+                                ...this.state,
+                                address: this.props.searchValues.address,
+                                tabPage: SearchTab.address,
+                            },
+                            this.handleFormSubmit
+                        );
+                        break;
+                    case 'name':
+                        this.setState(
+                            {
+                                ...this.state,
+                                name: this.props.searchValues.name,
+                                location: this.props.searchValues.location,
+                                tabPage: SearchTab.name,
+                            },
+                            this.handleFormSubmit
+                        );
+                        break;
+                    case 'url':
+                        this.setState(
+                            {
+                                ...this.state,
+                                url: this.props.searchValues.url,
+                                tabPage: SearchTab.url,
+                            },
+                            this.handleFormSubmit
+                        );
+                        break;
+                }
+            } else {
+                this.setState(defaultState);
+            }
+        }
+    }
+
+    /* componentDidUpdate() {
         if (this.props.searchMe && this.props.queryType) {
             this.changeHandler(this.props.queryType, this.props.info);
             this.handleFormSubmit();
             this.props.stopSearchMe();
         }
-    }
-
-    changeHandler = (name: string | number, text: unknown) => {
-        const tabPages = { name: 0, email: 1, address: 2, phone: 3, url: 4 };
-
-        this.setState({
-            ...this.state,
-            [name]: text,
-            tabPage: tabPages[name],
-        });
-    };
+    } */
 
     handleFormSubmit = () => {
-        let formattedObject = null;
-
-        console.log('this is the state ', this.state);
-
-        let searchType = this.state.tabPage; // number
-
-        let mainValue = '';
-
-        if (searchType == 0) {
-            mainValue = this.state.name;
-        } else if (searchType == 1) {
-            mainValue = this.state.email;
-        } else if (searchType == 2) {
-            mainValue = this.state.address;
-        } else if (searchType == 3) {
-            mainValue = this.state.phone;
-        } else if (searchType == 4) {
-            mainValue = this.state.url;
-        }
-
-        if (mainValue.trim().length === 0) {
-            console.log('No search input provided');
-            console.log('state now: ', this.state);
-
-            this.setState({ ...this.state, showNoInputMessage: true });
-            console.log('state now: ', this.state);
-            return;
-        }
-
-        if (isName(mainValue)) {
-            if (!this.state.tabPage == 0) {
-                this.setState({
-                    ...this.state,
-                    email: mainValue,
-                    location: '',
-                    tabPage: 0,
-                });
-            }
-            searchType = 'name';
-            formattedObject = formatRequestObject({
-                type: 'name',
-                name: mainValue,
-                location: this.state.location,
-            });
-        } else if (isEmail(mainValue)) {
-            if (!this.state.tabPage == 1) {
-                this.setState({ ...this.state, email: mainValue, tabPage: 1 });
-            }
-            searchType = 'email';
-            formattedObject = formatRequestObject({
-                type: 'email',
-                email: mainValue,
-            });
-        } else if (isAddress(mainValue)) {
-            if (!this.state.tabPage == 2) {
-                this.setState({
-                    ...this.state,
-                    address: mainValue,
-                    tabPage: 2,
-                });
-            }
-            searchType = 'address';
-            formattedObject = formatRequestObject({
-                type: 'address',
-                address: mainValue,
-            });
-        } else if (isPhone(mainValue)) {
-            if (!this.state.tabPage == 3) {
-                this.setState({ ...this.state, phone: mainValue, tabPage: 3 });
-            }
-            searchType = 'phone';
-            formattedObject = formatRequestObject({
-                type: 'phone',
-                phone: mainValue,
-            });
-        } else if (isUrl(mainValue)) {
-            if (!this.state.tabPage == 2) {
-                this.setState({ ...this.state, url: mainValue, tabPage: 4 });
-            }
-            searchType = 'url';
-            formattedObject = formatRequestObject({
-                type: 'url',
-                url: mainValue,
-            });
-        }
-
-        if (formattedObject) {
-            this.props.handleSearch(formattedObject, searchType);
-        } else {
-            console.log('formattedObject: error');
-            this.props.sendSearchErrorMessage({ mainValue });
+        console.log('in handle form submit');
+        switch (this.state.tabPage) {
+            case SearchTab.name:
+                if (isValidName(this.state.name)) {
+                    this.props.onSearch(
+                        formatRequestObject({
+                            type: 'name',
+                            name: this.state.name,
+                            location: this.state.location,
+                        })
+                    );
+                } else {
+                    // TODO show error
+                    // this.props.sendSearchErrorMessage({ mainValue });
+                    console.log('error');
+                }
+                break;
+            case SearchTab.email:
+                if (isValidEmail(this.state.email)) {
+                    this.props.onSearch(
+                        formatRequestObject({
+                            type: 'email',
+                            email: this.state.email,
+                        })
+                    );
+                } else {
+                    // TODO show error
+                    console.log('error');
+                }
+                break;
+            case SearchTab.address:
+                if (isValidAddress(this.state.address)) {
+                    this.props.onSearch(
+                        formatRequestObject({
+                            type: 'address',
+                            address: this.state.address,
+                        })
+                    );
+                } else {
+                    // TODO show error
+                    console.log('error');
+                }
+                break;
+            case SearchTab.phone:
+                if (isValidPhone(this.state.phone)) {
+                    this.props.onSearch(
+                        formatRequestObject({
+                            type: 'phone',
+                            phone: this.state.phone,
+                        })
+                    );
+                } else {
+                    // TODO show error
+                    console.log('error');
+                }
+                break;
+            case SearchTab.url:
+                if (isValidUrl(this.state.url)) {
+                    this.props.onSearch(
+                        formatRequestObject({
+                            type: 'url',
+                            url: this.state.url,
+                        })
+                    );
+                } else {
+                    // TODO show error
+                    console.log('error');
+                }
+                break;
+            default:
+                console.log('did not match switch');
+                console.log(this.state.tabPage);
+                break;
         }
     };
 
-    startOver = () => {
-        this.props.resetReduxState();
-        this.setState({
-            name: '',
-            location: '',
-            email: '',
-            address: '',
-            phone: '',
-            url: '',
-            showNoInputMessage: false,
-            tabPage: 0,
-        });
-    };
-
-    tabChanged = (event: { i: unknown }) => {
-        this.setState({ ...this.state, tabPage: event.i });
+    onClear = () => {
+        this.setState(defaultState);
+        this.props.onClear();
     };
 
     render() {
@@ -288,8 +332,13 @@ class SearchForm extends Component {
                 <Tabs
                     style={styles.container}
                     tabBarUnderlineStyle={{ backgroundColor: '#0279AC' }}
-                    page={this.state.tabPage}
-                    onChangeTab={(i: unknown) => this.tabChanged(i)}
+                    page={this.state.tabPage as number}
+                    onChangeTab={(tab: { i: number }) => {
+                        this.setState({
+                            ...this.state,
+                            tabPage: tab.i,
+                        });
+                    }}
                 >
                     <Tab
                         heading="Name"
@@ -311,7 +360,10 @@ class SearchForm extends Component {
                                     style={styles.textInput}
                                     value={this.state.name}
                                     onChangeText={(text) =>
-                                        this.changeHandler('name', text)
+                                        this.setState({
+                                            ...this.state,
+                                            name: text,
+                                        })
                                     }
                                     autoCapitalize="words"
                                 />
@@ -328,7 +380,10 @@ class SearchForm extends Component {
                                     style={styles.textInput}
                                     value={this.state.location}
                                     onChangeText={(text) =>
-                                        this.changeHandler('location', text)
+                                        this.setState({
+                                            ...this.state,
+                                            location: text,
+                                        })
                                     }
                                     autoCapitalize="words"
                                 />
@@ -351,7 +406,7 @@ class SearchForm extends Component {
                                 name="md-mail"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconscentered}
+                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="Email Address"
@@ -363,7 +418,10 @@ class SearchForm extends Component {
                                 inputStyle={{ backgroundColor: '#fff' }}
                                 value={this.state.email}
                                 onChangeText={(text) =>
-                                    this.changeHandler('email', text)
+                                    this.setState({
+                                        ...this.state,
+                                        email: text,
+                                    })
                                 }
                                 lightTheme
                                 autoCapitalize="none"
@@ -383,7 +441,7 @@ class SearchForm extends Component {
                                 name="md-pin"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconscentered}
+                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="Mailing Address"
@@ -395,7 +453,10 @@ class SearchForm extends Component {
                                 inputStyle={{ backgroundColor: '#fff' }}
                                 value={this.state.address}
                                 onChangeText={(text) =>
-                                    this.changeHandler('address', text)
+                                    this.setState({
+                                        ...this.state,
+                                        address: text,
+                                    })
                                 }
                                 lightTheme
                                 autoCapitalize="none"
@@ -415,7 +476,7 @@ class SearchForm extends Component {
                                 name="md-call"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconscentered}
+                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="Phone Number"
@@ -427,7 +488,10 @@ class SearchForm extends Component {
                                 inputStyle={{ backgroundColor: '#fff' }}
                                 value={this.state.phone}
                                 onChangeText={(text) =>
-                                    this.changeHandler('phone', text)
+                                    this.setState({
+                                        ...this.state,
+                                        phone: text,
+                                    })
                                 }
                                 lightTheme
                                 autoCapitalize="none"
@@ -441,14 +505,13 @@ class SearchForm extends Component {
                         textStyle={styles.textStyle}
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
-                        style={[{ flex: 0 }]}
                     >
                         <View style={styles.searchBar}>
                             <Ionicons
                                 name="md-globe"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconscentered}
+                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="URL"
@@ -460,7 +523,10 @@ class SearchForm extends Component {
                                 inputStyle={{ backgroundColor: '#fff' }}
                                 value={this.state.url}
                                 onChangeText={(text) =>
-                                    this.changeHandler('url', text)
+                                    this.setState({
+                                        ...this.state,
+                                        url: text,
+                                    })
                                 }
                                 lightTheme
                                 autoCapitalize="none"
@@ -477,26 +543,12 @@ class SearchForm extends Component {
                 >
                     <Button
                         style={styles.button}
-                        onPress={() => {
-                            this.setState(
-                                {
-                                    name: `${this.state.name}`,
-                                    location: `${this.state.location}`,
-                                    email: this.state.email,
-                                    address: this.state.address,
-                                    phone: this.state.phone,
-                                    url: this.state.url,
-                                    tabPage: this.state.tabPage || 0,
-                                    showNoInputMessage: false,
-                                },
-                                () => this.handleFormSubmit()
-                            );
-                        }}
+                        onPress={this.handleFormSubmit}
                     >
                         <Text style={styles.buttonText}> Search </Text>
                     </Button>
 
-                    <Button style={styles.greyButton} onPress={this.startOver}>
+                    <Button style={styles.greyButton} onPress={this.onClear}>
                         <Text
                             style={{ ...styles.buttonText, color: '#0279ac' }}
                         >
@@ -515,21 +567,3 @@ class SearchForm extends Component {
         );
     }
 }
-
-const mapStateToProps = (state: {
-    confirmationModal: { info: unknown; queryType: unknown; searchMe: unknown };
-}) => {
-    const { info, queryType, searchMe } = state.confirmationModal;
-
-    return {
-        info,
-        queryType,
-        searchMe,
-    };
-};
-
-export default connect(mapStateToProps, {
-    getInfo,
-    stopSearchMe,
-    sendSearchErrorMessage,
-})(SearchForm);

@@ -1,7 +1,7 @@
 /*
 Once we add authentication maybe pass a param that finds out if the user is authenticated or not
 */
-const renderMaskedOrResult = (field, type) => {
+const renderMaskedOrResult = (field: string, type: string) => {
     if (field !== 'value available in full api response' && type !== 'phones') {
         return field;
     }

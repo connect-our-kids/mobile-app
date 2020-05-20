@@ -4,7 +4,12 @@ import { Button } from 'native-base';
 
 import styles from './SocialWorkerModal.styles';
 
-export default function SocialWorkerModal(props) {
+export default function SocialWorkerModal(props: {
+    setModalVisible: (arg0: boolean) => void;
+    modalVisible: boolean;
+    sendEvent: (arg0: null, arg1: string, arg2: string) => void;
+    advanceModal: (arg0: boolean) => void;
+}) {
     return (
         <>
             <View style={styles.headerContainer}>

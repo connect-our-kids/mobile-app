@@ -11,6 +11,8 @@ import {
 } from '../store/actions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import constants from '../helpers/constants';
+import { RootState } from '../store/reducers';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -24,7 +26,22 @@ const styles = StyleSheet.create({
     },
 });
 
-const AuthenticationView = (props) => {
+type Navigation = NavigationScreenProp<NavigationState>;
+
+const AuthenticationView = (props: {
+    modalVisible: boolean | undefined;
+    setModalVisible: {
+        (arg0: boolean): void;
+        (arg0: boolean): void;
+        (arg0: boolean): void;
+    };
+    videoAgree: boolean;
+    videoVisible: boolean;
+    setAgreeModalVisible: (arg0: boolean) => void;
+    setVideoPlayerModalVisible: (arg0: boolean) => void;
+    login: (arg0?: boolean) => void;
+    navigation: Navigation;
+}) => {
     useEffect(() => {
         props.login(true);
     }, []);
@@ -50,16 +67,13 @@ const AuthenticationView = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     const { modalVisible, videoAgree, videoVisible } = state.auth;
-    const { idToken, loadingUser } = state.auth;
 
     return {
         modalVisible,
         videoAgree,
         videoVisible,
-        idToken,
-        loadingUser,
     };
 };
 

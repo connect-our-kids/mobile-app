@@ -218,7 +218,13 @@ export const Documents = (props: DocumentsProps): JSX.Element => {
                 }
                 title={props.document.title}
                 titleStyle={{ color: '#5A6064' }}
-                leftIcon={<AttachmentIcon attachment={props.document} />}
+                leftIcon={
+                    <AttachmentIcon
+                        attachment={
+                            props.document.originalFileName ?? undefined
+                        }
+                    />
+                }
                 topDivider={true}
                 onPress={(): Promise<unknown> =>
                     Linking.openURL(props.document.attachment)

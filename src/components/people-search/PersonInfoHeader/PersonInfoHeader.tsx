@@ -4,7 +4,14 @@ import { Col, Row, Text } from 'native-base';
 import constants from '../../../helpers/constants';
 import styles from './PersonInfoHeader.styles';
 
-export default function PersonInfoHeader({ item, listItem = false }) {
+export default function PersonInfoHeader({
+    item,
+    listItem = false,
+}: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    item: any;
+    listItem?: boolean;
+}) {
     let allAddresses = '';
     let secondLine = '';
     const uri = item.images
@@ -20,7 +27,7 @@ export default function PersonInfoHeader({ item, listItem = false }) {
     }
 
     if (item.addresses && listItem) {
-        item.addresses.forEach((address) => {
+        item.addresses.forEach((address: { city: string; state: string }) => {
             allAddresses += `${address.city}, ${address.state} `;
         });
     }

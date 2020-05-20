@@ -1,59 +1,88 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Col, Row, Text } from 'native-base';
 import styles from './PersonInfoRow.styles';
 import renderMaskedOrResult from '../../../helpers/renderMaskedOrResult';
 import { connect } from 'react-redux';
-import { resetState, showModal } from '../../../store/actions';
+import { resetState } from '../../../store/actions';
 import { RootState } from '../../../store/reducers';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { SearchValues } from '../SearchForm/SearchForm';
 
-function PersonInfoRow({
-    isLoggedIn,
-    item,
-    itemKey,
-    itemValue,
-    startRegister,
-    title,
-    showConModal,
-    navigation,
-    setData,
-    resetState,
-}) {
-    if (item[itemKey]) {
-        const handlePressDirections = (data, postalCode, city) => {
+interface StateProps {
+    isLoggedIn: boolean;
+}
+
+interface DispatchProps {
+    resetState: typeof resetState;
+}
+
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface OwnProps {
+    navigation: Navigation;
+    item: Record<string, any>;
+    itemKey: string;
+    itemValue: string;
+    startRegister: any;
+    title: string;
+    showConModal: any;
+    setData: any;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+function PersonInfoRow(props: Props) {
+    if (props.item[props.itemKey]) {
+        const handlePressDirections = (
+            data: string,
+            postalCode: any,
+            city: any
+        ) => {
             if (postalCode === undefined) {
                 const address = `${city}, ${data}`;
                 const type = 'address';
-                showConModal(address, type);
+                props.showConModal(address, type);
             } else {
                 const address = `${city}, ${data} ${postalCode}`;
                 const type = 'address404';
-                showConModal(address, type);
+                props.showConModal(address, type);
             }
         };
 
-        const handleShowConModal = (key, index) => {
-            if (!isLoggedIn) {
-                startRegister();
+        const handleShowConModal = (
+            key: {
+                [x: string]: any;
+                zip_code: undefined;
+                display: any;
+                house: undefined;
+                street: undefined;
+                state: any;
+            },
+            index: any
+        ) => {
+            if (!props.isLoggedIn) {
+                props.startRegister();
             }
 
-            if (isLoggedIn && itemKey === 'emails') {
+            if (props.isLoggedIn && props.itemKey === 'emails') {
                 const type = 'email';
-                showConModal(key, type, index);
+                props.showConModal(key, type, index);
             }
 
-            if (isLoggedIn && itemKey === 'phones') {
+            if (props.isLoggedIn && props.itemKey === 'phones') {
                 const type = 'phone';
-                showConModal(key, type, index);
+                props.showConModal(key, type, index);
             }
 
-            if (isLoggedIn && itemKey === 'addresses') {
+            if (props.isLoggedIn && props.itemKey === 'addresses') {
                 if (key.zip_code === undefined) {
                     const address = `${key.display}`;
                     console.log('NO ZIP_CODE FOUND');
                     const type = 'address';
                     console.log('ADDRESS', `${key.display}`);
-                    showConModal(address, type, index);
+                    props.showConModal(address, type, index);
                 } else if (key.house === undefined) {
                     if (key.street === undefined) {
                         const data = `${key.state}`;
@@ -74,31 +103,42 @@ function PersonInfoRow({
                     const address = `${key.display}, ${key.zip_code}`;
                     const type = 'address';
                     console.log('ADDRESS', `${key.display}`);
-                    showConModal(address, type, index);
+                    props.showConModal(address, type, index);
                 }
             }
 
-            if (isLoggedIn && itemKey === 'urls') {
+            if (props.isLoggedIn && props.itemKey === 'urls') {
                 const type = 'url';
-                showConModal(key, type, index);
+                props.showConModal(key, type, index);
             }
 
-            if (isLoggedIn && itemKey === 'relationships') {
+            if (props.isLoggedIn && props.itemKey === 'relationships') {
                 const type = 'name';
-                navigation.goBack();
+
+                const name =
+                    props.item[props.itemKey][index]?.names[0]?.display ?? '';
+                props.navigation.navigate<{
+                    searchValues: SearchValues;
+                }>('PeopleSearch', {
+                    searchValues: {
+                        type: 'name',
+                        name: name,
+                        location: '',
+                    },
+                });
                 resetState();
-                setData(key, type);
+                props.setData(key, type);
             }
         };
 
         return (
             <Row style={styles.rowContainer}>
                 <Col size={30}>
-                    <Text style={styles.rowLabelText}>{title}</Text>
+                    <Text style={styles.rowLabelText}>{props.title}</Text>
                 </Col>
                 <Col size={70} style={styles.colList}>
-                    {item[itemKey].map((key, index) => {
-                        if (itemKey === 'addresses') {
+                    {props.item[props.itemKey].map((key: any, index: any) => {
+                        if (props.itemKey === 'addresses') {
                             return (
                                 <TouchableOpacity
                                     style={styles.colListContainer}
@@ -139,23 +179,24 @@ function PersonInfoRow({
                                     </Text>
                                 </TouchableOpacity>
                             );
-                        } else if (itemKey === 'relationships') {
+                        } else if (props.itemKey === 'relationships') {
                             return (
                                 <TouchableOpacity
                                     style={styles.colListContainer}
                                     key={index}
                                     onPress={() =>
                                         handleShowConModal(
-                                            key[itemValue][0].display,
+                                            key[props.itemValue][0].display,
                                             index
                                         )
                                     }
                                 >
                                     <Text style={styles.colListText}>
-                                        {isLoggedIn
+                                        {props.isLoggedIn
                                             ? renderMaskedOrResult(
-                                                  key[itemValue][0].display,
-                                                  itemKey
+                                                  key[props.itemValue][0]
+                                                      .display,
+                                                  props.itemKey
                                               )
                                             : '**** ********* **'}
                                     </Text>
@@ -174,8 +215,8 @@ function PersonInfoRow({
                                         }
                                     >
                                         {renderMaskedOrResult(
-                                            key[itemValue],
-                                            itemKey
+                                            key[props.itemValue],
+                                            props.itemKey
                                         )}
                                     </Text>
 
@@ -214,12 +255,10 @@ function PersonInfoRow({
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    const { isLoggedIn } = state.auth;
-    const { modalVisible } = state.confirmationModal;
-    return { isLoggedIn, modalVisible };
+const mapStateToProps = (state: RootState, own: OwnProps) => {
+    return { isLoggedIn: state.auth.isLoggedIn, ...own };
 };
 
-export default connect(mapStateToProps, { resetState, showModal })(
-    PersonInfoRow
-);
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
+    resetState,
+})(PersonInfoRow);

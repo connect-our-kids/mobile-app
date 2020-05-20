@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Grid } from 'native-base';
@@ -13,6 +13,15 @@ const styles = StyleSheet.create({
     },
 });
 
+interface PersonInfoProps {
+    item: any;
+    startRegister: any;
+    isLoggedIn: any;
+    showConModal: any;
+    navigation: any;
+    setData: any;
+}
+
 export default function PersonInfo({
     item,
     startRegister,
@@ -20,53 +29,72 @@ export default function PersonInfo({
     showConModal,
     navigation,
     setData,
-}) {
+}: PersonInfoProps) {
     return (
         <Grid style={styles.container}>
             <PersonInfoHeader item={item} />
             <PersonInfoRow
-                showConModal={showConModal}
-                startRegister={startRegister}
-                item={item}
-                itemKey="emails"
-                itemValue="address"
-                title="Emails"
+                {...{
+                    showConModal,
+                    startRegister,
+                    item,
+                    itemKey: 'emails',
+                    itemValue: 'address',
+                    title: 'Emails',
+                    navigation,
+                    setData: undefined,
+                }}
             />
             <PersonInfoRow
-                showConModal={showConModal}
-                startRegister={startRegister}
-                item={item}
-                itemKey="phones"
-                itemValue="display"
-                title="Phone Numbers"
+                {...{
+                    showConModal,
+                    startRegister,
+                    item,
+                    itemKey: 'phones',
+                    itemValue: 'display',
+                    title: 'Phone Numbers',
+                    navigation,
+                    setData: undefined,
+                }}
             />
             <PersonInfoRow
-                showConModal={showConModal}
-                startRegister={startRegister}
-                item={item}
-                itemKey="addresses"
-                itemValue="display"
-                title="Addresses"
+                {...{
+                    showConModal,
+                    startRegister,
+                    item,
+                    itemKey: 'addresses',
+                    itemValue: 'display',
+                    title: 'Addresses',
+                    navigation,
+                    setData: undefined,
+                }}
             />
             {/* This person info row also needs to pass in a url */}
             {isLoggedIn && (
                 <PersonInfoRow
-                    showConModal={showConModal}
-                    item={item}
-                    itemKey="urls"
-                    itemValue="@domain"
-                    title="Websites"
+                    {...{
+                        showConModal,
+                        startRegister: undefined,
+                        item,
+                        itemKey: 'urls',
+                        itemValue: '@domain',
+                        title: 'Websites',
+                        navigation,
+                        setData: undefined,
+                    }}
                 />
             )}
             <PersonInfoRow
-                showConModal={showConModal}
-                startRegister={startRegister}
-                item={item}
-                itemKey="relationships"
-                itemValue="names"
-                title="Relationships"
-                navigation={navigation}
-                setData={setData}
+                {...{
+                    showConModal,
+                    startRegister,
+                    item,
+                    itemKey: 'relationships',
+                    itemValue: 'names',
+                    title: 'Relationships',
+                    navigation,
+                    setData,
+                }}
             />
         </Grid>
     );

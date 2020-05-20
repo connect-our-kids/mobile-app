@@ -19,7 +19,7 @@ const store = mockStore({
  * Helper function to create the necessary props to pass
  * to the component. In this case we need to mock the React
  * navigation type so that when the tested component calls
- * navigation.getParams('paramName') it will get what it
+ * navigation.getParam('paramName') it will get what it
  * expects.
  * @param param0 media image or document info
  */

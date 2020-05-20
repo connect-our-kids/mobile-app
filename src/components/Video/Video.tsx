@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 
 import styles from './Video.styles';
 
-export default function Video({ uri }) {
+export default function Video({ uri }: { uri: string }) {
     return (
         <View style={styles.VideoContainer}>
             <WebView

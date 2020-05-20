@@ -10,11 +10,11 @@ const { eventTrackingURL } = getEnvVars();
 // urlIndex: 0
 // relationshipIndex: 0
 
-export const sendUserInfo = (emailAddress) => {
+export const sendUserInfo = (emailAddress: string) => {
     axios.post(eventTrackingURL, { emailAddress });
 };
 
-export const sendEvent = (
+export const sendEvent = async (
     emailAddress: string | undefined | null,
     verb: string,
     noun: string,
@@ -24,7 +24,7 @@ export const sendEvent = (
     if (emailAddress === null) {
         emailAddress = 'anonymous@unknown.org';
     }
-    const bodyObject = {};
+    const bodyObject: Record<string, unknown> = {};
 
     bodyObject['event'] = `${verb}-${noun}`;
 
@@ -38,21 +38,22 @@ export const sendEvent = (
         bodyObject['options'] = options;
     }
 
-    return axios
-        .post(eventTrackingURL, JSON.stringify(bodyObject))
-        .then((res) => {
-            return res;
-        })
-        .catch((err) => {
-            console.log('Event Tracking Error: ', err);
-            return err;
-        });
+    try {
+        const res = await axios.post(
+            eventTrackingURL,
+            JSON.stringify(bodyObject)
+        );
+        return res;
+    } catch (err) {
+        console.log('Event Tracking Error: ', err);
+        return err;
+    }
 };
 
 export const createOptions = (
-    listLength,
-    noun,
-    index
+    listLength: number | null,
+    noun: string | null,
+    index: unknown
 ): Record<string, unknown> => {
     const options: Record<string, unknown> = {};
     if (listLength === null) {

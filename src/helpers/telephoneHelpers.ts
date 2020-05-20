@@ -1,4 +1,4 @@
-export const format = (telephoneObject) => {
+export const format = (telephoneObject: { telephone: string }) => {
     if (telephoneObject !== null) {
         let telephoneNumber = telephoneObject.telephone;
 
@@ -18,7 +18,7 @@ export const format = (telephoneObject) => {
     }
 };
 
-export const selectPrimaryTelephone = (person) => {
+export const selectPrimaryTelephone = (person: { telephones: unknown[] }) => {
     if (person == null) {
         return null;
     }
@@ -34,7 +34,7 @@ export const selectPrimaryTelephone = (person) => {
     return person.telephones[0];
 };
 
-export const numbersOnly = (telephoneObject) => {
+export const numbersOnly = (telephoneObject: { telephone: string }) => {
     if (telephoneObject == null) {
         return '';
     }

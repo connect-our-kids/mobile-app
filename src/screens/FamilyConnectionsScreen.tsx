@@ -150,7 +150,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         setState({ ...state, modalVisible: visible });
     };
 
-    const handleKeywordChange = (event) => {
+    const handleKeywordChange = (event: string) => {
         setState({
             ...state,
             searchKeywords: event,

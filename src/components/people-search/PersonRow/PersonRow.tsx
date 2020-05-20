@@ -9,7 +9,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function PersonRow({ handlePress, item }) {
+export default function PersonRow({
+    handlePress,
+    item,
+}: {
+    handlePress: () => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    item: any;
+}) {
     return (
         <Card
             style={{

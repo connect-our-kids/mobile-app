@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import constants from '../helpers/constants';
 import Video from '../components/Video';
 import Constants from 'expo-constants';
+import { RootState } from '../store/reducers';
 
 class AboutScreen extends Component {
     render() {
@@ -56,7 +57,7 @@ class AboutScreen extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     const { isLoggedIn } = state.auth;
     return {
         isLoggedIn,

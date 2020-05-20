@@ -10,7 +10,7 @@
         "ios": "expo start --ios",
         "web": "expo start --web",
         "eject": "expo eject",
-        "lint": "eslint --max-warnings 0 --ext .ts --ext .tsx ./src",
+        "lint": "eslint --max-warnings 0 --ext .ts --ext .tsx ./src ./App.tsx",
         "test": "jest",
         "test:changed": "jest --changedSince=origin/master",
         "test:debug": "jest --watch --onlyChanged --runInBand",
@@ -18,7 +18,8 @@
         "codegen": "rm -rf src/generated && npx apollo client:codegen --target=typescript --tagName=gql --addTypename --outputFlat=src/generated && graphql-codegen",
         "publish:ios": "expo build:ios --release-channel prod && expo upload:ios",
         "publish:android": "expo build:android --release-channel prod && expo upload:android",
-        "checkNoJavascript": "exit `ls -lR ./src | grep '.js[x]*$' | wc -l`"
+        "checkNoJavascript": "exit `ls -lR ./src | grep '.js[x]*$' | wc -l`",
+        "buildServer": "npm ci && npm run build && npm run lint && npm run test && npm run checkNoJavascript"
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",

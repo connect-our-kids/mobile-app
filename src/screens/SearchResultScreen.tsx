@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import {
     SafeAreaView,
@@ -14,13 +14,11 @@ import { Container } from 'native-base';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
-    fetchPerson,
+    pointerSearch,
     resetPerson,
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    showModal,
-    getInfo,
     login,
 } from '../store/actions';
 import PersonInfo from '../components/people-search/PersonInfo';
@@ -50,26 +48,23 @@ const styles = StyleSheet.create({
 });
 
 interface StateProps {
-    error;
-    isFetching;
-    isLoggedIn;
-    person;
-    possiblePersons;
-    user;
-    modalVisible;
-    videoAgree;
-    videoVisible;
-    getInfo;
+    error: any;
+    isFetching: any;
+    isLoggedIn: boolean;
+    person: any;
+    possiblePersons: any;
+    user: any;
+    modalVisible: any;
+    videoAgree: any;
+    videoVisible: any;
 }
 
 interface DispatchProps {
-    fetchPerson: typeof fetchPerson;
+    fetchPerson: typeof pointerSearch;
     resetPerson: typeof resetPerson;
     setModalVisible: typeof setModalVisible;
     setAgreeModalVisible: typeof setAgreeModalVisible;
     setVideoPlayerModalVisible: typeof setVideoPlayerModalVisible;
-    showModal: typeof showModal;
-    getInfo: typeof getInfo;
     login: typeof login;
 }
 
@@ -102,23 +97,20 @@ class SearchResultScreen extends React.Component<Props> {
         const { fetchPerson, isLoggedIn, person, resetPerson } = this.props;
 
         if (this.props.navigation.state.params) {
-            const requestObject = {};
-
             if (person) {
                 resetPerson();
             }
 
             const { searchPointer } = this.props.navigation.state.params;
-            requestObject['search_pointer_hash'] = searchPointer;
+            const requestObject = {
+                search_pointer_hash: searchPointer,
+            };
 
             if (!isLoggedIn) {
                 this.setState({ requestObject });
             }
 
-            fetchPerson(
-                requestObject,
-                this.props.user ? this.props.user.email : null
-            );
+            fetchPerson(requestObject);
         }
     }
 
@@ -130,10 +122,7 @@ class SearchResultScreen extends React.Component<Props> {
         ) {
             this.props.resetPerson();
             const requestObject = { ...this.state.requestObject };
-            this.props.fetchPerson(
-                requestObject,
-                this.props.user ? this.props.user.email : null
-            );
+            this.props.fetchPerson(requestObject);
             this.setState({ requestObject: {} });
         }
     }
@@ -142,7 +131,7 @@ class SearchResultScreen extends React.Component<Props> {
         this.props.setModalVisible(true);
     };
 
-    showConModal = (key, type, index) => {
+    showConModal = (key: any, type: any, index: any) => {
         console.log('state before {}', this.state);
         this.setState({ key, type, index });
         console.log('state after {}', this.state);
@@ -150,9 +139,8 @@ class SearchResultScreen extends React.Component<Props> {
         this.toggleModal();
     };
 
-    setData = (key, type) => {
+    setData = (key: any, type: any) => {
         this.setState({ info: key, type: type });
-        this.props.getInfo(key, type);
     };
 
     render() {
@@ -171,7 +159,6 @@ class SearchResultScreen extends React.Component<Props> {
                             toggleModal={this.toggleModal}
                             type={this.state.type}
                             data={this.state.key}
-                            home={this.state.address}
                             navigation={this.props.navigation}
                             setData={this.setData}
                             user={user}
@@ -211,7 +198,6 @@ class SearchResultScreen extends React.Component<Props> {
                             ) : (
                                 <PersonInfo
                                     item={person}
-                                    setModalVisible={this.props.setModalVisible}
                                     startRegister={this.startRegister}
                                     isLoggedIn={isLoggedIn}
                                     showConModal={this.showConModal}
@@ -228,7 +214,7 @@ class SearchResultScreen extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: RootState): StateProps => {
-    const { error, isFetching, person, possiblePersons } = state.people;
+    const { errorMessage, isFetching, person, possiblePersons } = state.people;
     const {
         isLoggedIn,
         user,
@@ -237,7 +223,7 @@ const mapStateToProps = (state: RootState): StateProps => {
         videoVisible,
     } = state.auth;
     return {
-        error,
+        error: errorMessage,
         isFetching,
         isLoggedIn,
         person,
@@ -246,17 +232,14 @@ const mapStateToProps = (state: RootState): StateProps => {
         modalVisible,
         videoAgree,
         videoVisible,
-        getInfo: state.confirmationModal.info,
     };
 };
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
-    fetchPerson,
+    fetchPerson: pointerSearch,
     resetPerson,
     setModalVisible,
     setAgreeModalVisible,
     setVideoPlayerModalVisible,
-    showModal,
-    getInfo,
     login,
 })(SearchResultScreen);

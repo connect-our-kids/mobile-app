@@ -12,7 +12,10 @@ import {
 import { Button } from 'react-native-elements';
 import constants from '../helpers/constants';
 
-export default function AddCaseScreen(props) {
+export default function AddCaseScreen(props: {
+    setAddCaseModalVisible: (arg0: boolean) => void;
+    addCaseModalVisible: boolean;
+}) {
     const styles = StyleSheet.create({
         selected: {
             backgroundColor: constants.highlightColor,
@@ -40,7 +43,8 @@ export default function AddCaseScreen(props) {
     });
 
     // handle the changes to the form
-    function handleChange(e) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function handleChange(e: any) {
         setCaseInput({ ...caseInput, [e.target.name]: e.target.value });
     }
 

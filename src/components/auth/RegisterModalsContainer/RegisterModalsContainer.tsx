@@ -9,7 +9,15 @@ import styles from './RegisterModalsContainer.styles';
 
 import { sendEvent } from '../../../helpers/createEvent';
 
-export default function RegisterModalsContainer(props): JSX.Element {
+export default function RegisterModalsContainer(props: {
+    modalVisible: boolean | undefined;
+    setModalVisible: (arg0: boolean) => void;
+    videoAgree: boolean;
+    videoVisible: boolean;
+    setAgreeModalVisible: (arg0: boolean) => void;
+    setVideoPlayerModalVisible: (arg0: boolean) => void;
+    onLogin: () => void;
+}): JSX.Element {
     return (
         <Modal
             animationType="slide"
@@ -33,7 +41,6 @@ export default function RegisterModalsContainer(props): JSX.Element {
                     ) : null}
                     {!props.videoVisible && props.videoAgree ? (
                         <VideoAgreeModal
-                            modalVisible={props.modalVisible}
                             advanceModal={props.setVideoPlayerModalVisible}
                             setModalVisible={props.setModalVisible}
                             onLogin={props.onLogin}

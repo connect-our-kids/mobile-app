@@ -16,7 +16,7 @@ Sentry.init({
     enableInExpoDevelopment: false,
     debug: true,
 });
-Sentry.setRelease(Constants.manifest.revisionId);
+Sentry.setRelease(Constants.manifest.version ?? 'Unknown');
 
 store.dispatch(login(true));
 

@@ -1,4 +1,4 @@
-export const isName = (name) => {
+export const isValidName = (name: string) => {
     if (name.length) {
         const numberOfWords = name.trim().split(' ').length;
         const isNumberOfWordsTwoOrThree =
@@ -10,7 +10,7 @@ export const isName = (name) => {
     return false;
 };
 
-export const isEmail = (email) => {
+export const isValidEmail = (email: string) => {
     if (email.length) {
         const isValidEmail = email.trim().split('@').length;
         return isValidEmail === 2;
@@ -18,15 +18,15 @@ export const isEmail = (email) => {
     return false;
 };
 
-export const isCityState = (citystate) => {
-    if (citystate.length) {
-        const isValidCityState = citystate.trim().split(' ').length;
+export const isValidCityState = (cityState: string) => {
+    if (cityState.length) {
+        const isValidCityState = cityState.trim().split(' ').length;
         return isValidCityState === 2;
     }
     return false;
 };
 
-export const isAddress = (address) => {
+export const isValidAddress = (address: string) => {
     if (address.length) {
         const isValidAddress = address.trim().split(' ').length;
         return isValidAddress > 3;
@@ -34,15 +34,14 @@ export const isAddress = (address) => {
     return false;
 };
 
-export const isPhone = (phone) => {
-    if (phone.length) {
+export const isValidPhone = (phone: string) => {
+    if (phone.trim()) {
         const numbersOnly = phone.replace(/[^0-9]+/g, '');
-
         return numbersOnly.length === 10;
     }
 };
 
-export const isUrl = (url) => {
+export const isValidUrl = (url: string) => {
     if (url.length) {
         const pattern = new RegExp(
             '^(https?:\\/\\/)?' + // protocol

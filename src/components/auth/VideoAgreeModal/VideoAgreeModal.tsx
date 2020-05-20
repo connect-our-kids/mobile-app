@@ -6,7 +6,12 @@ import { Button } from 'native-base';
 
 import styles from './VideoAgreeModal.styles';
 
-export default function VideoAgreeModal(props) {
+export default function VideoAgreeModal(props: {
+    setModalVisible: (arg0: boolean) => void;
+    sendEvent: (arg0: null, arg1: string, arg2: string) => void;
+    advanceModal: (arg0: boolean) => void;
+    onLogin: () => void;
+}) {
     return (
         <>
             <View style={styles.headerContainer}>

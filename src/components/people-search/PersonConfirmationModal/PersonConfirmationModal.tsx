@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import {
     Text,
@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import { sendEvent, createOptions } from '../../../helpers/createEvent';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { SearchValues } from '../SearchForm/SearchForm';
 
 const options = StyleSheet.create({
     border: {
@@ -63,6 +65,18 @@ const options = StyleSheet.create({
     },
 });
 
+type Navigation = NavigationScreenProp<NavigationState>;
+
+interface PersonConfirmationModalProps {
+    toggleModal: any;
+    data: any;
+    type: any;
+    navigation: Navigation;
+    setData: any;
+    user: any;
+    index: any;
+}
+
 export default function PersonConfirmationModal({
     toggleModal,
     data,
@@ -71,8 +85,8 @@ export default function PersonConfirmationModal({
     setData,
     user,
     index,
-}) {
-    const handlePressDirections = (address) => {
+}: PersonConfirmationModalProps) {
+    const handlePressDirections = (address: any) => {
         if (Platform.OS === 'ios') {
             Linking.openURL(`http://maps.apple.com/?address=${address}`);
         } else {
@@ -296,7 +310,7 @@ export default function PersonConfirmationModal({
                         style={options.greyButton}
                         onPress={() => {
                             if (type === 'email') {
-                                info = data.address;
+                                const info = data.address;
                                 const options = createOptions(
                                     null,
                                     'email',
@@ -309,13 +323,20 @@ export default function PersonConfirmationModal({
                                     null,
                                     options
                                 );
-                                navigation.goBack();
+                                navigation.navigate<{
+                                    searchValues: SearchValues;
+                                }>('PeopleSearch', {
+                                    searchValues: {
+                                        type: 'email',
+                                        email: info,
+                                    },
+                                });
                                 setData(info, type);
                                 toggleModal();
                             }
 
                             if (type === 'phone') {
-                                info = data.display;
+                                const info = data.display;
                                 const options = createOptions(
                                     null,
                                     'phone',
@@ -328,13 +349,20 @@ export default function PersonConfirmationModal({
                                     null,
                                     options
                                 );
-                                navigation.navigate('PeopleSearch');
+                                navigation.navigate<{
+                                    searchValues: SearchValues;
+                                }>('PeopleSearch', {
+                                    searchValues: {
+                                        type: 'phone',
+                                        phone: info,
+                                    },
+                                });
                                 setData(info, type);
                                 toggleModal();
                             }
 
                             if (type === 'address') {
-                                info = data;
+                                const info = data;
                                 const options = createOptions(
                                     null,
                                     'address',
@@ -347,13 +375,20 @@ export default function PersonConfirmationModal({
                                     null,
                                     options
                                 );
-                                navigation.navigate('PeopleSearch');
+                                navigation.navigate<{
+                                    searchValues: SearchValues;
+                                }>('PeopleSearch', {
+                                    searchValues: {
+                                        type: 'address',
+                                        address: info,
+                                    },
+                                });
                                 setData(info, type);
                                 toggleModal();
                             }
 
                             if (type === 'url') {
-                                info = data.url;
+                                const info = data.url;
                                 const options = createOptions(
                                     null,
                                     'url',
@@ -366,13 +401,20 @@ export default function PersonConfirmationModal({
                                     null,
                                     options
                                 );
-                                navigation.navigate('PeopleSearch');
+                                navigation.navigate<{
+                                    searchValues: SearchValues;
+                                }>('PeopleSearch', {
+                                    searchValues: {
+                                        type: 'url',
+                                        url: info,
+                                    },
+                                });
                                 setData(info, type);
                                 toggleModal();
                             }
 
                             if (type === 'name') {
-                                info = data;
+                                const info = data;
                                 const options = createOptions(
                                     null,
                                     'relationship',
@@ -385,7 +427,15 @@ export default function PersonConfirmationModal({
                                     null,
                                     options
                                 );
-                                navigation.navigate('PeopleSearch');
+                                navigation.navigate<{
+                                    searchValues: SearchValues;
+                                }>('PeopleSearch', {
+                                    searchValues: {
+                                        type: 'name',
+                                        name: data.name ?? '',
+                                        location: data.location ?? '',
+                                    },
+                                });
                                 setData(info, type);
                                 toggleModal();
                             }

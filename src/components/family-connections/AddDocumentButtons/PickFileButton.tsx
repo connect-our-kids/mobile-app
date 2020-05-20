@@ -1,9 +1,10 @@
 import React from 'react';
-import Button from './Button';
 import PickFileIcon from './PickFileIcon';
 import * as DocumentPicker from 'expo-document-picker';
 import PickFileLabel from './PickFileLabel';
 import { DocumentInfo } from './types';
+import styles from './styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function PickFileButton({
     afterAccept,
@@ -31,9 +32,12 @@ export default function PickFileButton({
     }
 
     return (
-        <Button onPress={pickFile} /*testID="pick-file-button"*/>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={pickFile} /*testID="pick-file-button"*/
+        >
             <PickFileIcon />
             <PickFileLabel />
-        </Button>
+        </TouchableOpacity>
     );
 }

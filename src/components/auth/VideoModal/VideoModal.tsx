@@ -6,7 +6,11 @@ import { Text, View } from 'react-native';
 import { Button } from 'native-base';
 import { WebView } from 'react-native-webview';
 
-export default function VideoModal(props) {
+export default function VideoModal(props: {
+    setModalVisible: (arg0: boolean) => void;
+    sendEvent: (arg0: null, arg1: string, arg2: string) => void;
+    onLogin: () => void;
+}) {
     return (
         <>
             <View style={styles.videoWrapper}>

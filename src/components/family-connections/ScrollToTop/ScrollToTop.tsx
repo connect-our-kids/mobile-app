@@ -4,7 +4,11 @@ import constants from '../../../helpers/constants';
 
 import chevron from '../../../../assets/chevron.png';
 
-const ScrollToTop = (props) => {
+const ScrollToTop = (
+    props: JSX.IntrinsicAttributes &
+        JSX.IntrinsicClassAttributes<TouchableOpacity> &
+        Readonly<import('react-native').TouchableOpacityProps>
+) => {
     // by spreading props and styles in an array, we can pass it custom styles to override or add to these base styles when we use this component
     return (
         <TouchableOpacity {...props}>
