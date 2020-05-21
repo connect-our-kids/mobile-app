@@ -188,6 +188,25 @@ const MoreScreen = (props: Props) => {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
+                        style={[styles.linkBox, styles.withBorder]}
+                        onPress={() =>
+                            Linking.openURL(
+                                'https://help.connectourkids.org/en/'
+                            )
+                        }
+                    >
+                        <Ionicons
+                            name="md-help-circle-outline"
+                            size={32}
+                            color="#0279AC"
+                        />
+                        <Text style={[styles.text]}>Help Center</Text>
+                        <MaterialIcons
+                            name={'launch'}
+                            style={styles.launchIcon}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         style={styles.linkBox}
                         onPress={() =>
                             Linking.openURL(

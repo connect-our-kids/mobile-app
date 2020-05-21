@@ -7,6 +7,7 @@ import { Avatar, Divider } from 'react-native-elements';
 import { sendEvent } from '../../../helpers/createEvent';
 import { RootState } from '../../../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import defaultImg from '../../../../assets/profile_placeholder.png';
 
 const styles = StyleSheet.create({
     logInButtons: {
@@ -73,11 +74,14 @@ const styles = StyleSheet.create({
 
     view3: {
         paddingLeft: 10,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'rgba(24, 23, 21, 0.3)',
     },
 
     view3Text: {
+        color: '#a1a1a1',
         fontWeight: 'bold',
-        fontSize: 20,
+        marginTop: 10,
     },
 
     view4: {
@@ -164,7 +168,9 @@ function LoginWithAuth0(props: Props): JSX.Element {
                             size="large"
                             source={{ uri: props.picture }}
                         />
-                    ) : null}
+                    ) : (
+                        <Avatar rounded size="large" source={defaultImg} />
+                    )}
 
                     <Text style={{ paddingTop: 10 }}>
                         {props.firstName
@@ -176,14 +182,13 @@ function LoginWithAuth0(props: Props): JSX.Element {
                 </View>
 
                 <View style={styles.view3}>
-                    <Text style={styles.view3Text}>Information</Text>
+                    <Text style={styles.view3Text}>INFORMATION</Text>
                 </View>
 
                 <View style={styles.view4}>
                     <View style={styles.view5}>
                         <Text style={styles.view5Text}>First Name</Text>
                         <Text style={styles.view5Text}>Last Name</Text>
-                        <Text style={styles.view5Text}>Email</Text>
                     </View>
                     <View style={styles.view6}>
                         <View style={styles.view7}>
@@ -192,6 +197,18 @@ function LoginWithAuth0(props: Props): JSX.Element {
                         <View style={styles.view8And9}>
                             <Text style={styles.text}>{props.lastName}</Text>
                         </View>
+                    </View>
+                </View>
+
+                <View style={styles.view3}>
+                    <Text style={styles.view3Text}>CONTACT DETAILS</Text>
+                </View>
+
+                <View style={styles.view4}>
+                    <View style={styles.view5}>
+                        <Text style={styles.view5Text}>Email</Text>
+                    </View>
+                    <View style={styles.view6}>
                         <View style={styles.view8And9}>
                             <Text style={styles.text}>{props.email}</Text>
                         </View>
