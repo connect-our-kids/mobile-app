@@ -74,19 +74,17 @@ function toAgeString(person: PersonSubtitleDetails): string | undefined {
 
     return undefined;
 }
-
 export function createPersonSubtitle(person: PersonSubtitleDetails) {
     const ageString = toAgeString(person);
-
-    if (ageString && person.gender === 'Unspecified') {
-        return ageString;
-    } else if (person.birthdayRaw && person.gender === 'Unspecified') {
-        return `Birth: ${person.birthdayRaw}`;
-    } else if (ageString && person.gender !== 'Unspecified') {
-        return `${person.gender}, ${ageString}`;
-    } else if (person.birthdayRaw && person.gender !== 'Unspecified') {
-        return `${person.gender}, Birth: ${person.birthdayRaw}`;
+    const genderCheck = person.gender === 'Unspecified' ? ' ' : person.gender;
+    const isEmpty = genderCheck.trim().length <= 0;
+    if (ageString) {
+        return isEmpty ? `${ageString}` : `${genderCheck}, ${ageString}`;
+    } else if (person.birthdayRaw) {
+        return isEmpty
+            ? `Birth: ${person.birthdayRaw}`
+            : `${genderCheck}, Birth: ${person.birthdayRaw}`;
     } else {
-        return '';
+        return genderCheck;
     }
 }

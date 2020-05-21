@@ -26,6 +26,10 @@ export enum AuthTypes {
     LOG_OUT_MODAL_CLOSED = 'LOG_OUT_MODAL_CLOSED',
 }
 
+export const setLogoutModalClosed = (): ThunkResult<void> => (dispatch) => {
+    dispatch({ type: AuthTypes.LOG_OUT_MODAL_CLOSED });
+};
+
 export interface AuthLogOutStartAction {
     type: AuthTypes.LOG_OUT_START;
 }

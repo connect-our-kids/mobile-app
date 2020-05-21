@@ -10,8 +10,10 @@ import {
     Modal,
 } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { logout, login } from '../store/actions';
-import { connect, useDispatch } from 'react-redux';
+
+import { logout, login, setLogoutModalClosed } from '../store/actions';
+
+import { connect } from 'react-redux';
 import constants from '../helpers/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -116,6 +118,7 @@ interface StateProps {
 interface DispatchProps {
     login: typeof login;
     logout: typeof logout;
+    setLogoutModalClosed: typeof setLogoutModalClosed;
 }
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -131,7 +134,6 @@ const MoreScreen = (props: Props) => {
     useEffect(() => {
         props.login(true);
     }, []);
-    const dispatch = useDispatch();
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
@@ -264,10 +266,7 @@ const MoreScreen = (props: Props) => {
                                                 <TouchableOpacity
                                                     style={styles.saveButton}
                                                     onPress={() => {
-                                                        dispatch({
-                                                            type:
-                                                                'LOG_OUT_MODAL_CLOSED',
-                                                        });
+                                                        props.setLogoutModalClosed();
                                                     }}
                                                 >
                                                     <Text
@@ -302,9 +301,7 @@ const MoreScreen = (props: Props) => {
                                     <TouchableOpacity
                                         style={styles.saveButton}
                                         onPress={() => {
-                                            dispatch({
-                                                type: 'LOG_OUT_MODAL_CLOSED',
-                                            });
+                                            props.setLogoutModalClosed();
                                         }}
                                     >
                                         <Text style={styles.modalText}>
@@ -330,4 +327,5 @@ const mapStateToProps = (state: RootState) => {
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, {
     login,
     logout,
+    setLogoutModalClosed,
 })(MoreScreen);

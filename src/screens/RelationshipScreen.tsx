@@ -122,8 +122,6 @@ const styles = StyleSheet.create({
 
     iconContainer: {
         height: 45,
-        width: 45,
-        borderRadius: 22.5,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -131,14 +129,17 @@ const styles = StyleSheet.create({
     iconStyles: {
         fontSize: 28,
         color: constants.highlightColor,
-        width: 28,
+        width: 30,
         height: 28,
-        marginHorizontal: 10,
+        marginHorizontal: 15,
     },
 
     iconLabel: {
         color: '#0F6580',
         fontSize: 12,
+        textAlign: 'center',
+        width: 65,
+        paddingLeft: -3,
     },
     avatarName: {
         justifyContent: 'center',
@@ -495,18 +496,16 @@ function RelationshipScreen(props: Props): JSX.Element {
                                 style={{
                                     width: '100%',
                                     minHeight: 350,
-                                    paddingVertical: 15,
+                                    paddingVertical: 10,
                                     paddingHorizontal: 10,
                                 }}
                             >
+                                {/* Engagement View BRANDY */}
                                 <View
                                     style={{
                                         flexDirection: 'row',
-                                        justifyContent: 'center',
+                                        justifyContent: 'space-evenly',
                                         alignItems: 'center',
-                                        marginTop: 4,
-                                        marginBottom: 20,
-                                        marginHorizontal: 0,
                                     }}
                                 >
                                     <View style={styles.iconLabelContainer}>
@@ -522,11 +521,11 @@ function RelationshipScreen(props: Props): JSX.Element {
                                                     name="note-add"
                                                     style={styles.iconStyles}
                                                 />
+                                                <Text style={styles.iconLabel}>
+                                                    ADD NOTE
+                                                </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <Text style={styles.iconLabel}>
-                                            Add Note
-                                        </Text>
                                     </View>
 
                                     <View style={styles.iconLabelContainer}>
@@ -549,11 +548,11 @@ function RelationshipScreen(props: Props): JSX.Element {
                                                         marginHorizontal: 10,
                                                     }}
                                                 />
+                                                <Text style={styles.iconLabel}>
+                                                    LOG CALL
+                                                </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <Text style={styles.iconLabel}>
-                                            Log Call
-                                        </Text>
                                     </View>
 
                                     <View style={styles.iconLabelContainer}>
@@ -569,11 +568,11 @@ function RelationshipScreen(props: Props): JSX.Element {
                                                     name="email-plus"
                                                     style={styles.iconStyles}
                                                 />
+                                                <Text style={styles.iconLabel}>
+                                                    LOG EMAIL
+                                                </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <Text style={styles.iconLabel}>
-                                            Log Email
-                                        </Text>
                                     </View>
                                 </View>
 
@@ -701,7 +700,13 @@ function RelationshipScreen(props: Props): JSX.Element {
                         ) : // </View>
                         null}
                         {tabs.details ? (
-                            <View style={{ minHeight: 350, width: '100%' }}>
+                            <View
+                                style={{
+                                    minHeight: 350,
+                                    width: '100%',
+                                    paddingTop: 40,
+                                }}
+                            >
                                 <View
                                     style={{
                                         justifyContent: 'center',
