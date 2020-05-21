@@ -4,9 +4,11 @@ import Navigator from './src/navigation';
 import { StatusBar } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { login } from './src/store/actions';
-import { store } from './src/store/store';
+import { createReduxStore } from './src/store/store';
 import * as Sentry from 'sentry-expo';
 import Constants from 'expo-constants';
+import { client } from './src/store/apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 // sentry.io is an error reporting framework
 // See https://sentry.io/organizations/connect-our-kids/issues/?project=5204132
@@ -18,20 +20,24 @@ Sentry.init({
 });
 Sentry.setRelease(Constants.manifest.version ?? 'Unknown');
 
+const store = createReduxStore(client);
+
 store.dispatch(login(true));
 
 export default function App(): JSX.Element {
     return (
-        <AppearanceProvider>
-            <Provider store={store}>
-                <StatusBar
-                    barStyle="dark-content"
-                    hidden={false}
-                    backgroundColor="#00BCD4"
-                    translucent={true}
-                />
-                <Navigator />
-            </Provider>
-        </AppearanceProvider>
+        <ApolloProvider client={client}>
+            <AppearanceProvider>
+                <Provider store={store}>
+                    <StatusBar
+                        barStyle="dark-content"
+                        hidden={false}
+                        backgroundColor="#00BCD4"
+                        translucent={true}
+                    />
+                    <Navigator />
+                </Provider>
+            </AppearanceProvider>
+        </ApolloProvider>
     );
 }
