@@ -42,6 +42,7 @@ interface StateProps {
     isLoadingCase: boolean;
     caseError?: string;
     auth: AuthState;
+    gender: string[] | undefined;
 }
 
 interface DispatchProps {
@@ -54,7 +55,9 @@ type Navigation = NavigationScreenProp<NavigationState>;
 interface OwnProps {
     navigation: Navigation;
 }
-
+interface GenderObj {
+    [key: string]: boolean;
+}
 type Props = StateProps & DispatchProps & OwnProps;
 
 const CaseScreen = (props: Props) => {
@@ -69,15 +72,13 @@ const CaseScreen = (props: Props) => {
         3: false,
         4: false,
         5: false,
-        6: false, // male  TODO update for new genders
-        7: false, // female TODO update for new genders
-        8: false, // unspecified gender TODO update for new genders
-        name: true,
-        last: false,
-        DOB: false,
-        created: false,
-        updated: false,
+        6: true, //fullname
+        7: false, //lastName
+        8: false, // createdAt
+        9: false, //updatedAt
+        10: false, //Date of Birth - unused
     });
+
     const [rtn, setRtn] = useState('RETURN');
 
     // load once to get all case data
@@ -90,27 +91,119 @@ const CaseScreen = (props: Props) => {
         setSearchKeywords(e);
     };
 
-    // TODO this is wrong with new genders
+    const genderArray: string[] = [];
+    const genderObj: GenderObj = {};
+    props.gender?.forEach((e) => {
+        e.length > 0 ? genderArray.push(e) : console.log(e);
+    });
+    useEffect(() => {
+        genderArray.forEach((e, index) => {
+            genderObj[index] = false;
+        });
+    }, [genderArray]);
+    // Note: genderArray value + index number
+    // "Unspecified" 0
+    // "Female" 1
+    // "Male" 2
+    // "Gender-fluid" 3
+    // "Transgender - FtM" 4
+    // "Transgender - MtF" 5
+    // "Other" 6
+    // "Unknown" 7
+    const [genderFilters, setGenderFilters] = useState(genderObj);
+    const genderKeys = Object.keys(genderFilters);
+    function handleChange() {
+        const booleanArray: boolean[] = [];
+        genderKeys.forEach((e) => {
+            booleanArray.push(genderFilters[e]);
+        });
+        const checker = (arr: boolean[]) => arr.every((e) => e === false);
+        const reducedBoolean = checker(booleanArray);
+        return reducedBoolean;
+    }
+    const checkAllGenderFilters: boolean = handleChange();
     const genderFilter = (arr: caseDetailFull_relationships[]) => {
         // ------GENDER FILTER functionality------
-        if (!filtersSelected[6] && !filtersSelected[7] && !filtersSelected[8]) {
+        if (checkAllGenderFilters) {
             return arr;
         } else {
-            if (!filtersSelected[6]) {
-                arr = arr.filter((c) => c.person.gender !== 'M');
-            }
-
-            if (!filtersSelected[7]) {
-                arr = arr.filter((c) => c.person.gender !== 'F');
-            }
-
-            if (!filtersSelected[8]) {
-                arr = arr.filter((c) => c.person.gender !== 'O');
-            }
+            genderArray.forEach((e, index) => {
+                if (!genderFilters[index]) {
+                    arr = arr.filter(
+                        (c) => c.person.gender !== genderArray[index]
+                    );
+                }
+            });
             return arr;
         }
     };
-
+    // SORT functionality
+    function sorter(arr: caseDetailFull_relationships[]) {
+        const sorted = arr;
+        if (filtersSelected[6]) {
+            const sorted = arr.sort(function (
+                a: caseDetailFull_relationships,
+                b: caseDetailFull_relationships
+            ) {
+                if (a.person.fullName < b.person.fullName) {
+                    return -1;
+                }
+                if (a.person.fullName > b.person.fullName) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sorted;
+        }
+        if (filtersSelected[7]) {
+            const sorted = arr.sort(function (
+                a: caseDetailFull_relationships,
+                b: caseDetailFull_relationships
+            ) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                //@ts-ignore
+                if (a.person.lastName < b.person.lastName) {
+                    return -1;
+                }
+                if (a.person.lastName === null) {
+                    return 1;
+                }
+                if (b.person.lastName === null) {
+                    return -1;
+                }
+                if (a.person.lastName > b.person.lastName) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sorted;
+        }
+        if (filtersSelected[8]) {
+            const sorted = arr.sort(function (a, b) {
+                if (a.person.createdAt < b.person.createdAt) {
+                    return -1;
+                }
+                if (a.person.createdAt > b.person.createdAt) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sorted;
+        }
+        if (filtersSelected[9]) {
+            const sorted = arr.sort(function (a, b) {
+                if (a.person.updatedAt < b.person.updatedAt) {
+                    return -1;
+                }
+                if (a.person.updatedAt > b.person.updatedAt) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sorted;
+        }
+        return sorted;
+    }
     // ------FILTER functionality------
     const filteredConnections = (caseToFilter: caseDetailFull) => {
         // ------STATUS FILTER functionality------
@@ -127,7 +220,10 @@ const CaseScreen = (props: Props) => {
             !filtersSelected[4] &&
             !filtersSelected[5]
         ) {
-            return genderFilter(caseToFilter.relationships);
+            // return genderFilter(caseToFilter.relationships);
+            const preSorted = genderFilter(caseToFilter.relationships);
+            const sorted = sorter(preSorted);
+            return sorted;
         } else {
             // remove everyone without a status
             const noStatus = caseToFilter.relationships.filter(
@@ -176,7 +272,9 @@ const CaseScreen = (props: Props) => {
                 filteredList = filteredList.concat(noStatus);
             }
 
-            return genderFilter(filteredList);
+            const preSorted = genderFilter(filteredList);
+            const sorted = sorter(preSorted);
+            return sorted;
         }
     };
 
@@ -211,9 +309,6 @@ const CaseScreen = (props: Props) => {
     }
 
     let scroll: ScrollView | null = null;
-
-    console.log(props.case?.details);
-
     return (
         <SafeAreaView
             style={{
@@ -509,246 +604,295 @@ const CaseScreen = (props: Props) => {
                                             marginHorizontal: 10,
                                         }}
                                     ></View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                0: !filtersSelected[0],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="Not Set"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[0]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    0: !filtersSelected[0],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: 'white',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#ddd',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="Not Set"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[0]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        0: !filtersSelected[0],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor: 'white',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#ddd',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                2: !filtersSelected[2],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="Highlight"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[2]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    2: !filtersSelected[2],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: '#F8E358',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#fff',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="Highlight"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[2]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        2: !filtersSelected[2],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor: '#F8E358',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#fff',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                4: !filtersSelected[4],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="Of interest"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[4]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    4: !filtersSelected[4],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: '#8656B6',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#fff',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="Of interest"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[4]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        4: !filtersSelected[4],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor: '#8656B6',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#fff',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                5: !filtersSelected[5],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="Potential Supporter"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[5]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    5: !filtersSelected[5],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: '#60C1E9',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#fff',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="Potential Supporter"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[5]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        5: !filtersSelected[5],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor:
+                                                        'royalblue',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#fff',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                1: !filtersSelected[1],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="Placement Option"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[1]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    1: !filtersSelected[1],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: '#9DE36B',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#fff',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="Placement Option"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[1]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        1: !filtersSelected[1],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor: 'green',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#fff',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                3: !filtersSelected[3],
+                                            })
+                                        }
                                     >
-                                        <CheckBox
-                                            containerStyle={{
-                                                backgroundColor: 'white',
-                                                borderColor: 'white',
-                                            }}
-                                            title="No-go"
-                                            textStyle={styles.checkboxes}
-                                            size={30}
-                                            checked={
-                                                filtersSelected[3]
-                                                    ? true
-                                                    : false
-                                            }
-                                            onPress={() =>
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    3: !filtersSelected[3],
-                                                })
-                                            }
-                                        />
                                         <View
                                             style={{
-                                                backgroundColor: '#DE4A4C',
-                                                width: 25,
-                                                height: 25,
-                                                marginRight: 20,
-                                                borderWidth: 1,
-                                                borderColor: '#fff',
-                                                borderRadius: 100,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
-                                        />
-                                    </View>
-
+                                        >
+                                            <CheckBox
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderColor: 'white',
+                                                }}
+                                                title="No-go"
+                                                textStyle={styles.checkboxes}
+                                                size={30}
+                                                checked={
+                                                    filtersSelected[3]
+                                                        ? true
+                                                        : false
+                                                }
+                                                onPress={() =>
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        3: !filtersSelected[3],
+                                                    })
+                                                }
+                                            />
+                                            <View
+                                                style={{
+                                                    backgroundColor: '#DE4A4C',
+                                                    width: 25,
+                                                    height: 25,
+                                                    marginRight: 20,
+                                                    borderWidth: 1,
+                                                    borderColor: '#fff',
+                                                    borderRadius: 100,
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
                                     <Text
                                         style={{
                                             color: 'rgba(24, 23, 21, 0.5)',
@@ -771,59 +915,27 @@ const CaseScreen = (props: Props) => {
                                             marginHorizontal: 10,
                                         }}
                                     ></View>
-                                    <CheckBox
-                                        containerStyle={{
-                                            backgroundColor: 'white',
-                                            borderColor: 'white',
-                                        }}
-                                        title="Male"
-                                        textStyle={styles.checkboxes}
-                                        size={30}
-                                        checked={filtersSelected[6]}
-                                        // onIconPress={setFiltersSelected({
-                                        //   ...filtersSelected,
-                                        //   male: true
-                                        // })}
-                                        onPress={() => {
-                                            setFiltersSelected({
-                                                ...filtersSelected,
-                                                6: !filtersSelected[6],
-                                            });
-                                        }}
-                                    />
-                                    <CheckBox
-                                        containerStyle={{
-                                            backgroundColor: 'white',
-                                            borderColor: 'white',
-                                        }}
-                                        title="Female"
-                                        textStyle={styles.checkboxes}
-                                        size={30}
-                                        checked={filtersSelected[7]}
-                                        onPress={() =>
-                                            setFiltersSelected({
-                                                ...filtersSelected,
-                                                7: !filtersSelected[7],
-                                            })
-                                        }
-                                    />
-                                    <CheckBox
-                                        containerStyle={{
-                                            backgroundColor: 'white',
-                                            borderColor: 'white',
-                                        }}
-                                        title="Not Specified"
-                                        textStyle={styles.checkboxes}
-                                        size={30}
-                                        checked={filtersSelected[8]}
-                                        onPress={() =>
-                                            setFiltersSelected({
-                                                ...filtersSelected,
-                                                8: !filtersSelected[8],
-                                            })
-                                        }
-                                    />
-
+                                    {genderArray.map((e, i) => (
+                                        <CheckBox
+                                            containerStyle={{
+                                                backgroundColor: 'white',
+                                                borderColor: 'white',
+                                            }}
+                                            title={e}
+                                            textStyle={styles.checkboxes}
+                                            size={30}
+                                            checked={genderFilters[i]}
+                                            key={e}
+                                            onPress={() => {
+                                                const state: GenderObj = genderFilters;
+                                                state[i] = !genderFilters[i];
+                                                setGenderFilters({
+                                                    ...state,
+                                                });
+                                                handleChange();
+                                            }}
+                                        />
+                                    ))}
                                     <Text
                                         style={{
                                             color: 'rgba(24, 23, 21, 0.5)',
@@ -846,140 +958,196 @@ const CaseScreen = (props: Props) => {
                                             marginHorizontal: 10,
                                         }}
                                     ></View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginLeft: 10,
-                                            marginVertical: 10,
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setSort('Full Name');
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                6: !filtersSelected[6],
+                                                7: false,
+                                                8: false,
+                                                9: false,
+                                                10: false,
+                                            });
                                         }}
                                     >
-                                        <RadioButton
-                                            value="Full Name"
-                                            status={
-                                                sort === 'Full Name'
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            color="#0279ac"
-                                            onPress={() => {
-                                                setSort('Full Name');
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    name: !filtersSelected.name,
-                                                    last: false,
-                                                    DOB: false,
-                                                    created: false,
-                                                    updated: false,
-                                                });
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                marginLeft: 10,
+                                                marginVertical: 10,
                                             }}
-                                        />
-                                        <Text style={styles.checkboxes}>
-                                            {' '}
-                                            Full Name
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginLeft: 10,
-                                            marginVertical: 10,
+                                        >
+                                            <RadioButton
+                                                value="Full Name"
+                                                status={
+                                                    sort === 'Full Name'
+                                                        ? 'checked'
+                                                        : 'unchecked'
+                                                }
+                                                color="#0279ac"
+                                                onPress={() => {
+                                                    setSort('Full Name');
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        6: !filtersSelected[6],
+                                                        7: false,
+                                                        8: false,
+                                                        9: false,
+                                                        10: false,
+                                                    });
+                                                }}
+                                            />
+                                            <Text style={styles.checkboxes}>
+                                                {' '}
+                                                Full Name
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setSort('Last Name');
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                6: false,
+                                                7: !filtersSelected[7],
+                                                8: false,
+                                                9: false,
+                                                10: false,
+                                            });
                                         }}
                                     >
-                                        <RadioButton
-                                            value="Last Name"
-                                            status={
-                                                sort === 'Last Name'
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            color="#0279ac"
-                                            onPress={() => {
-                                                setSort('Last Name');
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    name: false,
-                                                    last: !filtersSelected.last,
-                                                    DOB: false,
-                                                    created: false,
-                                                    updated: false,
-                                                });
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                marginLeft: 10,
+                                                marginVertical: 10,
                                             }}
-                                        />
-                                        <Text style={styles.checkboxes}>
-                                            {' '}
-                                            Last Name
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginLeft: 10,
-                                            marginVertical: 10,
+                                        >
+                                            <RadioButton
+                                                value="Last Name"
+                                                status={
+                                                    sort === 'Last Name'
+                                                        ? 'checked'
+                                                        : 'unchecked'
+                                                }
+                                                color="#0279ac"
+                                                onPress={() => {
+                                                    setSort('Last Name');
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        6: false,
+                                                        7: !filtersSelected[7],
+                                                        8: false,
+                                                        9: false,
+                                                        10: false,
+                                                    });
+                                                }}
+                                            />
+                                            <Text style={styles.checkboxes}>
+                                                {' '}
+                                                Last Name
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setSort('Date Created');
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                6: false,
+                                                7: false,
+                                                8: !filtersSelected[8],
+                                                9: false,
+                                                10: false,
+                                            });
                                         }}
                                     >
-                                        <RadioButton
-                                            value="Date Created"
-                                            status={
-                                                sort === 'Date Created'
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            color="#0279ac"
-                                            onPress={() => {
-                                                setSort('Date Created');
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    name: false,
-                                                    last: false,
-                                                    DOB: false,
-                                                    created: !filtersSelected.created,
-                                                    updated: false,
-                                                });
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                marginLeft: 10,
+                                                marginVertical: 10,
                                             }}
-                                        />
-                                        <Text style={styles.checkboxes}>
-                                            {' '}
-                                            Date Created
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginLeft: 10,
-                                            marginVertical: 10,
-                                            marginBottom: 100,
+                                        >
+                                            <RadioButton
+                                                value="Date Created"
+                                                status={
+                                                    sort === 'Date Created'
+                                                        ? 'checked'
+                                                        : 'unchecked'
+                                                }
+                                                color="#0279ac"
+                                                onPress={() => {
+                                                    setSort('Date Created');
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        6: false,
+                                                        7: false,
+                                                        8: !filtersSelected[8],
+                                                        9: false,
+                                                        10: false,
+                                                    });
+                                                }}
+                                            />
+                                            <Text style={styles.checkboxes}>
+                                                {' '}
+                                                Date Created
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setSort('Last Updated');
+                                            setFiltersSelected({
+                                                ...filtersSelected,
+                                                6: false,
+                                                7: false,
+                                                8: false,
+                                                9: !filtersSelected[9],
+                                                10: false,
+                                            });
                                         }}
                                     >
-                                        <RadioButton
-                                            value="Last Updated"
-                                            status={
-                                                sort === 'Last Updated'
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            color="#0279ac"
-                                            onPress={() => {
-                                                setSort('Last Updated');
-                                                setFiltersSelected({
-                                                    ...filtersSelected,
-                                                    name: false,
-                                                    last: false,
-                                                    DOB: false,
-                                                    created: false,
-                                                    updated: !filtersSelected.updated,
-                                                });
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                marginLeft: 10,
+                                                marginVertical: 10,
+                                                marginBottom: 100,
                                             }}
-                                        />
-                                        <Text style={styles.checkboxes}>
-                                            {' '}
-                                            Last Updated
-                                        </Text>
-                                        <View />
-                                    </View>
+                                        >
+                                            <RadioButton
+                                                value="Last Updated"
+                                                status={
+                                                    sort === 'Last Updated'
+                                                        ? 'checked'
+                                                        : 'unchecked'
+                                                }
+                                                color="#0279ac"
+                                                onPress={() => {
+                                                    setSort('Last Updated');
+                                                    setFiltersSelected({
+                                                        ...filtersSelected,
+                                                        6: false,
+                                                        7: false,
+                                                        8: false,
+                                                        9: !filtersSelected[9],
+                                                        10: false,
+                                                    });
+                                                }}
+                                            />
+                                            <Text style={styles.checkboxes}>
+                                                {' '}
+                                                Last Updated
+                                            </Text>
+                                            <View />
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                             </ScrollView>
                         </Modal>
@@ -998,6 +1166,7 @@ const mapStateToProps = (state: RootState) => {
         isLoadingCase: state.case.isLoading,
         caseError: state.case.error,
         auth: state.auth,
+        gender: state.schema.results?.schema?.gender,
     };
 };
 
