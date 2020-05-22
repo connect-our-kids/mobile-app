@@ -4,15 +4,16 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
     Modal,
+    ListRenderItemInfo,
+    Image,
 } from 'react-native';
 import constants from '../helpers/constants';
 import { connect } from 'react-redux';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import {
     Engagement,
-    Documents,
+    Document,
 } from '../components/family-connections/RelationshipViewTabs';
 import Loader from '../components/Loader';
 import ConnectionsDetailsView from '../components/family-connections/RelationshipViewTabs/RelationshipDetailsView';
@@ -40,6 +41,17 @@ import {
 } from '../store/actions';
 import { AuthState } from '../store/reducers/authReducer';
 import ConnectionsLogin from '../components/auth/ConnectionsLogin';
+import { useMutation } from '@apollo/react-hooks';
+import {
+    DELETE_ENGAGEMENT_MUTATION,
+    deleteEngagementCache,
+} from '../store/actions/fragments/cases';
+import {
+    deleteEngagementMutation,
+    deleteEngagementMutationVariables,
+} from '../generated/deleteEngagementMutation';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { engagements_engagements_EngagementDocument } from '../generated/engagements';
 
 const styles = StyleSheet.create({
     topView: {
@@ -47,15 +59,11 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     tabs: {
-        width: '100%',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
         borderBottomWidth: 1,
-        borderTopRightRadius: 4,
         borderBottomColor: '#EBEBEB',
+        paddingTop: 10,
     },
-
     engagementTab: {
         width: '33.3%',
         justifyContent: 'center',
@@ -64,7 +72,6 @@ const styles = StyleSheet.create({
         fontSize: 17.5,
         textAlign: 'center',
     },
-
     documentsTab: {
         width: '33.3%',
         justifyContent: 'center',
@@ -84,22 +91,21 @@ const styles = StyleSheet.create({
     thatBlue: {
         color: constants.highlightColor,
     },
-
     documentsButtonsGroup: {
         display: 'flex',
         justifyContent: 'space-evenly',
         flexDirection: 'row',
-        padding: 4,
         width: '100%',
+        alignItems: 'center',
+        marginBottom: 0,
+        marginHorizontal: 15,
     },
-
     engagementSelected: {
         color: 'orange',
         borderBottomWidth: 3,
         borderBottomColor: constants.highlightColor,
         overflow: 'hidden',
     },
-
     documentsSelected: {
         color: constants.highlightColor,
         borderBottomWidth: 3,
@@ -112,20 +118,17 @@ const styles = StyleSheet.create({
         borderBottomColor: constants.highlightColor,
         overflow: 'hidden',
     },
-
     iconLabelContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
         marginHorizontal: 15,
     },
-
     iconContainer: {
         height: 45,
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     iconStyles: {
         fontSize: 28,
         color: constants.highlightColor,
@@ -133,7 +136,6 @@ const styles = StyleSheet.create({
         height: 28,
         marginHorizontal: 15,
     },
-
     iconLabel: {
         color: '#0F6580',
         fontSize: 12,
@@ -141,17 +143,18 @@ const styles = StyleSheet.create({
         width: 65,
         paddingLeft: -3,
     },
-    avatarName: {
+    relationshipCard: {
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingBottom: '10%',
-        paddingTop: 5,
+        paddingBottom: 30,
+        paddingTop: 15,
         paddingLeft: 5,
     },
     centerView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.7)',
     },
     modalView: {
         margin: 20,
@@ -159,6 +162,7 @@ const styles = StyleSheet.create({
         padding: 35,
         borderRadius: 10,
         alignItems: 'center',
+        alignContent: 'center',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -167,6 +171,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    modalButtonView: {
+        flexDirection: 'row',
     },
     modalButton: {
         justifyContent: 'center',
@@ -179,11 +186,44 @@ const styles = StyleSheet.create({
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
-
+    modalDeleteButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 96,
+        height: 36,
+        borderRadius: 50,
+        borderWidth: 1,
+        marginTop: 20,
+        marginLeft: 15,
+        backgroundColor: 'red',
+        borderColor: 'red',
+    },
     modalButtonText: {
         fontSize: 14,
         textTransform: 'uppercase',
         color: '#fff',
+    },
+    backTextWhite: {
+        color: '#FFF',
+    },
+    rowFront: {
+        backgroundColor: 'white',
+    },
+    rowBack: {
+        backgroundColor: 'red',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+        backgroundColor: 'red',
+        right: 0,
     },
 });
 
@@ -227,35 +267,164 @@ function ErrorModal(modalProps: {
     dismissModal: () => void;
 }): JSX.Element {
     return (
-        <Modal animationType="fade" transparent={true} visible={true}>
+        <Modal animationType={'fade'} transparent={true} visible={true}>
             <View style={styles.centerView}>
                 <View style={styles.modalView}>
                     <Text>Error adding document. Please Try again later.</Text>
-                    <TouchableOpacity style={styles.modalButton}>
-                        <Text
-                            style={styles.modalButtonText}
-                            onPress={() => modalProps.dismissModal()}
-                        >
-                            close
-                        </Text>
+                    <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={() => modalProps.dismissModal()}
+                    >
+                        <Text style={styles.modalButtonText}>close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </Modal>
     );
 }
+
+function DeleteConfirmationModal(props: {
+    type: 'engagement' | 'document';
+    onCancel: () => void;
+    onDelete: () => void;
+}): JSX.Element {
+    return (
+        <Modal animationType={'none'} transparent={true} visible={true}>
+            <View style={styles.centerView}>
+                <View style={styles.modalView}>
+                    <Text>
+                        Delete{' '}
+                        {props.type === 'document' ? 'Document' : 'Engagement'}?
+                    </Text>
+                    <View style={styles.modalButtonView}>
+                        <TouchableOpacity
+                            style={styles.modalButton}
+                            onPress={props.onCancel}
+                        >
+                            <Text style={styles.modalButtonText}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.modalDeleteButton}
+                            onPress={props.onDelete}
+                        >
+                            <Text style={styles.modalButtonText}>Delete</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    );
+}
+
+function DeletingModal(props: {
+    type: 'engagement' | 'document';
+}): JSX.Element {
+    return (
+        <Modal animationType={'none'} transparent={true} visible={true}>
+            <View style={styles.centerView}>
+                <View style={styles.modalView}>
+                    <Text>
+                        Deleting{' '}
+                        {props.type === 'document' ? 'Document' : 'Engagement'}
+                        {'...'}
+                    </Text>
+                    <Image
+                        source={require('../../assets/loading.gif')}
+                        style={{ width: 80, height: 80 }}
+                    />
+                </View>
+            </View>
+        </Modal>
+    );
+}
+
+function ErrorDeletingEngagementModal(props: {
+    type: 'engagement' | 'document';
+    message: string;
+    onCancel: () => void;
+}): JSX.Element {
+    return (
+        <Modal animationType={'none'} transparent={true} visible={true}>
+            <View style={styles.centerView}>
+                <View style={styles.modalView}>
+                    <Text style={{ fontWeight: 'bold', paddingBottom: 20 }}>
+                        Error Deleting{' '}
+                        {props.type === 'document' ? 'Document' : 'Engagement'}?
+                    </Text>
+                    <Text>{props.message}</Text>
+                    <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={props.onCancel}
+                    >
+                        <Text style={styles.modalButtonText}>OK</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+}
+
 /**
  * This screen shows the information pertaining to one relationship/connection from a case
  * @param props Properties required by this screen
  */
 function RelationshipScreen(props: Props): JSX.Element {
-    const [tabs, setTabs] = useState({
-        engagement: true,
-        docs: false,
-        details: false,
-    });
-    const [options] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
+    const [currentTab, setCurrentTab] = useState<
+        'engagements' | 'details' | 'documents'
+    >('engagements');
+
     const [isScrolling, setIsScrolling] = useState(false);
+
+    const [showSwipePreview, setShowSwipePreview] = useState(true);
+
+    const [deleteEngagementState, setDeleteEngagementState] = useState<
+        | {
+              state: 'confirm';
+              type: 'document' | 'engagement';
+              engagement: EngagementDetail;
+          }
+        | {
+              state: 'delete';
+              type: 'document' | 'engagement';
+              engagement: EngagementDetail;
+          }
+        | {
+              state: 'error';
+              type: 'document' | 'engagement';
+              error: string;
+          }
+        | undefined
+    >(undefined);
+
+    const [deleteEngagementGraphQL, { loading }] = useMutation<
+        deleteEngagementMutation,
+        deleteEngagementMutationVariables
+    >(DELETE_ENGAGEMENT_MUTATION, {
+        errorPolicy: 'all',
+        onCompleted: () => {
+            setDeleteEngagementState(undefined);
+        },
+        onError: (error) => {
+            setDeleteEngagementState({
+                state: 'error',
+                type: deleteEngagementState?.type ?? 'engagement',
+                error: error.message ?? 'Unknown error',
+            });
+        },
+    });
+
+    const performDeleteEngagement = (engagement: EngagementDetail) => {
+        deleteEngagementGraphQL({
+            variables: {
+                caseId: engagement.case.id,
+                engagementId: engagement.id,
+            },
+            update: (cache) => {
+                deleteEngagementCache(engagement.case.id, engagement, cache);
+            },
+        });
+    };
+
     useEffect(() => {
         if (props.caseId) {
             props.getRelationship(props.caseId, props.relationshipId);
@@ -276,7 +445,9 @@ function RelationshipScreen(props: Props): JSX.Element {
         }
     }, [props.engagementSuccess]);
 
-    // const leftArrow = '\u2190';
+    useEffect(() => {
+        setShowSwipePreview(true);
+    }, [showSwipePreview]);
 
     const engagementsNoDocuments = props.engagements.filter(
         (engagement) => engagement.__typename !== 'EngagementDocument'
@@ -291,11 +462,60 @@ function RelationshipScreen(props: Props): JSX.Element {
         } as AddEngagementFormParams);
     };
 
-    let scroll: ScrollView | null = null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let scroll: SwipeListView<EngagementDetail> | null = null;
 
     if (!props.auth.isLoggedIn) {
         return <ConnectionsLogin />;
     }
+
+    const renderEngagement = (
+        itemInfo: ListRenderItemInfo<EngagementDetail>
+    ) => (
+        <View style={styles.rowFront}>
+            <Engagement
+                engagement={itemInfo.item}
+                newEngagement={props.engagementSuccess}
+                newEngagementID={props.engagementSuccessID}
+            />
+        </View>
+    );
+
+    const renderDocument = (
+        itemInfo: ListRenderItemInfo<engagements_engagements_EngagementDocument>
+    ) => (
+        <View style={styles.rowFront}>
+            <Document
+                key={itemInfo.item.id}
+                document={itemInfo.item}
+                documentError={props.documentError}
+                newDocument={props.documentSuccess}
+                newDocumentID={props.documentSuccessID}
+            />
+        </View>
+    );
+
+    const renderDeleteEngagementSwipeButton = (
+        itemInfo: ListRenderItemInfo<EngagementDetail>
+    ) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+                style={styles.backRightBtn}
+                onPress={() => {
+                    setDeleteEngagementState({
+                        state: 'confirm',
+                        type:
+                            itemInfo.item.__typename === 'EngagementDocument'
+                                ? 'document'
+                                : 'engagement',
+                        engagement: itemInfo.item,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
     return props.isLoading || !props.relationship ? (
         <View style={{ ...styles.topView }}>
@@ -310,6 +530,382 @@ function RelationshipScreen(props: Props): JSX.Element {
                     : {},
             ]}
         >
+            <View style={styles.relationshipCard}>
+                <RelationshipListItem
+                    relationship={props.relationship}
+                    documentError={props.documentError}
+                />
+            </View>
+            <View
+                style={[
+                    styles.tabs,
+                    props.documentError
+                        ? { borderBottomColor: 'rgba(0,0,0,0.0)' }
+                        : {},
+                ]}
+            >
+                <View
+                    style={[
+                        styles.engagementTab,
+                        currentTab === 'engagements'
+                            ? styles.engagementSelected
+                            : null,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            {
+                                color: '#444444',
+                                fontSize: 17.5,
+                                paddingBottom: 9,
+                            },
+                            currentTab === 'engagements'
+                                ? { color: '#444444' }
+                                : { color: '#444444' },
+                        ]}
+                        onPress={() => {
+                            setCurrentTab('engagements');
+                        }}
+                    >
+                        <Text
+                            style={
+                                currentTab === 'engagements'
+                                    ? styles.thatBlue
+                                    : null
+                            }
+                        >
+                            Engagements
+                        </Text>
+                    </Text>
+                </View>
+                <View
+                    style={[
+                        styles.detailsTab,
+                        currentTab === 'details'
+                            ? styles.detailsSelected
+                            : null,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            {
+                                color: '#444444',
+                                fontSize: 17.5,
+                                paddingBottom: 9,
+                            },
+                            currentTab === 'details'
+                                ? { color: '#444444' }
+                                : { color: '#444444' },
+                        ]}
+                        onPress={() => {
+                            setCurrentTab('details');
+                        }}
+                    >
+                        <Text
+                            style={
+                                currentTab === 'details'
+                                    ? styles.thatBlue
+                                    : null
+                            }
+                        >
+                            Details
+                        </Text>
+                    </Text>
+                </View>
+                <View
+                    style={[
+                        styles.documentsTab,
+                        currentTab === 'documents'
+                            ? styles.documentsSelected
+                            : null,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            {
+                                color: '#444444',
+                                fontSize: 17.5,
+                                paddingBottom: 9,
+                            },
+                            currentTab === 'documents'
+                                ? { color: '#444444' }
+                                : { color: '#444444' },
+                        ]}
+                        onPress={() => {
+                            setCurrentTab('documents');
+                        }}
+                    >
+                        <Text
+                            style={
+                                currentTab === 'documents'
+                                    ? styles.thatBlue
+                                    : null
+                            }
+                        >
+                            Documents
+                        </Text>
+                    </Text>
+                </View>
+            </View>
+            {currentTab === 'engagements' ? (
+                <View
+                    style={{
+                        width: '100%',
+                        minHeight: 350,
+                        paddingTop: 10,
+                        paddingHorizontal: 10,
+                        flex: 1,
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <View style={styles.iconLabelContainer}>
+                            <View style={styles.iconContainer}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigateToEngagementForm(
+                                            'EngagementNote'
+                                        );
+                                    }}
+                                >
+                                    <MaterialIcons
+                                        name="note-add"
+                                        style={styles.iconStyles}
+                                    />
+                                    <Text style={styles.iconLabel}>
+                                        ADD NOTE
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={styles.iconLabelContainer}>
+                            <View style={styles.iconContainer}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigateToEngagementForm(
+                                            'EngagementCall'
+                                        );
+                                    }}
+                                >
+                                    <MaterialCommunityIcons
+                                        name="phone-plus"
+                                        style={{
+                                            fontSize: 28,
+                                            color: constants.highlightColor,
+                                            width: 28,
+                                            height: 28,
+                                            marginHorizontal: 10,
+                                        }}
+                                    />
+                                    <Text style={styles.iconLabel}>
+                                        LOG CALL
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={styles.iconLabelContainer}>
+                            <View style={styles.iconContainer}>
+                                <TouchableOpacity
+                                    onPress={async () => {
+                                        navigateToEngagementForm(
+                                            'EngagementEmail'
+                                        );
+                                    }}
+                                >
+                                    <MaterialCommunityIcons
+                                        name="email-plus"
+                                        style={styles.iconStyles}
+                                    />
+                                    <Text style={styles.iconLabel}>
+                                        LOG EMAIL
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+
+                    {engagementsNoDocuments.length > 0 ? (
+                        <SwipeListView
+                            disableRightSwipe
+                            data={engagementsNoDocuments}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={renderEngagement}
+                            renderHiddenItem={renderDeleteEngagementSwipeButton}
+                            rightOpenValue={-75}
+                            listViewRef={(ref) => {
+                                scroll = ref;
+                            }}
+                            onScroll={(scrollingEvent): void => {
+                                // TODO change infinity to zero when working
+                                setIsScrolling(
+                                    scrollingEvent.nativeEvent.contentOffset.y >
+                                        Infinity
+                                );
+                            }}
+                            onScrollToTop={(): void => {
+                                // TODO scrolling is currently broken
+                                setIsScrolling(false);
+                            }}
+                            scrollEventThrottle={1}
+                        />
+                    ) : (
+                        <Text
+                            style={{
+                                width: '100%',
+                                textAlign: 'center',
+                                marginTop: 50,
+                            }}
+                        >
+                            No engagements have been recorded for this person.
+                        </Text>
+                    )}
+                </View>
+            ) : null}
+            {currentTab === 'details' ? (
+                <View
+                    style={{
+                        minHeight: 350,
+                        width: '100%',
+                        paddingTop: 40,
+                    }}
+                >
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {props.relationship ? (
+                            <ConnectionsDetailsView
+                                details={props.relationship}
+                            />
+                        ) : null}
+                    </View>
+                </View>
+            ) : null}
+            {currentTab === 'documents' ? (
+                <View
+                    style={{
+                        width: '100%',
+                        minHeight: 350,
+                        paddingTop: 10,
+                        paddingHorizontal: 10,
+                        flex: 1,
+                    }}
+                >
+                    {props.documentError && (
+                        <ErrorModal
+                            error={props.documentError}
+                            dismissModal={() => props.docClearError()}
+                        />
+                    )}
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <View style={styles.documentsButtonsGroup}>
+                            <PickFileButton
+                                afterAccept={(media) => {
+                                    props.navigation.navigate('DocumentForm', {
+                                        media,
+                                    });
+                                }}
+                            />
+                            <PickPhotoButton
+                                afterAccept={(media) => {
+                                    props.navigation.navigate('DocumentForm', {
+                                        media,
+                                    });
+                                }}
+                            />
+                            <TakePhotoButton
+                                afterAccept={(media) => {
+                                    props.navigation.navigate('DocumentForm', {
+                                        media,
+                                    });
+                                }}
+                            />
+                        </View>
+                    </View>
+                    {props.documents.length > 0 ? (
+                        <SwipeListView
+                            disableRightSwipe
+                            data={props.documents.sort(created).reverse()}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={renderDocument}
+                            renderHiddenItem={renderDeleteEngagementSwipeButton}
+                            rightOpenValue={-75}
+                            listViewRef={(ref) => {
+                                scroll = ref;
+                            }}
+                            onScroll={(scrollingEvent): void => {
+                                // TODO change infinity to zero when working
+                                setIsScrolling(
+                                    scrollingEvent.nativeEvent.contentOffset.y >
+                                        Infinity
+                                );
+                            }}
+                            onScrollToTop={(): void => {
+                                // TODO scrolling is currently broken
+                                setIsScrolling(false);
+                            }}
+                            scrollEventThrottle={1}
+                        />
+                    ) : (
+                        <Text
+                            style={{
+                                width: '100%',
+                                textAlign: 'center',
+                                marginTop: 50,
+                            }}
+                        >
+                            No documents have been attached to this person.
+                        </Text>
+                    )}
+                </View>
+            ) : null}
+            {deleteEngagementState?.state === 'confirm' ? (
+                <DeleteConfirmationModal
+                    type={deleteEngagementState.type}
+                    onCancel={() => {
+                        setDeleteEngagementState(undefined);
+                    }}
+                    onDelete={() => {
+                        performDeleteEngagement(
+                            deleteEngagementState.engagement
+                        );
+                        setDeleteEngagementState({
+                            state: 'delete',
+                            type: deleteEngagementState.type,
+                            engagement: deleteEngagementState.engagement,
+                        });
+                    }}
+                ></DeleteConfirmationModal>
+            ) : null}
+            {deleteEngagementState?.state === 'error' ? (
+                <ErrorDeletingEngagementModal
+                    type={deleteEngagementState.type}
+                    message={deleteEngagementState.error}
+                    onCancel={() => {
+                        setDeleteEngagementState(undefined);
+                    }}
+                ></ErrorDeletingEngagementModal>
+            ) : null}
+            {loading ? (
+                <DeletingModal
+                    type={deleteEngagementState?.type ?? 'document'}
+                />
+            ) : null}
             {isScrolling ? (
                 <ScrollToTop
                     style={{
@@ -320,408 +916,19 @@ function RelationshipScreen(props: Props): JSX.Element {
                         backgroundColor: 'white',
                         padding: 8,
                         borderRadius: 35,
+                        opacity: 0, // TODO hiding this on purpose
                     }}
                     onPress={(): void => {
-                        scroll?.scrollTo(options);
+                        // TODO this does not currently work
+                        /* scroll.current?.scrollToLocation({
+                            x: 0,
+                            y: 0,
+                            animated: true,
+                        });*/
+                        console.log(scroll?.state);
                     }}
                 />
             ) : null}
-            <ScrollView
-                ref={(a): void => {
-                    scroll = a;
-                }}
-                style={{ height: '100%', width: '100%' }}
-                scrollsToTop
-                onScroll={(scrollingEvent): void => {
-                    if (scrollingEvent.nativeEvent.contentOffset.y <= 250) {
-                        setIsScrolling(false);
-                    } else if (
-                        scrollingEvent.nativeEvent.contentOffset.y >= 250
-                    ) {
-                        setIsScrolling(true);
-                    }
-                }}
-                onScrollToTop={(): void => setIsScrolling(false)}
-                scrollEventThrottle={16}
-            >
-                <View>
-                    <View style={styles.avatarName}>
-                        <RelationshipListItem
-                            relationship={props.relationship}
-                            documentError={props.documentError}
-                        />
-                    </View>
-                </View>
-                <View
-                    style={[
-                        {
-                            justifyContent: 'flex-start',
-                            width: '100%',
-                            alignItems: 'flex-start',
-                        },
-                    ]}
-                >
-                    <View
-                        style={{
-                            borderRadius: 4,
-                            width: '100%',
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-start',
-                        }}
-                    >
-                        <View
-                            style={[
-                                styles.tabs,
-                                props.documentError
-                                    ? { borderBottomColor: 'rgba(0,0,0,0.0)' }
-                                    : {},
-                            ]}
-                        >
-                            <View
-                                style={[
-                                    styles.engagementTab,
-                                    tabs.engagement
-                                        ? styles.engagementSelected
-                                        : null,
-                                ]}
-                            >
-                                <Text
-                                    style={[
-                                        {
-                                            color: '#444444',
-                                            fontSize: 17.5,
-                                            paddingBottom: 9,
-                                        },
-                                        tabs.engagement
-                                            ? { color: '#444444' }
-                                            : { color: '#444444' },
-                                    ]}
-                                    onPress={() => {
-                                        setTabs({
-                                            engagement: true,
-                                            docs: false,
-                                            details: false,
-                                        });
-                                    }}
-                                >
-                                    <Text
-                                        style={
-                                            tabs.engagement
-                                                ? styles.thatBlue
-                                                : null
-                                        }
-                                    >
-                                        Engagements
-                                    </Text>
-                                </Text>
-                            </View>
-                            <View
-                                style={[
-                                    styles.detailsTab,
-                                    tabs.details
-                                        ? styles.detailsSelected
-                                        : null,
-                                ]}
-                            >
-                                <Text
-                                    style={[
-                                        {
-                                            color: '#444444',
-                                            fontSize: 17.5,
-                                            paddingBottom: 9,
-                                        },
-                                        tabs.details
-                                            ? { color: '#444444' }
-                                            : { color: '#444444' },
-                                    ]}
-                                    onPress={() => {
-                                        setTabs({
-                                            engagement: false,
-                                            docs: false,
-                                            details: true,
-                                        });
-                                        // TODO what is this for?
-                                        // props.setDetails(true);
-                                    }}
-                                >
-                                    <Text
-                                        style={
-                                            tabs.details
-                                                ? styles.thatBlue
-                                                : null
-                                        }
-                                    >
-                                        Details
-                                    </Text>
-                                </Text>
-                            </View>
-                            <View
-                                style={[
-                                    styles.documentsTab,
-                                    tabs.docs ? styles.documentsSelected : null,
-                                ]}
-                            >
-                                <Text
-                                    style={[
-                                        {
-                                            color: '#444444',
-                                            fontSize: 17.5,
-                                            paddingBottom: 9,
-                                        },
-                                        tabs.docs
-                                            ? { color: '#444444' }
-                                            : { color: '#444444' },
-                                    ]}
-                                    onPress={() => {
-                                        setTabs({
-                                            engagement: false,
-                                            docs: true,
-                                            details: false,
-                                        });
-                                    }}
-                                >
-                                    <Text
-                                        style={
-                                            tabs.docs ? styles.thatBlue : null
-                                        }
-                                    >
-                                        Documents
-                                    </Text>
-                                </Text>
-                            </View>
-                        </View>
-
-                        {tabs.engagement ? (
-                            <View
-                                style={{
-                                    width: '100%',
-                                    minHeight: 350,
-                                    paddingVertical: 10,
-                                    paddingHorizontal: 10,
-                                }}
-                            >
-                                {/* Engagement View BRANDY */}
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-evenly',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <View style={styles.iconLabelContainer}>
-                                        <View style={styles.iconContainer}>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    navigateToEngagementForm(
-                                                        'EngagementNote'
-                                                    );
-                                                }}
-                                            >
-                                                <MaterialIcons
-                                                    name="note-add"
-                                                    style={styles.iconStyles}
-                                                />
-                                                <Text style={styles.iconLabel}>
-                                                    ADD NOTE
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.iconLabelContainer}>
-                                        <View style={styles.iconContainer}>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    navigateToEngagementForm(
-                                                        'EngagementCall'
-                                                    );
-                                                }}
-                                            >
-                                                <MaterialCommunityIcons
-                                                    name="phone-plus"
-                                                    style={{
-                                                        fontSize: 28,
-                                                        color:
-                                                            constants.highlightColor,
-                                                        width: 28,
-                                                        height: 28,
-                                                        marginHorizontal: 10,
-                                                    }}
-                                                />
-                                                <Text style={styles.iconLabel}>
-                                                    LOG CALL
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.iconLabelContainer}>
-                                        <View style={styles.iconContainer}>
-                                            <TouchableOpacity
-                                                onPress={async () => {
-                                                    navigateToEngagementForm(
-                                                        'EngagementEmail'
-                                                    );
-                                                }}
-                                            >
-                                                <MaterialCommunityIcons
-                                                    name="email-plus"
-                                                    style={styles.iconStyles}
-                                                />
-                                                <Text style={styles.iconLabel}>
-                                                    LOG EMAIL
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                <View>
-                                    {engagementsNoDocuments.length > 0 ? (
-                                        engagementsNoDocuments.map(
-                                            (engagement) => {
-                                                return (
-                                                    <View
-                                                        key={engagement.id}
-                                                        style={{ width: '70%' }}
-                                                    >
-                                                        <Engagement
-                                                            engagement={
-                                                                engagement
-                                                            }
-                                                            newEngagement={
-                                                                props.engagementSuccess
-                                                            }
-                                                            newEngagementID={
-                                                                props.engagementSuccessID
-                                                            }
-                                                        />
-                                                    </View>
-                                                );
-                                            }
-                                        )
-                                    ) : (
-                                        <Text
-                                            style={{
-                                                width: '100%',
-                                                textAlign: 'center',
-                                                marginTop: 50,
-                                            }}
-                                        >
-                                            No engagements have been recorded
-                                            for this person.
-                                        </Text>
-                                    )}
-                                </View>
-                            </View>
-                        ) : null}
-
-                        {tabs.docs ? (
-                            <View style={{ minHeight: 350, width: '100%' }}>
-                                {props.documentError && (
-                                    <ErrorModal
-                                        error={props.documentError}
-                                        dismissModal={() =>
-                                            props.docClearError()
-                                        }
-                                    />
-                                )}
-                                <View
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <View style={styles.documentsButtonsGroup}>
-                                        <PickFileButton
-                                            afterAccept={(media) => {
-                                                props.navigation.navigate(
-                                                    'DocumentForm',
-                                                    { media }
-                                                );
-                                            }}
-                                        />
-                                        <PickPhotoButton
-                                            afterAccept={(media) => {
-                                                props.navigation.navigate(
-                                                    'DocumentForm',
-                                                    { media }
-                                                );
-                                            }}
-                                        />
-                                        <TakePhotoButton
-                                            afterAccept={(media) => {
-                                                props.navigation.navigate(
-                                                    'DocumentForm',
-                                                    { media }
-                                                );
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-                                <View
-                                    style={{ width: '100%', maxHeight: '100%' }}
-                                >
-                                    {props.documents.length > 0 ? (
-                                        props.documents
-                                            .sort(created)
-                                            .reverse()
-                                            .map((document) => {
-                                                return (
-                                                    <Documents
-                                                        key={document.id}
-                                                        document={document}
-                                                        documentError={
-                                                            props.documentError
-                                                        }
-                                                        newDocument={
-                                                            props.documentSuccess
-                                                        }
-                                                        newDocumentID={
-                                                            props.documentSuccessID
-                                                        }
-                                                    />
-                                                );
-                                            })
-                                    ) : (
-                                        <Text
-                                            style={{
-                                                width: '100%',
-                                                textAlign: 'center',
-                                                marginTop: 50,
-                                            }}
-                                        >
-                                            No documents have been attached to
-                                            this person.
-                                        </Text>
-                                    )}
-                                </View>
-                            </View>
-                        ) : // </View>
-                        null}
-                        {tabs.details ? (
-                            <View
-                                style={{
-                                    minHeight: 350,
-                                    width: '100%',
-                                    paddingTop: 40,
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <ConnectionsDetailsView
-                                        details={props.relationship}
-                                    />
-                                </View>
-                            </View>
-                        ) : null}
-                    </View>
-                </View>
-            </ScrollView>
         </View>
     );
 }

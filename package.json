@@ -69,6 +69,7 @@
         "react-native-safe-area-context": "^0.7.3",
         "react-native-safe-area-view": "^1.0.0",
         "react-native-screens": "~2.2.0",
+        "react-native-swipe-list-view": "^3.1.0",
         "react-native-switch-toggle": "^1.1.4",
         "react-native-touch-id": "^4.4.1",
         "react-native-web": "^0.12.2",

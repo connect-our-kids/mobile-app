@@ -3,12 +3,11 @@ import constants from '../../../helpers/constants';
 
 export default StyleSheet.create({
     button: {
+        height: 45,
         flexGrow: 0,
         // backgroundColor: constants.highlightColor,
         color: constants.highlightColor,
         borderRadius: 16,
-        padding: 8,
-        margin: 4,
         alignItems: 'center',
         // width: '30%',
     },

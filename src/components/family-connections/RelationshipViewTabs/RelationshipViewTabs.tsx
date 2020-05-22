@@ -100,7 +100,6 @@ export const Engagement = (props: EngagementsProps): JSX.Element => {
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
                         marginBottom: 20,
-                        width: 390,
                     },
                     props.engagement.id === props.newEngagementID &&
                     props.newEngagement
@@ -122,7 +121,9 @@ export const Engagement = (props: EngagementsProps): JSX.Element => {
                             marginRight: 15,
                             marginTop: 5,
                         }}
-                        source={{ uri: props.engagement.createdBy?.picture }}
+                        source={{
+                            uri: props.engagement.createdBy?.picture,
+                        }}
                         defaultSource={placeholderImg}
                     />
                 ) : (
@@ -177,7 +178,7 @@ interface DocumentsProps {
     newDocumentID?: number;
 }
 
-export const Documents = (props: DocumentsProps): JSX.Element => {
+export const Document = (props: DocumentsProps): JSX.Element => {
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     const fadeIn = () => {
@@ -225,7 +226,6 @@ export const Documents = (props: DocumentsProps): JSX.Element => {
                         }
                     />
                 }
-                topDivider={true}
                 onPress={(): Promise<unknown> =>
                     Linking.openURL(props.document.attachment)
                 }
@@ -234,7 +234,7 @@ export const Documents = (props: DocumentsProps): JSX.Element => {
                         {props.document.createdBy ? (
                             <Text>{props.document.createdBy.name}</Text>
                         ) : null}
-                        <Text>
+                        <Text style={{ color: 'gray' }}>
                             {moment(props.document.createdAt).format(
                                 'MMM Do YYYY, h:mm a'
                             )}

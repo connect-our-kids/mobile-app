@@ -2,12 +2,8 @@ import gql from 'graphql-tag';
 import { DataProxy } from 'apollo-cache';
 import { PERSON_SLIM_FRAGMENT, PERSON_FUll_FRAGMENT } from './person';
 import { RELATIONSHIP_DETAIL_SLIM_FRAGMENT } from './relationship';
-import { ENGAGEMENT_DETAIL_FRAGMENT, ENGAGEMENTS_QUERY } from './engagement';
+import { ENGAGEMENT_DETAIL_FRAGMENT } from './engagement';
 import { EngagementDetail } from '../../../generated/EngagementDetail';
-import {
-    engagements as engagementsType,
-    engagementsVariables,
-} from '../../../generated/engagements';
 import {
     caseDetailFull,
     caseDetailFullVariables,
@@ -85,6 +81,16 @@ export const CASE_DETAIL_FULL_QUERY = gql`
 
     ${CASE_DETAIL_FULL_FRAGMENT}
     ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
+    ${ENGAGEMENT_DETAIL_FRAGMENT}
+`;
+
+export const DELETE_ENGAGEMENT_MUTATION = gql`
+    mutation deleteEngagementMutation($caseId: Int!, $engagementId: Int!) {
+        deleteEngagement(caseId: $caseId, engagementId: $engagementId) {
+            ...EngagementDetail
+        }
+    }
+
     ${ENGAGEMENT_DETAIL_FRAGMENT}
 `;
 
@@ -176,18 +182,19 @@ export function deleteEngagementCache(
     engagement: EngagementDetail,
     cache: DataProxy
 ) {
-    const engagements = cache.readQuery<engagementsType, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
+    const caseCache = cache.readQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
         variables: { caseId },
     });
-    if (!engagements) {
+    if (!caseCache) {
         return;
     }
-    cache.writeQuery<engagementsType, engagementsVariables>({
-        query: ENGAGEMENTS_QUERY,
+    cache.writeQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
         variables: { caseId },
         data: {
-            engagements: engagements.engagements.filter(
+            ...caseCache,
+            engagements: caseCache.engagements.filter(
                 (e) => e.id !== engagement.id
             ),
         },

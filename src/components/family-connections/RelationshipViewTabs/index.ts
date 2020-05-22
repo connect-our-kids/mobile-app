@@ -1,1 +1,1 @@
-export { Engagement, Documents } from './RelationshipViewTabs';
+export { Engagement, Document } from './RelationshipViewTabs';
