@@ -309,6 +309,7 @@ const CaseScreen = (props: Props) => {
     }
 
     let scroll: ScrollView | null = null;
+
     return (
         <SafeAreaView
             style={{
@@ -377,10 +378,9 @@ const CaseScreen = (props: Props) => {
                                                 {`Case started ${moment
                                                     .utc()
                                                     .from(
-                                                        [
-                                                            props.case.details
-                                                                .fosterCare,
-                                                        ],
+                                                        props.case.details
+                                                            .fosterCare,
+
                                                         true
                                                     )} ago`}
                                             </Text>

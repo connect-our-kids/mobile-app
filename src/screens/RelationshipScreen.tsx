@@ -715,7 +715,6 @@ function RelationshipScreen(props: Props): JSX.Element {
                                 >
                                     <ConnectionsDetailsView
                                         details={props.relationship}
-                                        relationshipId={props.relationshipId}
                                     />
                                 </View>
                             </View>

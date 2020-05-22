@@ -1,6 +1,12 @@
 import React from 'react';
 import { Image, View, Platform } from 'react-native';
-import { createAppContainer, NavigationScreenConfig } from 'react-navigation';
+import {
+    createAppContainer,
+    NavigationScreenConfig,
+    NavigationScreenProp,
+    NavigationState,
+} from 'react-navigation';
+
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +14,7 @@ import AboutScreen from '../screens/AboutScreen';
 import FamilyConnectionsScreen from '../screens/FamilyConnectionsScreen';
 import PeopleSearchScreen from '../screens/PeopleSearchScreen';
 import SearchResultScreen from '../screens/SearchResultScreen';
+import AddCaseScreen from '../screens/AddCaseScreen';
 import constants from '../helpers/constants';
 import AuthenticationView from '../screens/AuthenticationScreen';
 import CaseScreen from '../screens/CaseScreen';
@@ -17,13 +24,15 @@ import logoImg from '../../assets/logo.png';
 import MoreScreen from '../screens/MoreScreen';
 import AddEngagementForm from '../components/family-connections/AddEngagementForm/AddEngagementForm';
 import styles from './styles';
+import AddCaseHeader from '../components/family-connections/AddCaseForm/AddCaseHeader';
 
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
 // If you add new screens into the app, you'll need to add them into the appropriate stacks below in order for React Navigation to know how to route the user.
 // refer to React navigation docs for more details: https://reactnavigation.org/docs/en/bottom-tab-navigator.html
 // Custom drawer code can be found in navigation > CustomDrawer.js
+type Navigation = NavigationScreenProp<NavigationState>;
 
-// use this on the three top level screens (People Search, Family Connections, and More)
+// use this on two top level screens (People Search and More)
 const topLevelScreenNavigationOptions: NavigationScreenConfig<
     Record<string, unknown>,
     unknown
@@ -41,6 +50,20 @@ const topLevelScreenNavigationOptions: NavigationScreenConfig<
                 resizeMode="contain"
             />
         </View>
+    ),
+};
+// use this on the top level screen with Add Case Button (Family Connections)
+const topLevelScreenNavOptionsFC: NavigationScreenConfig<
+    Record<string, unknown>,
+    unknown
+> = {
+    headerStyle: {
+        height: constants.headerHeight,
+        backgroundColor: constants.backgroundColor,
+    },
+    // eslint-disable-next-line react/display-name
+    header: ({ navigation }: { navigation: Navigation }) => (
+        <AddCaseHeader navigation={navigation} />
     ),
 };
 
@@ -71,7 +94,15 @@ const subLevelScreenNavigationOptions: NavigationScreenConfig<
 const FamilyConnectionsNavigator = createStackNavigator({
     FamilyConnections: {
         screen: FamilyConnectionsScreen,
-        navigationOptions: topLevelScreenNavigationOptions,
+        navigationOptions: topLevelScreenNavOptionsFC,
+    },
+    AddCaseScreen: {
+        screen: AddCaseScreen,
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Cases' : '',
+            headerBackTitle: Platform.OS === 'android' ? ' ' : 'Back to Cases',
+        },
     },
     CaseView: {
         screen: CaseScreen,

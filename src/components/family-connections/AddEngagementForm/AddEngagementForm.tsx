@@ -180,7 +180,6 @@ const AddEngagementForm = (props: Props) => {
             ? setErrorToggleModal(!toggleErrorModal)
             : props.navigation.goBack();
     };
-
     const createEngagement = () => {
         switch (props.engagementType) {
             case 'EngagementCall':

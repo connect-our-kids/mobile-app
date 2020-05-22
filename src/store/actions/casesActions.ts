@@ -25,6 +25,8 @@ export enum CasesTypes {
     CREATE_CASE = 'CREATE_CASE',
     CREATE_CASE_SUCCESS = 'CREATE_CASE_SUCCESS',
     CREATE_CASE_FAILURE = 'CREATE_CASE_FAILURE',
+    CLEAR_CASE_SUCCESS = 'CLEAR_CASE_SUCCESS',
+    CLEAR_ADD_CASE_ERROR = 'CLEAR_ADD_CASE_ERROR',
 }
 
 export interface CasesStartAction {
@@ -52,7 +54,9 @@ export type CasesActionTypes =
     | CasesClearAction
     | CreateCaseAction
     | CreateCaseSuccessAction
-    | CreateCaseFailureAction;
+    | CreateCaseFailureAction
+    | ClearCaseSuccessAction
+    | AddCaseClearErrorAction;
 
 export interface CasesDispatch {
     (arg0: CasesActionTypes): void;
@@ -65,6 +69,14 @@ export interface CreateCaseAction {
 export interface CreateCaseSuccessAction {
     type: CasesTypes.CREATE_CASE_SUCCESS;
     case: casesDetailSlim_cases;
+}
+
+export interface ClearCaseSuccessAction {
+    type: CasesTypes.CLEAR_CASE_SUCCESS;
+}
+
+export interface AddCaseClearErrorAction {
+    type: CasesTypes.CLEAR_ADD_CASE_ERROR;
 }
 
 export interface CreateCaseFailureAction {
@@ -102,6 +114,13 @@ export const getCases = (): ThunkResult<void> => (
                 });
             }
         );
+};
+
+export const addCaseClearError = () => (dispatch: CasesDispatch): void => {
+    //resets document error to undefined
+    dispatch({
+        type: CasesTypes.CLEAR_ADD_CASE_ERROR,
+    });
 };
 
 export const createCase = (value: CreateCaseInput): ThunkResult<void> => (
@@ -150,6 +169,13 @@ export const createCase = (value: CreateCaseInput): ThunkResult<void> => (
                 });
             }
         );
+};
+
+export const clearAddCaseSuccess = () => (dispatch: CasesDispatch): void => {
+    //new document back to false
+    dispatch({
+        type: CasesTypes.CLEAR_CASE_SUCCESS,
+    });
 };
 
 export const clearUserCases = (): ThunkResult<void> => (

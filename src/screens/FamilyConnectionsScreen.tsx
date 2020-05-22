@@ -131,17 +131,9 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         Platform.OS === 'android' ? setRtn('') : null; // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
     }, []);
 
-    // run once
-    /*
-    useEffect(() => {
-        console.log('useEffect auth checker - family connections');
-        props.login(true);
-    }, []);
-*/
     // run any time the logged in status changes
     useEffect(() => {
         if (props.auth.isLoggedIn && !props.auth.isLoggingIn) {
-            console.log('Logged in with token');
             props.getCases();
         }
     }, [props.auth.isLoggedIn, props.auth.isLoggingIn]);
@@ -186,7 +178,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     }
 
     if (state.filters.last) {
-        console.log('Sorting by last name');
         filteredCases.sort((a, b) => {
             const aLastName = a.person.lastName || '';
             const bLastName = b.person.lastName || '';

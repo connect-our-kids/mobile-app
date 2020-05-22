@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '50%',
         marginTop: 25,
-        borderRadius: 25,
+        borderRadius: 8,
         alignItems: 'center',
     },
 });
@@ -253,11 +253,11 @@ const MoreScreen = (props: Props) => {
                                             animationType={'fade'}
                                             transparent={true}
                                             visible={props.auth.loggedOutfail}
-                                            onRequestClose={() => {
-                                                console.log(
-                                                    'Modal has been closed.'
-                                                );
-                                            }}
+                                            // onRequestClose={() => {
+                                            //     console.log(
+                                            //         'Modal has been closed.'
+                                            //     );
+                                            // }}
                                         >
                                             <View style={styles.modal}>
                                                 <Text>
@@ -292,9 +292,9 @@ const MoreScreen = (props: Props) => {
                                 animationType={'fade'}
                                 transparent={true}
                                 visible={props.auth.loggedOutSuccess}
-                                onRequestClose={() => {
-                                    console.log('Modal has been closed.');
-                                }}
+                                // onRequestClose={() => {
+                                //     console.log('Modal has been closed.');
+                                // }}
                             >
                                 <View style={styles.modal}>
                                     <Text>Successfully logged out!</Text>

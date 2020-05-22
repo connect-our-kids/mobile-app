@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Text,
     View,
@@ -7,19 +7,14 @@ import {
     Linking,
     Platform,
 } from 'react-native';
-import EditDetailsForm from '../EditDetailsForm';
 import { RelationshipDetailFullFragment } from '../../../generated/RelationshipDetailFullFragment';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function ConnectionsDetailsView({
     details,
-    relationshipId,
 }: {
     details: RelationshipDetailFullFragment;
-    relationshipId: number;
 }): JSX.Element {
-    const [edit, setEdit] = useState(false);
-
     const styles = StyleSheet.create({
         rootView: {
             display: 'flex',
@@ -93,12 +88,6 @@ export default function ConnectionsDetailsView({
             paddingTop: 2,
             color: '#444444',
         },
-        edit: {
-            color: '#0279AC',
-            paddingTop: 20,
-            paddingRight: 5,
-            textAlign: 'right',
-        },
     });
 
     const teleFormat = (phoneNumber: string): string => {
@@ -120,7 +109,7 @@ export default function ConnectionsDetailsView({
         }
     };
 
-    return edit === false ? (
+    return (
         <View style={styles.rootView}>
             {/* TODO. Commented out editing until it is updated for GraphQL backend
              <Text
@@ -427,11 +416,5 @@ export default function ConnectionsDetailsView({
             ) : null}
             <View style={{ height: 60 }} />
         </View>
-    ) : (
-        <EditDetailsForm
-            details={details}
-            id={relationshipId}
-            setEdit={setEdit}
-        />
     );
 }

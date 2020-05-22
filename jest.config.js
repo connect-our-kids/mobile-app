@@ -21,6 +21,9 @@ function getBaseConfig() {
             'ts',
             'tsx',
         ],
+        transformIgnorePatterns: [
+            'node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)/.*@sentry',
+        ],
 
         /* DO transform... */
         transform: {
@@ -75,6 +78,9 @@ function getBaseCoverageConfig() {
 
 module.exports = {
     /* Limit testing to... */
+    transformIgnorePatterns: [
+        'node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)',
+    ],
     projects: [
         /* Android */
         {
