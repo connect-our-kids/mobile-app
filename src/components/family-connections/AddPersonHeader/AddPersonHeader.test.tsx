@@ -3,7 +3,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import AddCaseHeader from './AddCaseHeader';
+import AddPersonHeader from './AddPersonHeader';
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -17,7 +17,7 @@ const createTestProps = (props: Record<string, any>) => ({
     ...props,
 });
 
-describe('AddCaseHeader component', () => {
+describe('AddPersonHeader component', () => {
     test('renders upon passing in myRole state', () => {
         let props: any;
         beforeEach(() => {
@@ -25,7 +25,7 @@ describe('AddCaseHeader component', () => {
             const tree = renderer
                 .create(
                     <Provider store={store}>
-                        <AddCaseHeader {...props} />
+                        <AddPersonHeader {...props} />
                     </Provider>
                 )
                 .toJSON();

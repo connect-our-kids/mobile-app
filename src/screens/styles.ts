@@ -177,6 +177,15 @@ export default StyleSheet.create({
         paddingLeft: 5,
         borderRadius: 5,
     },
+    salaryDropdownContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: 'rgba(24,23,21,.5)',
+        borderWidth: 0.5,
+        borderRadius: 5,
+        marginTop: 5,
+        width: 225,
+    },
     cityInput: {
         borderColor: 'rgba(24,23,21,.5)',
         borderWidth: 0.5,

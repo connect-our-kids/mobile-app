@@ -15,6 +15,7 @@ import FamilyConnectionsScreen from '../screens/FamilyConnectionsScreen';
 import PeopleSearchScreen from '../screens/PeopleSearchScreen';
 import SearchResultScreen from '../screens/SearchResultScreen';
 import AddCaseScreen from '../screens/AddCaseScreen';
+import AddRelationshipScreen from '../screens/AddRelationshipScreen';
 import constants from '../helpers/constants';
 import AuthenticationView from '../screens/AuthenticationScreen';
 import CaseScreen from '../screens/CaseScreen';
@@ -25,7 +26,7 @@ import MoreScreen from '../screens/MoreScreen';
 import AddEngagementForm from '../components/family-connections/AddEngagementForm/AddEngagementForm';
 import styles from './styles';
 import AddCaseHeader from '../components/family-connections/AddCaseForm/AddCaseHeader';
-
+import AddPersonHeader from '../components/family-connections/AddPersonHeader/AddPersonHeader';
 // This is the primary NAVIGATION file. Everything in this file determines how to navigate around through the Bottom Navbar and "More" Drawer.
 // If you add new screens into the app, you'll need to add them into the appropriate stacks below in order for React Navigation to know how to route the user.
 // refer to React navigation docs for more details: https://reactnavigation.org/docs/en/bottom-tab-navigator.html
@@ -89,6 +90,29 @@ const subLevelScreenNavigationOptions: NavigationScreenConfig<
         left: 50,
     },
 };
+const subLevelScreenNavOptionsCV: NavigationScreenConfig<
+    Record<string, unknown>,
+    unknown
+> = {
+    headerTintColor: constants.highlightColor,
+    headerStyle: {
+        height: constants.headerHeight,
+        backgroundColor: constants.backgroundColor,
+        zIndex: 0,
+    },
+    headerTitleStyle: {
+        color: constants.highlightColor,
+        fontSize: 17,
+        margin: 0,
+        padding: 0,
+        fontWeight: '100',
+        zIndex: 1,
+    },
+    headerTitleAlign: 'left',
+    headerTitleContainerStyle: {
+        left: 50,
+    },
+};
 
 // Following StackNavigators are in BottomNav:
 const FamilyConnectionsNavigator = createStackNavigator({
@@ -107,9 +131,27 @@ const FamilyConnectionsNavigator = createStackNavigator({
     CaseView: {
         screen: CaseScreen,
         navigationOptions: {
-            ...subLevelScreenNavigationOptions,
+            ...subLevelScreenNavOptionsCV,
             headerTitle: Platform.OS === 'android' ? 'Back to Cases' : '',
             headerBackTitle: Platform.OS === 'android' ? ' ' : 'Back to Cases',
+            // eslint-disable-next-line react/display-name
+            header: ({ scene, navigation }) => {
+                const { options } = scene.descriptor;
+                return (
+                    <AddPersonHeader
+                        navigation={navigation}
+                        options={options}
+                    />
+                );
+            },
+        },
+    },
+    AddRelationshipScreen: {
+        screen: AddRelationshipScreen,
+        navigationOptions: {
+            ...subLevelScreenNavigationOptions,
+            headerTitle: Platform.OS === 'android' ? 'Back to Case' : '',
+            headerBackTitle: Platform.OS === 'android' ? ' ' : 'Back to Case',
         },
     },
     RelationshipScreen: {

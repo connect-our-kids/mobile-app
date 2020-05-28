@@ -3,21 +3,22 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import AddCaseHeader from './AddCaseHeader';
+import AddRelationshipScreen from './AddRelationshipScreen';
 
 const mockStore = configureMockStore();
 const store = mockStore({
-    me: { case: { results: { userTeam: { role: 'EDITOR' } } } },
+    case: { lastCreatedRelationship: { id: 0 }, isCreatingRelationship: false },
 });
 
 const createTestProps = (props: Record<string, any>) => ({
     navigation: {
         navigate: jest.fn(),
+        getParam: jest.fn(),
     },
     ...props,
 });
 
-describe('AddCaseHeader component', () => {
+describe('AddRelationshipScreen component', () => {
     test('renders upon passing in myRole state', () => {
         let props: any;
         beforeEach(() => {
@@ -25,7 +26,7 @@ describe('AddCaseHeader component', () => {
             const tree = renderer
                 .create(
                     <Provider store={store}>
-                        <AddCaseHeader {...props} />
+                        <AddRelationshipScreen {...props} />
                     </Provider>
                 )
                 .toJSON();
