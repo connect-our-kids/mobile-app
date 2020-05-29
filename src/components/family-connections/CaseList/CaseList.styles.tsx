@@ -1,10 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    caseListWrapper: {
+    listItem: {
         width: '100%',
-        paddingLeft: 5,
-        paddingRight: 10,
     },
 
     avatarStyle: {

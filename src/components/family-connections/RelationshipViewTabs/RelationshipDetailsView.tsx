@@ -19,8 +19,7 @@ export default function ConnectionsDetailsView({
         rootView: {
             display: 'flex',
             justifyContent: 'flex-start',
-            width: '90%',
-            margin: 0,
+            width: '100%',
         },
         header: {
             marginTop: 1,
@@ -414,7 +413,6 @@ export default function ConnectionsDetailsView({
                     </View>
                 </>
             ) : null}
-            <View style={{ height: 60 }} />
         </View>
     );
 }

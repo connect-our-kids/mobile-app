@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: '#EBEBEB',
-        paddingTop: 10,
+        paddingTop: 0,
     },
     engagementTab: {
         width: '33.3%',
@@ -147,9 +147,9 @@ const styles = StyleSheet.create({
     relationshipCard: {
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingBottom: 30,
-        paddingTop: 15,
-        paddingLeft: 5,
+        paddingBottom: 20,
+        paddingTop: 10,
+        paddingHorizontal: 10,
     },
     centerView: {
         flex: 1,
@@ -540,6 +540,7 @@ function RelationshipScreen(props: Props): JSX.Element {
                 <RelationshipListItem
                     relationship={props.relationship}
                     documentError={props.documentError}
+                    roundedCorners={true}
                 />
             </View>
             <View

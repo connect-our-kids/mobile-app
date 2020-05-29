@@ -29,63 +29,60 @@ export default function RelationshipListItem(props: {
     relationship: RelationshipDetailSlim;
     pressed?: () => void;
     documentError?: string;
+    roundedCorners?: boolean;
 }) {
     return (
-        <View style={styles.caseListWrapper}>
-            <View>
-                <ListItem
-                    onPress={async () => {
-                        props.pressed?.();
-                    }}
-                    title={props.relationship.person.fullName}
-                    titleStyle={{
-                        color: getTextColor(props.relationship),
-                    }}
-                    subtitle={generateSubTitle(props.relationship.person)}
-                    subtitleStyle={{
-                        color: getTextColor(props.relationship),
-                    }}
-                    containerStyle={{
-                        backgroundColor: props.documentError
-                            ? 'rgba(0,0,0,0.0)'
-                            : getBackgroundColor(props.relationship),
-                        borderRadius: 5,
-                        marginTop: 5,
-                    }}
-                    leftAvatar={
-                        <View style={styles.avatarStyle}>
-                            {props.relationship.person.picture ? (
-                                <Image
-                                    source={{
-                                        uri: props.relationship.person.picture,
-                                    }}
-                                    defaultSource={placeholderImg}
-                                    style={[
-                                        styles.pictureStyle,
-                                        props.documentError
-                                            ? {
-                                                  opacity: 0.1,
-                                              }
-                                            : {},
-                                    ]}
-                                />
-                            ) : (
-                                <Image
-                                    source={placeholderImg}
-                                    style={[
-                                        styles.placeholderImgStyle,
-                                        props.documentError
-                                            ? {
-                                                  opacity: 0.1,
-                                              }
-                                            : {},
-                                    ]}
-                                />
-                            )}
-                        </View>
-                    }
-                />
-            </View>
-        </View>
+        <ListItem
+            style={styles.listItem}
+            onPress={async () => {
+                props.pressed?.();
+            }}
+            title={props.relationship.person.fullName}
+            titleStyle={{
+                color: getTextColor(props.relationship),
+            }}
+            subtitle={generateSubTitle(props.relationship.person)}
+            subtitleStyle={{
+                color: getTextColor(props.relationship),
+            }}
+            containerStyle={{
+                backgroundColor: props.documentError
+                    ? 'rgba(0,0,0,0.0)'
+                    : getBackgroundColor(props.relationship),
+                borderRadius: props.roundedCorners ? 5 : 0,
+            }}
+            leftAvatar={
+                <View style={styles.avatarStyle}>
+                    {props.relationship.person.picture ? (
+                        <Image
+                            source={{
+                                uri: props.relationship.person.picture,
+                            }}
+                            defaultSource={placeholderImg}
+                            style={[
+                                styles.pictureStyle,
+                                props.documentError
+                                    ? {
+                                          opacity: 0.1,
+                                      }
+                                    : {},
+                            ]}
+                        />
+                    ) : (
+                        <Image
+                            source={placeholderImg}
+                            style={[
+                                styles.placeholderImgStyle,
+                                props.documentError
+                                    ? {
+                                          opacity: 0.1,
+                                      }
+                                    : {},
+                            ]}
+                        />
+                    )}
+                </View>
+            }
+        />
     );
 }

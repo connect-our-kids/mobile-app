@@ -99,12 +99,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: '100%',
     },
-    avatarName: {
+    relationship: {
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingBottom: '2%',
-        paddingTop: 5,
-        paddingLeft: 5,
+        padding: 10,
         width: '100%',
     },
 });
@@ -221,10 +219,11 @@ const AddEngagementForm = (props: Props) => {
                     : {},
             ]}
         >
-            <View style={{ width: '100%' }}>
-                <View style={styles.avatarName}>
-                    <RelationshipListItem relationship={props.relationship} />
-                </View>
+            <View style={styles.relationship}>
+                <RelationshipListItem
+                    relationship={props.relationship}
+                    roundedCorners={true}
+                />
             </View>
             <View style={[styles.formContainer]}>
                 <View
