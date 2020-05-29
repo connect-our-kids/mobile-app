@@ -368,7 +368,11 @@ const CaseScreen = (props: Props) => {
                                         {props.case.details.person.addresses
                                             ?.length > 0 &&
                                         props.case.details?.person.addresses[0]
-                                            .raw ? (
+                                            .raw &&
+                                        (props.case.details.person.addresses[0]
+                                            .locality ||
+                                            props.case.details.person
+                                                .addresses[0].state) ? (
                                             <Text style={{ color: '#434245' }}>
                                                 {`${props.case.details.person.addresses[0].locality}, ${props.case.details.person.addresses[0].state}`}
                                             </Text>

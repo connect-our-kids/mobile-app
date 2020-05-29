@@ -50,6 +50,7 @@ type StateProps = {
     result: casesDetailSlim_cases | undefined;
     isAddingCase: boolean;
     addCaseFailure: boolean;
+    gender?: string[];
 };
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -166,6 +167,7 @@ function AddCaseScreen(props: Props) {
     const [toggleChildStatus, setToggleChildStatus] = useState(false);
     const [requiredTextCaseStatus, setRequiredTextCaseStatus] = useState(false);
     const [requiredTextName, setRequiredTextName] = useState(false);
+    const [rawAddress, setRawAddress] = useState(['', '', '', '', '']);
     const [
         requiredTextFosterDateAdded,
         setRequiredTextFosterDateAdded,
@@ -241,13 +243,7 @@ function AddCaseScreen(props: Props) {
     ) {
         const copy = { ...formData };
 
-        if (
-            nameKey === 'streetNumber' ||
-            nameKey === 'postalCode' ||
-            nameKey === 'locality' ||
-            nameKey === 'state' ||
-            nameKey === 'country'
-        ) {
+        if (nameKey === 'raw' || nameKey === 'locality') {
             if (copy.addresses !== undefined) {
                 copy.addresses = [
                     {
@@ -309,6 +305,13 @@ function AddCaseScreen(props: Props) {
             }
         }
         setFormData(copy);
+    }
+    function handleRawAddress(placement: number, value: string) {
+        const newAddress = [...rawAddress];
+        newAddress[placement] = value;
+        const rawString = [...newAddress].filter((v) => v != '').join(', ');
+        handleChange('raw', rawString);
+        setRawAddress(newAddress);
     }
 
     useEffect(() => {
@@ -684,25 +687,13 @@ function AddCaseScreen(props: Props) {
                                     handleChange('gender', itemValue);
                                 }}
                             >
-                                <Picker.Item
-                                    label="Unspecified"
-                                    value="Unspecified"
-                                />
-                                <Picker.Item label="Female" value="Female" />
-                                <Picker.Item label="Male" value="Male" />
-                                <Picker.Item
-                                    label="Gender-fluid"
-                                    value="Gender-fluid"
-                                />
-                                <Picker.Item
-                                    label="Transgender - FtM"
-                                    value="Transgender - FtM"
-                                />
-                                <Picker.Item
-                                    label="Transgender - MtF"
-                                    value="Transgender - MtF"
-                                />
-                                <Picker.Item label="Other" value="Other" />
+                                {props.gender?.map((value, index) => (
+                                    <Picker.Item
+                                        key={index}
+                                        label={value}
+                                        value={value}
+                                    />
+                                ))}
                             </Picker>
                         </View>
                         <Text style={styles.textPadding}>Residence</Text>
@@ -710,13 +701,9 @@ function AddCaseScreen(props: Props) {
                             <TextInput
                                 style={styles.addressInput}
                                 placeholder={'Street'}
-                                value={
-                                    formData.addresses
-                                        ? formData.addresses[0].streetNumber
-                                        : ''
-                                }
+                                value={rawAddress[0]}
                                 onChangeText={(text) =>
-                                    handleChange('streetNumber', text)
+                                    handleRawAddress(0, text)
                                 }
                             />
                         </View>
@@ -724,13 +711,9 @@ function AddCaseScreen(props: Props) {
                             <TextInput
                                 style={styles.cityInput}
                                 placeholder={'City'}
-                                value={
-                                    formData.addresses
-                                        ? formData.addresses[0].locality
-                                        : ''
-                                }
+                                value={rawAddress[1]}
                                 onChangeText={(text) =>
-                                    handleChange('locality', text)
+                                    handleRawAddress(1, text)
                                 }
                             />
                             <TextInput
@@ -738,13 +721,9 @@ function AddCaseScreen(props: Props) {
                                 keyboardType="numeric"
                                 style={styles.zipInput}
                                 placeholder={'Postal'}
-                                value={
-                                    formData.addresses
-                                        ? formData.addresses[0].postalCode
-                                        : ''
-                                }
+                                value={rawAddress[2]}
                                 onChangeText={(text) =>
-                                    handleChange('postalCode', text)
+                                    handleRawAddress(2, text)
                                 }
                             />
                         </View>
@@ -752,13 +731,9 @@ function AddCaseScreen(props: Props) {
                             <TextInput
                                 style={styles.addressInput}
                                 placeholder={'State'}
-                                value={
-                                    formData.addresses
-                                        ? formData.addresses[0].state
-                                        : ''
-                                }
+                                value={rawAddress[3]}
                                 onChangeText={(text) =>
-                                    handleChange('state', text)
+                                    handleRawAddress(3, text)
                                 }
                             />
                         </View>
@@ -766,13 +741,9 @@ function AddCaseScreen(props: Props) {
                             <TextInput
                                 style={styles.addressInput}
                                 placeholder={'Country'}
-                                value={
-                                    formData.addresses
-                                        ? formData.addresses[0].country
-                                        : ''
-                                }
+                                value={rawAddress[4]}
                                 onChangeText={(text) =>
-                                    handleChange('country', text)
+                                    handleRawAddress(4, text)
                                 }
                             />
                         </View>
@@ -894,6 +865,8 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
               })
             : undefined;
 
+    const gender = state.schema?.results?.schema.gender;
+
     return {
         image,
         fileName,
@@ -904,6 +877,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         result,
         isAddingCase,
         addCaseFailure,
+        gender,
     };
 };
 
