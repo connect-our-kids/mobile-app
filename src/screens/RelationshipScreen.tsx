@@ -7,6 +7,7 @@ import {
     Modal,
     ListRenderItemInfo,
     Image,
+    ScrollView,
 } from 'react-native';
 import constants from '../helpers/constants';
 import { connect } from 'react-redux';
@@ -364,6 +365,9 @@ function ErrorDeletingEngagementModal(props: {
     );
 }
 
+let engagementsListViewRef: SwipeListView<EngagementDetail> | null = null;
+let documentsListViewRef: SwipeListView<EngagementDetail> | null = null;
+
 /**
  * This screen shows the information pertaining to one relationship/connection from a case
  * @param props Properties required by this screen
@@ -373,7 +377,12 @@ function RelationshipScreen(props: Props): JSX.Element {
         'engagements' | 'details' | 'documents'
     >('engagements');
 
-    const [isScrolling, setIsScrolling] = useState(false);
+    const [isEngagementsListScrolled, setIsEngagementsListScrolled] = useState(
+        false
+    );
+    const [isDocumentsListScrolled, setIsDocumentsListScrolled] = useState(
+        false
+    );
 
     const [showSwipePreview, setShowSwipePreview] = useState(true);
 
@@ -461,9 +470,6 @@ function RelationshipScreen(props: Props): JSX.Element {
             caseId: props.caseId,
         } as AddEngagementFormParams);
     };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let scroll: SwipeListView<EngagementDetail> | null = null;
 
     if (!props.auth.isLoggedIn) {
         return <ConnectionsLogin />;
@@ -647,233 +653,252 @@ function RelationshipScreen(props: Props): JSX.Element {
                     </Text>
                 </View>
             </View>
-            {currentTab === 'engagements' ? (
+            <View
+                style={{
+                    width: '100%',
+                    minHeight: 350,
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
+                    flex: 1,
+                    display: currentTab === 'engagements' ? 'flex' : 'none',
+                }}
+            >
                 <View
                     style={{
-                        width: '100%',
-                        minHeight: 350,
-                        paddingTop: 10,
-                        paddingHorizontal: 10,
-                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
                     }}
                 >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <View style={styles.iconLabelContainer}>
-                            <View style={styles.iconContainer}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        navigateToEngagementForm(
-                                            'EngagementNote'
-                                        );
-                                    }}
-                                >
-                                    <MaterialIcons
-                                        name="note-add"
-                                        style={styles.iconStyles}
-                                    />
-                                    <Text style={styles.iconLabel}>
-                                        ADD NOTE
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        <View style={styles.iconLabelContainer}>
-                            <View style={styles.iconContainer}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        navigateToEngagementForm(
-                                            'EngagementCall'
-                                        );
-                                    }}
-                                >
-                                    <MaterialCommunityIcons
-                                        name="phone-plus"
-                                        style={{
-                                            fontSize: 28,
-                                            color: constants.highlightColor,
-                                            width: 28,
-                                            height: 28,
-                                            marginHorizontal: 10,
-                                        }}
-                                    />
-                                    <Text style={styles.iconLabel}>
-                                        LOG CALL
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        <View style={styles.iconLabelContainer}>
-                            <View style={styles.iconContainer}>
-                                <TouchableOpacity
-                                    onPress={async () => {
-                                        navigateToEngagementForm(
-                                            'EngagementEmail'
-                                        );
-                                    }}
-                                >
-                                    <MaterialCommunityIcons
-                                        name="email-plus"
-                                        style={styles.iconStyles}
-                                    />
-                                    <Text style={styles.iconLabel}>
-                                        LOG EMAIL
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                    <View style={styles.iconLabelContainer}>
+                        <View style={styles.iconContainer}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigateToEngagementForm('EngagementNote');
+                                }}
+                            >
+                                <MaterialIcons
+                                    name="note-add"
+                                    style={styles.iconStyles}
+                                />
+                                <Text style={styles.iconLabel}>ADD NOTE</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
-                    {engagementsNoDocuments.length > 0 ? (
-                        <SwipeListView
-                            disableRightSwipe
-                            data={engagementsNoDocuments}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={renderEngagement}
-                            renderHiddenItem={renderDeleteEngagementSwipeButton}
-                            rightOpenValue={-75}
-                            listViewRef={(ref) => {
-                                scroll = ref;
-                            }}
-                            onScroll={(scrollingEvent): void => {
-                                // TODO change infinity to zero when working
-                                setIsScrolling(
-                                    scrollingEvent.nativeEvent.contentOffset.y >
-                                        Infinity
-                                );
-                            }}
-                            onScrollToTop={(): void => {
-                                // TODO scrolling is currently broken
-                                setIsScrolling(false);
-                            }}
-                            scrollEventThrottle={1}
-                        />
-                    ) : (
-                        <Text
-                            style={{
-                                width: '100%',
-                                textAlign: 'center',
-                                marginTop: 50,
-                            }}
-                        >
-                            No engagements have been recorded for this person.
-                        </Text>
-                    )}
-                </View>
-            ) : null}
-            {currentTab === 'details' ? (
-                <View
-                    style={{
-                        minHeight: 350,
-                        width: '100%',
-                        paddingTop: 40,
-                    }}
-                >
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        {props.relationship ? (
-                            <ConnectionsDetailsView
-                                details={props.relationship}
-                            />
-                        ) : null}
-                    </View>
-                </View>
-            ) : null}
-            {currentTab === 'documents' ? (
-                <View
-                    style={{
-                        width: '100%',
-                        minHeight: 350,
-                        paddingTop: 10,
-                        paddingHorizontal: 10,
-                        flex: 1,
-                    }}
-                >
-                    {props.documentError && (
-                        <ErrorModal
-                            error={props.documentError}
-                            dismissModal={() => props.docClearError()}
-                        />
-                    )}
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <View style={styles.documentsButtonsGroup}>
-                            <PickFileButton
-                                afterAccept={(media) => {
-                                    props.navigation.navigate('DocumentForm', {
-                                        media,
-                                    });
+                    <View style={styles.iconLabelContainer}>
+                        <View style={styles.iconContainer}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigateToEngagementForm('EngagementCall');
                                 }}
-                            />
-                            <PickPhotoButton
-                                afterAccept={(media) => {
-                                    props.navigation.navigate('DocumentForm', {
-                                        media,
-                                    });
-                                }}
-                            />
-                            <TakePhotoButton
-                                afterAccept={(media) => {
-                                    props.navigation.navigate('DocumentForm', {
-                                        media,
-                                    });
-                                }}
-                            />
+                            >
+                                <MaterialCommunityIcons
+                                    name="phone-plus"
+                                    style={{
+                                        fontSize: 28,
+                                        color: constants.highlightColor,
+                                        width: 28,
+                                        height: 28,
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                                <Text style={styles.iconLabel}>LOG CALL</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                    {props.documents.length > 0 ? (
-                        <SwipeListView
-                            disableRightSwipe
-                            data={props.documents.sort(created).reverse()}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={renderDocument}
-                            renderHiddenItem={renderDeleteEngagementSwipeButton}
-                            rightOpenValue={-75}
-                            listViewRef={(ref) => {
-                                scroll = ref;
-                            }}
-                            onScroll={(scrollingEvent): void => {
-                                // TODO change infinity to zero when working
-                                setIsScrolling(
-                                    scrollingEvent.nativeEvent.contentOffset.y >
-                                        Infinity
-                                );
-                            }}
-                            onScrollToTop={(): void => {
-                                // TODO scrolling is currently broken
-                                setIsScrolling(false);
-                            }}
-                            scrollEventThrottle={1}
-                        />
-                    ) : (
-                        <Text
-                            style={{
-                                width: '100%',
-                                textAlign: 'center',
-                                marginTop: 50,
-                            }}
-                        >
-                            No documents have been attached to this person.
-                        </Text>
-                    )}
+
+                    <View style={styles.iconLabelContainer}>
+                        <View style={styles.iconContainer}>
+                            <TouchableOpacity
+                                onPress={async () => {
+                                    navigateToEngagementForm('EngagementEmail');
+                                }}
+                            >
+                                <MaterialCommunityIcons
+                                    name="email-plus"
+                                    style={styles.iconStyles}
+                                />
+                                <Text style={styles.iconLabel}>LOG EMAIL</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-            ) : null}
+
+                {engagementsNoDocuments.length > 0 ? (
+                    <SwipeListView
+                        disableRightSwipe
+                        data={engagementsNoDocuments}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={renderEngagement}
+                        renderHiddenItem={renderDeleteEngagementSwipeButton}
+                        rightOpenValue={-75}
+                        listViewRef={(ref) => {
+                            engagementsListViewRef = ref;
+                        }}
+                        onScroll={(scrollingEvent): void => {
+                            setIsEngagementsListScrolled(
+                                scrollingEvent.nativeEvent.contentOffset.y > 0
+                            );
+                        }}
+                        onScrollToTop={(): void => {
+                            setIsEngagementsListScrolled(false);
+                        }}
+                        scrollEventThrottle={5}
+                    />
+                ) : (
+                    <Text
+                        style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            marginTop: 50,
+                        }}
+                    >
+                        No engagements have been recorded for this person.
+                    </Text>
+                )}
+                {isEngagementsListScrolled && (
+                    <ScrollToTop
+                        style={{
+                            position: 'absolute',
+                            zIndex: 1000,
+                            bottom: 10,
+                            right: 38,
+                            backgroundColor: 'white',
+                            padding: 8,
+                            borderRadius: 35,
+                        }}
+                        onPress={(): void => {
+                            // Problem with typings for library
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                            // @ts-ignore
+                            engagementsListViewRef?.scrollToOffset({
+                                x: 0,
+                                y: 0,
+                                animated: true,
+                            });
+                        }}
+                    />
+                )}
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
+                    display: currentTab === 'details' ? 'flex' : 'none',
+                }}
+            >
+                {props.relationship ? (
+                    <ScrollView>
+                        <ConnectionsDetailsView details={props.relationship} />
+                    </ScrollView>
+                ) : null}
+            </View>
+            <View
+                style={{
+                    width: '100%',
+                    minHeight: 350,
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
+                    flex: 1,
+                    display: currentTab === 'documents' ? 'flex' : 'none',
+                }}
+            >
+                {props.documentError && (
+                    <ErrorModal
+                        error={props.documentError}
+                        dismissModal={() => props.docClearError()}
+                    />
+                )}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                    }}
+                >
+                    <View style={styles.documentsButtonsGroup}>
+                        <PickFileButton
+                            afterAccept={(media) => {
+                                props.navigation.navigate('DocumentForm', {
+                                    media,
+                                });
+                            }}
+                        />
+                        <PickPhotoButton
+                            afterAccept={(media) => {
+                                props.navigation.navigate('DocumentForm', {
+                                    media,
+                                });
+                            }}
+                        />
+                        <TakePhotoButton
+                            afterAccept={(media) => {
+                                props.navigation.navigate('DocumentForm', {
+                                    media,
+                                });
+                            }}
+                        />
+                    </View>
+                </View>
+                {props.documents.length > 0 ? (
+                    <SwipeListView
+                        disableRightSwipe
+                        data={props.documents.sort(created).reverse()}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={renderDocument}
+                        renderHiddenItem={renderDeleteEngagementSwipeButton}
+                        rightOpenValue={-75}
+                        listViewRef={(ref) => {
+                            documentsListViewRef = ref;
+                        }}
+                        onScroll={(scrollingEvent): void => {
+                            setIsDocumentsListScrolled(
+                                scrollingEvent.nativeEvent.contentOffset.y > 0
+                            );
+                        }}
+                        onScrollToTop={(): void => {
+                            setIsDocumentsListScrolled(false);
+                        }}
+                        scrollEventThrottle={5}
+                    />
+                ) : (
+                    <Text
+                        style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            marginTop: 50,
+                        }}
+                    >
+                        No documents have been attached to this person.
+                    </Text>
+                )}
+                {isDocumentsListScrolled && (
+                    <ScrollToTop
+                        style={{
+                            position: 'absolute',
+                            zIndex: 1000,
+                            bottom: 10,
+                            right: 38,
+                            backgroundColor: 'white',
+                            padding: 8,
+                            borderRadius: 35,
+                        }}
+                        onPress={(): void => {
+                            // Problem with typings for library
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                            // @ts-ignore
+                            documentsListViewRef?.scrollToOffset({
+                                x: 0,
+                                y: 0,
+                                animated: true,
+                            });
+                        }}
+                    />
+                )}
+            </View>
             {deleteEngagementState?.state === 'confirm' ? (
                 <DeleteConfirmationModal
                     type={deleteEngagementState.type}
@@ -904,29 +929,6 @@ function RelationshipScreen(props: Props): JSX.Element {
             {loading ? (
                 <DeletingModal
                     type={deleteEngagementState?.type ?? 'document'}
-                />
-            ) : null}
-            {isScrolling ? (
-                <ScrollToTop
-                    style={{
-                        position: 'absolute',
-                        zIndex: 1000,
-                        bottom: 10,
-                        right: 38,
-                        backgroundColor: 'white',
-                        padding: 8,
-                        borderRadius: 35,
-                        opacity: 0, // TODO hiding this on purpose
-                    }}
-                    onPress={(): void => {
-                        // TODO this does not currently work
-                        /* scroll.current?.scrollToLocation({
-                            x: 0,
-                            y: 0,
-                            animated: true,
-                        });*/
-                        console.log(scroll?.state);
-                    }}
                 />
             ) : null}
         </View>
