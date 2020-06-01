@@ -84,7 +84,8 @@
         "redux-thunk": "^2.3.0",
         "sentry-expo": "^2.0.4",
         "uri-js": "^4.2.2",
-        "yup": "^0.28.5"
+        "yup": "^0.28.5",
+        "@react-native-community/netinfo": "5.5.1"
     },
     "devDependencies": {
         "@babel/core": "^7.9.6",

@@ -9,6 +9,7 @@ import * as Sentry from 'sentry-expo';
 import Constants from 'expo-constants';
 import { client } from './src/store/apollo';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { InternetErrorModal } from './src/components/modals/InternetErrorModal';
 
 // sentry.io is an error reporting framework
 // See https://sentry.io/organizations/connect-our-kids/issues/?project=5204132
@@ -29,6 +30,7 @@ export default function App(): JSX.Element {
         <ApolloProvider client={client}>
             <AppearanceProvider>
                 <Provider store={store}>
+                    <InternetErrorModal />
                     <StatusBar
                         barStyle="dark-content"
                         hidden={false}
