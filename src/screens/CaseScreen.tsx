@@ -42,7 +42,7 @@ interface StateProps {
     isLoadingCase: boolean;
     caseError?: string;
     auth: AuthState;
-    gender: string[] | undefined;
+    genders: string[];
 }
 
 interface DispatchProps {
@@ -55,23 +55,25 @@ type Navigation = NavigationScreenProp<NavigationState>;
 interface OwnProps {
     navigation: Navigation;
 }
-interface GenderObj {
+
+interface GenderFilter {
     [key: string]: boolean;
 }
+
 type Props = StateProps & DispatchProps & OwnProps;
 
 const CaseScreen = (props: Props) => {
-    const [descriptionVisible, setDescriptionVisible] = useState(false);
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);
     const [sort, setSort] = useState('Full Name');
     const [searchKeywords, setSearchKeywords] = useState('');
     const [filtersSelected, setFiltersSelected] = useState({
-        0: false,
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
+        0: true,
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true,
         6: true, //fullname
         7: false, //lastName
         8: false, // createdAt
@@ -91,52 +93,41 @@ const CaseScreen = (props: Props) => {
         setSearchKeywords(e);
     };
 
-    const genderArray: string[] = [];
-    const genderObj: GenderObj = {};
-    props.gender?.forEach((e) => {
-        e.length > 0 ? genderArray.push(e) : console.log(e);
-    });
-    useEffect(() => {
-        genderArray.forEach((e, index) => {
-            genderObj[index] = false;
+    // gender filter
+    const initialGenderFilters = props.genders.reduce((result, item) => {
+        result[item] = true;
+        return result;
+    }, {} as GenderFilter);
+    const [genderFilters, setGenderFilters] = useState(initialGenderFilters);
+
+    /* const shouldShowRemoveFilterBanner = (): boolean => {
+        return !(
+            Object.values(genderFilters).every((value) => value === true) &&
+            sort === 'First Name'
+        );
+    };*/
+
+    function filterGenders(
+        cases: caseDetailFull_relationships[]
+    ): caseDetailFull_relationships[] {
+        // filter cases based on gender
+        return cases.filter((value) => {
+            const gender = value.person.gender
+                ? value.person.gender
+                : 'Unspecified';
+
+            if (!props.genders.includes(gender)) {
+                console.warn(
+                    `Gender of '${gender}' for case id ${value.id} not in list of schema genders`
+                );
+                // include this case
+                return true;
+            } else {
+                return genderFilters[gender];
+            }
         });
-    }, [genderArray]);
-    // Note: genderArray value + index number
-    // "Unspecified" 0
-    // "Female" 1
-    // "Male" 2
-    // "Gender-fluid" 3
-    // "Transgender - FtM" 4
-    // "Transgender - MtF" 5
-    // "Other" 6
-    // "Unknown" 7
-    const [genderFilters, setGenderFilters] = useState(genderObj);
-    const genderKeys = Object.keys(genderFilters);
-    function handleChange() {
-        const booleanArray: boolean[] = [];
-        genderKeys.forEach((e) => {
-            booleanArray.push(genderFilters[e]);
-        });
-        const checker = (arr: boolean[]) => arr.every((e) => e === false);
-        const reducedBoolean = checker(booleanArray);
-        return reducedBoolean;
     }
-    const checkAllGenderFilters: boolean = handleChange();
-    const genderFilter = (arr: caseDetailFull_relationships[]) => {
-        // ------GENDER FILTER functionality------
-        if (checkAllGenderFilters) {
-            return arr;
-        } else {
-            genderArray.forEach((e, index) => {
-                if (!genderFilters[index]) {
-                    arr = arr.filter(
-                        (c) => c.person.gender !== genderArray[index]
-                    );
-                }
-            });
-            return arr;
-        }
-    };
+
     // SORT functionality
     function sorter(arr: caseDetailFull_relationships[]) {
         const sorted = arr;
@@ -160,8 +151,8 @@ const CaseScreen = (props: Props) => {
                 a: caseDetailFull_relationships,
                 b: caseDetailFull_relationships
             ) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                //@ts-ignore
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 if (a.person.lastName < b.person.lastName) {
                     return -1;
                 }
@@ -221,7 +212,7 @@ const CaseScreen = (props: Props) => {
             !filtersSelected[5]
         ) {
             // return genderFilter(caseToFilter.relationships);
-            const preSorted = genderFilter(caseToFilter.relationships);
+            const preSorted = filterGenders(caseToFilter.relationships);
             const sorted = sorter(preSorted);
             return sorted;
         } else {
@@ -272,7 +263,7 @@ const CaseScreen = (props: Props) => {
                 filteredList = filteredList.concat(noStatus);
             }
 
-            const preSorted = genderFilter(filteredList);
+            const preSorted = filterGenders(filteredList);
             const sorted = sorter(preSorted);
             return sorted;
         }
@@ -293,10 +284,26 @@ const CaseScreen = (props: Props) => {
     }
 
     const styles = StyleSheet.create({
+        searchBarRow: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexDirection: 'row',
+            borderBottomWidth: 0.5,
+            borderBottomColor: '#babab9',
+        },
         searchBar: {
-            marginHorizontal: Platform.OS === 'ios' ? 5 : 5,
-            width: '75%',
-            backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
+            marginRight: 5,
+            marginLeft: 5,
+            flexGrow: 1,
+            width: 1,
+            backgroundColor: 'white',
+        },
+        filterButton: {
+            width: 70,
+            marginVertical: 20,
+            maxHeight: 40,
+            marginRight: 10,
         },
         checkboxes: {
             fontSize: 18,
@@ -447,16 +454,7 @@ const CaseScreen = (props: Props) => {
                                     minHeight: 350,
                                 }}
                             >
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'flex-start',
-                                        alignContent: 'center',
-                                        borderBottomWidth: 0.5,
-                                        borderBottomColor: '#babab9',
-                                    }}
-                                >
+                                <View style={styles.searchBarRow}>
                                     <SearchBar
                                         inputStyle={{ fontSize: 16 }}
                                         inputContainerStyle={{
@@ -478,27 +476,29 @@ const CaseScreen = (props: Props) => {
                                         platform="ios"
                                         containerStyle={styles.searchBar}
                                     />
-                                    <TouchableHighlight
-                                        onPressIn={() => {
-                                            setDescriptionVisible(true);
-                                        }}
-                                    >
-                                        <View
-                                            style={{
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
+                                    <View style={styles.filterButton}>
+                                        <TouchableHighlight
+                                            onPressIn={() => {
+                                                setFilterModalVisible(true);
                                             }}
                                         >
-                                            <MaterialIcons
-                                                name="filter-list"
-                                                color="black"
-                                                size={32}
-                                            />
-                                            <Text style={{ fontSize: 16 }}>
-                                                Filter
-                                            </Text>
-                                        </View>
-                                    </TouchableHighlight>
+                                            <View
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <MaterialIcons
+                                                    name="filter-list"
+                                                    color="black"
+                                                    size={32}
+                                                />
+                                                <Text style={{ fontSize: 16 }}>
+                                                    Filter
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
                                 </View>
 
                                 {/* List of Connections to Child Starts Here */}
@@ -530,8 +530,8 @@ const CaseScreen = (props: Props) => {
                         <Modal
                             animationType="fade"
                             transparent={false}
-                            visible={descriptionVisible}
-                            onRequestClose={() => setDescriptionVisible(false)}
+                            visible={filterModalVisible}
+                            onRequestClose={() => setFilterModalVisible(false)}
                         >
                             <View
                                 style={{
@@ -542,7 +542,7 @@ const CaseScreen = (props: Props) => {
                             ></View>
                             <TouchableOpacity
                                 onPressIn={() => {
-                                    setDescriptionVisible(false);
+                                    setFilterModalVisible(false);
                                 }}
                             >
                                 <Text
@@ -919,24 +919,43 @@ const CaseScreen = (props: Props) => {
                                             marginHorizontal: 10,
                                         }}
                                     ></View>
-                                    {genderArray.map((e, i) => (
+                                    {props.genders.map((gender) => (
                                         <CheckBox
                                             containerStyle={{
                                                 backgroundColor: 'white',
                                                 borderColor: 'white',
                                             }}
-                                            title={e}
-                                            textStyle={styles.checkboxes}
+                                            title={`${gender} (${
+                                                props.case?.relationships.filter(
+                                                    (value) => {
+                                                        const caseGender = value
+                                                            .person.gender
+                                                            ? value.person
+                                                                  .gender
+                                                            : 'Unspecified';
+
+                                                        return (
+                                                            caseGender ===
+                                                            gender
+                                                        );
+                                                    }
+                                                ).length
+                                            })`}
+                                            textStyle={{ ...styles.checkboxes }}
                                             size={30}
-                                            checked={genderFilters[i]}
-                                            key={e}
+                                            checked={genderFilters[gender]}
+                                            key={gender}
+                                            checkedColor="#0279ac"
                                             onPress={() => {
-                                                const state: GenderObj = genderFilters;
-                                                state[i] = !genderFilters[i];
-                                                setGenderFilters({
-                                                    ...state,
-                                                });
-                                                handleChange();
+                                                const updatedGenderFilters = {
+                                                    ...genderFilters,
+                                                };
+                                                updatedGenderFilters[
+                                                    gender
+                                                ] = !genderFilters[gender];
+                                                setGenderFilters(
+                                                    updatedGenderFilters
+                                                );
                                             }}
                                         />
                                     ))}
@@ -1165,12 +1184,16 @@ const CaseScreen = (props: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => {
+    let genders = state.schema.results?.schema?.gender ?? [];
+    // remove empty strings. The backend should do this in the future
+    genders = genders.filter((gender) => gender);
+
     return {
         case: state.case.results,
         isLoadingCase: state.case.isLoading,
         caseError: state.case.error,
         auth: state.auth,
-        gender: state.schema.results?.schema?.gender,
+        genders,
     };
 };
 
