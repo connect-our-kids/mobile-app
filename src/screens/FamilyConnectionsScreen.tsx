@@ -61,6 +61,7 @@ type Navigation = NavigationScreenProp<NavigationState>;
 interface OwnProps {
     navigation: Navigation;
 }
+
 interface GenderFilter {
     [key: string]: boolean;
 }
