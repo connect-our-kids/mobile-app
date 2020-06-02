@@ -48,6 +48,7 @@ interface StateProps {
     isLoadingCases: boolean;
     casesError?: string;
     team?: UserFullFragment_userTeam_team;
+    genders: string[];
 }
 
 interface DispatchProps {
@@ -60,6 +61,9 @@ type Navigation = NavigationScreenProp<NavigationState>;
 interface OwnProps {
     navigation: Navigation;
 }
+interface GenderFilter {
+    [key: string]: boolean;
+}
 
 type Props = StateProps & DispatchProps & OwnProps;
 
@@ -67,18 +71,29 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     const styles = StyleSheet.create({
         safeAreaView: {
             backgroundColor: constants.backgroundColor,
-            flex: 1, // fill screen
+            width: '100%',
+            flex: 1,
+        },
+        searchBarRow: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexDirection: 'row',
+            borderBottomWidth: 0.5,
+            borderBottomColor: '#babab9',
         },
         searchBar: {
             marginRight: 5,
             marginLeft: 5,
-            width: '75%',
-            backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
+            flexGrow: 1,
+            width: 1,
+            backgroundColor: 'white',
         },
         filterButton: {
-            width: Platform.OS === 'ios' ? 70 : 70,
-            marginVertical: Platform.OS === 'ios' ? 20 : 20,
-            maxHeight: Platform.OS === 'ios' ? 40 : 40,
+            width: 70,
+            marginVertical: 20,
+            maxHeight: 40,
+            marginRight: 10,
         },
         isLoading: {
             textAlign: 'center',
@@ -93,37 +108,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         },
     });
 
-    // this is like a local "store" -- used to initialize some state values, accessed in [state] hook
-    const initialState = {
-        searchKeywords: '',
-        gender: 'Gender',
-        ageRange: 'Age Range',
-        sortBy: 'Sort By',
-        modalVisible: false,
-        filters: {
-            male: false,
-            female: false,
-            unspecified: false,
-            zero_five: false, // these are age groups, possibly not yet implemented in filters
-            six_nine: false,
-            ten_thirteen: false,
-            fourteen_eighteen: false,
-            name: false,
-            last: false,
-            DOB: false,
-            created: false,
-            updated: false,
-        },
-        caseVisible: false,
-        addCaseModalVisible: true, // cannot currently add case to app, state not needed?
-        pk: '',
-    };
-
-    // STATE HOOKS
-    const [state, setState] = useState(initialState);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [searchKeywords, setSearchKeywords] = useState('');
     const [isScrolling, setIsScrolling] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
     const [options] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
-    const [sort, setSort] = useState('Full Name'); // sort results of Family Connections, can be changed to several other values
+    const [sort, setSort] = useState<
+        'First Name' | 'Last Name' | 'Created' | 'Updated'
+    >('First Name'); // sort results of Family Connections, can be changed to several other values
     const [rtn, setRtn] = useState('RETURN'); // MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
 
     // run this once
@@ -138,46 +129,44 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         }
     }, [props.auth.isLoggedIn, props.auth.isLoggingIn]);
 
-    const setModalVisible = (visible: boolean) => {
-        setState({ ...state, modalVisible: visible });
+    // gender filter
+    const initialGenderFilters = props.genders.reduce((result, item) => {
+        result[item] = true;
+        return result;
+    }, {} as GenderFilter);
+    const [genderFilters, setGenderFilters] = useState(initialGenderFilters);
+
+    const shouldShowRemoveFilterBanner = (): boolean => {
+        return !(
+            Object.values(genderFilters).every((value) => value === true) &&
+            sort === 'First Name'
+        );
     };
 
-    const handleKeywordChange = (event: string) => {
-        setState({
-            ...state,
-            searchKeywords: event,
+    function filterGenders(
+        cases: casesDetailSlim_cases[]
+    ): casesDetailSlim_cases[] {
+        // filter cases based on gender
+        return cases.filter((value) => {
+            const gender = value.person.gender
+                ? value.person.gender
+                : 'Unspecified';
+
+            if (!props.genders.includes(gender)) {
+                console.warn(
+                    `Gender of '${gender}' for case id ${value.id} not in list of schema genders`
+                );
+                // include this case
+                return true;
+            } else {
+                return genderFilters[gender];
+            }
         });
-    };
-
-    // ------GENDER FILTER functionality------
-    let filteredCases = props.cases;
-
-    if (
-        !state.filters.male &&
-        !state.filters.female &&
-        !state.filters.unspecified
-    ) {
-        // if nothing is selected -- do nothing
-    } else {
-        // TODO this needs to be updated for new genders
-        if (!state.filters.male) {
-            filteredCases = filteredCases.filter(
-                (c) => c.person.gender !== 'M'
-            );
-        } // if male is not selected -- remove all males
-        if (!state.filters.female) {
-            filteredCases = filteredCases.filter(
-                (c) => c.person.gender !== 'F'
-            );
-        }
-        if (!state.filters.unspecified) {
-            filteredCases = filteredCases.filter(
-                (c) => c.person.gender !== 'O'
-            );
-        }
     }
 
-    if (state.filters.last) {
+    const filteredCases = filterGenders(props.cases);
+
+    if (sort === 'Last Name') {
         filteredCases.sort((a, b) => {
             const aLastName = a.person.lastName || '';
             const bLastName = b.person.lastName || '';
@@ -185,12 +174,12 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                 sensitivity: 'accent',
             });
         });
-    } else if (state.filters.created) {
+    } else if (sort === 'Created') {
         // TODO
         filteredCases.sort((a, b) =>
             a.person.createdAt.localeCompare(b.person.createdAt)
         );
-    } else if (state.filters.updated) {
+    } else if (sort === 'Updated') {
         filteredCases.sort((a, b) =>
             a.person.updatedAt.localeCompare(b.person.updatedAt)
         );
@@ -204,11 +193,12 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     }
 
     // ------SEARCH BAR functionality - filters by case first_name or last_name---------
-    const SearchedCases = filteredCases.filter((result) => {
+    const searchedCases = filteredCases.filter((result) => {
+        // TODO search other fields in the case as well
         return (
             result.person.firstName
                 ?.toLowerCase()
-                .indexOf(state.searchKeywords.toLowerCase()) !== -1
+                .indexOf(searchKeywords.toLowerCase()) !== -1
         );
     });
 
@@ -224,16 +214,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         <Text>{props.casesError}</Text>
     ) : (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    alignContent: 'center',
-                    borderBottomWidth: 0.5,
-                    borderBottomColor: '#babab9',
-                }}
-            >
+            <View style={styles.searchBarRow}>
                 <SearchBar
                     inputStyle={{ fontSize: 16 }}
                     inputContainerStyle={{
@@ -247,48 +228,53 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                     }}
                     // lightTheme
                     round
-                    value={state.searchKeywords}
-                    onChangeText={handleKeywordChange}
+                    value={searchKeywords}
+                    onChangeText={(event) => setSearchKeywords(event)}
                     // create searchbar target platform.os
                     platform="ios"
                     containerStyle={styles.searchBar}
                 />
-                <TouchableHighlight
-                    onPressIn={() => {
-                        setModalVisible(true);
-                    }}
-                >
-                    <View
-                        style={{ alignItems: 'center', flexDirection: 'row' }}
+                <View style={styles.filterButton}>
+                    <TouchableHighlight
+                        onPressIn={() => {
+                            setModalVisible(true);
+                        }}
                     >
-                        <MaterialIcons
-                            name="filter-list"
-                            color="black"
-                            size={32}
-                        />
-                        <Text style={{ fontSize: 16 }}>Filter</Text>
-                    </View>
-                </TouchableHighlight>
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <MaterialIcons
+                                name="filter-list"
+                                color="black"
+                                size={32}
+                            />
+                            <Text style={{ fontSize: 16 }}>Filter</Text>
+                        </View>
+                    </TouchableHighlight>
+                </View>
             </View>
 
             {/* FILTERS BUTTON - onPress Modal */}
             <Modal
                 animationType="fade"
                 transparent={false}
-                visible={state.modalVisible}
+                visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View
                     style={{
                         backgroundColor: '#fff',
                         justifyContent: 'center',
-                        height: Platform.OS == 'android' ? 20 : 52,
+                        height: Platform.OS === 'android' ? 20 : 52,
                     }}
                 ></View>
 
                 <TouchableOpacity
                     onPressIn={() => {
-                        setModalVisible(!state.modalVisible);
+                        setModalVisible(!modalVisible);
                     }}
                 >
                     <Text
@@ -359,27 +345,24 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                             <RadioButton
                                 value="Full Name"
                                 status={
-                                    sort === 'Full Name'
+                                    sort === 'First Name'
                                         ? 'checked'
                                         : 'unchecked'
                                 }
                                 color="#0279ac"
                                 onPress={() => {
-                                    setSort('Full Name');
-                                    setState({
-                                        ...state,
-                                        filters: {
-                                            ...state.filters,
-                                            name: !state.filters.name,
-                                            last: false,
-                                            DOB: false,
-                                            created: false,
-                                            updated: false,
-                                        },
-                                    });
+                                    setSort('First Name');
                                 }}
                             />
-                            <Text style={styles.checkboxes}> Full Name</Text>
+                            <Text
+                                style={styles.checkboxes}
+                                onPress={() => {
+                                    setSort('First Name');
+                                }}
+                            >
+                                {' '}
+                                Full Name
+                            </Text>
                         </View>
                         <View
                             style={{
@@ -399,20 +382,17 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                                 color="#0279ac"
                                 onPress={() => {
                                     setSort('Last Name');
-                                    setState({
-                                        ...state,
-                                        filters: {
-                                            ...state.filters,
-                                            name: false,
-                                            last: !state.filters.last,
-                                            DOB: false,
-                                            created: false,
-                                            updated: false,
-                                        },
-                                    });
                                 }}
                             />
-                            <Text style={styles.checkboxes}> Last Name</Text>
+                            <Text
+                                style={styles.checkboxes}
+                                onPress={() => {
+                                    setSort('Last Name');
+                                }}
+                            >
+                                {' '}
+                                Last Name
+                            </Text>
                         </View>
                         <View
                             style={{
@@ -425,27 +405,22 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                             <RadioButton
                                 value="Date Created"
                                 status={
-                                    sort === 'Date Created'
-                                        ? 'checked'
-                                        : 'unchecked'
+                                    sort === 'Created' ? 'checked' : 'unchecked'
                                 }
                                 color="#0279ac"
                                 onPress={() => {
-                                    setSort('Date Created');
-                                    setState({
-                                        ...state,
-                                        filters: {
-                                            ...state.filters,
-                                            name: false,
-                                            last: false,
-                                            DOB: false,
-                                            created: !state.filters.created,
-                                            updated: false,
-                                        },
-                                    });
+                                    setSort('Created');
                                 }}
                             />
-                            <Text style={styles.checkboxes}> Date Created</Text>
+                            <Text
+                                style={styles.checkboxes}
+                                onPress={() => {
+                                    setSort('Created');
+                                }}
+                            >
+                                {' '}
+                                Date Created
+                            </Text>
                         </View>
                         <View
                             style={{
@@ -458,27 +433,22 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                             <RadioButton
                                 value="Last Updated"
                                 status={
-                                    sort === 'Last Updated'
-                                        ? 'checked'
-                                        : 'unchecked'
+                                    sort === 'Updated' ? 'checked' : 'unchecked'
                                 }
                                 color="#0279ac"
                                 onPress={() => {
-                                    setSort('Last Updated');
-                                    setState({
-                                        ...state,
-                                        filters: {
-                                            ...state.filters,
-                                            name: false,
-                                            last: false,
-                                            DOB: false,
-                                            created: false,
-                                            updated: !state.filters.updated,
-                                        },
-                                    });
+                                    setSort('Updated');
                                 }}
                             />
-                            <Text style={styles.checkboxes}> Last Updated</Text>
+                            <Text
+                                style={styles.checkboxes}
+                                onPress={() => {
+                                    setSort('Updated');
+                                }}
+                            >
+                                {' '}
+                                Last Updated
+                            </Text>
                         </View>
                         {/* GENDER */}
                         <Text
@@ -502,67 +472,38 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                                 marginHorizontal: 10,
                             }}
                         />
-                        <CheckBox
-                            containerStyle={{
-                                backgroundColor: 'white',
-                                borderColor: 'white',
-                            }}
-                            title="Male"
-                            textStyle={{ ...styles.checkboxes }}
-                            size={30}
-                            checked={state.filters.male}
-                            checkedColor="#0279ac"
-                            onPress={() =>
-                                setState({
-                                    ...state,
-                                    filters: {
-                                        ...state.filters,
-                                        male: !state.filters.male,
-                                    },
-                                })
-                            }
-                        />
-                        <CheckBox
-                            containerStyle={{
-                                backgroundColor: 'white',
-                                borderColor: 'white',
-                            }}
-                            title="Female"
-                            textStyle={{ ...styles.checkboxes }}
-                            size={30}
-                            checked={state.filters.female}
-                            checkedColor="#0279ac"
-                            onPress={() =>
-                                setState({
-                                    ...state,
-                                    filters: {
-                                        ...state.filters,
-                                        female: !state.filters.female,
-                                    },
-                                })
-                            }
-                        />
-                        <CheckBox
-                            containerStyle={{
-                                backgroundColor: 'white',
-                                borderColor: 'white',
-                                marginBottom: 100,
-                            }}
-                            title="Not Specified"
-                            textStyle={{ ...styles.checkboxes }}
-                            size={30}
-                            checked={state.filters.unspecified}
-                            checkedColor="#0279ac"
-                            onPress={() =>
-                                setState({
-                                    ...state,
-                                    filters: {
-                                        ...state.filters,
-                                        unspecified: !state.filters.unspecified,
-                                    },
-                                })
-                            }
-                        />
+
+                        {props.genders.map((gender) => (
+                            <CheckBox
+                                containerStyle={{
+                                    backgroundColor: 'white',
+                                    borderColor: 'white',
+                                }}
+                                title={`${gender} (${
+                                    props.cases.filter((value) => {
+                                        const caseGender = value.person.gender
+                                            ? value.person.gender
+                                            : 'Unspecified';
+
+                                        return caseGender === gender;
+                                    }).length
+                                })`}
+                                textStyle={{ ...styles.checkboxes }}
+                                size={30}
+                                checked={genderFilters[gender]}
+                                key={gender}
+                                checkedColor="#0279ac"
+                                onPress={() => {
+                                    const updatedGenderFilters = {
+                                        ...genderFilters,
+                                    };
+                                    updatedGenderFilters[
+                                        gender
+                                    ] = !genderFilters[gender];
+                                    setGenderFilters(updatedGenderFilters);
+                                }}
+                            />
+                        ))}
                     </View>
                 </ScrollView>
                 <View
@@ -575,8 +516,32 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             </Modal>
 
             {/* Case List View Starts Here */}
-            <View>
+            <View style={{ flex: 1 }}>
                 <View>
+                    <TouchableOpacity
+                        onPressIn={() => {
+                            setSort('First Name');
+                            setGenderFilters(initialGenderFilters);
+                        }}
+                    >
+                        <Text
+                            style={{
+                                backgroundColor: '#e8e8e8',
+                                color: '#0279AC',
+                                height: 50,
+                                fontSize: 25,
+                                textAlign: 'center',
+                                paddingTop: 8,
+                                display: shouldShowRemoveFilterBanner()
+                                    ? undefined
+                                    : 'none',
+                            }}
+                        >
+                            Remove filters
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flex: 1 }}>
                     {isScrolling ? (
                         <ScrollToTop
                             style={{
@@ -594,8 +559,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                         ref={(a) => {
                             scroll = a;
                         }}
-                        style={{ height: '100%' }}
-                        contentInset={{ bottom: constants.headerHeight }}
                         scrollsToTop
                         onScroll={(e) => {
                             if (e.nativeEvent.contentOffset.y <= 250) {
@@ -610,7 +573,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                         {props.isLoadingCases ? (
                             <Loader />
                         ) : (
-                            SearchedCases.map((result, index) => (
+                            searchedCases.map((result, index) => (
                                 <ListItem
                                     key={index}
                                     title={result.person.fullName}
@@ -666,12 +629,17 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 }; // end of FamilyConnectionsScreen
 
 const mapStateToProps = (state: RootState) => {
+    let genders = state.schema.results?.schema?.gender ?? [];
+    // remove empty strings. The backend should do this in the future
+    genders = genders.filter((gender) => gender);
+
     return {
         cases: state.cases.results ?? [], // TODO this is a temporary fie. state.cases.results should never be undefined
         auth: state.auth,
         isLoadingCases: state.cases.isLoadingCases,
         casesError: state.cases.error,
         team: state.me.results?.userTeam?.team,
+        genders,
     };
 };
 
