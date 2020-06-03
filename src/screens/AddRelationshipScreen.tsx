@@ -5,7 +5,6 @@ import {
     Image,
     TouchableOpacity,
     TextInput,
-    ScrollView,
     Modal,
 } from 'react-native';
 // eslint-disable-next-line
@@ -35,6 +34,7 @@ import {
     EmailInput,
     TelephoneInput,
 } from '../generated/globalTypes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 type DispatchProps = {
     createRelationship: typeof createRelationship;
@@ -429,387 +429,369 @@ function AddRelationshipScreen(props: Props) {
     };
 
     return (
-        <View style={styles.background}>
-            <ScrollView contentContainerStyle={styles.containerStyle}>
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={props.error ? true : false}
-                >
-                    <View
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        }}
-                    >
-                        <View style={styles.centerView}>
-                            <View style={styles.modalView}>
-                                <Text>
-                                    Error adding relationship. Please try again
-                                    later.
-                                </Text>
-                                <TouchableOpacity style={styles.modalButton}>
-                                    <Text
-                                        style={styles.modalButtonText}
-                                        onPress={() => {
-                                            props.clearCreateRelationship();
-                                        }}
-                                    >
-                                        close
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
+        <KeyboardAwareScrollView
+            contentContainerStyle={styles.containerStyle}
+            extraScrollHeight={30}
+        >
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={props.error ? true : false}
+            >
                 <View
                     style={{
+                        height: '100%',
                         width: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        paddingTop: 20,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     }}
                 >
-                    <View>
-                        {props.image ? (
-                            <Image
-                                source={{ uri: props.image.uri }}
-                                resizeMode={'cover'}
-                                style={styles.attachmentPreview}
-                            />
-                        ) : (
-                            <Image
-                                source={require('../../assets/profile_placeholder.png')}
-                            />
-                        )}
-                    </View>
-
-                    <View style={styles.TakePhotoBtnGroup}>
-                        <PickPhotoButton
-                            afterAccept={(media) => {
-                                props.navigation.navigate(
-                                    'AddRelationshipScreen',
-                                    {
-                                        media,
-                                    }
-                                );
-                            }}
-                        />
-                        <TakePhotoButton
-                            afterAccept={(media) => {
-                                props.navigation.navigate(
-                                    'AddRelationshipScreen',
-                                    {
-                                        media,
-                                    }
-                                );
-                            }}
-                        />
+                    <View style={styles.centerView}>
+                        <View style={styles.modalView}>
+                            <Text>
+                                Error adding relationship. Please try again
+                                later.
+                            </Text>
+                            <TouchableOpacity style={styles.modalButton}>
+                                <Text
+                                    style={styles.modalButtonText}
+                                    onPress={() => {
+                                        props.clearCreateRelationship();
+                                    }}
+                                >
+                                    close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-                {/* Information Section */}
+            </Modal>
+            <View
+                style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 20,
+                }}
+            >
                 <View>
-                    <View style={styles.sectionPadding}>
-                        <View>
-                            <Text style={styles.sectionHeader}>
-                                Information
+                    {props.image ? (
+                        <Image
+                            source={{ uri: props.image.uri }}
+                            resizeMode={'cover'}
+                            style={styles.attachmentPreview}
+                        />
+                    ) : (
+                        <Image
+                            source={require('../../assets/profile_placeholder.png')}
+                        />
+                    )}
+                </View>
+
+                <View style={styles.TakePhotoBtnGroup}>
+                    <PickPhotoButton
+                        afterAccept={(media) => {
+                            props.navigation.navigate('AddRelationshipScreen', {
+                                media,
+                            });
+                        }}
+                    />
+                    <TakePhotoButton
+                        afterAccept={(media) => {
+                            props.navigation.navigate('AddRelationshipScreen', {
+                                media,
+                            });
+                        }}
+                    />
+                </View>
+            </View>
+            {/* Information Section */}
+            <View>
+                <View style={styles.sectionPadding}>
+                    <View>
+                        <Text style={styles.sectionHeader}>Information</Text>
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            First Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'First Name'}
+                            value={formData.firstName}
+                            onChangeText={(text) => {
+                                handleChange('firstName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            Middle Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'Middle Name'}
+                            value={formData.middleName}
+                            onChangeText={(text) => {
+                                handleChange('middleName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            Last Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'Last Name'}
+                            value={formData.lastName}
+                            onChangeText={(text) => {
+                                handleChange('lastName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View>
+                        {requiredTextName ? (
+                            <Text style={styles.requiredText}>
+                                One of First, Middle, or Last name required!
                             </Text>
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                First Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'First Name'}
-                                value={formData.firstName}
-                                onChangeText={(text) => {
-                                    handleChange('firstName', text);
-                                    setRequiredTextName(false);
-                                }}
+                        ) : (
+                            <View></View>
+                        )}
+                    </View>
+                    <Text style={styles.textPadding}>Suffix</Text>
+                    <View style={styles.suffixDropdownContainer}>
+                        <Picker
+                            selectedValue={suffixValue}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: string) => {
+                                setSuffixValue(itemValue);
+                                handleChange('suffix', itemValue);
+                            }}
+                        >
+                            <Picker.Item label="None" value="" />
+                            <Picker.Item label="Sr." value="Sr." />
+                            <Picker.Item label="Jr." value="Jr." />
+                            <Picker.Item label="II" value="II" />
+                            <Picker.Item label="III" value="III" />
+                            <Picker.Item label="IV" value="IV" />
+                            <Picker.Item label="V" value="V" />
+                        </Picker>
+                    </View>
+                    <Text style={styles.textPadding}>Title</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Title'}
+                            value={formData.title}
+                            onChangeText={(text) => handleChange('title', text)}
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Date of Birth</Text>
+                    <View style={styles.fosterCareDateContainer}>
+                        <TextInput
+                            editable={false}
+                            style={styles.textInput}
+                            placeholder={'MM/DD/YYYY'}
+                            value={birthdayDisplay}
+                            onChangeText={(text) => {
+                                handleChange('birthdayRaw', text);
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={{ padding: 10 }}
+                            onPress={showBirthDatePicker}
+                        >
+                            <FontAwesome5
+                                name="calendar-alt"
+                                size={24}
+                                color="#0279AC"
                             />
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                Middle Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'Middle Name'}
-                                value={formData.middleName}
-                                onChangeText={(text) => {
-                                    handleChange('middleName', text);
-                                    setRequiredTextName(false);
-                                }}
-                            />
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                Last Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'Last Name'}
-                                value={formData.lastName}
-                                onChangeText={(text) => {
-                                    handleChange('lastName', text);
-                                    setRequiredTextName(false);
-                                }}
-                            />
-                        </View>
-                        <View>
-                            {requiredTextName ? (
-                                <Text style={styles.requiredText}>
-                                    One of First, Middle, or Last name required!
-                                </Text>
-                            ) : (
-                                <View></View>
-                            )}
-                        </View>
-                        <Text style={styles.textPadding}>Suffix</Text>
-                        <View style={styles.suffixDropdownContainer}>
-                            <Picker
-                                selectedValue={suffixValue}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: string) => {
-                                    setSuffixValue(itemValue);
-                                    handleChange('suffix', itemValue);
-                                }}
-                            >
-                                <Picker.Item label="None" value="" />
-                                <Picker.Item label="Sr." value="Sr." />
-                                <Picker.Item label="Jr." value="Jr." />
-                                <Picker.Item label="II" value="II" />
-                                <Picker.Item label="III" value="III" />
-                                <Picker.Item label="IV" value="IV" />
-                                <Picker.Item label="V" value="V" />
-                            </Picker>
-                        </View>
-                        <Text style={styles.textPadding}>Title</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Title'}
-                                value={formData.title}
-                                onChangeText={(text) =>
-                                    handleChange('title', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Date of Birth</Text>
-                        <View style={styles.fosterCareDateContainer}>
-                            <TextInput
-                                editable={false}
-                                style={styles.textInput}
-                                placeholder={'MM/DD/YYYY'}
-                                value={birthdayDisplay}
-                                onChangeText={(text) => {
-                                    handleChange('birthdayRaw', text);
-                                }}
-                            />
-                            <TouchableOpacity
-                                style={{ padding: 10 }}
-                                onPress={showBirthDatePicker}
-                            >
-                                <FontAwesome5
-                                    name="calendar-alt"
-                                    size={24}
-                                    color="#0279AC"
-                                />
-                            </TouchableOpacity>
-                            <DateTimePickerModal
-                                isVisible={showBirthCal}
-                                onCancel={hideBirthDatePicker}
-                                onConfirm={(date) =>
-                                    handleBirthDatePicker(date.toString())
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Gender Identity</Text>
-                        <View style={styles.genderDropdownContainer}>
-                            <Picker
-                                selectedValue={genderValue}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: string) => {
-                                    setGenderValue(itemValue);
-                                    handleChange('gender', itemValue);
-                                }}
-                            >
-                                {props.gender?.map((value, index) => (
-                                    <Picker.Item
-                                        key={index}
-                                        label={value}
-                                        value={value}
-                                    />
-                                ))}
-                            </Picker>
-                        </View>
-                        <View>
-                            <Text style={styles.textPadding}>Deceased</Text>
-                            <CheckBox
-                                checked={deceasedValue}
-                                size={36}
-                                checkedColor={'#0279AC'}
-                                uncheckedColor={'lightgray'}
-                                containerStyle={{
-                                    backgroundColor: 'white',
-                                    borderColor: 'lightgray',
-                                    marginLeft: 0,
-                                    paddingLeft: 0,
-                                }}
-                                onPress={() => {
-                                    const newVal = !deceasedValue;
-                                    handleChange('isDeceased', newVal);
-                                    setDeceasedValue(newVal);
-                                }}
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Job Title</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Job Title'}
-                                value={formData.jobTitle}
-                                onChangeText={(text) =>
-                                    handleChange('jobTitle', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Employer</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Employer'}
-                                value={formData.employer}
-                                onChangeText={(text) =>
-                                    handleChange('employer', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Salary Range</Text>
-                        <View style={styles.salaryDropdownContainer}>
-                            <Picker
-                                selectedValue={salaryValue}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: number) => {
-                                    setSalaryValue(itemValue);
-                                    handleChange('salaryRangeId', itemValue);
-                                }}
-                            >
-                                <Picker.Item label="Unknown" value={0} />
-                                <Picker.Item label="<$40,000" value={1} />
+                        </TouchableOpacity>
+                        <DateTimePickerModal
+                            isVisible={showBirthCal}
+                            onCancel={hideBirthDatePicker}
+                            onConfirm={(date) =>
+                                handleBirthDatePicker(date.toString())
+                            }
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Gender Identity</Text>
+                    <View style={styles.genderDropdownContainer}>
+                        <Picker
+                            selectedValue={genderValue}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: string) => {
+                                setGenderValue(itemValue);
+                                handleChange('gender', itemValue);
+                            }}
+                        >
+                            {props.gender?.map((value, index) => (
                                 <Picker.Item
-                                    label="$40,001 - $80,000"
-                                    value={2}
+                                    key={index}
+                                    label={value}
+                                    value={value}
                                 />
-                                <Picker.Item
-                                    label="$80,001 - $120,000"
-                                    value={3}
-                                />
-                                <Picker.Item
-                                    label="$120,001 - $160,000"
-                                    value={4}
-                                />
-                                <Picker.Item
-                                    label="$160,001 - $200,000"
-                                    value={5}
-                                />
-                                <Picker.Item label="$200,000+" value={6} />
-                            </Picker>
-                        </View>
-                        <Text style={styles.textPadding}>Residence</Text>
-                        <View style={styles.addressContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'Street'}
-                                value={rawAddress[0]}
-                                onChangeText={(text) => {
-                                    handleRawAddress(0, text);
-                                }}
+                            ))}
+                        </Picker>
+                    </View>
+                    <View>
+                        <Text style={styles.textPadding}>Deceased</Text>
+                        <CheckBox
+                            checked={deceasedValue}
+                            size={36}
+                            checkedColor={'#0279AC'}
+                            uncheckedColor={'lightgray'}
+                            containerStyle={{
+                                backgroundColor: 'white',
+                                borderColor: 'lightgray',
+                                marginLeft: 0,
+                                paddingLeft: 0,
+                            }}
+                            onPress={() => {
+                                const newVal = !deceasedValue;
+                                handleChange('isDeceased', newVal);
+                                setDeceasedValue(newVal);
+                            }}
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Job Title</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Job Title'}
+                            value={formData.jobTitle}
+                            onChangeText={(text) =>
+                                handleChange('jobTitle', text)
+                            }
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Employer</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Employer'}
+                            value={formData.employer}
+                            onChangeText={(text) =>
+                                handleChange('employer', text)
+                            }
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Salary Range</Text>
+                    <View style={styles.salaryDropdownContainer}>
+                        <Picker
+                            selectedValue={salaryValue}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: number) => {
+                                setSalaryValue(itemValue);
+                                handleChange('salaryRangeId', itemValue);
+                            }}
+                        >
+                            <Picker.Item label="Unknown" value={0} />
+                            <Picker.Item label="<$40,000" value={1} />
+                            <Picker.Item label="$40,001 - $80,000" value={2} />
+                            <Picker.Item label="$80,001 - $120,000" value={3} />
+                            <Picker.Item
+                                label="$120,001 - $160,000"
+                                value={4}
                             />
-                        </View>
+                            <Picker.Item
+                                label="$160,001 - $200,000"
+                                value={5}
+                            />
+                            <Picker.Item label="$200,000+" value={6} />
+                        </Picker>
+                    </View>
+                    <Text style={styles.textPadding}>Residence</Text>
+                    <View style={styles.addressContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'Street'}
+                            value={rawAddress[0]}
+                            onChangeText={(text) => {
+                                handleRawAddress(0, text);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.cityInput}
+                            placeholder={'City'}
+                            value={rawAddress[1]}
+                            onChangeText={(text) => {
+                                handleRawAddress(1, text);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'State'}
+                            value={rawAddress[3]}
+                            onChangeText={(text) => {
+                                handleRawAddress(3, text);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            maxLength={12}
+                            keyboardType="numeric"
+                            style={styles.zipInput}
+                            placeholder={'Postal Code'}
+                            value={rawAddress[2]}
+                            onChangeText={(text) => {
+                                handleRawAddress(2, text);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'Country'}
+                            value={rawAddress[4]}
+                            onChangeText={(text) => {
+                                handleRawAddress(4, text);
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Text style={styles.textPadding}>Telephone #</Text>
                         <View style={styles.formContainer}>
                             <TextInput
-                                style={styles.cityInput}
-                                placeholder={'City'}
-                                value={rawAddress[1]}
-                                onChangeText={(text) => {
-                                    handleRawAddress(1, text);
-                                }}
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'State'}
-                                value={rawAddress[3]}
-                                onChangeText={(text) => {
-                                    handleRawAddress(3, text);
-                                }}
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                maxLength={12}
                                 keyboardType="numeric"
-                                style={styles.zipInput}
-                                placeholder={'Postal Code'}
-                                value={rawAddress[2]}
+                                style={styles.telephoneInput}
+                                placeholder={'Telephone #'}
+                                value={
+                                    formData.telephones
+                                        ? formData.telephones[0].phoneNumber
+                                        : ''
+                                }
                                 onChangeText={(text) => {
-                                    handleRawAddress(2, text);
+                                    handleChange('phoneNumber', text, 'phone');
                                 }}
                             />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'Country'}
-                                value={rawAddress[4]}
-                                onChangeText={(text) => {
-                                    handleRawAddress(4, text);
-                                }}
-                            />
-                        </View>
-                        <View>
-                            <Text style={styles.textPadding}>Telephone #</Text>
-                            <View style={styles.formContainer}>
-                                <TextInput
-                                    keyboardType="numeric"
-                                    style={styles.telephoneInput}
-                                    placeholder={'Telephone #'}
-                                    value={
-                                        formData.telephones
-                                            ? formData.telephones[0].phoneNumber
-                                            : ''
-                                    }
-                                    onChangeText={(text) => {
-                                        handleChange(
-                                            'phoneNumber',
-                                            text,
-                                            'phone'
-                                        );
-                                    }}
-                                />
-                                {/* {isHiddenPhone === false ? (
+                            {/* {isHiddenPhone === false ? (
                                     <Entypo
                                         style={{
                                             paddingTop: 10,
@@ -867,31 +849,30 @@ function AddRelationshipScreen(props: Props) {
                                         setIsVerifiedPhone(newVal);
                                     }}
                                 /> */}
-                            </View>
                         </View>
-                        <View>
-                            <Text style={styles.textPadding}>Email</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={styles.formContainer}>
-                                    <TextInput
-                                        style={styles.addressInput}
-                                        placeholder={'Email'}
-                                        value={
-                                            formData.emails
-                                                ? formData.emails[0]
-                                                      .emailAddress
-                                                : ''
-                                        }
-                                        onChangeText={(text) => {
-                                            handleChange(
-                                                'emailAddress',
-                                                text,
-                                                'email'
-                                            );
-                                        }}
-                                    />
-                                </View>
-                                {/*  {!isHiddenEmail ? (
+                    </View>
+                    <View>
+                        <Text style={styles.textPadding}>Email</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.formContainer}>
+                                <TextInput
+                                    style={styles.addressInput}
+                                    placeholder={'Email'}
+                                    value={
+                                        formData.emails
+                                            ? formData.emails[0].emailAddress
+                                            : ''
+                                    }
+                                    onChangeText={(text) => {
+                                        handleChange(
+                                            'emailAddress',
+                                            text,
+                                            'email'
+                                        );
+                                    }}
+                                />
+                            </View>
+                            {/*  {!isHiddenEmail ? (
                                     <Entypo
                                         style={{
                                             paddingTop: 10,
@@ -949,97 +930,96 @@ function AddRelationshipScreen(props: Props) {
                                         setIsVerifiedEmail(newVal);
                                     }}
                                 /> */}
-                            </View>
                         </View>
                     </View>
                 </View>
-                {/* Social Media Section */}
-                <View style={styles.sectionPadding}>
-                    <View style={styles.highlightContainer}>
-                        <Text style={styles.sectionHeader}>Social Media</Text>
+            </View>
+            {/* Social Media Section */}
+            <View style={styles.sectionPadding}>
+                <View style={styles.highlightContainer}>
+                    <Text style={styles.sectionHeader}>Social Media</Text>
 
-                        <Text style={styles.textPadding}>Facebook</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Facebook'}
-                                value={formData.facebook}
-                                onChangeText={(text) =>
-                                    handleChange('facebook', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>LinkedIn</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Linkedin'}
-                                value={formData.linkedin}
-                                onChangeText={(text) =>
-                                    handleChange('linkedin', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Twitter</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Twitter'}
-                                value={formData.twitter}
-                                onChangeText={(text) =>
-                                    handleChange('twitter', text)
-                                }
-                            />
-                        </View>
-                    </View>
-                </View>
-                {/* Highlight Section */}
-                <View style={styles.sectionPadding}>
-                    <View style={styles.highlightContainer}>
-                        <Text style={styles.sectionHeader}>Highlights</Text>
+                    <Text style={styles.textPadding}>Facebook</Text>
+                    <View style={styles.formContainer}>
                         <TextInput
-                            multiline
-                            numberOfLines={5}
-                            style={styles.highlightInput}
-                            value={formData.notes}
-                            onChangeText={(text) => handleChange('notes', text)}
+                            style={styles.textInput}
+                            placeholder={'Facebook'}
+                            value={formData.facebook}
+                            onChangeText={(text) =>
+                                handleChange('facebook', text)
+                            }
                         />
                     </View>
-                    {/* Add/Cancel button Section */}
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={styles.cancelButton}
-                            onPress={() => props.navigation.goBack()}
-                        >
-                            <Text style={{ color: '#0279AC' }}>Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.saveButton}
-                            onPress={() => {
-                                saveNewPerson();
-                            }}
-                        >
-                            <Text style={{ color: 'white' }}>Add Person</Text>
-                        </TouchableOpacity>
+                    <Text style={styles.textPadding}>LinkedIn</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Linkedin'}
+                            value={formData.linkedin}
+                            onChangeText={(text) =>
+                                handleChange('linkedin', text)
+                            }
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Twitter</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Twitter'}
+                            value={formData.twitter}
+                            onChangeText={(text) =>
+                                handleChange('twitter', text)
+                            }
+                        />
                     </View>
                 </View>
-                <View style={{ height: 50 }}></View>
-                <Modal
-                    animationType={'fade'}
-                    transparent={true}
-                    visible={props.isAddingRelationship}
-                >
-                    <View style={styles.centerModal}>
-                        <View style={styles.modal}>
-                            <Text>Adding Person...</Text>
-                            <View style={styles.centerLoader}>
-                                <Loader />
-                            </View>
+            </View>
+            {/* Highlight Section */}
+            <View style={styles.sectionPadding}>
+                <View style={styles.highlightContainer}>
+                    <Text style={styles.sectionHeader}>Highlights</Text>
+                    <TextInput
+                        multiline
+                        numberOfLines={5}
+                        style={styles.highlightInput}
+                        value={formData.notes}
+                        onChangeText={(text) => handleChange('notes', text)}
+                    />
+                </View>
+                {/* Add/Cancel button Section */}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.cancelButton}
+                        onPress={() => props.navigation.goBack()}
+                    >
+                        <Text style={{ color: '#0279AC' }}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.saveButton}
+                        onPress={() => {
+                            saveNewPerson();
+                        }}
+                    >
+                        <Text style={{ color: 'white' }}>Add Person</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={{ height: 100 }}></View>
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                visible={props.isAddingRelationship}
+            >
+                <View style={styles.centerModal}>
+                    <View style={styles.modal}>
+                        <Text>Adding Person...</Text>
+                        <View style={styles.centerLoader}>
+                            <Loader />
                         </View>
                     </View>
-                </Modal>
-            </ScrollView>
-        </View>
+                </View>
+            </Modal>
+        </KeyboardAwareScrollView>
     );
 }
 

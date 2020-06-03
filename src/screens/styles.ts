@@ -2,12 +2,10 @@ import { StyleSheet } from 'react-native';
 import constants from '../helpers/constants';
 
 export default StyleSheet.create({
-    background: {
-        backgroundColor: 'white',
-    },
     containerStyle: {
-        flex: 0,
-        marginHorizontal: 15,
+        width: '100%',
+        backgroundColor: 'white',
+        padding: 10,
     },
     requiredText: {
         color: 'red',
@@ -155,10 +153,10 @@ export default StyleSheet.create({
     textInputRequired: {
         borderColor: 'red',
         borderWidth: 0.5,
-        width: '100%',
         height: 45,
         paddingLeft: 5,
         borderRadius: 5,
+        flexGrow: 1,
     },
     addressInput: {
         borderColor: 'rgba(24,23,21,.5)',

@@ -6,7 +6,6 @@ import {
     Image,
     TouchableOpacity,
     TextInput,
-    ScrollView,
     Modal,
 } from 'react-native';
 // eslint-disable-next-line
@@ -32,6 +31,7 @@ import { ReactNativeFile } from 'apollo-upload-client';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { casesDetailSlim_cases } from '../generated/casesDetailSlim';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 interface DispatchProps {
     createCase: typeof createCase;
@@ -360,488 +360,469 @@ function AddCaseScreen(props: Props) {
     };
 
     return (
-        <View style={styles.background}>
-            <ScrollView contentContainerStyle={styles.containerStyle}>
-                {/* Add Photo Section */}
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={props.addCaseFailure}
-                >
-                    <View
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        }}
-                    >
-                        <View style={styles.centerView}>
-                            <View style={styles.modalView}>
-                                <Text>
-                                    Error adding case. Please try again later.
-                                </Text>
-                                <TouchableOpacity style={styles.modalButton}>
-                                    <Text
-                                        style={styles.modalButtonText}
-                                        onPress={() => {
-                                            props.addCaseClearError();
-                                        }}
-                                    >
-                                        close
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
+        <KeyboardAwareScrollView
+            style={styles.containerStyle}
+            extraScrollHeight={30}
+        >
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={props.addCaseFailure}
+            >
                 <View
                     style={{
+                        height: '100%',
                         width: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        paddingTop: 20,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     }}
                 >
-                    <View>
-                        {props.image ? (
-                            <Image
-                                source={{ uri: props.image.uri }}
-                                resizeMode={'cover'}
-                                style={styles.attachmentPreview}
-                            />
-                        ) : (
-                            <Image
-                                source={require('../../assets/profile_placeholder.png')}
-                            />
-                        )}
-                    </View>
-
-                    <View style={styles.TakePhotoBtnGroup}>
-                        <PickPhotoButton
-                            afterAccept={(media) => {
-                                props.navigation.navigate('AddCaseScreen', {
-                                    media,
-                                });
-                            }}
-                        />
-                        <TakePhotoButton
-                            afterAccept={(media) => {
-                                props.navigation.navigate('AddCaseScreen', {
-                                    media,
-                                });
-                            }}
-                        />
-                    </View>
-                </View>
-                {/* Status Section */}
-                <View>
-                    <View>
-                        <View style={styles.statusTextContainer}>
-                            <Text style={styles.sectionHeader}>Status</Text>
-                        </View>
-                        <Text
-                            style={{
-                                paddingTop: 10,
-                                paddingBottom: 10,
-                                color: 'rgba(24,23,21,.5)',
-                            }}
-                        >
-                            Case Status *
-                        </Text>
-                        <View
-                            style={
-                                requiredTextCaseStatus
-                                    ? styles.dropdownContainerRequired
-                                    : styles.dropdownContainer
-                            }
-                        >
-                            <Picker
-                                selectedValue={caseStatusValue}
-                                value={formData.caseStatusId}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: number) => {
-                                    setCaseStatusValue(itemValue);
-                                    if (itemValue === 6) {
-                                        setToggleChildStatus(true);
-                                    } else {
-                                        setToggleChildStatus(false);
-                                    }
-                                    handleChange('caseStatusId', itemValue);
-                                    setRequiredTextCaseStatus(false);
-                                }}
-                            >
-                                {/* <Picker.Item label="" value={7} /> */}
-                                <Picker.Item label="New" value={1} />
-                                <Picker.Item label="Discovery" value={2} />
-                                <Picker.Item label="Engagement" value={3} />
-                                <Picker.Item
-                                    label="Promising Placement"
-                                    value={4}
-                                />
-                                <Picker.Item label="Finalization" value={5} />
-                                <Picker.Item label="Closed" value={6} />
-                            </Picker>
-                        </View>
-                        <View>
-                            {requiredTextCaseStatus ? (
-                                <Text style={styles.requiredText}>
-                                    Case Status is required!
-                                </Text>
-                            ) : (
-                                <View></View>
-                            )}
-                        </View>
-                        {toggleChildStatus ? (
-                            <View>
+                    <View style={styles.centerView}>
+                        <View style={styles.modalView}>
+                            <Text>
+                                Error adding case. Please try again later.
+                            </Text>
+                            <TouchableOpacity style={styles.modalButton}>
                                 <Text
-                                    style={{
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
+                                    style={styles.modalButtonText}
+                                    onPress={() => {
+                                        props.addCaseClearError();
                                     }}
                                 >
-                                    Child Status
+                                    close
                                 </Text>
-                                <View style={styles.dropdownContainer}>
-                                    <Picker
-                                        selectedValue={childStatusValue}
-                                        value={formData.childStatusId}
-                                        style={{
-                                            height: 50,
-                                            width: '100%',
-                                        }}
-                                        onValueChange={(itemValue: number) => {
-                                            setChildStatusValue(itemValue);
-                                            handleChange(
-                                                'childStatusId',
-                                                itemValue
-                                            );
-                                        }}
-                                    >
-                                        <Picker.Item
-                                            label="Achieved Permanency"
-                                            value={1}
-                                        />
-                                        <Picker.Item
-                                            label="Group Home"
-                                            value={2}
-                                        />
-                                        <Picker.Item
-                                            label="Foster Home"
-                                            value={3}
-                                        />
-                                        <Picker.Item
-                                            label="Kinship"
-                                            value={4}
-                                        />
-                                    </Picker>
-                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <View
+                style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    backgroundColor: 'white',
+                }}
+            >
+                <View>
+                    {props.image ? (
+                        <Image
+                            source={{ uri: props.image.uri }}
+                            resizeMode={'cover'}
+                            style={styles.attachmentPreview}
+                        />
+                    ) : (
+                        <Image
+                            source={require('../../assets/profile_placeholder.png')}
+                        />
+                    )}
+                </View>
+
+                <View style={styles.TakePhotoBtnGroup}>
+                    <PickPhotoButton
+                        afterAccept={(media) => {
+                            props.navigation.navigate('AddCaseScreen', {
+                                media,
+                            });
+                        }}
+                    />
+                    <TakePhotoButton
+                        afterAccept={(media) => {
+                            props.navigation.navigate('AddCaseScreen', {
+                                media,
+                            });
+                        }}
+                    />
+                </View>
+            </View>
+            {/* Status Section */}
+            <View>
+                <View>
+                    <View style={styles.statusTextContainer}>
+                        <Text style={styles.sectionHeader}>Status</Text>
+                    </View>
+                    <Text
+                        style={{
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            color: 'rgba(24,23,21,.5)',
+                        }}
+                    >
+                        Case Status *
+                    </Text>
+                    <View
+                        style={
+                            requiredTextCaseStatus
+                                ? styles.dropdownContainerRequired
+                                : styles.dropdownContainer
+                        }
+                    >
+                        <Picker
+                            selectedValue={caseStatusValue}
+                            value={formData.caseStatusId}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: number) => {
+                                setCaseStatusValue(itemValue);
+                                if (itemValue === 6) {
+                                    setToggleChildStatus(true);
+                                } else {
+                                    setToggleChildStatus(false);
+                                }
+                                handleChange('caseStatusId', itemValue);
+                                setRequiredTextCaseStatus(false);
+                            }}
+                        >
+                            {/* <Picker.Item label="" value={7} /> */}
+                            <Picker.Item label="New" value={1} />
+                            <Picker.Item label="Discovery" value={2} />
+                            <Picker.Item label="Engagement" value={3} />
+                            <Picker.Item
+                                label="Promising Placement"
+                                value={4}
+                            />
+                            <Picker.Item label="Finalization" value={5} />
+                            <Picker.Item label="Closed" value={6} />
+                        </Picker>
+                    </View>
+                    <View>
+                        {requiredTextCaseStatus ? (
+                            <Text style={styles.requiredText}>
+                                Case Status is required!
+                            </Text>
+                        ) : (
+                            <View></View>
+                        )}
+                    </View>
+                    {toggleChildStatus ? (
+                        <View>
+                            <Text
+                                style={{
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                }}
+                            >
+                                Child Status
+                            </Text>
+                            <View style={styles.dropdownContainer}>
+                                <Picker
+                                    selectedValue={childStatusValue}
+                                    value={formData.childStatusId}
+                                    style={{
+                                        height: 50,
+                                        width: '100%',
+                                    }}
+                                    onValueChange={(itemValue: number) => {
+                                        setChildStatusValue(itemValue);
+                                        handleChange(
+                                            'childStatusId',
+                                            itemValue
+                                        );
+                                    }}
+                                >
+                                    <Picker.Item
+                                        label="Achieved Permanency"
+                                        value={1}
+                                    />
+                                    <Picker.Item label="Group Home" value={2} />
+                                    <Picker.Item
+                                        label="Foster Home"
+                                        value={3}
+                                    />
+                                    <Picker.Item label="Kinship" value={4} />
+                                </Picker>
                             </View>
+                        </View>
+                    ) : (
+                        <View></View>
+                    )}
+                </View>
+            </View>
+            {/* Information Section */}
+            <View>
+                <View style={styles.sectionPadding}>
+                    <View>
+                        <Text style={styles.sectionHeader}>Information</Text>
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            First Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'First Name'}
+                            value={formData.firstName}
+                            onChangeText={(text) => {
+                                handleChange('firstName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            Middle Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'Middle Name'}
+                            value={formData.middleName}
+                            onChangeText={(text) => {
+                                handleChange('middleName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.textPadding}>
+                        <Text style={{ color: 'rgba(24,23,21,.5)' }}>
+                            Last Name *
+                        </Text>
+                    </View>
+                    <View style={styles.nameInputContainer}>
+                        <TextInput
+                            style={
+                                requiredTextName
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'Last Name'}
+                            value={formData.lastName}
+                            onChangeText={(text) => {
+                                handleChange('lastName', text);
+                                setRequiredTextName(false);
+                            }}
+                        />
+                    </View>
+                    <View>
+                        {requiredTextName ? (
+                            <Text style={styles.requiredText}>
+                                One of First, Middle, or Last name required!
+                            </Text>
+                        ) : (
+                            <View></View>
+                        )}
+                    </View>
+                    <Text style={styles.textPadding}>Suffix</Text>
+                    <View style={styles.suffixDropdownContainer}>
+                        <Picker
+                            selectedValue={suffixValue}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: string) => {
+                                setSuffixValue(itemValue);
+                                handleChange('suffix', itemValue);
+                            }}
+                        >
+                            <Picker.Item label="None" value="" />
+                            <Picker.Item label="Sr." value="Sr." />
+                            <Picker.Item label="Jr." value="Jr." />
+                            <Picker.Item label="II" value="II" />
+                            <Picker.Item label="III" value="III" />
+                            <Picker.Item label="IV" value="IV" />
+                            <Picker.Item label="V" value="V" />
+                        </Picker>
+                    </View>
+                    <Text style={styles.textPadding}>Title</Text>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={'Title'}
+                            value={formData.title}
+                            onChangeText={(text) => handleChange('title', text)}
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Date of Birth</Text>
+                    <View style={styles.fosterCareDateContainer}>
+                        <TextInput
+                            editable={false}
+                            style={styles.textInput}
+                            placeholder={'MM/DD/YYYY'}
+                            value={birthdayDisplay}
+                            onChangeText={(text) => {
+                                handleChange('birthdayRaw', text);
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={{ padding: 10 }}
+                            onPress={showBirthDatePicker}
+                        >
+                            <FontAwesome5
+                                name="calendar-alt"
+                                size={24}
+                                color="#0279AC"
+                            />
+                        </TouchableOpacity>
+                        <DateTimePickerModal
+                            isVisible={showBirthCal}
+                            onCancel={hideBirthDatePicker}
+                            onConfirm={(date) =>
+                                handleBirthDatePicker(date.toString())
+                            }
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>Gender Identity</Text>
+                    <View style={styles.genderDropdownContainer}>
+                        <Picker
+                            selectedValue={genderValue}
+                            style={{ height: 50, width: '100%' }}
+                            onValueChange={(itemValue: string) => {
+                                setGenderValue(itemValue);
+                                handleChange('gender', itemValue);
+                            }}
+                        >
+                            {props.gender.map((value, index) => (
+                                <Picker.Item
+                                    key={index}
+                                    label={value}
+                                    value={value}
+                                />
+                            ))}
+                        </Picker>
+                    </View>
+                    <Text style={styles.textPadding}>Residence</Text>
+                    <View style={styles.addressContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'Street'}
+                            value={rawAddress[0]}
+                            onChangeText={(text) => handleRawAddress(0, text)}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'City'}
+                            value={rawAddress[1]}
+                            onChangeText={(text) => handleRawAddress(1, text)}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'State'}
+                            value={rawAddress[3]}
+                            onChangeText={(text) => handleRawAddress(3, text)}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            maxLength={12}
+                            keyboardType="numeric"
+                            style={styles.addressInput}
+                            placeholder={'Postal Code'}
+                            value={rawAddress[2]}
+                            onChangeText={(text) => handleRawAddress(2, text)}
+                        />
+                    </View>
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'Country'}
+                            value={rawAddress[4]}
+                            onChangeText={(text) => handleRawAddress(4, text)}
+                        />
+                    </View>
+                    <Text style={styles.textPadding}>
+                        Date added to case load *
+                    </Text>
+                    <View style={styles.fosterCareDateContainer}>
+                        <TextInput
+                            editable={false}
+                            style={
+                                requiredTextFosterDateAdded
+                                    ? styles.textInputRequired
+                                    : styles.textInput
+                            }
+                            placeholder={'MM/DD/YYYY'}
+                            value={fosterCareDisplay}
+                            onChangeText={(text) => {
+                                handleChange('fosterCare', text);
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={{ padding: 10 }}
+                            onPress={showDatePicker}
+                        >
+                            <FontAwesome5
+                                name="calendar-alt"
+                                size={24}
+                                color="#0279AC"
+                            />
+                        </TouchableOpacity>
+                        <DateTimePickerModal
+                            isVisible={showCal}
+                            onCancel={hideDatePicker}
+                            onConfirm={(date) =>
+                                handleFosterDate(date.toString())
+                            }
+                        />
+                    </View>
+                    <View>
+                        {requiredTextFosterDateAdded ? (
+                            <Text style={styles.requiredText}>
+                                Date added to case load is required!
+                            </Text>
                         ) : (
                             <View></View>
                         )}
                     </View>
                 </View>
-                {/* Information Section */}
-                <View>
-                    <View style={styles.sectionPadding}>
-                        <View>
-                            <Text style={styles.sectionHeader}>
-                                Information
-                            </Text>
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                First Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'First Name'}
-                                value={formData.firstName}
-                                onChangeText={(text) => {
-                                    handleChange('firstName', text);
-                                    setRequiredTextName(false);
-                                }}
-                            />
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                Middle Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'Middle Name'}
-                                value={formData.middleName}
-                                onChangeText={(text) => {
-                                    handleChange('middleName', text);
-                                    setRequiredTextName(false);
-                                }}
-                            />
-                        </View>
-                        <View style={styles.textPadding}>
-                            <Text style={{ color: 'rgba(24,23,21,.5)' }}>
-                                Last Name *
-                            </Text>
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                            <TextInput
-                                style={
-                                    requiredTextName
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'Last Name'}
-                                value={formData.lastName}
-                                onChangeText={(text) => {
-                                    handleChange('lastName', text);
-                                    setRequiredTextName(false);
-                                }}
-                            />
-                        </View>
-                        <View>
-                            {requiredTextName ? (
-                                <Text style={styles.requiredText}>
-                                    One of First, Middle, or Last name required!
-                                </Text>
-                            ) : (
-                                <View></View>
-                            )}
-                        </View>
-                        <Text style={styles.textPadding}>Suffix</Text>
-                        <View style={styles.suffixDropdownContainer}>
-                            <Picker
-                                selectedValue={suffixValue}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: string) => {
-                                    setSuffixValue(itemValue);
-                                    handleChange('suffix', itemValue);
-                                }}
-                            >
-                                <Picker.Item label="None" value="" />
-                                <Picker.Item label="Sr." value="Sr." />
-                                <Picker.Item label="Jr." value="Jr." />
-                                <Picker.Item label="II" value="II" />
-                                <Picker.Item label="III" value="III" />
-                                <Picker.Item label="IV" value="IV" />
-                                <Picker.Item label="V" value="V" />
-                            </Picker>
-                        </View>
-                        <Text style={styles.textPadding}>Title</Text>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={'Title'}
-                                value={formData.title}
-                                onChangeText={(text) =>
-                                    handleChange('title', text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Date of Birth</Text>
-                        <View style={styles.fosterCareDateContainer}>
-                            <TextInput
-                                editable={false}
-                                style={styles.textInput}
-                                placeholder={'MM/DD/YYYY'}
-                                value={birthdayDisplay}
-                                onChangeText={(text) => {
-                                    handleChange('birthdayRaw', text);
-                                }}
-                            />
-                            <TouchableOpacity
-                                style={{ padding: 10 }}
-                                onPress={showBirthDatePicker}
-                            >
-                                <FontAwesome5
-                                    name="calendar-alt"
-                                    size={24}
-                                    color="#0279AC"
-                                />
-                            </TouchableOpacity>
-                            <DateTimePickerModal
-                                isVisible={showBirthCal}
-                                onCancel={hideBirthDatePicker}
-                                onConfirm={(date) =>
-                                    handleBirthDatePicker(date.toString())
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>Gender Identity</Text>
-                        <View style={styles.genderDropdownContainer}>
-                            <Picker
-                                selectedValue={genderValue}
-                                style={{ height: 50, width: '100%' }}
-                                onValueChange={(itemValue: string) => {
-                                    setGenderValue(itemValue);
-                                    handleChange('gender', itemValue);
-                                }}
-                            >
-                                {props.gender.map((value, index) => (
-                                    <Picker.Item
-                                        key={index}
-                                        label={value}
-                                        value={value}
-                                    />
-                                ))}
-                            </Picker>
-                        </View>
-                        <Text style={styles.textPadding}>Residence</Text>
-                        <View style={styles.addressContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'Street'}
-                                value={rawAddress[0]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(0, text)
-                                }
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'City'}
-                                value={rawAddress[1]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(1, text)
-                                }
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'State'}
-                                value={rawAddress[3]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(3, text)
-                                }
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                maxLength={12}
-                                keyboardType="numeric"
-                                style={styles.addressInput}
-                                placeholder={'Postal Code'}
-                                value={rawAddress[2]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(2, text)
-                                }
-                            />
-                        </View>
-                        <View style={styles.formContainer}>
-                            <TextInput
-                                style={styles.addressInput}
-                                placeholder={'Country'}
-                                value={rawAddress[4]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(4, text)
-                                }
-                            />
-                        </View>
-                        <Text style={styles.textPadding}>
-                            Date added to case load *
-                        </Text>
-                        <View style={styles.fosterCareDateContainer}>
-                            <TextInput
-                                editable={false}
-                                style={
-                                    requiredTextFosterDateAdded
-                                        ? styles.textInputRequired
-                                        : styles.textInput
-                                }
-                                placeholder={'MM/DD/YYYY'}
-                                value={fosterCareDisplay}
-                                onChangeText={(text) => {
-                                    handleChange('fosterCare', text);
-                                }}
-                            />
-                            <TouchableOpacity
-                                style={{ padding: 10 }}
-                                onPress={showDatePicker}
-                            >
-                                <FontAwesome5
-                                    name="calendar-alt"
-                                    size={24}
-                                    color="#0279AC"
-                                />
-                            </TouchableOpacity>
-                            <DateTimePickerModal
-                                isVisible={showCal}
-                                onCancel={hideDatePicker}
-                                onConfirm={(date) =>
-                                    handleFosterDate(date.toString())
-                                }
-                            />
-                        </View>
-                        <View>
-                            {requiredTextFosterDateAdded ? (
-                                <Text style={styles.requiredText}>
-                                    Date added to case load is required!
-                                </Text>
-                            ) : (
-                                <View></View>
-                            )}
+            </View>
+            {/* Highlight Section */}
+            <View style={styles.sectionPadding}>
+                <View style={styles.highlightContainer}>
+                    <Text style={styles.sectionHeader}>Highlights</Text>
+                    <TextInput
+                        multiline
+                        numberOfLines={5}
+                        style={styles.highlightInput}
+                        value={formData.notes}
+                        onChangeText={(text) => handleChange('notes', text)}
+                    />
+                </View>
+                {/* Add/Cancel button Section */}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.cancelButton}
+                        onPress={() => props.navigation.goBack()}
+                    >
+                        <Text style={{ color: '#0279AC' }}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.saveButton}
+                        onPress={() => {
+                            saveNewCase();
+                        }}
+                    >
+                        <Text style={{ color: 'white' }}>Add Case</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={{ height: 100 }}></View>
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                visible={props.isAddingCase}
+            >
+                <View style={styles.centerModal}>
+                    <View style={styles.modal}>
+                        <Text>Adding Case...</Text>
+                        <View style={styles.centerLoader}>
+                            <Loader />
                         </View>
                     </View>
                 </View>
-                {/* Highlight Section */}
-                <View style={styles.sectionPadding}>
-                    <View style={styles.highlightContainer}>
-                        <Text style={styles.sectionHeader}>Highlights</Text>
-                        <TextInput
-                            multiline
-                            numberOfLines={5}
-                            style={styles.highlightInput}
-                            value={formData.notes}
-                            onChangeText={(text) => handleChange('notes', text)}
-                        />
-                    </View>
-                    {/* Add/Cancel button Section */}
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={styles.cancelButton}
-                            onPress={() => props.navigation.goBack()}
-                        >
-                            <Text style={{ color: '#0279AC' }}>Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.saveButton}
-                            onPress={() => {
-                                saveNewCase();
-                            }}
-                        >
-                            <Text style={{ color: 'white' }}>Add Case</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ height: 50 }}></View>
-                <Modal
-                    animationType={'fade'}
-                    transparent={true}
-                    visible={props.isAddingCase}
-                >
-                    <View style={styles.centerModal}>
-                        <View style={styles.modal}>
-                            <Text>Adding Case...</Text>
-                            <View style={styles.centerLoader}>
-                                <Loader />
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-            </ScrollView>
-        </View>
+            </Modal>
+        </KeyboardAwareScrollView>
     );
 }
 const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
