@@ -20,7 +20,7 @@ type OwnProps = {
     navigation: Navigation;
 };
 
-type DispatchProps = {};
+type DispatchProps = unknown;
 
 type Props = StateProps & OwnProps;
 

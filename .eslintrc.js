@@ -1,30 +1,30 @@
+// eslint-disable-next-line no-undef
 module.exports = {
-
     /***********************************************************
         common settings
     ***********************************************************/
 
-    'parser': 'babel-eslint',
+    parser: 'babel-eslint',
 
-    'parserOptions': {
-        'sourceType': 'module',
-        'ecmaVersion': 2018,
-        'ecmaFeatures': {
-            'jsx': true,
+    parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 2018,
+        ecmaFeatures: {
+            jsx: true,
         },
     },
 
-    'env': {
-        'es6': true,
-        'browser': true,
+    env: {
+        es6: true,
+        browser: true,
     },
 
-    'globals': {
-        'Atomics': 'readonly',
-        'SharedArrayBuffer': 'readonly',
+    globals: {
+        Atomics: 'readonly',
+        SharedArrayBuffer: 'readonly',
     },
 
-    'plugins': [
+    plugins: [
         'import',
         /* 'jsx-a11y', */
         'react',
@@ -35,7 +35,7 @@ module.exports = {
         'prettier',
     ],
 
-    'extends': [
+    extends: [
         'eslint:recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
@@ -50,23 +50,23 @@ module.exports = {
         'prettier',
     ],
 
-    "ignorePatterns": ["/src/generated", "**/*.md", "/node_modules/**/*.*"],
+    ignorePatterns: ['/src/generated', '**/*.md', '/node_modules/**/*.*'],
 
-    'settings': {
-        "react": {
-            "createClass": "createReactClass", // Regex for Component Factory to use,
-                                                // default to "createReactClass"
-            "pragma": "React",  // Pragma to use, default to "React"
-            "version": "detect", // React version. "detect" automatically picks the version you have installed.
-                                    // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
-                                    // default to latest and warns if missing
-                                    // It will default to "detect" in the future
-            },
+    settings: {
+        react: {
+            createClass: 'createReactClass', // Regex for Component Factory to use,
+            // default to "createReactClass"
+            pragma: 'React', // Pragma to use, default to "React"
+            version: 'detect', // React version. "detect" automatically picks the version you have installed.
+            // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+            // default to latest and warns if missing
+            // It will default to "detect" in the future
+        },
 
-        'import/extensions': [ '.js', '.jsx', '.ts', '.tsx' ],
+        'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
 
         'import/parsers': {
-            '@typescript-eslint/parser': [ '.ts', '.tsx' ],
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
         },
 
         'import/ignore': [
@@ -75,114 +75,84 @@ module.exports = {
             'react-native-gesture-handler',
             'react-native-picker-dropdown',
         ],
-
     },
 
     /***********************************************************
         commmon rules
     ***********************************************************/
 
-    'rules': {
-
+    rules: {
         /***************************************
             style
         ***************************************/
 
         // all styling is handled by prettier.
         // Configure in .prettierrc.js file
-        "prettier/prettier": "error",
-
+        'prettier/prettier': 'error',
 
         /* scoping */
 
-        'no-unused-vars': [
-            'warn',
-        ],
-        'no-var': [
-            'warn',
-        ],
-        'vars-on-top': [
-            'error',
-        ],
-        'block-scoped-var': [
-            'error',
-        ],
-        'no-use-before-define': [
-            'warn',
-        ],
+        'no-unused-vars': ['warn'],
+        'no-var': ['warn'],
+        'vars-on-top': ['error'],
+        'block-scoped-var': ['error'],
+        'no-use-before-define': ['warn'],
 
         /***************************************
             react
         ***************************************/
 
-        'react/display-name': [
-            'warn',
-        ],
-        'react/prop-types': [
-            'off',
-        ],
-        'react/jsx-filename-extension': [
-            'off',
-        ],
+        'react/display-name': ['warn'],
+        'react/prop-types': ['off'],
+        'react/jsx-filename-extension': ['off'],
 
         /***************************************
             react-native
         ***************************************/
 
-        'react-native/no-unused-styles': [
-            'warn',
-        ],
-        'react-native/split-platform-components': [
-            'warn',
-        ],
-        'react-native/no-inline-styles': [
-            'off',
-        ],
-        'react-native/no-color-literals': [
-            'off',
-        ],
-        'react-native/no-raw-text': [
-            'warn',
-        ],
-
+        'react-native/no-unused-styles': ['warn'],
+        'react-native/split-platform-components': ['warn'],
+        'react-native/no-inline-styles': ['off'],
+        'react-native/no-color-literals': ['off'],
+        'react-native/no-raw-text': ['warn'],
     },
 
     /***********************************************************
         overrides
     ***********************************************************/
 
-    'overrides': [
-
+    overrides: [
         /***************************************
             TypeScript
         ***************************************/
         {
-            'files': [ '*.{ts,tsx}' ],
+            files: ['*.{ts,tsx}'],
 
             /* settings */
 
-            'parser': '@typescript-eslint/parser',
+            parser: '@typescript-eslint/parser',
 
-            'extends': [
+            extends: [
                 'plugin:@typescript-eslint/eslint-recommended',
                 'plugin:@typescript-eslint/recommended',
             ],
 
             /* rules */
 
-            'rules': {
-
+            rules: {
                 /* scoping */
 
-                '@typescript-eslint/no-use-before-define': [
-                    'warn',
+                '@typescript-eslint/no-use-before-define': ['warn'],
+                '@typescript-eslint/camelcase': ['off'],
+                '@typescript-eslint/explicit-function-return-type': [
+                    'off',
+                    {
+                        allowExpressions: true,
+                        allowTypedFunctionExpressions: true,
+                        allowHigherOrderFunctions: true,
+                    },
                 ],
-                "@typescript-eslint/camelcase": ["off"],
-                "@typescript-eslint/explicit-function-return-type": ["off", {
-                    'allowExpressions': true,
-                    'allowTypedFunctionExpressions': true,
-                    'allowHigherOrderFunctions': true,
-                }]
+                '@typescript-eslint/explicit-module-boundary-types': ['off'],
             },
         },
 
@@ -190,17 +160,16 @@ module.exports = {
             testing
         ***************************************/
         {
-            'files': [ '*[-.]{test,spec}.{js,jsx,ts,tsx}' ],
+            files: ['*[-.]{test,spec}.{js,jsx,ts,tsx}'],
 
             /* settings */
 
-            'env': {
-                'es6': true,
-                'node': true,
-                'browser': false,
+            env: {
+                es6: true,
+                node: true,
+                browser: false,
                 'jest/globals': true,
             },
         },
     ],
-
 };

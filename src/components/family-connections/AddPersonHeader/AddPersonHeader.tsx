@@ -21,7 +21,7 @@ type OwnProps = {
     options: StackNavigationOptions;
 };
 
-type DispatchProps = {};
+type DispatchProps = unknown;
 
 type Props = StateProps & OwnProps;
 

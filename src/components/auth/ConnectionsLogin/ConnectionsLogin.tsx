@@ -222,7 +222,7 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-export default connect<StateProps, DispatchProps, {}>(mapStateToProps, {
+export default connect<StateProps, DispatchProps>(mapStateToProps, {
     login,
     clearLoginError,
 })(ConnectionsLogin);

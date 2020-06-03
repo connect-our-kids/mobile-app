@@ -28,7 +28,7 @@ import PickPhotoButton from '../components/family-connections/AddDocumentButtons
 import TakePhotoButton from '../components/family-connections/AddDocumentButtons/TakePhotoButton';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import { ReactNativeFile } from 'apollo-upload-client';
-import { Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
     AddressInput,
@@ -184,11 +184,7 @@ function AddRelationshipScreen(props: Props) {
     const [genderValue, setGenderValue] = useState('Unspecified');
     const [deceasedValue, setDeceasedValue] = useState(false);
     const [salaryValue, setSalaryValue] = useState(0);
-    const [isHiddenPhone, setIsHiddenPhone] = useState(false);
-    const [isHiddenEmail, setIsHiddenEmail] = useState(false);
     const [rawAddress, setRawAddress] = useState(['', '', '', '', '']);
-    const [isVerifiedPhone, setIsVerifiedPhone] = useState(false);
-    const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
     const [requiredTextName, setRequiredTextName] = useState(false);
     const [formData, setFormData] = useState(initialForm);
     const [showBirthCal, setShowBirthCal] = useState(false);

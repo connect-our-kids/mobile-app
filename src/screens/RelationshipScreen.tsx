@@ -771,7 +771,7 @@ function RelationshipScreen(props: Props): JSX.Element {
                         }}
                         onPress={(): void => {
                             // Problem with typings for library
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             engagementsListViewRef?.scrollToOffset({
                                 x: 0,
@@ -889,7 +889,7 @@ function RelationshipScreen(props: Props): JSX.Element {
                         }}
                         onPress={(): void => {
                             // Problem with typings for library
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             documentsListViewRef?.scrollToOffset({
                                 x: 0,
