@@ -163,13 +163,12 @@ export default function ConnectionsDetailsView({
                         </Text>
                     </View>
                 ) : null}
-                {details.person.gender ? (
+                {details.person.gender &&
+                details.person.gender !== 'Unspecified' ? (
                     <View style={styles.textView}>
                         <Text style={styles.labelText}>Gender</Text>
                         <Text style={styles.contentText}>
-                            {details.person.gender === 'Unspecified'
-                                ? null
-                                : details.person.gender}
+                            {details.person.gender}
                         </Text>
                     </View>
                 ) : null}
