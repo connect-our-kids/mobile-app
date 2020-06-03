@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
     Text,
-    ScrollView,
     View,
     TouchableOpacity,
     StyleSheet,
     TextInput,
     Modal,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from 'react-native';
 import constants from '../../../helpers/constants';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import RelationshipListItem from '../CaseList';
 import { RootState } from '../../../store/reducers';
 import { RelationshipDetailFullFragment } from '../../../generated/RelationshipDetailFullFragment';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
     createNoteEngagement,
@@ -23,30 +25,61 @@ import {
 import Loader from '../../Loader/Loader';
 
 const styles = StyleSheet.create({
-    formContainer: {
-        width: '95%',
-        // padding: 4,
-        marginTop: 10,
+    keyboardAvoidingView: {
+        flex: 1,
+        width: '100%',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: 'white',
     },
-
+    scrollViewContentContainer: {
+        margin: 10,
+        backgroundColor: 'white',
+    },
+    title: {
+        fontSize: 17.5,
+        marginTop: 12,
+        marginBottom: 25,
+    },
+    subjectView: {
+        minHeight: 30,
+        marginBottom: 5,
+        backgroundColor: 'white',
+        borderRadius: 4,
+    },
+    subject: {
+        fontSize: 15,
+        backgroundColor: '#FAFAFA',
+        borderRadius: 4,
+        marginBottom: 5,
+        height: 30,
+        padding: 5,
+    },
+    engagementForm: {
+        marginBottom: 5,
+        height: 250,
+        backgroundColor: '#FAFAFA',
+        borderRadius: 4,
+    },
+    saveButtonView: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        marginTop: 12,
+    },
     saveButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
         width: 96,
         height: 36,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 50,
         borderWidth: 1,
-        marginTop: 5,
         backgroundColor: constants.highlightColor,
         borderColor: constants.highlightColor,
     },
-    buttonText: {
+    saveButtonText: {
         fontSize: 14,
-        textTransform: 'uppercase',
         color: '#fff',
     },
     modal: {
@@ -71,39 +104,6 @@ const styles = StyleSheet.create({
     errorText: {
         textTransform: 'uppercase',
         color: '#fff',
-    },
-    subjectFormEmail: {
-        minHeight: 25,
-        marginBottom: 5,
-        width: '93%',
-        backgroundColor: 'white',
-        borderRadius: 4,
-    },
-    subject: {
-        padding: 4,
-        fontSize: 15,
-        backgroundColor: '#FAFAFA',
-        borderRadius: 4,
-    },
-    engagementForm: {
-        height: 270,
-        marginBottom: 5,
-        width: '93%',
-        backgroundColor: '#FAFAFA',
-        borderRadius: 4,
-    },
-    containerStyle: {
-        width: '100%',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        height: '100%',
-    },
-    relationship: {
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        padding: 10,
-        width: '100%',
     },
 });
 
@@ -209,150 +209,141 @@ const AddEngagementForm = (props: Props) => {
                 );
         }
     };
-
     return (
-        <ScrollView
-            contentContainerStyle={[
-                styles.containerStyle,
-                toggleErrorModal
-                    ? { backgroundColor: 'rgba(0, 0, 0, 0.25)' }
-                    : {},
-            ]}
+        <KeyboardAwareScrollView
+            style={styles.keyboardAvoidingView}
+            extraScrollHeight={
+                props.engagementType === 'EngagementEmail' ? 75 : 72
+            }
         >
-            <View style={styles.relationship}>
-                <RelationshipListItem
-                    relationship={props.relationship}
-                    roundedCorners={true}
-                />
-            </View>
-            <View style={[styles.formContainer]}>
-                <View
-                    style={{
-                        width: '100%',
-                        alignItems: 'flex-start',
-                        marginTop: 12,
-                        marginBottom: 25,
-                        paddingLeft: 15,
-                    }}
-                >
-                    <Text style={{ fontSize: 17.5 }}>
-                        {getTitle(props.engagementType)}
-                    </Text>
-                </View>
-                {props.engagementType === 'EngagementEmail' ? (
-                    <View
-                        style={[
-                            styles.subjectFormEmail,
-                            toggleErrorModal
-                                ? { backgroundColor: 'rgba(0, 0, 0, 0)' }
-                                : {},
-                        ]}
-                    >
-                        <TextInput
-                            onChangeText={(text) => {
-                                setSubject(text);
-                            }}
-                            placeholder="Subject"
-                            placeholderTextColor={'#AAA9AD'}
-                            style={styles.subject}
-                            textAlignVertical="top"
-                            value={subject}
+            <View
+                style={[
+                    styles.scrollViewContentContainer,
+                    toggleErrorModal
+                        ? { backgroundColor: 'rgba(0, 0, 0, 0.25)' }
+                        : {},
+                ]}
+            >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={{ flex: 1 }}>
+                        <RelationshipListItem
+                            relationship={props.relationship}
+                            roundedCorners={true}
                         />
-                    </View>
-                ) : null}
-                <View
-                    style={[
-                        styles.engagementForm,
-                        toggleErrorModal
-                            ? { backgroundColor: 'rgba(0, 0, 0, 0)' }
-                            : {},
-                    ]}
-                >
-                    <TextInput
-                        multiline
-                        numberOfLines={4}
-                        onChangeText={(text) => {
-                            setNote(text);
-                        }}
-                        placeholder={dataTypePlaceholder(props.engagementType)}
-                        placeholderTextColor={'#AAA9AD'}
-                        style={{
-                            padding: 5,
-                            width: '100%',
-                            height: '100%',
-                            fontSize: 15,
-                        }}
-                        textAlignVertical="top"
-                        value={note}
-                    />
-                </View>
+                        <Text style={styles.title}>
+                            {getTitle(props.engagementType)}
+                        </Text>
+                        {props.engagementType === 'EngagementEmail' ? (
+                            <View
+                                style={[
+                                    styles.subjectView,
+                                    toggleErrorModal
+                                        ? {
+                                              backgroundColor:
+                                                  'rgba(0, 0, 0, 0)',
+                                          }
+                                        : {},
+                                ]}
+                            >
+                                <TextInput
+                                    onChangeText={(text) => {
+                                        setSubject(text);
+                                    }}
+                                    placeholder="Subject"
+                                    placeholderTextColor={'#AAA9AD'}
+                                    style={styles.subject}
+                                    textAlignVertical="top"
+                                    value={subject}
+                                    /* onFocus={(event) => {
+                                        const scrollResponder = scrollView?.getScrollResponder();
+                                        const inputHandle = findNodeHandle(
+                                            event.target
+                                        );
 
-                {/* Items below here don't change */}
-                <View
-                    style={{
-                        width: '100%',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                    }}
-                >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            width: '100%',
-                            justifyContent: 'space-between',
-                        }}
-                    ></View>
-                    <View
-                        style={{
-                            width: '100%',
-                            alignItems: 'flex-end',
-                            marginTop: 12,
+                                        scrollResponder?.scrollResponderScrollNativeHandleToKeyboard(
+                                            inputHandle, // The TextInput node handle
+                                            0, // The scroll view's bottom "contentInset" (default 0)
+                                            true // Prevent negative scrolling
+                                        );
+                                    }} */
+                                />
+                            </View>
+                        ) : null}
+                        <View
+                            style={[
+                                styles.engagementForm,
+                                toggleErrorModal
+                                    ? { backgroundColor: 'rgba(0, 0, 0, 0)' }
+                                    : {},
+                            ]}
+                        >
+                            <TextInput
+                                multiline
+                                numberOfLines={4}
+                                onChangeText={(text) => {
+                                    setNote(text);
+                                }}
+                                placeholder={dataTypePlaceholder(
+                                    props.engagementType
+                                )}
+                                placeholderTextColor={'#AAA9AD'}
+                                style={{
+                                    padding: 5,
+                                    width: '100%',
+                                    height: '100%',
+                                    fontSize: 15,
+                                }}
+                                textAlignVertical="top"
+                                value={note}
+                            />
+                        </View>
+
+                        <View style={styles.saveButtonView}>
+                            <TouchableOpacity
+                                style={styles.saveButton}
+                                onPress={() => {
+                                    createEngagement();
+                                    toggleErrorModalHandler();
+                                }}
+                            >
+                                <Text style={styles.saveButtonText}>SAVE</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ height: 200 }}></View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                visible={props.isLoadingEngagements}
+            >
+                <View style={styles.modal}>
+                    <Text>Adding Engagement...</Text>
+                    <Loader />
+                </View>
+            </Modal>
+
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                visible={toggleErrorModal}
+            >
+                <View style={styles.modal}>
+                    <Text>Error adding engagement!</Text>
+                    <Text>Please try again later.</Text>
+                    <TouchableOpacity
+                        style={styles.saveButton}
+                        onPress={() => {
+                            toggleErrorModalHandler();
                         }}
                     >
-                        <TouchableOpacity
-                            style={styles.saveButton}
-                            onPress={() => {
-                                createEngagement();
-                                toggleErrorModalHandler();
-                            }}
-                        >
-                            <Text style={styles.buttonText}>SAVE</Text>
-                        </TouchableOpacity>
-
-                        <Modal
-                            animationType={'fade'}
-                            transparent={true}
-                            visible={props.isLoadingEngagements}
-                        >
-                            <View style={styles.modal}>
-                                <Text>Adding Engagement...</Text>
-                                <Loader />
-                            </View>
-                        </Modal>
-
-                        <Modal
-                            animationType={'fade'}
-                            transparent={true}
-                            visible={toggleErrorModal}
-                        >
-                            <View style={styles.modal}>
-                                <Text>Error adding engagement!</Text>
-                                <Text>Please try again later.</Text>
-                                <TouchableOpacity
-                                    style={styles.saveButton}
-                                    onPress={() => {
-                                        toggleErrorModalHandler();
-                                    }}
-                                >
-                                    <Text style={styles.errorText}>Close</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </Modal>
-                    </View>
+                        <Text style={styles.errorText}>Close</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-        </ScrollView>
+            </Modal>
+        </KeyboardAwareScrollView>
     );
 };
 
