@@ -15,25 +15,15 @@ import * as _ from 'lodash';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        margin: 5,
+        margin: 15,
         flex: 0,
     },
-
-    searchBar: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-
     textInput: {
         borderColor: 'rgba(24,23,21,.5)',
         borderWidth: 0.5,
         borderStyle: 'solid',
         borderRadius: 4,
-        width: '45%',
-        marginRight: 12,
+        width: '100%',
         marginLeft: 12,
         color: 'black',
     },
@@ -43,9 +33,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderStyle: 'solid',
         borderRadius: 4,
-        width: '85%',
-        marginTop: 45,
-        marginRight: 12,
+        flexGrow: 1,
         marginLeft: 12,
         backgroundColor: 'white',
     },
@@ -85,19 +73,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 
-    nameInputFullWidth: {
-        width: '100%',
-    },
-
-    peopleSearch: {
+    nameSearch: {
         flexDirection: 'row',
-        paddingTop: '5%',
+        paddingTop: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: '5%',
     },
-    ioniconsCentered: {
-        marginTop: '11%',
+    otherSearches: {
+        flexDirection: 'row',
+        paddingTop: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
@@ -347,47 +333,42 @@ export class SearchForm extends Component<Props, LocalState> {
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
                     >
-                        <View style={styles.nameInputFullWidth}>
-                            <View style={styles.peopleSearch}>
-                                <Ionicons
-                                    name="md-person"
-                                    size={32}
-                                    color="#0279AC"
-                                />
-                                <Input
-                                    placeholder="First Middle Last Name"
-                                    placeholderTextColor="rgba(24,23,21,.5)"
-                                    style={styles.textInput}
-                                    value={this.state.name}
-                                    onChangeText={(text) =>
-                                        this.setState({
-                                            ...this.state,
-                                            name: text,
-                                        })
-                                    }
-                                    autoCapitalize="words"
-                                />
-                            </View>
-                            <View style={styles.peopleSearch}>
-                                <Ionicons
-                                    name="md-map"
-                                    size={32}
-                                    color="#0279AC"
-                                />
-                                <Input
-                                    placeholder="City, State (Optional)"
-                                    placeholderTextColor="rgba(24,23,21,.5)"
-                                    style={styles.textInput}
-                                    value={this.state.location}
-                                    onChangeText={(text) =>
-                                        this.setState({
-                                            ...this.state,
-                                            location: text,
-                                        })
-                                    }
-                                    autoCapitalize="words"
-                                />
-                            </View>
+                        <View style={styles.nameSearch}>
+                            <Ionicons
+                                name="md-person"
+                                size={32}
+                                color="#0279AC"
+                            />
+                            <Input
+                                placeholder="First Middle Last Name"
+                                placeholderTextColor="rgba(24,23,21,.5)"
+                                style={styles.textInput}
+                                value={this.state.name}
+                                onChangeText={(text) =>
+                                    this.setState({
+                                        ...this.state,
+                                        name: text,
+                                    })
+                                }
+                                autoCapitalize="words"
+                            />
+                        </View>
+                        <View style={styles.nameSearch}>
+                            <Ionicons name="md-map" size={32} color="#0279AC" />
+                            <Input
+                                placeholder="City, State (Optional)"
+                                placeholderTextColor="rgba(24,23,21,.5)"
+                                style={styles.textInput}
+                                value={this.state.location}
+                                onChangeText={(text) =>
+                                    this.setState({
+                                        ...this.state,
+                                        location: text,
+                                    })
+                                }
+                                autoCapitalize="words"
+                                spellCheck={false}
+                            />
                         </View>
                     </Tab>
 
@@ -401,12 +382,11 @@ export class SearchForm extends Component<Props, LocalState> {
                         activeTabStyle={[{ backgroundColor: '#fff' }]}
                         tabStyle={[{ backgroundColor: '#fff' }]}
                     >
-                        <View style={styles.searchBar}>
+                        <View style={styles.otherSearches}>
                             <Ionicons
                                 name="md-mail"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="Email Address"
@@ -425,6 +405,7 @@ export class SearchForm extends Component<Props, LocalState> {
                                 }
                                 lightTheme
                                 autoCapitalize="none"
+                                spellCheck={false}
                             />
                         </View>
                     </Tab>
@@ -436,13 +417,8 @@ export class SearchForm extends Component<Props, LocalState> {
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
                     >
-                        <View style={styles.searchBar}>
-                            <Ionicons
-                                name="md-pin"
-                                size={32}
-                                color="#0279AC"
-                                style={styles.ioniconsCentered}
-                            />
+                        <View style={styles.otherSearches}>
+                            <Ionicons name="md-pin" size={32} color="#0279AC" />
                             <SearchBar
                                 placeholder="Mailing Address"
                                 placeholderTextColor="rgba(24,23,21,.5)"
@@ -471,12 +447,11 @@ export class SearchForm extends Component<Props, LocalState> {
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
                     >
-                        <View style={styles.searchBar}>
+                        <View style={styles.otherSearches}>
                             <Ionicons
                                 name="md-call"
                                 size={32}
                                 color="#0279AC"
-                                style={styles.ioniconsCentered}
                             />
                             <SearchBar
                                 placeholder="Phone Number"
@@ -506,38 +481,41 @@ export class SearchForm extends Component<Props, LocalState> {
                         activeTabStyle={{ backgroundColor: '#fff' }}
                         tabStyle={{ backgroundColor: '#fff' }}
                     >
-                        <View style={styles.searchBar}>
-                            <Ionicons
-                                name="md-globe"
-                                size={32}
-                                color="#0279AC"
-                                style={styles.ioniconsCentered}
-                            />
-                            <SearchBar
-                                placeholder="URL"
-                                placeholderTextColor="rgba(24,23,21,.5)"
-                                containerStyle={styles.textInputWide}
-                                inputContainerStyle={{
-                                    backgroundColor: '#fff',
-                                }}
-                                inputStyle={{ backgroundColor: '#fff' }}
-                                value={this.state.url}
-                                onChangeText={(text) =>
-                                    this.setState({
-                                        ...this.state,
-                                        url: text,
-                                    })
-                                }
-                                lightTheme
-                                autoCapitalize="none"
-                            />
+                        <View>
+                            <View style={styles.otherSearches}>
+                                <Ionicons
+                                    name="md-globe"
+                                    size={32}
+                                    color="#0279AC"
+                                />
+                                <SearchBar
+                                    placeholder="URL"
+                                    placeholderTextColor="rgba(24,23,21,.5)"
+                                    containerStyle={styles.textInputWide}
+                                    inputContainerStyle={{
+                                        backgroundColor: '#fff',
+                                    }}
+                                    inputStyle={{ backgroundColor: '#fff' }}
+                                    value={this.state.url}
+                                    onChangeText={(text) =>
+                                        this.setState({
+                                            ...this.state,
+                                            url: text,
+                                        })
+                                    }
+                                    lightTheme
+                                    autoCapitalize="none"
+                                />
+                            </View>
                         </View>
                     </Tab>
                 </Tabs>
                 <View
                     style={{
                         flexDirection: 'row',
-                        margin: 16,
+                        marginTop: 0,
+                        marginBottom: 16,
+                        marginHorizontal: 15,
                         justifyContent: 'space-between',
                     }}
                 >
