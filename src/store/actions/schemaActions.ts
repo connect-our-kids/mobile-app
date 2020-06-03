@@ -48,7 +48,7 @@ export const getSchema = (teamId: number): ThunkResult<void> => (
     dispatch: SchemaDispatch,
     getState,
     { client }: { client: ApolloClient<NormalizedCacheObject> }
-) => {
+): void => {
     dispatch({ type: SchemaTypes.GET_SCHEMA_START });
     console.log('Loading schema...');
 
@@ -60,6 +60,11 @@ export const getSchema = (teamId: number): ThunkResult<void> => (
         .then(
             (result) => {
                 console.log(`Loading schema: success`);
+                // remove empty string from list of genders if present
+                // in the future this should be done on the backend
+                result.data.schema.gender = result.data.schema.gender.filter(
+                    (value) => value
+                );
                 dispatch({
                     type: SchemaTypes.GET_SCHEMA_SUCCESS,
                     schema: result.data,

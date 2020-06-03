@@ -5,6 +5,10 @@ export default StyleSheet.create({
     background: {
         backgroundColor: 'white',
     },
+    containerStyle: {
+        flex: 0,
+        marginHorizontal: 15,
+    },
     requiredText: {
         color: 'red',
     },
@@ -59,7 +63,6 @@ export default StyleSheet.create({
         padding: 5,
         flexDirection: 'row',
         marginTop: 30,
-        marginLeft: 20,
         marginBottom: 30,
         borderRadius: 20,
     },
@@ -79,14 +82,10 @@ export default StyleSheet.create({
         color: '#0279AC',
         fontSize: 17,
     },
-    containerStyle: {
-        flex: 0,
-    },
     statusTextContainer: {
         paddingTop: 30,
     },
     sectionPadding: {
-        paddingLeft: 15,
         paddingTop: 15,
     },
     textPadding: {
@@ -109,7 +108,6 @@ export default StyleSheet.create({
         borderColor: 'red',
         borderWidth: 0.5,
         borderRadius: 5,
-        width: '95%',
     },
     suffixDropdownContainer: {
         flexDirection: 'row',
@@ -118,7 +116,7 @@ export default StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 5,
         marginTop: 5,
-        width: '43%',
+        width: '100%',
     },
     genderDropdownContainer: {
         flexDirection: 'row',
@@ -127,44 +125,37 @@ export default StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 5,
         marginTop: 5,
-        width: '43%',
+        width: '100%',
     },
     nameInputContainer: {
         width: '100%',
         marginTop: 10,
     },
     formContainer: {
-        width: '45%',
+        width: '100%',
         marginTop: 10,
     },
     fosterCareDateContainer: {
         flexDirection: 'row',
-        width: '46.5%',
+        flex: 1,
         marginTop: 10,
-    },
-    cityZipContainer: {
-        width: '55%',
-        marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
     },
     addressContainer: {
-        width: '95%',
         marginTop: 10,
         justifyContent: 'space-between',
     },
     textInput: {
         borderColor: 'rgba(24,23,21,.5)',
         borderWidth: 0.5,
-        width: '95%',
         height: 45,
         paddingLeft: 5,
         borderRadius: 5,
+        flexGrow: 1,
     },
     textInputRequired: {
         borderColor: 'red',
         borderWidth: 0.5,
-        width: '95%',
+        width: '100%',
         height: 45,
         paddingLeft: 5,
         borderRadius: 5,
@@ -176,6 +167,14 @@ export default StyleSheet.create({
         height: 45,
         paddingLeft: 5,
         borderRadius: 5,
+    },
+    telephoneInput: {
+        borderColor: 'rgba(24,23,21,.5)',
+        borderWidth: 0.5,
+        height: 45,
+        paddingLeft: 5,
+        borderRadius: 5,
+        flexGrow: 1,
     },
     salaryDropdownContainer: {
         flexDirection: 'row',
@@ -191,6 +190,7 @@ export default StyleSheet.create({
         borderWidth: 0.5,
         width: '100%',
         height: 45,
+        marginTop: 10,
         paddingLeft: 5,
         marginRight: 5,
         borderRadius: 5,
@@ -198,13 +198,14 @@ export default StyleSheet.create({
     zipInput: {
         borderColor: 'rgba(24,23,21,.5)',
         borderWidth: 0.5,
-        width: '68%',
+        width: '100%',
+        height: 45,
         paddingLeft: 5,
-        marginLeft: 5,
+        marginRight: 5,
         borderRadius: 5,
     },
     highlightContainer: {
-        width: '95%',
+        width: '100%',
     },
     highlightInput: {
         height: 100,

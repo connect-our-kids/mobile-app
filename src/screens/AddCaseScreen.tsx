@@ -50,7 +50,7 @@ type StateProps = {
     result: casesDetailSlim_cases | undefined;
     isAddingCase: boolean;
     addCaseFailure: boolean;
-    gender?: string[];
+    gender: string[];
 };
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -162,7 +162,7 @@ const schema = yup.object().shape(
 function AddCaseScreen(props: Props) {
     const [caseStatusValue, setCaseStatusValue] = useState(1);
     const [suffixValue, setSuffixValue] = useState('');
-    const [genderValue, setGenderValue] = useState('');
+    const [genderValue, setGenderValue] = useState('Unspecified');
     const [childStatusValue, setChildStatusValue] = useState(0);
     const [toggleChildStatus, setToggleChildStatus] = useState(false);
     const [requiredTextCaseStatus, setRequiredTextCaseStatus] = useState(false);
@@ -321,7 +321,7 @@ function AddCaseScreen(props: Props) {
         if (props.lastAddedCaseId !== undefined) {
             setFormData(initialForm);
             setSuffixValue('');
-            setGenderValue('');
+            setGenderValue('Unspecified');
             setCaseStatusValue(1);
             setChildStatusValue(0);
             props.navigation.goBack();
@@ -435,7 +435,7 @@ function AddCaseScreen(props: Props) {
                 </View>
                 {/* Status Section */}
                 <View>
-                    <View style={{ paddingLeft: 15, width: '95%' }}>
+                    <View>
                         <View style={styles.statusTextContainer}>
                             <Text style={styles.sectionHeader}>Status</Text>
                         </View>
@@ -687,7 +687,7 @@ function AddCaseScreen(props: Props) {
                                     handleChange('gender', itemValue);
                                 }}
                             >
-                                {props.gender?.map((value, index) => (
+                                {props.gender.map((value, index) => (
                                     <Picker.Item
                                         key={index}
                                         label={value}
@@ -707,23 +707,13 @@ function AddCaseScreen(props: Props) {
                                 }
                             />
                         </View>
-                        <View style={styles.cityZipContainer}>
+                        <View style={styles.formContainer}>
                             <TextInput
-                                style={styles.cityInput}
+                                style={styles.addressInput}
                                 placeholder={'City'}
                                 value={rawAddress[1]}
                                 onChangeText={(text) =>
                                     handleRawAddress(1, text)
-                                }
-                            />
-                            <TextInput
-                                maxLength={12}
-                                keyboardType="numeric"
-                                style={styles.zipInput}
-                                placeholder={'Postal'}
-                                value={rawAddress[2]}
-                                onChangeText={(text) =>
-                                    handleRawAddress(2, text)
                                 }
                             />
                         </View>
@@ -734,6 +724,18 @@ function AddCaseScreen(props: Props) {
                                 value={rawAddress[3]}
                                 onChangeText={(text) =>
                                     handleRawAddress(3, text)
+                                }
+                            />
+                        </View>
+                        <View style={styles.formContainer}>
+                            <TextInput
+                                maxLength={12}
+                                keyboardType="numeric"
+                                style={styles.addressInput}
+                                placeholder={'Postal Code'}
+                                value={rawAddress[2]}
+                                onChangeText={(text) =>
+                                    handleRawAddress(2, text)
                                 }
                             />
                         </View>
@@ -823,7 +825,7 @@ function AddCaseScreen(props: Props) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ height: 200 }}></View>
+                <View style={{ height: 50 }}></View>
                 <Modal
                     animationType={'fade'}
                     transparent={true}
@@ -865,7 +867,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
               })
             : undefined;
 
-    const gender = state.schema?.results?.schema.gender;
+    const gender = state.schema?.results?.schema.gender ?? [];
 
     return {
         image,

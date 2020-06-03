@@ -181,7 +181,7 @@ const schema = yup.object<InitialForm>().shape(
 );
 function AddRelationshipScreen(props: Props) {
     const [suffixValue, setSuffixValue] = useState('');
-    const [genderValue, setGenderValue] = useState('');
+    const [genderValue, setGenderValue] = useState('Unspecified');
     const [deceasedValue, setDeceasedValue] = useState(false);
     const [salaryValue, setSalaryValue] = useState(0);
     const [isHiddenPhone, setIsHiddenPhone] = useState(false);
@@ -402,7 +402,7 @@ function AddRelationshipScreen(props: Props) {
         if (props.lastAddedRelationshipId !== undefined) {
             setFormData(initialForm);
             setSuffixValue('');
-            setGenderValue('');
+            setGenderValue('Unspecified');
             setSalaryValue(0);
             setDeceasedValue(false);
             props.navigation.goBack();
@@ -677,6 +677,8 @@ function AddRelationshipScreen(props: Props) {
                                 containerStyle={{
                                     backgroundColor: 'white',
                                     borderColor: 'lightgray',
+                                    marginLeft: 0,
+                                    paddingLeft: 0,
                                 }}
                                 onPress={() => {
                                     const newVal = !deceasedValue;
@@ -749,23 +751,13 @@ function AddRelationshipScreen(props: Props) {
                                 }}
                             />
                         </View>
-                        <View style={styles.cityZipContainer}>
+                        <View style={styles.formContainer}>
                             <TextInput
                                 style={styles.cityInput}
                                 placeholder={'City'}
                                 value={rawAddress[1]}
                                 onChangeText={(text) => {
                                     handleRawAddress(1, text);
-                                }}
-                            />
-                            <TextInput
-                                maxLength={12}
-                                keyboardType="numeric"
-                                style={styles.zipInput}
-                                placeholder={'Postal'}
-                                value={rawAddress[2]}
-                                onChangeText={(text) => {
-                                    handleRawAddress(2, text);
                                 }}
                             />
                         </View>
@@ -781,6 +773,18 @@ function AddRelationshipScreen(props: Props) {
                         </View>
                         <View style={styles.formContainer}>
                             <TextInput
+                                maxLength={12}
+                                keyboardType="numeric"
+                                style={styles.zipInput}
+                                placeholder={'Postal Code'}
+                                value={rawAddress[2]}
+                                onChangeText={(text) => {
+                                    handleRawAddress(2, text);
+                                }}
+                            />
+                        </View>
+                        <View style={styles.formContainer}>
+                            <TextInput
                                 style={styles.addressInput}
                                 placeholder={'Country'}
                                 value={rawAddress[4]}
@@ -791,28 +795,25 @@ function AddRelationshipScreen(props: Props) {
                         </View>
                         <View>
                             <Text style={styles.textPadding}>Telephone #</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={styles.formContainer}>
-                                    <TextInput
-                                        keyboardType="numeric"
-                                        style={styles.addressInput}
-                                        placeholder={'Telephone #'}
-                                        value={
-                                            formData.telephones
-                                                ? formData.telephones[0]
-                                                      .phoneNumber
-                                                : ''
-                                        }
-                                        onChangeText={(text) => {
-                                            handleChange(
-                                                'phoneNumber',
-                                                text,
-                                                'phone'
-                                            );
-                                        }}
-                                    />
-                                </View>
-                                {isHiddenPhone === false ? (
+                            <View style={styles.formContainer}>
+                                <TextInput
+                                    keyboardType="numeric"
+                                    style={styles.telephoneInput}
+                                    placeholder={'Telephone #'}
+                                    value={
+                                        formData.telephones
+                                            ? formData.telephones[0].phoneNumber
+                                            : ''
+                                    }
+                                    onChangeText={(text) => {
+                                        handleChange(
+                                            'phoneNumber',
+                                            text,
+                                            'phone'
+                                        );
+                                    }}
+                                />
+                                {/* {isHiddenPhone === false ? (
                                     <Entypo
                                         style={{
                                             paddingTop: 10,
@@ -869,7 +870,7 @@ function AddRelationshipScreen(props: Props) {
                                         );
                                         setIsVerifiedPhone(newVal);
                                     }}
-                                />
+                                /> */}
                             </View>
                         </View>
                         <View>
@@ -894,7 +895,7 @@ function AddRelationshipScreen(props: Props) {
                                         }}
                                     />
                                 </View>
-                                {!isHiddenEmail ? (
+                                {/*  {!isHiddenEmail ? (
                                     <Entypo
                                         style={{
                                             paddingTop: 10,
@@ -951,7 +952,7 @@ function AddRelationshipScreen(props: Props) {
                                         );
                                         setIsVerifiedEmail(newVal);
                                     }}
-                                />
+                                /> */}
                             </View>
                         </View>
                     </View>
@@ -1026,7 +1027,7 @@ function AddRelationshipScreen(props: Props) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ height: 200 }}></View>
+                <View style={{ height: 50 }}></View>
                 <Modal
                     animationType={'fade'}
                     transparent={true}
