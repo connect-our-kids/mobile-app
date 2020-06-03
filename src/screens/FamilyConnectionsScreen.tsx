@@ -125,10 +125,20 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 
     // run any time the logged in status changes
     useEffect(() => {
-        if (props.auth.isLoggedIn && !props.auth.isLoggingIn) {
+        if (
+            props.auth.isLoggedIn &&
+            !props.auth.isLoggingIn &&
+            props.genders.length > 0 &&
+            !!props.team
+        ) {
             props.getCases();
         }
-    }, [props.auth.isLoggedIn, props.auth.isLoggingIn]);
+    }, [
+        props.auth.isLoggedIn,
+        props.auth.isLoggingIn,
+        props.genders,
+        props.team,
+    ]);
 
     // gender filter
     const initialGenderFilters = props.genders.reduce((result, item) => {
@@ -207,7 +217,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 
     return !props.auth.isLoggedIn || !props.team ? (
         <ConnectionsLogin />
-    ) : props.isLoadingCases ? (
+    ) : props.isLoadingCases || props.genders.length === 0 ? (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
             <Loader />
         </SafeAreaView>
@@ -630,9 +640,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
 }; // end of FamilyConnectionsScreen
 
 const mapStateToProps = (state: RootState) => {
-    let genders = state.schema.results?.schema?.gender ?? [];
-    // remove empty strings. The backend should do this in the future
-    genders = genders.filter((gender) => gender);
+    const genders = state.schema.results?.schema?.gender ?? [];
 
     return {
         cases: state.cases.results ?? [], // TODO this is a temporary fie. state.cases.results should never be undefined
