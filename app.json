@@ -25,7 +25,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.connectourkids.connect-our-kids"
+      "bundleIdentifier": "com.connectourkids.connect-our-kids",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This allows the app to use your camera to take a picture that will be uploaded to a case or person.",
+        "NSPhotoLibraryUsageDescription": "This allows the app to access your photos so you can upload a picture to a case or person."
+      }
     },
     "android": {
       "package": "com.connectOurKids",
