@@ -93,12 +93,21 @@ const CaseScreen = (props: Props) => {
         setSearchKeywords(e);
     };
 
+    const createDefaultGenderFilter = () =>
+        props.genders.reduce((result, item) => {
+            result[item] = true;
+            return result;
+        }, {} as GenderFilter);
+
     // gender filter
-    const initialGenderFilters = props.genders.reduce((result, item) => {
-        result[item] = true;
-        return result;
-    }, {} as GenderFilter);
-    const [genderFilters, setGenderFilters] = useState(initialGenderFilters);
+    const [genderFilters, setGenderFilters] = useState(
+        createDefaultGenderFilter()
+    );
+
+    // any time the genders change, we need to update the gender filter
+    useEffect(() => {
+        setGenderFilters(createDefaultGenderFilter());
+    }, [props.genders]);
 
     /* const shouldShowRemoveFilterBanner = (): boolean => {
         return !(
