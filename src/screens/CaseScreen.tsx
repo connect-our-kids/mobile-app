@@ -29,6 +29,7 @@ import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import {
     caseDetailFull,
     caseDetailFull_relationships,
+    caseDetailFull_engagements,
 } from '../generated/caseDetailFull';
 import { RelationshipScreenParams } from './RelationshipScreen';
 import constants from '../helpers/constants';
@@ -48,7 +49,7 @@ import {
     deleteRelationshipMutation,
     deleteRelationshipMutationVariables,
 } from '../generated/deleteRelationshipMutation';
-import { MeState } from '../store/reducers/meReducer';
+import { Roles } from '../generated/globalTypes';
 
 interface StateProps {
     case?: caseDetailFull;
@@ -56,7 +57,7 @@ interface StateProps {
     caseError?: string;
     auth: AuthState;
     genders: string[];
-    me: MeState;
+    hasDeletePermission: boolean;
 }
 
 interface DispatchProps {
@@ -149,6 +150,23 @@ const DetailsView = (props: { case?: caseDetailFull }): JSX.Element =>
     ) : (
         <></>
     );
+
+const createDeleteMessage = (
+    relationship: caseDetailFull_relationships,
+    engagements: caseDetailFull_engagements[]
+): string => {
+    let message = `Are you sure you want to delete ${relationship.person.fullName}?`;
+    const numRelevantEngagements = engagements.filter(
+        (engagement) => relationship.id === engagement.relationship?.id
+    ).length;
+    if (numRelevantEngagements === 1) {
+        message += `\n\nThis will delete 1 engagement`;
+    } else if (numRelevantEngagements > 1) {
+        message += `\n\nThis will delete ${numRelevantEngagements} engagements`;
+    }
+    message += '\n\nThis action cannot be undone.';
+    return message;
+};
 
 const CaseScreen = (props: Props) => {
     const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -1233,29 +1251,44 @@ const CaseScreen = (props: Props) => {
             )}
 
             {deleteRelationshipState?.state === 'confirm' ? (
-                <GenericModal
-                    message={`Delete ${deleteRelationshipState.relationship.person.fullName} ?`}
-                    animationType="fade"
-                    leftButtonText="Cancel"
-                    rightButtonText="Delete"
-                    isRightButtonRed={true}
-                    onLeftButton={() => {
-                        setDeleteRelationshipState(undefined);
-                    }}
-                    onRightButton={() => {
-                        if (props.case?.details) {
-                            performDeleteRelationship(
-                                props.case.details.id,
-                                deleteRelationshipState.relationship
-                            );
-                            setDeleteRelationshipState({
-                                state: 'delete',
-                                relationship:
-                                    deleteRelationshipState.relationship,
-                            });
-                        }
-                    }}
-                />
+                props.hasDeletePermission ? (
+                    <GenericModal
+                        title={`Delete ${deleteRelationshipState.relationship.person.fullName}?`}
+                        message={createDeleteMessage(
+                            deleteRelationshipState.relationship,
+                            props.case?.engagements ?? []
+                        )}
+                        animationType="fade"
+                        leftButtonText="Cancel"
+                        rightButtonText="Delete"
+                        isRightButtonRed={true}
+                        onLeftButton={() => {
+                            setDeleteRelationshipState(undefined);
+                        }}
+                        onRightButton={() => {
+                            if (props.case?.details) {
+                                performDeleteRelationship(
+                                    props.case.details.id,
+                                    deleteRelationshipState.relationship
+                                );
+                                setDeleteRelationshipState({
+                                    state: 'delete',
+                                    relationship:
+                                        deleteRelationshipState.relationship,
+                                });
+                            }
+                        }}
+                    />
+                ) : (
+                    <GenericModal
+                        message={`You do not have permission to delete from this case.`}
+                        animationType="fade"
+                        rightButtonText="OK"
+                        onRightButton={() => {
+                            setDeleteRelationshipState(undefined);
+                        }}
+                    />
+                )
             ) : null}
             {deleteRelationshipState?.state === 'error' ? (
                 <GenericModal
@@ -1278,13 +1311,24 @@ const mapStateToProps = (state: RootState) => {
     // remove empty strings. The backend should do this in the future
     genders = genders.filter((gender) => gender);
 
+    const relevantCaseRole =
+        state.me.results?.caseRoles.find(
+            (role) => role.caseId === state.case.results?.details?.id
+        )?.role ?? Roles.NONE;
+    const hasDeletePermission =
+        state.me.results?.isSiteAdmin ||
+        state.me.results?.userTeam?.role === Roles.EDITOR ||
+        state.me.results?.userTeam?.role === Roles.MANAGER ||
+        relevantCaseRole === Roles.EDITOR ||
+        relevantCaseRole === Roles.MANAGER;
+
     return {
         case: state.case.results,
         isLoadingCase: state.case.isLoading,
         caseError: state.case.error,
         auth: state.auth,
         genders,
-        me: state.me,
+        hasDeletePermission,
     };
 };
 
