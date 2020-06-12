@@ -107,6 +107,16 @@ export const CREATE_RELATIONSHIP_MUTATION = gql`
     ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
 `;
 
+export const DELETE_RELATIONSHIP_MUTATION = gql`
+    mutation deleteRelationshipMutation($caseId: Int!, $relationshipId: Int!) {
+        deleteRelationship(caseId: $caseId, relationshipId: $relationshipId) {
+            ...RelationshipDetailSlim
+        }
+    }
+
+    ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
+`;
+
 export function addRelationshipToCache(
     caseId: number,
     relationshipIn: relationshipsDetailSlim_relationships,
@@ -196,6 +206,34 @@ export function deleteEngagementCache(
             ...caseCache,
             engagements: caseCache.engagements.filter(
                 (e) => e.id !== engagement.id
+            ),
+        },
+    });
+}
+
+export function deleteRelationshipCache({
+    caseId,
+    relationshipId,
+    cache,
+}: {
+    caseId: number;
+    relationshipId: number;
+    cache: DataProxy;
+}) {
+    const caseCache = cache.readQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
+        variables: { caseId },
+    });
+    if (!caseCache) {
+        return;
+    }
+    cache.writeQuery<caseDetailFull, caseDetailFullVariables>({
+        query: CASE_DETAIL_FULL_QUERY,
+        variables: { caseId },
+        data: {
+            ...caseCache,
+            relationships: caseCache.relationships.filter(
+                (e) => e.id !== relationshipId
             ),
         },
     });
