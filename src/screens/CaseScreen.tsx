@@ -81,6 +81,10 @@ let relationshipsListViewRef: SwipeListView<
     caseDetailFull_relationships
 > | null = null;
 
+let relationshipsListViewRef2: SwipeListView<
+    caseDetailFull_relationships
+> | null = null;
+
 const DetailsView = (props: { case?: caseDetailFull }): JSX.Element =>
     props.case?.details ? (
         <ListItem
@@ -1198,6 +1202,9 @@ const CaseScreen = (props: Props) => {
                             listViewRef={(ref) => {
                                 relationshipsListViewRef = ref;
                             }}
+                            ref={(ref) => {
+                                relationshipsListViewRef2 = ref;
+                            }}
                             style={{ flex: 1 }}
                             onScroll={(scrollingEvent): void => {
                                 setIsListScrolled(
@@ -1263,6 +1270,7 @@ const CaseScreen = (props: Props) => {
                         rightButtonText="Delete"
                         isRightButtonRed={true}
                         onLeftButton={() => {
+                            relationshipsListViewRef2?.closeAllOpenRows();
                             setDeleteRelationshipState(undefined);
                         }}
                         onRightButton={() => {
@@ -1285,6 +1293,7 @@ const CaseScreen = (props: Props) => {
                         animationType="fade"
                         rightButtonText="OK"
                         onRightButton={() => {
+                            relationshipsListViewRef2?.closeAllOpenRows();
                             setDeleteRelationshipState(undefined);
                         }}
                     />
@@ -1295,6 +1304,7 @@ const CaseScreen = (props: Props) => {
                     message={deleteRelationshipState.error}
                     rightButtonText="OK"
                     onRightButton={() => {
+                        relationshipsListViewRef2?.closeAllOpenRows();
                         setDeleteRelationshipState(undefined);
                     }}
                 />
