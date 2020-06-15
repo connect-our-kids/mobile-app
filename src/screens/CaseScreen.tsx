@@ -1299,9 +1299,11 @@ const CaseScreen = (props: Props) => {
                     }}
                 />
             ) : null}
-            {loading && deleteRelationshipState?.state === 'delete' ? (
-                <BusyModal message="Deleting" animationType="none" />
-            ) : null}
+            <BusyModal
+                message="Deleting"
+                animationType="none"
+                visible={loading}
+            />
         </View>
     );
 };

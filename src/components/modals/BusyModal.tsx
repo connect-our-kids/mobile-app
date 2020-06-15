@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
 export function BusyModal(props: {
     message?: string;
     animationType?: 'none' | 'slide' | 'fade';
+    visible: boolean;
 }): JSX.Element {
     return (
         <Modal
             animationType={props.animationType}
             transparent={true}
-            visible={true}
+            visible={props.visible}
         >
             <View style={styles.centerView}>
                 <View style={styles.modalView}>
