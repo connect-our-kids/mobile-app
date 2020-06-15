@@ -11,6 +11,7 @@ import {
     Platform,
     TouchableHighlight,
     TouchableOpacity,
+    ListRenderItemInfo,
 } from 'react-native';
 
 import { ListItem, Image, SearchBar, CheckBox } from 'react-native-elements';
@@ -39,6 +40,20 @@ import { casesDetailSlim_cases } from '../generated/casesDetailSlim';
 import { AuthState } from '../store/reducers/authReducer';
 import { UserFullFragment_userTeam_team } from '../generated/UserFullFragment';
 import { createPersonSubtitle } from '../helpers/personSubtitle';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { useMutation } from '@apollo/react-hooks';
+import { BusyModal } from '../components/modals/BusyModal';
+import { GenericModal } from '../components/modals/GenericModal';
+import { Roles } from '../generated/globalTypes';
+import {
+    DELETE_CASE_MUTATION,
+    deleteCaseFromCache,
+} from '../store/actions/fragments/cases';
+import {
+    deleteCaseMutation,
+    deleteCaseMutationVariables,
+} from '../generated/deleteCaseMutation';
+import { DeleteCaseModal } from '../components/modals/DeleteCaseModal';
 // unicode arrow
 const leftArrow = '\u2190';
 
@@ -49,6 +64,7 @@ interface StateProps {
     casesError?: string;
     team?: UserFullFragment_userTeam_team;
     genders: string[];
+    hasDeletePermission: boolean;
 }
 
 interface DispatchProps {
@@ -67,6 +83,9 @@ interface GenderFilter {
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
+
+let listViewRef: SwipeListView<casesDetailSlim_cases> | null = null;
+let listViewRef2: SwipeListView<casesDetailSlim_cases> | null = null;
 
 const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     const styles = StyleSheet.create({
@@ -96,32 +115,93 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             maxHeight: 40,
             marginRight: 10,
         },
-        isLoading: {
-            textAlign: 'center',
-            fontSize: 20,
-            flex: 1,
-            marginTop: 240,
-            color: 'black',
-        },
         checkboxes: {
             fontSize: 18,
             fontWeight: 'normal',
+        },
+        backTextWhite: {
+            color: '#FFF',
+        },
+        rowBack: {
+            backgroundColor: 'red',
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+        },
+        backRightBtn: {
+            alignItems: 'center',
+            bottom: 0,
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 0,
+            width: 75,
+            backgroundColor: 'red',
+            right: 0,
         },
     });
 
     const [modalVisible, setModalVisible] = useState(false);
     const [searchKeywords, setSearchKeywords] = useState('');
-    const [isScrolling, setIsScrolling] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
-    const [options] = useState({ x: 0, y: 0, animated: true }); // used as landing coordinates for scroll to top
+    const [, setIsScrolling] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
     const [sort, setSort] = useState<
         'First Name' | 'Last Name' | 'Created' | 'Updated'
     >('First Name'); // sort results of Family Connections, can be changed to several other values
     const [rtn, setRtn] = useState('RETURN'); // MIGHT display "RETURN" next to a return arrow in iOS modals; also exists in the CaseView component
 
+    const [isListScrolled, setIsListScrolled] = useState(false);
+
+    const [deleteCaseState, setDeleteCaseState] = useState<
+        | {
+              state: 'confirm';
+              case: casesDetailSlim_cases;
+          }
+        | {
+              state: 'delete';
+              case: casesDetailSlim_cases;
+          }
+        | {
+              state: 'error';
+              error: string;
+          }
+        | undefined
+    >(undefined);
+
+    const [deleteCaseGraphQL, { loading }] = useMutation<
+        deleteCaseMutation,
+        deleteCaseMutationVariables
+    >(DELETE_CASE_MUTATION, {
+        errorPolicy: 'all',
+        onCompleted: () => {
+            setDeleteCaseState(undefined);
+        },
+        onError: (error) => {
+            setDeleteCaseState({
+                state: 'error',
+                error: error.message ?? 'Unknown error',
+            });
+        },
+    });
+
+    const performDeleteCase = (caseId: number) => {
+        deleteCaseGraphQL({
+            variables: {
+                caseId,
+            },
+            update: (cache) => {
+                deleteCaseFromCache({
+                    caseId,
+                    cache,
+                });
+            },
+        });
+    };
+
     // run this once
     useEffect(() => {
         Platform.OS === 'android' ? setRtn('') : null; // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
     }, []);
+
+    const [casesLoaded, setCasesLoaded] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
 
     // run any time the logged in status changes
     useEffect(() => {
@@ -129,15 +209,19 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             props.auth.isLoggedIn &&
             !props.auth.isLoggingIn &&
             props.genders.length > 0 &&
-            !!props.team
+            !!props.team &&
+            !props.isLoadingCases &&
+            !casesLoaded
         ) {
             props.getCases();
+            setCasesLoaded(true);
         }
     }, [
         props.auth.isLoggedIn,
         props.auth.isLoggingIn,
         props.genders,
         props.team,
+        props.isLoadingCases,
     ]);
 
     const createDefaultGenderFilter = () =>
@@ -222,7 +306,71 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         );
     });
 
-    let scroll: ScrollView | null = null;
+    const renderCase = (
+        itemInfo: ListRenderItemInfo<casesDetailSlim_cases>
+    ) => (
+        <View>
+            <ListItem
+                key={itemInfo.index}
+                title={itemInfo.item.person.fullName}
+                titleStyle={{ color: '#5A6064' }}
+                subtitle={createPersonSubtitle(itemInfo.item.person)}
+                subtitleStyle={{ color: '#9FABB3' }}
+                leftAvatar={
+                    <View
+                        style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Image
+                            source={
+                                itemInfo.item.person.picture
+                                    ? {
+                                          uri: itemInfo.item.person.picture,
+                                      }
+                                    : placeholderImg
+                            }
+                            style={{
+                                height: 50,
+                                width: 50,
+                                borderRadius: 25,
+                                overflow: 'hidden',
+                            }}
+                        />
+                    </View>
+                }
+                topDivider={true}
+                onPress={() => {
+                    props.navigation.navigate('CaseView', {
+                        pk: itemInfo.item.id,
+                        caseData: itemInfo.item,
+                    });
+                    setIsScrolling(false);
+                }}
+            />
+        </View>
+    );
+
+    const renderDeleteSwipeButton = (
+        itemInfo: ListRenderItemInfo<casesDetailSlim_cases>
+    ) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+                style={styles.backRightBtn}
+                onPress={() => {
+                    setDeleteCaseState({
+                        state: 'confirm',
+                        case: itemInfo.item,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
     return !props.auth.isLoggedIn || !props.team ? (
         <ConnectionsLogin />
@@ -233,7 +381,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
     ) : props.casesError ? (
         <Text>{props.casesError}</Text>
     ) : (
-        <SafeAreaView style={{ ...styles.safeAreaView }}>
+        <View style={{ ...styles.safeAreaView }}>
             <View style={styles.searchBarRow}>
                 <SearchBar
                     inputStyle={{ fontSize: 16 }}
@@ -277,7 +425,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                 </View>
             </View>
 
-            {/* FILTERS BUTTON - onPress Modal */}
             <Modal
                 animationType="fade"
                 transparent={false}
@@ -535,121 +682,152 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                 ></View>
             </Modal>
 
-            {/* Case List View Starts Here */}
-            <View style={{ flex: 1 }}>
-                <View>
-                    <TouchableOpacity
-                        onPressIn={() => {
-                            setSort('First Name');
-                            setGenderFilters(createDefaultGenderFilter());
+            {props.cases.length === 0 && (
+                <Text
+                    style={{
+                        width: '100%',
+                        textAlign: 'center',
+                        marginTop: 50,
+                    }}
+                >
+                    No cases. Use the Add Case button to create a case.
+                </Text>
+            )}
+
+            <TouchableOpacity
+                onPressIn={() => {
+                    setSort('First Name');
+                    setGenderFilters(createDefaultGenderFilter());
+                }}
+            >
+                <Text
+                    style={{
+                        backgroundColor: '#e8e8e8',
+                        color: '#0279AC',
+                        height: 50,
+                        fontSize: 25,
+                        textAlign: 'center',
+                        paddingTop: 8,
+                        display: shouldShowRemoveFilterBanner()
+                            ? undefined
+                            : 'none',
+                    }}
+                >
+                    Remove filters
+                </Text>
+            </TouchableOpacity>
+
+            {searchedCases.length > 0 && (
+                <SwipeListView
+                    disableRightSwipe
+                    data={searchedCases}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderCase}
+                    renderHiddenItem={renderDeleteSwipeButton}
+                    rightOpenValue={-75}
+                    listViewRef={(ref) => {
+                        listViewRef = ref;
+                    }}
+                    ref={(ref) => {
+                        listViewRef2 = ref;
+                    }}
+                    style={{ flex: 1 }}
+                    onScroll={(scrollingEvent): void => {
+                        setIsListScrolled(
+                            scrollingEvent.nativeEvent.contentOffset.y > 0
+                        );
+                    }}
+                    onScrollToTop={(): void => {
+                        setIsListScrolled(false);
+                    }}
+                    scrollEventThrottle={5}
+                />
+            )}
+            {isListScrolled && (
+                <ScrollToTop
+                    style={{
+                        position: 'absolute',
+                        zIndex: 1000,
+                        bottom: 10,
+                        right: 38,
+                        backgroundColor: 'white',
+                        padding: 8,
+                        borderRadius: 35,
+                    }}
+                    onPress={(): void => {
+                        // Problem with typings for library
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        listViewRef?.scrollToOffset({
+                            x: 0,
+                            y: 0,
+                            animated: true,
+                        });
+                    }}
+                />
+            )}
+            {deleteCaseState?.state === 'confirm' ? (
+                props.hasDeletePermission ? (
+                    <DeleteCaseModal
+                        caseName={deleteCaseState.case.person.fullName}
+                        onCancel={() => {
+                            listViewRef2?.closeAllOpenRows();
+                            setDeleteCaseState(undefined);
                         }}
-                    >
-                        <Text
-                            style={{
-                                backgroundColor: '#e8e8e8',
-                                color: '#0279AC',
-                                height: 50,
-                                fontSize: 25,
-                                textAlign: 'center',
-                                paddingTop: 8,
-                                display: shouldShowRemoveFilterBanner()
-                                    ? undefined
-                                    : 'none',
-                            }}
-                        >
-                            Remove filters
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 1 }}>
-                    {isScrolling ? (
-                        <ScrollToTop
-                            style={{
-                                position: 'absolute',
-                                zIndex: 1000,
-                                bottom: 10,
-                                right: 46,
-                            }}
-                            onPress={() => {
-                                scroll?.scrollTo(options);
-                            }}
-                        />
-                    ) : null}
-                    <ScrollView
-                        ref={(a) => {
-                            scroll = a;
+                        onDelete={() => {
+                            performDeleteCase(deleteCaseState.case.id);
+                            setDeleteCaseState({
+                                state: 'delete',
+                                case: deleteCaseState.case,
+                            });
                         }}
-                        scrollsToTop
-                        onScroll={(e) => {
-                            if (e.nativeEvent.contentOffset.y <= 250) {
-                                setIsScrolling(false);
-                            } else if (e.nativeEvent.contentOffset.y >= 250) {
-                                setIsScrolling(true);
-                            }
+                    />
+                ) : (
+                    <GenericModal
+                        message={`You do not have permission to delete this case.`}
+                        animationType="fade"
+                        rightButtonText="OK"
+                        onRightButton={() => {
+                            listViewRef2?.closeAllOpenRows();
+                            setDeleteCaseState(undefined);
                         }}
-                        onScrollToTop={() => setIsScrolling(false)}
-                        scrollEventThrottle={16}
-                    >
-                        {props.isLoadingCases ? (
-                            <Loader />
-                        ) : (
-                            searchedCases.map((result, index) => (
-                                <ListItem
-                                    key={index}
-                                    title={result.person.fullName}
-                                    titleStyle={{ color: '#5A6064' }}
-                                    subtitle={createPersonSubtitle(
-                                        result.person
-                                    )}
-                                    subtitleStyle={{ color: '#9FABB3' }}
-                                    leftAvatar={
-                                        <View
-                                            style={{
-                                                height: 50,
-                                                width: 50,
-                                                borderRadius: 25,
-                                                overflow: 'hidden',
-                                            }}
-                                        >
-                                            <Image
-                                                source={
-                                                    result.person.picture
-                                                        ? {
-                                                              uri:
-                                                                  result.person
-                                                                      .picture,
-                                                          }
-                                                        : placeholderImg
-                                                }
-                                                style={{
-                                                    height: 50,
-                                                    width: 50,
-                                                    borderRadius: 25,
-                                                    overflow: 'hidden',
-                                                }}
-                                            />
-                                        </View>
-                                    }
-                                    topDivider={true}
-                                    onPress={() => {
-                                        props.navigation.navigate('CaseView', {
-                                            pk: result.id,
-                                            caseData: result,
-                                        });
-                                        setIsScrolling(false);
-                                    }}
-                                />
-                            ))
-                        )}
-                    </ScrollView>
-                </View>
-            </View>
-        </SafeAreaView>
+                    />
+                )
+            ) : null}
+            {deleteCaseState?.state === 'error' ? (
+                <GenericModal
+                    message={deleteCaseState.error}
+                    rightButtonText="OK"
+                    onRightButton={() => {
+                        listViewRef2?.closeAllOpenRows();
+                        setDeleteCaseState(undefined);
+                    }}
+                />
+            ) : null}
+            <BusyModal
+                message="Deleting"
+                animationType="none"
+                visible={loading}
+            />
+        </View>
     );
 }; // end of FamilyConnectionsScreen
 
 const mapStateToProps = (state: RootState) => {
-    const genders = state.schema.results?.schema?.gender ?? [];
+    let genders = state.schema.results?.schema?.gender ?? [];
+    // remove empty strings. The backend should do this in the future
+    genders = genders.filter((gender) => gender);
+
+    const relevantCaseRole =
+        state.me.results?.caseRoles.find(
+            (role) => role.caseId === state.case.results?.details?.id
+        )?.role ?? Roles.NONE;
+    const hasDeletePermission =
+        state.me.results?.isSiteAdmin ||
+        state.me.results?.userTeam?.role === Roles.EDITOR ||
+        state.me.results?.userTeam?.role === Roles.MANAGER ||
+        relevantCaseRole === Roles.EDITOR ||
+        relevantCaseRole === Roles.MANAGER;
 
     return {
         cases: state.cases.results ?? [], // TODO this is a temporary fie. state.cases.results should never be undefined
@@ -658,6 +836,7 @@ const mapStateToProps = (state: RootState) => {
         casesError: state.cases.error,
         team: state.me.results?.userTeam?.team,
         genders,
+        hasDeletePermission,
     };
 };
 

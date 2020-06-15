@@ -165,6 +165,16 @@ export function addCaseCache(caseIn: casesDetailSlim_cases, cache: DataProxy) {
     });
 }
 
+export const DELETE_CASE_MUTATION = gql`
+    mutation deleteCaseMutation($caseId: Int!) {
+        deleteCase(caseId: $caseId) {
+            ...CaseDetailSlimFragment
+        }
+    }
+
+    ${CASE_DETAIL_SLIM_FRAGMENT}
+`;
+
 export function addEngagementCache(
     caseId: number,
     engagement: EngagementDetail,
@@ -235,6 +245,27 @@ export function deleteRelationshipCache({
             relationships: caseCache.relationships.filter(
                 (e) => e.id !== relationshipId
             ),
+        },
+    });
+}
+
+export function deleteCaseFromCache({
+    caseId,
+    cache,
+}: {
+    caseId: number;
+    cache: DataProxy;
+}) {
+    const caseCache = cache.readQuery<casesDetailSlim>({
+        query: CASES_DETAIL_SLIM_QUERY,
+    });
+    if (!caseCache) {
+        return;
+    }
+    cache.writeQuery<casesDetailSlim>({
+        query: CASES_DETAIL_SLIM_QUERY,
+        data: {
+            cases: caseCache.cases.filter((e) => e.id !== caseId),
         },
     });
 }
