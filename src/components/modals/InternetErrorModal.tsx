@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal } from 'react-native';
-import { useNetInfo } from '@react-native-community/netinfo';
+import { useNetInfo, NetInfoStateType } from '@react-native-community/netinfo';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -32,11 +32,17 @@ const styles = StyleSheet.create({
 
 export const InternetErrorModal = () => {
     const netInfo = useNetInfo();
+
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            visible={!netInfo.isInternetReachable}
+            visible={
+                netInfo.type !== NetInfoStateType.unknown &&
+                netInfo.isInternetReachable !== null &&
+                netInfo.isInternetReachable !== undefined &&
+                !netInfo.isInternetReachable
+            }
         >
             <View
                 style={{
