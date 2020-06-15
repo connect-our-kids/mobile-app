@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Modal, Image } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -31,11 +31,25 @@ export function BusyModal(props: {
     animationType?: 'none' | 'slide' | 'fade';
     visible: boolean;
 }): JSX.Element {
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        if (props.visible) {
+            // showing modal
+            setShowModal(true);
+        } else {
+            // need delay to account for bug in React Native
+            // See https://github.com/facebook/react-native/issues/10471
+            // See https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
+            setTimeout(() => setShowModal(false), 2000);
+        }
+    }, [props.visible]);
+
     return (
         <Modal
             animationType={props.animationType}
             transparent={true}
-            visible={props.visible}
+            visible={showModal}
         >
             <View style={styles.centerView}>
                 <View style={styles.modalView}>
