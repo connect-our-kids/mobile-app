@@ -86,11 +86,13 @@ type Person {
   telephones: [PersonTelephone!]!
   emails: [PersonEmail!]!
   addresses: [PersonAddress!]!
+  alternateNames: [PersonAlternateName!]!
 }
 
 type Case {
   id: Int!
   person: Person!
+  caseFileNumber: String
   fosterCare: Date
   childStatus: ChildStatus
   caseStatus: CaseStatus!
@@ -109,6 +111,7 @@ type Relationship {
   salaryRange: SalaryRange
   status: RelationshipStatus
   isSeen: Boolean!
+  isContacted: Boolean!
   ppSearchCount: Int
   ppSearchImported: Boolean!
   ppSearchQuery: String
@@ -142,6 +145,7 @@ type PersonTelephone {
   telephone: String!
   isVerified: Boolean!
   isHidden: Boolean!
+  label: String
 }
 
 interface EngagementCommon {
@@ -161,6 +165,7 @@ type EngagementCall implements EngagementCommon {
   id: Int!
   createdAt: Date!
   updatedAt: Date!
+  occurredAt: Date
   createdBy: User
   modifiedBy: User
 
@@ -174,6 +179,7 @@ type EngagementDocument implements EngagementCommon {
   id: Int!
   createdAt: Date!
   updatedAt: Date!
+  occurredAt: Date
   createdBy: User
   modifiedBy: User
 
@@ -191,6 +197,7 @@ type EngagementEmail implements EngagementCommon {
   id: Int!
   createdAt: Date!
   updatedAt: Date!
+  occurredAt: Date
   createdBy: User
   modifiedBy: User
 
@@ -205,6 +212,7 @@ type EngagementNote implements EngagementCommon {
   id: Int!
   createdAt: Date!
   updatedAt: Date!
+  occurredAt: Date
   createdBy: User
   modifiedBy: User
 
@@ -240,6 +248,15 @@ type PersonEmail {
   email: String!
   isVerified: Boolean!
   isHidden: Boolean!
+  label: String
+}
+
+type PersonAlternateName {
+  id: Int!
+  isVerified: Boolean!
+  isHidden: Boolean!
+  name: String!
+  label: String!
 }
 
 type PersonAddress {
@@ -259,9 +276,11 @@ type PersonAddress {
   postalCode: String
   raw: String
   route: String!
+  routeTwo: String
   state: String
   stateCode: String
   streetNumber: String!
+  label: String
 }
 
 type RelationshipStatus {
@@ -323,21 +342,32 @@ input AddressInput {
   postalCode: String
   raw: String
   route: String!
+  routeTwo: String
   state: String
   stateCode: String
   streetNumber: String!
+  label: String
 }
 
 input TelephoneInput {
   isVerified: Boolean!
   isHidden: Boolean!
   phoneNumber: String!
+  label: String
 }
 
 input EmailInput {
   isVerified: Boolean!
   isHidden: Boolean!
   emailAddress: String!
+  label: String
+}
+
+input AlternateNameInput {
+  name: String!
+  label: String!
+  isVerified: Boolean!
+  isHidden: Boolean!
 }
 
 input StringWrapper {
@@ -384,12 +414,14 @@ input CreateRelationshipInput {
   salaryRangeId: Int
   statusId: Int
   isSeen: Boolean
+  isContacted: Boolean
 
   ppSearchImported: Boolean
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
   telephones: [TelephoneInput!]
+  alternateNames: [AlternateNameInput!]
 }
 
 input UpdateRelationshipInput {
@@ -416,12 +448,14 @@ input UpdateRelationshipInput {
   salaryRangeId: IntWrapper
   statusId: IntWrapper
   isSeen: Boolean
+  isContacted: Boolean
 
   ppSearchImported: Boolean
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
   telephones: [TelephoneInput!]
+  alternateNames: [AlternateNameInput!]
 }
 
 input CreateCaseInput {
@@ -441,6 +475,7 @@ input CreateCaseInput {
   birthdayRaw: String
   addresses: [AddressInput!]
 
+  caseFileNumber: String
   fosterCare: Date
   childStatusId: Int
   caseStatusId: Int!
@@ -463,6 +498,7 @@ input UpdateCaseInput {
   birthdayRaw: StringWrapper
   addresses: [AddressInput!]
 
+  caseFileNumber: StringWrapper
   fosterCare: DateWrapper
   childStatusId: IntWrapper
   caseStatusId: Int
@@ -471,6 +507,7 @@ input UpdateCaseInput {
 input CreateEngagementCall {
   relationshipId: Int
   isPublic: Boolean!
+  occurredAt: DateWrapper
   note: String!
 }
 
@@ -480,6 +517,7 @@ input CreateEngagementDocument {
   attachment: Upload!
   title: String!
   note: String!
+  occurredAt: DateWrapper
   imageToPdf: Boolean = false
 }
 
@@ -487,18 +525,21 @@ input CreateEngagementEmail {
   relationshipId: Int
   isPublic: Boolean!
   subject: String!
+  occurredAt: DateWrapper
   body: String!
 }
 
 input CreateEngagementNote {
   relationshipId: Int
   isPublic: Boolean!
+  occurredAt: DateWrapper
   note: String!
 }
 
 input UpdateEngagementCall {
   relationshipId: IntWrapper
   isPublic: Boolean
+  occurredAt: DateWrapper
   note: String
 }
 
@@ -508,12 +549,14 @@ input UpdateEngagementDocument {
   attachment: Upload
   title: String
   note: String
+  occurredAt: DateWrapper
   imageToPdf: Boolean = false
 }
 
 input UpdateEngagementEmail {
   relationshipId: IntWrapper
   isPublic: Boolean
+  occurredAt: DateWrapper
   subject: String
   body: String
 }
@@ -521,6 +564,7 @@ input UpdateEngagementEmail {
 input UpdateEngagementNote {
   relationshipId: IntWrapper
   isPublic: Boolean
+  occurredAt: DateWrapper
   note: String
 }
 
@@ -540,6 +584,19 @@ input UpdateTeamInput {
   name: String
   picture: UploadWrapper
   email: StringWrapper
+}
+
+input ImportTeamInput {
+  name: String!
+  picture: Upload
+  email: String
+}
+
+input CreateNoPermissionUserInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  picture: Upload
 }
 
 input CreateUserInput {
@@ -683,14 +740,16 @@ type Query @isAuthenticated {
   """
   Returns an array of all known tasks (for the requesting user)
   """
-  caseExportTasks: [TaskStatus!]! @hasTeam @hasRole(role: VIEWER)
+  caseExportTasks: [TaskStatus!]! @hasTeam
   """
   Returns specified export task
   """
-  caseExportTask(id: String!): TaskStatus! @hasTeam @hasRole(role: VIEWER)
+  caseExportTask(id: String!): TaskStatus! @hasTeam
 
-  peopleSearch(idToken: String!, accessToken: String!, person: JSON!): JSON! @hasTeam @hasRole(role: EDITOR)
-  peopleSearchDetail(idToken: String!, accessToken: String!, searchPointerHash: String!): JSON! @hasTeam @hasRole(role: EDITOR)
+  peopleSearch(caseId: Int!, idToken: String!, accessToken: String!, person: JSON!): JSON! @hasTeam @hasRole(role: EDITOR)
+  peopleSearchDetail(caseId: Int!, idToken: String!, accessToken: String!, searchPointerHash: String!): JSON!
+    @hasTeam
+    @hasRole(role: EDITOR)
 
   """
   Site Admin / Super user queries. These queries require the calling user have isSiteAdmin.
@@ -713,6 +772,9 @@ type Mutation @isAuthenticated {
   createUser(value: CreateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
   updateUser(userId: Int!, value: UpdateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
   removeUserFromTeam(userId: Int!): User! @hasTeam @hasRole(role: MANAGER)
+
+  # allows case manager to create a user with team role none
+  createNoPermissionUser(caseId: Int!, value: CreateNoPermissionUserInput!): User! @hasTeam @hasRole(role: MANAGER)
 
   setUserDefaultWorkpadId(caseId: Int!, workpadId: Int!): UserSettings! @hasTeam
 
@@ -766,4 +828,5 @@ type Mutation @isAuthenticated {
   createTeamAdmin(value: CreateTeamInput!): Team! @isSiteAdmin
   updateTeamAdmin(id: Int!, value: UpdateTeamInput!): Team! @isSiteAdmin
   deleteTeamAdmin(id: Int!): Team! @isSiteAdmin
+  importTeamAdmin(value: ImportTeamInput!): Team! @isSiteAdmin
 }
