@@ -41,7 +41,8 @@ export function BusyModal(props: {
             // need delay to account for bug in React Native
             // See https://github.com/facebook/react-native/issues/10471
             // See https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
-            setTimeout(() => setShowModal(false), 2000);
+            const timer = setTimeout(() => setShowModal(false), 2000);
+            return () => clearTimeout(timer);
         }
     }, [props.visible]);
 
