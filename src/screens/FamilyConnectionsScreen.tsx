@@ -123,7 +123,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             color: '#FFF',
         },
         rowBack: {
-            backgroundColor: 'blue',
+            backgroundColor: '#0279AC',
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
@@ -144,7 +144,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             justifyContent: 'center',
             top: 0,
             width: 75,
-            backgroundColor: 'blue',
+            backgroundColor: '#0279AC',
             right: 0,
         },
     });
