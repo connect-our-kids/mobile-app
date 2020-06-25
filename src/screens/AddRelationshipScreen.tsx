@@ -608,7 +608,7 @@ function AddRelationshipScreen(props: Props) {
                         />
                     </View>
                     <Text style={styles.textPadding}>Date of Birth</Text>
-                    <View style={styles.fosterCareDateContainer}>
+                    <View style={styles.dateContainer}>
                         <TextInput
                             editable={false}
                             style={styles.textInput}

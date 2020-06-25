@@ -133,7 +133,7 @@ export default StyleSheet.create({
         width: '100%',
         marginTop: 10,
     },
-    fosterCareDateContainer: {
+    dateContainer: {
         flexDirection: 'row',
         flex: 1,
         marginTop: 10,

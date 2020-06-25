@@ -5,17 +5,21 @@ export const ADDRESS_DETAIL_FRAGMENT = gql`
     fragment AddressDetail on PersonAddress {
         id
         isVerified
+        isHidden
         country
         countryCode
+        formatted
         latitude
         locality
         longitude
         postalCode
         raw
         route
+        routeTwo
         state
         stateCode
         streetNumber
+        label
     }
 `;
 

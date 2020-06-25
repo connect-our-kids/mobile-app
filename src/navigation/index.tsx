@@ -14,7 +14,7 @@ import AboutScreen from '../screens/AboutScreen';
 import FamilyConnectionsScreen from '../screens/FamilyConnectionsScreen';
 import PeopleSearchScreen from '../screens/PeopleSearchScreen';
 import SearchResultScreen from '../screens/SearchResultScreen';
-import AddCaseScreen from '../screens/AddCaseScreen';
+import { AddOrEditCaseScreen } from '../screens/AddOrEditCaseScreen';
 import AddRelationshipScreen from '../screens/AddRelationshipScreen';
 import constants from '../helpers/constants';
 import AuthenticationView from '../screens/AuthenticationScreen';
@@ -121,7 +121,7 @@ const FamilyConnectionsNavigator = createStackNavigator({
         navigationOptions: topLevelScreenNavOptionsFC,
     },
     AddCaseScreen: {
-        screen: AddCaseScreen,
+        screen: AddOrEditCaseScreen,
         navigationOptions: {
             ...subLevelScreenNavigationOptions,
             headerTitle: Platform.OS === 'android' ? 'Back to Cases' : '',

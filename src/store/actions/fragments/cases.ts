@@ -61,6 +61,14 @@ export const CASE_DETAIL_FULL_FRAGMENT = gql`
             name
         }
         fosterCare
+        caseFileNumber
+        team {
+            id
+            name
+            email
+            picture
+            notes
+        }
     }
 
     ${PERSON_FUll_FRAGMENT}
@@ -143,6 +151,16 @@ export function addRelationshipToCache(
 export const CREATE_CASE_MUTATION = gql`
     mutation createCaseMutation($value: CreateCaseInput!) {
         createCase(value: $value) {
+            ...CaseDetailSlimFragment
+        }
+    }
+
+    ${CASE_DETAIL_SLIM_FRAGMENT}
+`;
+
+export const EDIT_CASE_MUTATION = gql`
+    mutation editCaseMutation($caseId: Int!, $value: UpdateCaseInput!) {
+        updateCase(caseId: $caseId, value: $value) {
             ...CaseDetailSlimFragment
         }
     }

@@ -3,7 +3,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import AddCaseScreen from './AddCaseScreen';
+import { AddOrEditCaseScreen } from './AddOrEditCaseScreen';
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -26,7 +26,7 @@ describe('AddCaseScreen component', () => {
             const tree = renderer
                 .create(
                     <Provider store={store}>
-                        <AddCaseScreen {...props} />
+                        <AddOrEditCaseScreen {...props} />
                     </Provider>
                 )
                 .toJSON();

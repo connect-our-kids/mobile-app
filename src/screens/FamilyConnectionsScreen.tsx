@@ -123,19 +123,28 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             color: '#FFF',
         },
         rowBack: {
-            backgroundColor: 'red',
+            backgroundColor: 'blue',
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
+            alignContent: 'flex-end',
         },
-        backRightBtn: {
+        swipeDeleteButton: {
             alignItems: 'center',
             bottom: 0,
             justifyContent: 'center',
-            position: 'absolute',
             top: 0,
             width: 75,
             backgroundColor: 'red',
+            right: 0,
+        },
+        swipeEditButton: {
+            alignItems: 'center',
+            bottom: 0,
+            justifyContent: 'center',
+            top: 0,
+            width: 75,
+            backgroundColor: 'blue',
             right: 0,
         },
     });
@@ -346,7 +355,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                 onPress={() => {
                     props.navigation.navigate('CaseView', {
                         pk: itemInfo.item.id,
-                        caseData: itemInfo.item,
                     });
                     setIsScrolling(false);
                 }}
@@ -354,21 +362,33 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         </View>
     );
 
-    const renderDeleteSwipeButton = (
+    const renderSwipeButton = (
         itemInfo: ListRenderItemInfo<casesDetailSlim_cases>
     ) => (
         <View style={styles.rowBack}>
-            <TouchableOpacity
-                style={styles.backRightBtn}
-                onPress={() => {
-                    setDeleteCaseState({
-                        state: 'confirm',
-                        case: itemInfo.item,
-                    });
-                }}
-            >
-                <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
+            <View style={styles.swipeEditButton}>
+                <TouchableOpacity
+                    onPress={() =>
+                        props.navigation.navigate('AddCaseScreen', {
+                            pk: itemInfo.item.id,
+                        })
+                    }
+                >
+                    <Text style={styles.backTextWhite}>Edit</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.swipeDeleteButton}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setDeleteCaseState({
+                            state: 'confirm',
+                            case: itemInfo.item,
+                        });
+                    }}
+                >
+                    <Text style={styles.backTextWhite}>Delete</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 
@@ -723,8 +743,8 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                     data={searchedCases}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderCase}
-                    renderHiddenItem={renderDeleteSwipeButton}
-                    rightOpenValue={-75}
+                    renderHiddenItem={renderSwipeButton}
+                    rightOpenValue={-150}
                     listViewRef={(ref) => {
                         listViewRef = ref;
                     }}

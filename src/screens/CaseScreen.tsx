@@ -52,6 +52,7 @@ import {
 import { Roles } from '../generated/globalTypes';
 
 interface StateProps {
+    caseId: number;
     case?: caseDetailFull;
     isLoadingCase: boolean;
     caseError?: string;
@@ -248,7 +249,7 @@ const CaseScreen = (props: Props) => {
 
     // load once to get all case data
     useEffect(() => {
-        props.getCase(props.navigation.getParam('pk') as number);
+        props.getCase(props.caseId);
         Platform.OS === 'android' ? setRtn('') : null;
     }, []);
 
@@ -1318,7 +1319,7 @@ const CaseScreen = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     let genders = state.schema.results?.schema?.gender ?? [];
     // remove empty strings. The backend should do this in the future
     genders = genders.filter((gender) => gender);
@@ -1335,6 +1336,7 @@ const mapStateToProps = (state: RootState) => {
         relevantCaseRole === Roles.MANAGER;
 
     return {
+        caseId: ownProps.navigation.getParam('pk') as number,
         case: state.case.results,
         isLoadingCase: state.case.isLoading,
         caseError: state.case.error,
