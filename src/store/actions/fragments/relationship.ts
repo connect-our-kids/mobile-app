@@ -2,10 +2,8 @@ import gql from 'graphql-tag';
 import {
     PERSON_BIRTHDAY_FRAGMENT,
     PERSON_NAME_FRAGMENT,
-    TELEPHONE_DETAIL_FRAGMENT,
-    EMAIL_DETAIL_FRAGMENT,
+    PERSON_FUll_FRAGMENT,
 } from './person';
-import { ADDRESS_DETAIL_FRAGMENT } from './address';
 
 export const RELATIONSHIP_STATUS_DETAIL = gql`
     fragment RelationshipStatusDetail on RelationshipStatus {
@@ -20,34 +18,15 @@ export const RELATIONSHIP_STATUS_DETAIL = gql`
 export const RELATIONSHIP_DETAIL_FULL_FRAGMENT = gql`
     fragment RelationshipDetailFullFragment on Relationship {
         id
-        person {
+        case {
             id
-            ...PersonName
-            picture
-            gender
-            title
-            ...PersonBirthday
-            notes
-            addresses {
-                ...AddressDetail
-            }
-            telephones {
-                ...TelephoneDetail
-            }
-            emails {
-                ...EmailDetail
-            }
-            dateOfDeath
-            isDeceased
-            createdAt
-            updatedAt
+        }
+        person {
+            ...PersonFullFragment
         }
         facebook
         linkedin
         twitter
-        case {
-            id
-        }
         jobTitle
         employer
         salaryRange {
@@ -57,17 +36,15 @@ export const RELATIONSHIP_DETAIL_FULL_FRAGMENT = gql`
         status {
             ...RelationshipStatusDetail
         }
+        isSeen
+        isContacted
         ppSearchCount
         ppSearchImported
         ppSearchQuery
         ppSearchPointerHash
     }
 
-    ${PERSON_BIRTHDAY_FRAGMENT}
-    ${PERSON_NAME_FRAGMENT}
-    ${ADDRESS_DETAIL_FRAGMENT}
-    ${TELEPHONE_DETAIL_FRAGMENT}
-    ${EMAIL_DETAIL_FRAGMENT}
+    ${PERSON_FUll_FRAGMENT}
     ${RELATIONSHIP_STATUS_DETAIL}
 `;
 

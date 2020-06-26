@@ -486,19 +486,28 @@ const CaseScreen = (props: Props) => {
             color: '#FFF',
         },
         rowBack: {
-            backgroundColor: 'red',
+            backgroundColor: '#0279AC',
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
+            alignContent: 'flex-end',
         },
-        backRightBtn: {
+        swipeDeleteButton: {
             alignItems: 'center',
             bottom: 0,
             justifyContent: 'center',
-            position: 'absolute',
             top: 0,
             width: 75,
             backgroundColor: 'red',
+            right: 0,
+        },
+        swipeEditButton: {
+            alignItems: 'center',
+            bottom: 0,
+            justifyContent: 'center',
+            top: 0,
+            width: 75,
+            backgroundColor: '#0279AC',
             right: 0,
         },
     });
@@ -1109,21 +1118,35 @@ const CaseScreen = (props: Props) => {
         />
     );
 
-    const renderDeleteSwipeButton = (
+    const renderSwipeButtons = (
         itemInfo: ListRenderItemInfo<caseDetailFull_relationships>
     ) => (
         <View style={styles.rowBack}>
-            <TouchableOpacity
-                style={styles.backRightBtn}
-                onPress={() => {
-                    setDeleteRelationshipState({
-                        state: 'confirm',
-                        relationship: itemInfo.item,
-                    });
-                }}
-            >
-                <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
+            <View style={styles.swipeEditButton}>
+                <TouchableOpacity
+                    onPress={() => {
+                        relationshipsListViewRef2?.closeAllOpenRows();
+                        props.navigation.navigate('AddRelationshipScreen', {
+                            caseId: props.caseId,
+                            relationshipId: itemInfo.item.id,
+                        });
+                    }}
+                >
+                    <Text style={styles.backTextWhite}>Edit</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.swipeDeleteButton}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setDeleteRelationshipState({
+                            state: 'confirm',
+                            relationship: itemInfo.item,
+                        });
+                    }}
+                >
+                    <Text style={styles.backTextWhite}>Delete</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 
@@ -1198,8 +1221,8 @@ const CaseScreen = (props: Props) => {
                             data={searchedConnections}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={renderRelationship}
-                            renderHiddenItem={renderDeleteSwipeButton}
-                            rightOpenValue={-75}
+                            renderHiddenItem={renderSwipeButtons}
+                            rightOpenValue={-150}
                             listViewRef={(ref) => {
                                 relationshipsListViewRef = ref;
                             }}

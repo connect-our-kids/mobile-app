@@ -362,17 +362,18 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         </View>
     );
 
-    const renderSwipeButton = (
+    const renderSwipeButtons = (
         itemInfo: ListRenderItemInfo<casesDetailSlim_cases>
     ) => (
         <View style={styles.rowBack}>
             <View style={styles.swipeEditButton}>
                 <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                        listViewRef2?.closeAllOpenRows();
                         props.navigation.navigate('AddCaseScreen', {
                             pk: itemInfo.item.id,
-                        })
-                    }
+                        });
+                    }}
                 >
                     <Text style={styles.backTextWhite}>Edit</Text>
                 </TouchableOpacity>
@@ -743,7 +744,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                     data={searchedCases}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderCase}
-                    renderHiddenItem={renderSwipeButton}
+                    renderHiddenItem={renderSwipeButtons}
                     rightOpenValue={-150}
                     listViewRef={(ref) => {
                         listViewRef = ref;

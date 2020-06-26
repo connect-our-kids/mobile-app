@@ -90,6 +90,25 @@ export default StyleSheet.create({
         paddingTop: 10,
         color: 'rgba(24,23,21,.5)',
     },
+    checkboxLabel: {
+        color: 'rgba(24,23,21,.5)',
+        fontWeight: 'normal',
+    },
+    addCheckboxContainer: {
+        backgroundColor: 'white',
+        borderWidth: 0,
+        margin: 0,
+        marginTop: 10,
+        marginLeft: 0,
+        marginRight: 0,
+        padding: 0,
+    },
+    checkboxContainer: {
+        backgroundColor: 'white',
+        borderWidth: 0,
+        marginLeft: 0,
+        paddingLeft: 0,
+    },
     sectionHeader: {
         fontSize: 20,
         borderBottomColor: 'rgba(24,23,21,.5)',
@@ -181,6 +200,7 @@ export default StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 5,
         marginTop: 5,
+        marginBottom: 10,
         width: 225,
     },
     cityInput: {

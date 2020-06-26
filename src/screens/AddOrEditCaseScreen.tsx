@@ -272,6 +272,7 @@ export function AddOrEditCaseScreen(props: {
         errorPolicy: 'all',
     });
 
+    // once we have the users team get schema data
     useEffect(() => {
         if (meResult.data?.me.userTeam) {
             console.log(

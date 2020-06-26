@@ -25,11 +25,23 @@ export const PERSON_BIRTHDAY_FRAGMENT = gql`
     }
 `;
 
+export const ALTERNATE_NAME_FRAGMENT = gql`
+    fragment AlternateNameDetail on PersonAlternateName {
+        id
+        isVerified
+        isHidden
+        name
+        label
+    }
+`;
+
 export const EMAIL_DETAIL_FRAGMENT = gql`
     fragment EmailDetail on PersonEmail {
         id
-        email
         isVerified
+        isHidden
+        email
+        label
     }
 `;
 
@@ -38,6 +50,8 @@ export const TELEPHONE_DETAIL_FRAGMENT = gql`
         id
         telephone
         isVerified
+        isHidden
+        label
     }
 `;
 
@@ -45,11 +59,13 @@ export const PERSON_FUll_FRAGMENT = gql`
     fragment PersonFullFragment on Person {
         id
         ...PersonName
+        title
+        notes
         picture
         gender
-        title
+        dateOfDeath
+        isDeceased
         ...PersonBirthday
-        notes
         addresses {
             ...AddressDetail
         }
@@ -58,6 +74,9 @@ export const PERSON_FUll_FRAGMENT = gql`
         }
         emails {
             ...EmailDetail
+        }
+        alternateNames {
+            ...AlternateNameDetail
         }
         createdAt
         updatedAt
@@ -68,6 +87,7 @@ export const PERSON_FUll_FRAGMENT = gql`
     ${ADDRESS_DETAIL_FRAGMENT}
     ${TELEPHONE_DETAIL_FRAGMENT}
     ${EMAIL_DETAIL_FRAGMENT}
+    ${ALTERNATE_NAME_FRAGMENT}
 `;
 
 export const PERSON_SLIM_FRAGMENT = gql`

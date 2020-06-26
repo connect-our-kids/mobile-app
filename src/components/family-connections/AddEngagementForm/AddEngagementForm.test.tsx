@@ -62,6 +62,8 @@ function getProps({
                         ppSearchImported: false,
                         ppSearchQuery: null,
                         ppSearchPointerHash: null,
+                        isSeen: true,
+                        isContacted: true,
                         person: {
                             __typename: 'Person',
                             firstName: null,
@@ -85,6 +87,7 @@ function getProps({
                             notes: null,
                             telephones: [],
                             updatedAt: null,
+                            alternateNames: [],
                         },
                     };
                     return relationship;

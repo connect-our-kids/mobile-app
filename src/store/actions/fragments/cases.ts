@@ -1,7 +1,10 @@
 import gql from 'graphql-tag';
 import { DataProxy } from 'apollo-cache';
 import { PERSON_SLIM_FRAGMENT, PERSON_FUll_FRAGMENT } from './person';
-import { RELATIONSHIP_DETAIL_SLIM_FRAGMENT } from './relationship';
+import {
+    RELATIONSHIP_DETAIL_SLIM_FRAGMENT,
+    RELATIONSHIP_DETAIL_FULL_FRAGMENT,
+} from './relationship';
 import { ENGAGEMENT_DETAIL_FRAGMENT } from './engagement';
 import { EngagementDetail } from '../../../generated/EngagementDetail';
 import {
@@ -113,6 +116,24 @@ export const CREATE_RELATIONSHIP_MUTATION = gql`
     }
 
     ${RELATIONSHIP_DETAIL_SLIM_FRAGMENT}
+`;
+
+export const EDIT_RELATIONSHIP_MUTATION = gql`
+    mutation editRelationshipMutation(
+        $caseId: Int!
+        $relationshipId: Int!
+        $value: UpdateRelationshipInput!
+    ) {
+        updateRelationship(
+            caseId: $caseId
+            relationshipId: $relationshipId
+            value: $value
+        ) {
+            ...RelationshipDetailFullFragment
+        }
+    }
+
+    ${RELATIONSHIP_DETAIL_FULL_FRAGMENT}
 `;
 
 export const DELETE_RELATIONSHIP_MUTATION = gql`

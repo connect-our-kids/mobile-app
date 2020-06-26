@@ -12,6 +12,7 @@ import { Roles } from '../../../generated/globalTypes';
 
 type StateProps = {
     myRole?: Roles;
+    caseId?: number;
 };
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -104,7 +105,9 @@ function AddPersonHeader(props: Props) {
                     }
                     activeOpacity={0.6}
                     onPress={() => {
-                        props.navigation.navigate('AddRelationshipScreen');
+                        props.navigation.navigate('AddRelationshipScreen', {
+                            caseId: props.caseId,
+                        });
                     }}
                 >
                     <Ionicons
@@ -122,9 +125,11 @@ function AddPersonHeader(props: Props) {
 
 const mapStateToProps = (state: RootState) => {
     const myRole = state.me?.results?.userTeam?.role;
+    const caseId = state.case?.results?.details?.id;
 
     return {
         myRole,
+        caseId,
     };
 };
 

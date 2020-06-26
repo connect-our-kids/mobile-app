@@ -3,7 +3,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import AddRelationshipScreen from './AddRelationshipScreen';
+import { AddOrEditRelationshipScreen } from './AddOrEditRelationshipScreen';
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -26,7 +26,7 @@ describe('AddRelationshipScreen component', () => {
             const tree = renderer
                 .create(
                     <Provider store={store}>
-                        <AddRelationshipScreen {...props} />
+                        <AddOrEditRelationshipScreen {...props} />
                     </Provider>
                 )
                 .toJSON();
