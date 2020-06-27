@@ -369,7 +369,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             <TouchableOpacity
                 style={styles.swipeEditButton}
                 onPress={() => {
-                    listViewRef2?.closeAllOpenRows();
+                    try {
+                        listViewRef2?.closeAllOpenRows();
+                    } catch (error) {
+                        console.log(
+                            `Error when trying to close open rows: ${error}`
+                        );
+                    }
                     props.navigation.navigate('AddCaseScreen', {
                         pk: itemInfo.item.id,
                     });
@@ -791,7 +797,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                     <DeleteCaseModal
                         caseName={deleteCaseState.case.person.fullName}
                         onCancel={() => {
-                            listViewRef2?.closeAllOpenRows();
+                            try {
+                                listViewRef2?.closeAllOpenRows();
+                            } catch (error) {
+                                console.log(
+                                    `Error when trying to close open rows: ${error}`
+                                );
+                            }
                             setDeleteCaseState(undefined);
                         }}
                         onDelete={() => {
@@ -808,7 +820,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                         animationType="fade"
                         rightButtonText="OK"
                         onRightButton={() => {
-                            listViewRef2?.closeAllOpenRows();
+                            try {
+                                listViewRef2?.closeAllOpenRows();
+                            } catch (error) {
+                                console.log(
+                                    `Error when trying to close open rows: ${error}`
+                                );
+                            }
                             setDeleteCaseState(undefined);
                         }}
                     />
@@ -819,7 +837,13 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
                     message={deleteCaseState.error}
                     rightButtonText="OK"
                     onRightButton={() => {
-                        listViewRef2?.closeAllOpenRows();
+                        try {
+                            listViewRef2?.closeAllOpenRows();
+                        } catch (error) {
+                            console.log(
+                                `Error when trying to close open rows: ${error}`
+                            );
+                        }
                         setDeleteCaseState(undefined);
                     }}
                 />

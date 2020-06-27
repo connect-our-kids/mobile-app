@@ -1125,7 +1125,13 @@ const CaseScreen = (props: Props) => {
             <TouchableOpacity
                 style={styles.swipeEditButton}
                 onPress={() => {
-                    relationshipsListViewRef2?.closeAllOpenRows();
+                    try {
+                        relationshipsListViewRef2?.closeAllOpenRows();
+                    } catch (error) {
+                        console.log(
+                            `Error when trying to close open rows: ${error}`
+                        );
+                    }
                     props.navigation.navigate('AddRelationshipScreen', {
                         caseId: props.caseId,
                         relationshipId: itemInfo.item.id,
@@ -1293,7 +1299,13 @@ const CaseScreen = (props: Props) => {
                         rightButtonText="Delete"
                         isRightButtonRed={true}
                         onLeftButton={() => {
-                            relationshipsListViewRef2?.closeAllOpenRows();
+                            try {
+                                relationshipsListViewRef2?.closeAllOpenRows();
+                            } catch (error) {
+                                console.log(
+                                    `Error when trying to close open rows: ${error}`
+                                );
+                            }
                             setDeleteRelationshipState(undefined);
                         }}
                         onRightButton={() => {
@@ -1316,7 +1328,13 @@ const CaseScreen = (props: Props) => {
                         animationType="fade"
                         rightButtonText="OK"
                         onRightButton={() => {
-                            relationshipsListViewRef2?.closeAllOpenRows();
+                            try {
+                                relationshipsListViewRef2?.closeAllOpenRows();
+                            } catch (error) {
+                                console.log(
+                                    `Error when trying to close open rows: ${error}`
+                                );
+                            }
                             setDeleteRelationshipState(undefined);
                         }}
                     />
@@ -1327,7 +1345,13 @@ const CaseScreen = (props: Props) => {
                     message={deleteRelationshipState.error}
                     rightButtonText="OK"
                     onRightButton={() => {
-                        relationshipsListViewRef2?.closeAllOpenRows();
+                        try {
+                            relationshipsListViewRef2?.closeAllOpenRows();
+                        } catch (error) {
+                            console.log(
+                                `Error when trying to close open rows: ${error}`
+                            );
+                        }
                         setDeleteRelationshipState(undefined);
                     }}
                 />
