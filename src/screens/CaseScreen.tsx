@@ -1122,31 +1122,30 @@ const CaseScreen = (props: Props) => {
         itemInfo: ListRenderItemInfo<caseDetailFull_relationships>
     ) => (
         <View style={styles.rowBack}>
-            <View style={styles.swipeEditButton}>
-                <TouchableOpacity
-                    onPress={() => {
-                        relationshipsListViewRef2?.closeAllOpenRows();
-                        props.navigation.navigate('AddRelationshipScreen', {
-                            caseId: props.caseId,
-                            relationshipId: itemInfo.item.id,
-                        });
-                    }}
-                >
-                    <Text style={styles.backTextWhite}>Edit</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.swipeDeleteButton}>
-                <TouchableOpacity
-                    onPress={() => {
-                        setDeleteRelationshipState({
-                            state: 'confirm',
-                            relationship: itemInfo.item,
-                        });
-                    }}
-                >
-                    <Text style={styles.backTextWhite}>Delete</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+                style={styles.swipeEditButton}
+                onPress={() => {
+                    relationshipsListViewRef2?.closeAllOpenRows();
+                    props.navigation.navigate('AddRelationshipScreen', {
+                        caseId: props.caseId,
+                        relationshipId: itemInfo.item.id,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.swipeDeleteButton}
+                activeOpacity={0.9}
+                onPress={() => {
+                    setDeleteRelationshipState({
+                        state: 'confirm',
+                        relationship: itemInfo.item,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
         </View>
     );
 

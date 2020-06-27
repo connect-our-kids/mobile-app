@@ -366,30 +366,29 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         itemInfo: ListRenderItemInfo<casesDetailSlim_cases>
     ) => (
         <View style={styles.rowBack}>
-            <View style={styles.swipeEditButton}>
-                <TouchableOpacity
-                    onPress={() => {
-                        listViewRef2?.closeAllOpenRows();
-                        props.navigation.navigate('AddCaseScreen', {
-                            pk: itemInfo.item.id,
-                        });
-                    }}
-                >
-                    <Text style={styles.backTextWhite}>Edit</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.swipeDeleteButton}>
-                <TouchableOpacity
-                    onPress={() => {
-                        setDeleteCaseState({
-                            state: 'confirm',
-                            case: itemInfo.item,
-                        });
-                    }}
-                >
-                    <Text style={styles.backTextWhite}>Delete</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+                style={styles.swipeEditButton}
+                onPress={() => {
+                    listViewRef2?.closeAllOpenRows();
+                    props.navigation.navigate('AddCaseScreen', {
+                        pk: itemInfo.item.id,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.swipeDeleteButton}
+                activeOpacity={0.9}
+                onPress={() => {
+                    setDeleteCaseState({
+                        state: 'confirm',
+                        case: itemInfo.item,
+                    });
+                }}
+            >
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </TouchableOpacity>
         </View>
     );
 
