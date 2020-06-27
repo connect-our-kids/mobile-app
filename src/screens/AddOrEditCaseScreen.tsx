@@ -52,6 +52,8 @@ import {
     editCaseMutation,
     editCaseMutationVariables,
 } from '../generated/editCaseMutation';
+import Loader from '../components/Loader';
+import constants from '../helpers/constants';
 
 const schema = yup.object().shape<CreateCaseInput>(
     {
@@ -188,7 +190,7 @@ const convertToUpdateCaseInput = (input: CreateCaseInput): UpdateCaseInput => {
         birthdayRaw: toStringWrapper(input.birthdayRaw),
         addresses: sanitizedAddresses,
         caseFileNumber: toStringWrapper(input.caseFileNumber),
-        fosterCare: toDateWrapper(input.fosterCare), // TODO date format
+        fosterCare: toDateWrapper(input.fosterCare),
         childStatusId: toNumberWrapper(input.childStatusId),
         caseStatusId: input.caseStatusId,
     };
@@ -250,12 +252,19 @@ export function AddOrEditCaseScreen(props: {
         ],
     });
     const [image, setImage] = useState<ReactNativeFile | undefined>(undefined);
-
+    const [isBusyModalOpen, setIsBusyModalOpen] = useState(false);
+    const [loadingDataError, setLoadingDataError] = useState<
+        string | undefined
+    >(undefined);
     const [createOrEditCaseError, setCreateOrEditCaseError] = useState<
         string | undefined
     >(undefined);
+
     const meResult = useQuery<meQuery>(ME_QUERY, {
         errorPolicy: 'all',
+        onError: (error) => {
+            setLoadingDataError(error.message ?? 'Unknown error');
+        },
     });
 
     const [getCase, getCaseResult] = useLazyQuery<
@@ -263,6 +272,19 @@ export function AddOrEditCaseScreen(props: {
         caseDetailFullVariables
     >(CASE_DETAIL_FULL_QUERY, {
         errorPolicy: 'all',
+        onError: (error) => {
+            setLoadingDataError(error.message ?? 'Unknown error');
+        },
+        onCompleted: (data) => {
+            if (
+                !data ||
+                !data.details ||
+                !data.engagements ||
+                !data.relationships
+            ) {
+                setLoadingDataError('Failed to get case data');
+            }
+        },
     });
 
     const [getSchema, schemaResult] = useLazyQuery<
@@ -270,6 +292,9 @@ export function AddOrEditCaseScreen(props: {
         staticDataQueryVariables
     >(STATIC_DATA_QUERY, {
         errorPolicy: 'all',
+        onError: (error) => {
+            setLoadingDataError(error.message ?? 'Unknown error');
+        },
     });
 
     // once we have the users team get schema data
@@ -279,7 +304,9 @@ export function AddOrEditCaseScreen(props: {
                 `Getting schema data for team ${meResult.data?.me.userTeam.team.name}`
             );
             getSchema({
-                variables: { teamId: meResult.data?.me.userTeam.team.id },
+                variables: {
+                    teamId: meResult.data?.me.userTeam.team.id,
+                },
             });
         }
     }, [meResult]);
@@ -506,10 +533,57 @@ export function AddOrEditCaseScreen(props: {
         );
     }
 
+    const sanitizeFormData = () => {
+        // remove empty addresses/emails/telephones/alternateNames
+        formData.addresses = formData.addresses?.filter(
+            (address) =>
+                address.country ||
+                address.countryCode ||
+                address.formatted ||
+                address.latitude ||
+                address.locality ||
+                address.longitude ||
+                address.postalCode ||
+                address.raw ||
+                address.route ||
+                address.routeTwo ||
+                address.state ||
+                address.stateCode ||
+                address.streetNumber
+        );
+        // trim strings
+        formData.firstName = formData.firstName?.trim();
+        formData.middleName = formData.middleName?.trim();
+        formData.lastName = formData.lastName?.trim();
+        formData.caseFileNumber = formData.caseFileNumber?.trim();
+        formData.suffix = formData.suffix?.trim();
+        formData.title = formData.title?.trim();
+        formData.notes = formData.notes?.trim();
+        formData.gender = formData.gender?.trim();
+        formData.dateOfDeath = formData.dateOfDeath?.trim();
+        formData.birthdayRaw = formData.birthdayRaw?.trim();
+        formData.fosterCare = formData.fosterCare?.trim();
+
+        formData.addresses = formData.addresses?.map((address) => {
+            return {
+                ...address,
+                country: address.country?.trim(),
+                locality: address.locality.trim(),
+                postalCode: address.postalCode?.trim(),
+                route: address.route.trim(),
+                routeTwo: address.routeTwo?.trim(),
+                state: address.state?.trim(),
+                streetNumber: address.streetNumber.trim(),
+                label: address.label?.trim(),
+            };
+        });
+    };
+
     const saveNewCase = () => {
         schema
             .validate(formData, { abortEarly: false })
             .then(() => {
+                sanitizeFormData();
                 if (caseEditId !== undefined) {
                     console.log(`Updating case ${caseEditId}`);
                     editCaseGraphQL({
@@ -546,6 +620,20 @@ export function AddOrEditCaseScreen(props: {
                 });
             });
     };
+
+    if (meResult.loading || schemaResult.loading || getCaseResult.loading) {
+        return (
+            <View
+                style={{
+                    backgroundColor: constants.backgroundColor,
+                    flex: 1,
+                    flexDirection: 'column',
+                }}
+            >
+                <Loader />
+            </View>
+        );
+    }
 
     return (
         <KeyboardAwareScrollView
@@ -856,6 +944,19 @@ export function AddOrEditCaseScreen(props: {
                     </View>
                     <Text style={styles.textPadding}>Residence</Text>
 
+                    <View style={styles.formContainer}>
+                        <TextInput
+                            style={styles.addressInput}
+                            placeholder={'Label'}
+                            value={formData.addresses?.[0].label ?? undefined}
+                            onChangeText={(text) => {
+                                if (formData.addresses?.length) {
+                                    formData.addresses[0].label = text;
+                                    setFormData({ ...formData });
+                                }
+                            }}
+                        />
+                    </View>
                     <View style={styles.addressContainer}>
                         <TextInput
                             style={styles.addressInput}
@@ -872,9 +973,6 @@ export function AddOrEditCaseScreen(props: {
                                             matches[1];
                                         formData.addresses[0].route =
                                             matches[2];
-                                        console.log(
-                                            `matched street number and route`
-                                        );
                                     } else {
                                         // street number not found, set whole string as route
                                         formData.addresses[0].streetNumber = '';
@@ -928,7 +1026,7 @@ export function AddOrEditCaseScreen(props: {
                     </View>
                     <View style={styles.formContainer}>
                         <TextInput
-                            maxLength={12}
+                            maxLength={10}
                             keyboardType="numeric"
                             style={styles.addressInput}
                             placeholder={'Postal Code'}
@@ -1042,15 +1140,34 @@ export function AddOrEditCaseScreen(props: {
                         : 'Adding Case...'
                 }
                 visible={isAddingOrEditingCase}
+                onOpen={() => setIsBusyModalOpen(true)}
+                onClose={() => setIsBusyModalOpen(false)}
             />
-            <BusyModal
-                message={'Loading Data...'}
-                visible={
-                    meResult.loading ||
-                    schemaResult.loading ||
-                    getCaseResult.loading
-                }
-            />
+
+            {createOrEditCaseError && !isBusyModalOpen && (
+                <GenericModal
+                    rightButtonText={'OK'}
+                    title={
+                        caseEditId !== undefined
+                            ? 'Error editing case'
+                            : 'Error adding case'
+                    }
+                    message={createOrEditCaseError}
+                    onRightButton={() => setCreateOrEditCaseError(undefined)}
+                />
+            )}
+
+            {loadingDataError && !isBusyModalOpen && (
+                <GenericModal
+                    rightButtonText={'OK'}
+                    title={'Error loading data'}
+                    message={loadingDataError}
+                    onRightButton={() => {
+                        props.navigation.goBack();
+                        setLoadingDataError(undefined);
+                    }}
+                />
+            )}
         </KeyboardAwareScrollView>
     );
 }
