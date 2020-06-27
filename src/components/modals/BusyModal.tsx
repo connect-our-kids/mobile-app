@@ -30,6 +30,8 @@ export function BusyModal(props: {
     message?: string;
     animationType?: 'none' | 'slide' | 'fade';
     visible: boolean;
+    onOpen?: () => void;
+    onClose?: () => void;
 }): JSX.Element {
     const [showModal, setShowModal] = useState(false);
 
@@ -37,11 +39,15 @@ export function BusyModal(props: {
         if (props.visible) {
             // showing modal
             setShowModal(true);
+            props.onOpen && props.onOpen();
         } else {
             // need delay to account for bug in React Native
             // See https://github.com/facebook/react-native/issues/10471
             // See https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
-            const timer = setTimeout(() => setShowModal(false), 2000);
+            const timer = setTimeout(() => {
+                setShowModal(false);
+                props.onClose && props.onClose();
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [props.visible]);
