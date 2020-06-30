@@ -793,7 +793,10 @@ function RelationshipScreen(props: Props): JSX.Element {
             >
                 {props.relationship ? (
                     <ScrollView>
-                        <ConnectionsDetailsView details={props.relationship} />
+                        <ConnectionsDetailsView
+                            details={props.relationship}
+                            navigation={props.navigation}
+                        />
                     </ScrollView>
                 ) : null}
             </View>

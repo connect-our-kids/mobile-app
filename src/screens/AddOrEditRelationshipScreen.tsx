@@ -267,6 +267,10 @@ const convertToUpdateRelationshipInput = (
         alternateNames: sanitizedAlternateNames,
     };
 
+    console.log(
+        `Sending the following update: ${JSON.stringify(output, null, 2)}`
+    );
+
     return output;
 };
 
@@ -698,6 +702,13 @@ export function AddOrEditRelationshipScreen(props: {
                 label: address.label?.trim(),
             };
         });
+        formData.addresses = formData.addresses?.map((address) => {
+            return {
+                ...address,
+                raw: `${address.route}, ${address.routeTwo}, ${address.locality}, ${address.state} ${address.postalCode}, ${address.country}`,
+            };
+        });
+        // set raw address
         formData.emails = formData.emails?.map((email) => {
             return {
                 ...email,
@@ -1432,6 +1443,24 @@ export function AddOrEditRelationshipScreen(props: {
                                         }}
                                     />
 
+                                    <View style={styles.formContainer}>
+                                        <TextInput
+                                            style={styles.telephoneInput}
+                                            placeholder={'Label'}
+                                            value={telephone.label ?? undefined}
+                                            onChangeText={(text) => {
+                                                if (formData.telephones) {
+                                                    formData.telephones[
+                                                        index
+                                                    ].label = text;
+                                                    setFormData({
+                                                        ...formData,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </View>
+
                                     <View style={{ flexDirection: 'row' }}>
                                         <CheckBox
                                             title={'Verified'}
@@ -1522,6 +1551,24 @@ export function AddOrEditRelationshipScreen(props: {
                                             }
                                         }}
                                     />
+
+                                    <View style={styles.formContainer}>
+                                        <TextInput
+                                            style={styles.addressInput}
+                                            placeholder={'Label'}
+                                            value={email.label ?? undefined}
+                                            onChangeText={(text) => {
+                                                if (formData.emails) {
+                                                    formData.emails[
+                                                        index
+                                                    ].label = text;
+                                                    setFormData({
+                                                        ...formData,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </View>
 
                                     <View style={{ flexDirection: 'row' }}>
                                         <CheckBox

@@ -56,13 +56,14 @@ export const getRelationship = (
     console.log(`Loading relationship ${relationshipId}...`);
 
     client
-        .query<relationshipDetailFull, relationshipDetailFullVariables>({
+        .watchQuery<relationshipDetailFull, relationshipDetailFullVariables>({
             query: RELATIONSHIP_DETAIL_FULL_QUERY,
             variables: { caseId: caseId, relationshipId: relationshipId },
         })
-        .then(
+        .subscribe(
             (result) => {
                 console.log(`Loading relationship ${relationshipId}: success`);
+
                 dispatch({
                     type: RelationshipTypes.GET_RELATIONSHIP_SUCCESS,
                     relationship: result.data.relationship || undefined, // convert from null to undefined if necessary
