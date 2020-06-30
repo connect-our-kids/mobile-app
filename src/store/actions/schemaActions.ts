@@ -50,7 +50,7 @@ export const getSchema = (teamId: number): ThunkResult<void> => (
     { client }: { client: ApolloClient<NormalizedCacheObject> }
 ): void => {
     dispatch({ type: SchemaTypes.GET_SCHEMA_START });
-    console.log('Loading schema...');
+    console.log(`Loading schema for team id ${teamId}...`);
 
     client
         .query<staticDataQuery, staticDataQueryVariables>({

@@ -38,7 +38,7 @@ import { RootState } from '../store/reducers';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { casesDetailSlim_cases } from '../generated/casesDetailSlim';
 import { AuthState } from '../store/reducers/authReducer';
-import { UserFullFragment_userTeam_team } from '../generated/UserFullFragment';
+import { UserFullFragment_userTeams } from '../generated/UserFullFragment';
 import { createPersonSubtitle } from '../helpers/personSubtitle';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useMutation } from '@apollo/react-hooks';
@@ -62,7 +62,7 @@ interface StateProps {
     cases: casesDetailSlim_cases[];
     isLoadingCases: boolean;
     casesError?: string;
-    team?: UserFullFragment_userTeam_team;
+    teams?: UserFullFragment_userTeams[];
     genders: string[];
     hasDeletePermission: boolean;
 }
@@ -218,7 +218,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             props.auth.isLoggedIn &&
             !props.auth.isLoggingIn &&
             props.genders.length > 0 &&
-            !!props.team &&
+            props.teams?.length &&
             !props.isLoadingCases &&
             !casesLoaded
         ) {
@@ -229,7 +229,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         props.auth.isLoggedIn,
         props.auth.isLoggingIn,
         props.genders,
-        props.team,
+        props.teams,
         props.isLoadingCases,
     ]);
 
@@ -398,7 +398,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         </View>
     );
 
-    return !props.auth.isLoggedIn || !props.team ? (
+    return !props.auth.isLoggedIn || !props.teams?.length ? (
         <ConnectionsLogin />
     ) : props.isLoadingCases || props.genders.length === 0 ? (
         <SafeAreaView style={{ ...styles.safeAreaView }}>
@@ -866,10 +866,15 @@ const mapStateToProps = (state: RootState) => {
         state.me.results?.caseRoles.find(
             (role) => role.caseId === state.case.results?.details?.id
         )?.role ?? Roles.NONE;
+
+    const relevantTeamRole =
+        state.me.results?.userTeams.find(
+            (team) => team.id === state.case.results?.details?.teamId
+        )?.role ?? Roles.NONE;
     const hasDeletePermission =
         state.me.results?.isSiteAdmin ||
-        state.me.results?.userTeam?.role === Roles.EDITOR ||
-        state.me.results?.userTeam?.role === Roles.MANAGER ||
+        relevantTeamRole === Roles.EDITOR ||
+        relevantTeamRole === Roles.MANAGER ||
         relevantCaseRole === Roles.EDITOR ||
         relevantCaseRole === Roles.MANAGER;
 
@@ -878,7 +883,7 @@ const mapStateToProps = (state: RootState) => {
         auth: state.auth,
         isLoadingCases: state.cases.isLoadingCases,
         casesError: state.cases.error,
-        team: state.me.results?.userTeam?.team,
+        teams: state.me.results?.userTeams,
         genders,
         hasDeletePermission,
     };

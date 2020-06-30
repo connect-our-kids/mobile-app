@@ -23,16 +23,22 @@ export const CASE_DETAIL_SLIM_FRAGMENT = gql`
         person {
             ...PersonSlimFragment
         }
+        caseFileNumber
+        fosterCare
+        childStatus {
+            id
+            name
+        }
         caseStatus {
             id
             name
             representsClosure
         }
-        childStatus {
+        team {
             id
             name
         }
-        fosterCare
+        teamId
     }
 
     ${PERSON_SLIM_FRAGMENT}
@@ -72,6 +78,7 @@ export const CASE_DETAIL_FULL_FRAGMENT = gql`
             picture
             notes
         }
+        teamId
     }
 
     ${PERSON_FUll_FRAGMENT}

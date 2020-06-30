@@ -1,6 +1,13 @@
 //Also contains Add Case button used in TopLevelNavigationOptions2 in the navigation index
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import {
+    Text,
+    View,
+    Image,
+    TouchableOpacity,
+    TextInput,
+    ScrollView,
+} from 'react-native';
 // eslint-disable-next-line
 //@ts-ignore
 import { Picker } from 'react-native-picker-dropdown';
@@ -54,6 +61,7 @@ import {
 } from '../generated/editCaseMutation';
 import Loader from '../components/Loader';
 import constants from '../helpers/constants';
+import TeamListItem from '../components/family-connections/TeamListItem';
 
 const schema = yup.object().shape<CreateCaseInput>(
     {
@@ -311,9 +319,13 @@ export function AddOrEditCaseScreen(props: {
     const [createOrEditCaseError, setCreateOrEditCaseError] = useState<
         string | undefined
     >(undefined);
+    const [selectedTeamId, setSelectedTeamId] = useState<number | undefined>(
+        undefined
+    );
 
     const meResult = useQuery<meQuery>(ME_QUERY, {
         errorPolicy: 'all',
+        fetchPolicy: 'network-only',
         onError: (error) => {
             setLoadingDataError(error.message ?? 'Unknown error');
         },
@@ -349,19 +361,57 @@ export function AddOrEditCaseScreen(props: {
         },
     });
 
-    // once we have the users team get schema data
+    const caseEditId = props.navigation.getParam('pk', undefined) as
+        | number
+        | undefined;
+
+    // Two cases (add / edit), both we need schema data for the relevant team
+    // Edit case: wait for the case to load
+    // Add case: wait for the me object to load and the user to select a team
     useEffect(() => {
-        if (meResult.data?.me.userTeam) {
+        if (
+            caseEditId &&
+            !getCaseResult.loading &&
+            !getCaseResult.error &&
+            getCaseResult.data?.details?.teamId !== undefined
+        ) {
+            // load schema for Edit Case
             console.log(
-                `Getting schema data for team ${meResult.data?.me.userTeam.team.name}`
+                `Getting schema data for team ${getCaseResult.data.details.team.name}`
             );
             getSchema({
                 variables: {
-                    teamId: meResult.data?.me.userTeam.team.id,
+                    teamId: getCaseResult.data.details.teamId,
+                },
+            });
+        } else if (selectedTeamId !== undefined) {
+            // load schema for Add Case
+            console.log(`Getting schema data for team ${selectedTeamId}`);
+            getSchema({
+                variables: {
+                    teamId: selectedTeamId,
                 },
             });
         }
-    }, [meResult]);
+    }, [getCaseResult, caseEditId, selectedTeamId]);
+
+    // when the user is only part of one team, do not show team selection
+    // screen
+    useEffect(() => {
+        if (
+            !caseEditId &&
+            !meResult.loading &&
+            !meResult.error &&
+            meResult.data?.me.userTeams !== undefined &&
+            meResult.data.me.userTeams.length === 1
+        ) {
+            // load schema for Edit Case
+            console.log(
+                `User is only a member of one team. Setting selected team to ${meResult.data.me.userTeams[0].team.name}`
+            );
+            setSelectedTeamId(meResult.data.me.userTeams[0].team.id);
+        }
+    }, [meResult, caseEditId]);
 
     // remove empty string from list of genders if present
     // in the future this should be done on the backend
@@ -393,10 +443,6 @@ export function AddOrEditCaseScreen(props: {
     const childStatuses = (schemaResult.data?.schema?.childStatus ?? []).sort(
         sortBySortOrder
     );
-
-    const caseEditId = props.navigation.getParam('pk', undefined) as
-        | number
-        | undefined;
 
     // load case if editing a case
     // once on startup
@@ -627,6 +673,7 @@ export function AddOrEditCaseScreen(props: {
             });
     };
 
+    // loading cases
     if (meResult.loading || schemaResult.loading || getCaseResult.loading) {
         return (
             <View
@@ -637,6 +684,45 @@ export function AddOrEditCaseScreen(props: {
                 }}
             >
                 <Loader />
+            </View>
+        );
+    }
+
+    // user team selection
+    if (caseEditId === undefined && selectedTeamId === undefined) {
+        return (
+            <View
+                style={{
+                    backgroundColor: constants.backgroundColor,
+                    flex: 1,
+                    flexDirection: 'column',
+                }}
+            >
+                <Text
+                    style={{
+                        marginTop: 20,
+                        marginHorizontal: '5%',
+                        marginBottom: 20,
+                        fontSize: 18,
+                    }}
+                >
+                    Select team to add case:
+                </Text>
+                <ScrollView>
+                    <View
+                        style={{
+                            marginHorizontal: '5%',
+                        }}
+                    >
+                        {meResult.data?.me.userTeams.map((team) => (
+                            <TeamListItem
+                                key={team.id}
+                                team={team}
+                                pressed={(teamId) => setSelectedTeamId(teamId)}
+                            />
+                        ))}
+                    </View>
+                </ScrollView>
             </View>
         );
     }

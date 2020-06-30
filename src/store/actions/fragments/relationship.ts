@@ -20,6 +20,7 @@ export const RELATIONSHIP_DETAIL_FULL_FRAGMENT = gql`
         id
         case {
             id
+            teamId
         }
         person {
             ...PersonFullFragment

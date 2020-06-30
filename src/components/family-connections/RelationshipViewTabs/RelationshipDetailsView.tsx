@@ -228,6 +228,7 @@ export default function ConnectionsDetailsView(props: {
                                     'AddRelationshipScreen',
                                     {
                                         caseId: props.details.case.id,
+                                        teamId: props.details.case.teamId,
                                         relationshipId: props.details.id,
                                     }
                                 );

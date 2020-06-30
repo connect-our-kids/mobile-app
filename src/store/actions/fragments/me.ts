@@ -23,7 +23,8 @@ export const USER_FULL_FRAGMENT = gql`
         name
         picture
         isSiteAdmin
-        userTeam {
+        userTeams {
+            id
             team {
                 ...TeamFragment
             }

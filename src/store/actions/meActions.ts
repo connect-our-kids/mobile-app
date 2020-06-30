@@ -59,10 +59,9 @@ export const getMe = (): ThunkResult<void> => (
                     type: MeTypes.GET_ME_SUCCESS,
                     me: result.data.me,
                 });
-                const teamId = result.data.me.userTeam?.team.id;
-                if (teamId !== undefined) {
-                    dispatch(getSchema(teamId));
-                }
+                result.data.me.userTeams.forEach((team) => {
+                    dispatch(getSchema(team.team.id));
+                });
             },
             (error: GraphQLError | Error) => {
                 console.log(

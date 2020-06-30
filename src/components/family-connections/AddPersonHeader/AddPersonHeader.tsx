@@ -13,6 +13,7 @@ import { Roles } from '../../../generated/globalTypes';
 type StateProps = {
     myRole?: Roles;
     caseId?: number;
+    teamId?: number;
 };
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -107,6 +108,7 @@ function AddPersonHeader(props: Props) {
                     onPress={() => {
                         props.navigation.navigate('AddRelationshipScreen', {
                             caseId: props.caseId,
+                            teamId: props.teamId,
                         });
                     }}
                 >
@@ -124,12 +126,16 @@ function AddPersonHeader(props: Props) {
 }
 
 const mapStateToProps = (state: RootState) => {
-    const myRole = state.me?.results?.userTeam?.role;
     const caseId = state.case?.results?.details?.id;
+    const teamId = state.case?.results?.details?.teamId;
+    const myRole =
+        state.me?.results?.userTeams?.find((team) => team.id === teamId)
+            ?.role ?? Roles.NONE;
 
     return {
         myRole,
         caseId,
+        teamId,
     };
 };
 

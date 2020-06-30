@@ -53,7 +53,7 @@ function getProps({
                         facebook: null,
                         linkedin: null,
                         twitter: null,
-                        case: { __typename: 'Case', id: 0 },
+                        case: { __typename: 'Case', id: 0, teamId: 0 },
                         jobTitle: null,
                         employer: null,
                         salaryRange: null,

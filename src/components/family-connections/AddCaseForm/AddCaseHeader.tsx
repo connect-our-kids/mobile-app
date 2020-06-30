@@ -11,7 +11,7 @@ import constants from '../../../helpers/constants';
 import { Roles } from '../../../generated/globalTypes';
 
 type StateProps = {
-    myRole?: Roles;
+    hasPermission: boolean;
 };
 
 type Navigation = NavigationScreenProp<NavigationState>;
@@ -44,9 +44,7 @@ function AddCaseHeader(props: Props) {
                 />
                 <TouchableOpacity
                     style={
-                        props.myRole === Roles.EDITOR ||
-                        Roles.MANAGER ||
-                        Roles.CASE_CREATOR
+                        props.hasPermission
                             ? styles.headerBtnView
                             : styles.headerBtnView2
                     }
@@ -64,8 +62,20 @@ function AddCaseHeader(props: Props) {
 }
 
 const mapStateToProps = (state: RootState) => {
+    const myRoles = state.me?.results?.userTeams?.map((team) => team.role) ?? [
+        Roles.NONE,
+    ];
+    const hasPermission = myRoles.find(
+        (role) =>
+            role === Roles.CASE_CREATOR ||
+            role === Roles.EDITOR ||
+            role === Roles.MANAGER
+    )
+        ? true
+        : false;
+
     return {
-        myRole: state.me?.results?.userTeam?.role,
+        hasPermission,
     };
 };
 

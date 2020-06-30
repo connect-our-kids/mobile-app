@@ -338,6 +338,25 @@ export function AddOrEditRelationshipScreen(props: {
         },
     });
 
+    // this is required
+    const caseId = props.navigation.getParam('caseId', undefined) as number;
+
+    // this is required
+    const teamId = props.navigation.getParam('teamId', undefined) as number;
+
+    const schemaResult = useQuery<staticDataQuery, staticDataQueryVariables>(
+        STATIC_DATA_QUERY,
+        {
+            errorPolicy: 'all',
+            variables: {
+                teamId,
+            },
+            onError: (error) => {
+                setLoadingDataError(error.message ?? 'Unknown error');
+            },
+        }
+    );
+
     const [getRelationship, getRelationshipResult] = useLazyQuery<
         relationshipDetailFull,
         relationshipDetailFullVariables
@@ -352,30 +371,6 @@ export function AddOrEditRelationshipScreen(props: {
             }
         },
     });
-
-    const [getSchema, schemaResult] = useLazyQuery<
-        staticDataQuery,
-        staticDataQueryVariables
-    >(STATIC_DATA_QUERY, {
-        errorPolicy: 'all',
-        onError: (error) => {
-            setLoadingDataError(error.message ?? 'Unknown error');
-        },
-    });
-
-    // once we have the users team get schema data
-    useEffect(() => {
-        if (meResult.data?.me.userTeam) {
-            console.log(
-                `Getting schema data for team ${meResult.data?.me.userTeam.team.name}`
-            );
-            getSchema({
-                variables: {
-                    teamId: meResult.data?.me.userTeam.team.id,
-                },
-            });
-        }
-    }, [meResult]);
 
     // remove empty string from list of genders if present
     // in the future this should be done on the backend
@@ -407,9 +402,6 @@ export function AddOrEditRelationshipScreen(props: {
     const relationshipStatuses = (
         schemaResult.data?.schema?.relationshipStatus ?? []
     ).sort(sortBySortOrder);
-
-    // this is required
-    const caseId = props.navigation.getParam('caseId', undefined) as number;
 
     // this is optional depending on whether you are creating a new relationship
     // or editing an existing relationship

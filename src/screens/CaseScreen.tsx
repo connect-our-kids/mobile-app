@@ -1134,6 +1134,7 @@ const CaseScreen = (props: Props) => {
                     }
                     props.navigation.navigate('AddRelationshipScreen', {
                         caseId: props.caseId,
+                        teamId: props.case?.details?.teamId,
                         relationshipId: itemInfo.item.id,
                     });
                 }}
@@ -1374,10 +1375,15 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         state.me.results?.caseRoles.find(
             (role) => role.caseId === state.case.results?.details?.id
         )?.role ?? Roles.NONE;
+
+    const relevantTeamRole =
+        state.me.results?.userTeams.find(
+            (team) => team.id === state.case.results?.details?.teamId
+        )?.role ?? Roles.NONE;
     const hasDeletePermission =
         state.me.results?.isSiteAdmin ||
-        state.me.results?.userTeam?.role === Roles.EDITOR ||
-        state.me.results?.userTeam?.role === Roles.MANAGER ||
+        relevantTeamRole === Roles.EDITOR ||
+        relevantTeamRole === Roles.MANAGER ||
         relevantCaseRole === Roles.EDITOR ||
         relevantCaseRole === Roles.MANAGER;
 

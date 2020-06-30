@@ -9,7 +9,7 @@ import constants from '../../../helpers/constants';
 import Loader from '../../Loader';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { UserFullFragment_userTeam_team } from '../../../generated/UserFullFragment';
+import { UserFullFragment_userTeams } from '../../../generated/UserFullFragment';
 
 const styles = StyleSheet.create({
     safeAreaView: {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 
 interface StateProps {
     auth: AuthState;
-    team?: UserFullFragment_userTeam_team;
+    teams?: UserFullFragment_userTeams[];
 }
 
 interface DispatchProps {
@@ -132,7 +132,7 @@ function ConnectionsLogin(props: Props): JSX.Element {
                 <Loader />
             </SafeAreaView>
         );
-    } else if (props.auth.isLoggedIn && props.team) {
+    } else if (props.auth.isLoggedIn && props.teams?.length) {
         return (
             <SafeAreaView style={{ ...styles.safeAreaView }}>
                 <Text>You are now logged in</Text>
@@ -218,7 +218,7 @@ function ConnectionsLogin(props: Props): JSX.Element {
 const mapStateToProps = (state: RootState) => {
     return {
         auth: state.auth,
-        team: state.me.results?.userTeam?.team,
+        teams: state.me.results?.userTeams,
     };
 };
 
