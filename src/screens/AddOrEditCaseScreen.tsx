@@ -225,6 +225,54 @@ const fosterCareToDisplay = (
     return undefined;
 };
 
+const sanitizeFormData = (input: CreateCaseInput): CreateCaseInput => {
+    // remove empty addresses/emails/telephones/alternateNames
+    const output: CreateCaseInput = { ...input };
+    output.addresses = input.addresses?.filter(
+        (address) =>
+            address.country ||
+            address.countryCode ||
+            address.formatted ||
+            address.latitude ||
+            address.locality ||
+            address.longitude ||
+            address.postalCode ||
+            address.raw ||
+            address.route ||
+            address.routeTwo ||
+            address.state ||
+            address.stateCode ||
+            address.streetNumber
+    );
+    // trim strings
+    output.firstName = input.firstName?.trim();
+    output.middleName = input.middleName?.trim();
+    output.lastName = input.lastName?.trim();
+    output.caseFileNumber = input.caseFileNumber?.trim();
+    output.suffix = input.suffix?.trim();
+    output.title = input.title?.trim();
+    output.notes = input.notes?.trim();
+    output.gender = input.gender?.trim();
+    output.dateOfDeath = input.dateOfDeath?.trim();
+    output.birthdayRaw = input.birthdayRaw?.trim();
+    output.fosterCare = input.fosterCare?.trim();
+
+    output.addresses = input.addresses?.map((address) => {
+        return {
+            ...address,
+            country: address.country?.trim(),
+            locality: address.locality.trim(),
+            postalCode: address.postalCode?.trim(),
+            route: address.route.trim(),
+            routeTwo: address.routeTwo?.trim(),
+            state: address.state?.trim(),
+            streetNumber: address.streetNumber.trim(),
+            label: address.label?.trim(),
+        };
+    });
+    return output;
+};
+
 export function AddOrEditCaseScreen(props: {
     navigation: NavigationScreenProp<NavigationState>;
 }): JSX.Element {
@@ -247,7 +295,11 @@ export function AddOrEditCaseScreen(props: {
                 isVerified: false,
                 locality: '',
                 route: '',
+                routeTwo: '',
                 streetNumber: '',
+                country: '',
+                postalCode: '',
+                state: '',
             },
         ],
     });
@@ -533,68 +585,22 @@ export function AddOrEditCaseScreen(props: {
         );
     }
 
-    const sanitizeFormData = () => {
-        // remove empty addresses/emails/telephones/alternateNames
-        formData.addresses = formData.addresses?.filter(
-            (address) =>
-                address.country ||
-                address.countryCode ||
-                address.formatted ||
-                address.latitude ||
-                address.locality ||
-                address.longitude ||
-                address.postalCode ||
-                address.raw ||
-                address.route ||
-                address.routeTwo ||
-                address.state ||
-                address.stateCode ||
-                address.streetNumber
-        );
-        // trim strings
-        formData.firstName = formData.firstName?.trim();
-        formData.middleName = formData.middleName?.trim();
-        formData.lastName = formData.lastName?.trim();
-        formData.caseFileNumber = formData.caseFileNumber?.trim();
-        formData.suffix = formData.suffix?.trim();
-        formData.title = formData.title?.trim();
-        formData.notes = formData.notes?.trim();
-        formData.gender = formData.gender?.trim();
-        formData.dateOfDeath = formData.dateOfDeath?.trim();
-        formData.birthdayRaw = formData.birthdayRaw?.trim();
-        formData.fosterCare = formData.fosterCare?.trim();
-
-        formData.addresses = formData.addresses?.map((address) => {
-            return {
-                ...address,
-                country: address.country?.trim(),
-                locality: address.locality.trim(),
-                postalCode: address.postalCode?.trim(),
-                route: address.route.trim(),
-                routeTwo: address.routeTwo?.trim(),
-                state: address.state?.trim(),
-                streetNumber: address.streetNumber.trim(),
-                label: address.label?.trim(),
-            };
-        });
-    };
-
     const saveNewCase = () => {
         schema
             .validate(formData, { abortEarly: false })
             .then(() => {
-                sanitizeFormData();
+                const sanitizedFormData = sanitizeFormData(formData);
                 if (caseEditId !== undefined) {
                     console.log(`Updating case ${caseEditId}`);
                     editCaseGraphQL({
                         variables: {
                             caseId: caseEditId,
-                            value: convertToUpdateCaseInput(formData),
+                            value: convertToUpdateCaseInput(sanitizedFormData),
                         },
                     });
                 } else {
                     console.log(`Creating case`);
-                    createCase(formData);
+                    createCase(sanitizedFormData);
                 }
             })
             .catch((error) => {
@@ -944,19 +950,6 @@ export function AddOrEditCaseScreen(props: {
                     </View>
                     <Text style={styles.textPadding}>Residence</Text>
 
-                    <View style={styles.formContainer}>
-                        <TextInput
-                            style={styles.addressInput}
-                            placeholder={'Label'}
-                            value={formData.addresses?.[0].label ?? undefined}
-                            onChangeText={(text) => {
-                                if (formData.addresses?.length) {
-                                    formData.addresses[0].label = text;
-                                    setFormData({ ...formData });
-                                }
-                            }}
-                        />
-                    </View>
                     <View style={styles.addressContainer}>
                         <TextInput
                             style={styles.addressInput}
