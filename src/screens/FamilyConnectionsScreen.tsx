@@ -229,7 +229,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         props.genders,
         props.teams,
         props.isLoadingCases,
-        props.casesLoaded
+        props.casesLoaded,
     ]);
 
     const createDefaultGenderFilter = () =>
