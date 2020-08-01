@@ -61,6 +61,7 @@ interface StateProps {
     auth: AuthState;
     cases: casesDetailSlim_cases[];
     isLoadingCases: boolean;
+    casesLoaded: boolean;
     casesError?: string;
     teams?: UserFullFragment_userTeams[];
     genders: string[];
@@ -210,8 +211,6 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         Platform.OS === 'android' ? setRtn('') : null; // if Android, display no "RETURN" text, otherwise do nothing => probs better written as Platform.OS === 'android' && setRtn('')
     }, []);
 
-    const [casesLoaded, setCasesLoaded] = useState(false); // used to show "scroll to top" buttons; look into RN component that does this?
-
     // run any time the logged in status changes
     useEffect(() => {
         if (
@@ -220,10 +219,9 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
             props.genders.length > 0 &&
             props.teams?.length &&
             !props.isLoadingCases &&
-            !casesLoaded
+            !props.casesLoaded
         ) {
             props.getCases();
-            setCasesLoaded(true);
         }
     }, [
         props.auth.isLoggedIn,
@@ -231,6 +229,7 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         props.genders,
         props.teams,
         props.isLoadingCases,
+        props.casesLoaded
     ]);
 
     const createDefaultGenderFilter = () =>
@@ -882,6 +881,7 @@ const mapStateToProps = (state: RootState) => {
         cases: state.cases.results ?? [], // TODO this is a temporary fie. state.cases.results should never be undefined
         auth: state.auth,
         isLoadingCases: state.cases.isLoadingCases,
+        casesLoaded: state.cases.resultsLoaded,
         casesError: state.cases.error,
         teams: state.me.results?.userTeams,
         genders,

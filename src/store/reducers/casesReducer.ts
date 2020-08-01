@@ -4,12 +4,14 @@ import { CasesTypes, CasesActionTypes } from '../actions';
 export interface CasesState {
     results: casesDetailSlim_cases[];
     isLoadingCases: boolean;
+    resultsLoaded: boolean;
     error?: string;
 }
 
 const initialState: CasesState = {
     results: [],
     isLoadingCases: false,
+    resultsLoaded: false,
 };
 
 export const casesReducer = (
@@ -21,6 +23,7 @@ export const casesReducer = (
             return {
                 ...state,
                 isLoadingCases: true,
+                resultsLoaded: false,
                 error: undefined,
             };
 
@@ -28,6 +31,7 @@ export const casesReducer = (
             return {
                 ...state,
                 isLoadingCases: false,
+                resultsLoaded: true,
                 results: action.cases,
             };
 
@@ -35,6 +39,7 @@ export const casesReducer = (
             return {
                 ...state,
                 isLoadingCases: false,
+                resultsLoaded: false,
                 error: action.error,
             };
 
@@ -42,6 +47,7 @@ export const casesReducer = (
             return {
                 ...state,
                 isLoadingCases: false,
+                resultsLoaded: false,
                 results: [],
                 error: undefined,
             };
