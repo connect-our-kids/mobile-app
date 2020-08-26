@@ -89,6 +89,7 @@ function getProps({
                             updatedAt: null,
                             alternateNames: [],
                         },
+                        teamAttributes: []
                     };
                     return relationship;
                 } else {

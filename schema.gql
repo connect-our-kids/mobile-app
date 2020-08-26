@@ -118,6 +118,7 @@ type Relationship {
   ppSearchImported: Boolean!
   ppSearchQuery: String
   ppSearchPointerHash: String
+  teamAttributes: [RelationshipTeamAttribute!]!
 }
 
 type CaseWorkpad {
@@ -136,6 +137,34 @@ type CaseWorkpad {
   """
   svg: String!
   case: Case!
+}
+
+type TeamAttribute {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  name: String!
+  type: String!
+  disabled: Boolean!
+  order: Int!
+  defaultValue: String!
+  team: Team!
+  options: [String!]
+}
+
+type RelationshipTeamAttribute {
+  id: Int!
+  createdAt: Date!
+  updatedAt: Date!
+  createdBy: User
+  modifiedBy: User
+  value: String!
+  relationshipId: Int!
+  relationship: Relationship!
+  teamAttributeId: Int!
+  teamAttribute: TeamAttribute!
 }
 
 type PersonTelephone {
@@ -239,7 +268,12 @@ type EngagementReminder implements EngagementCommon {
   dueDate: Date
 }
 
-union Engagement = EngagementCall | EngagementDocument | EngagementEmail | EngagementNote | EngagementReminder
+union Engagement =
+    EngagementCall
+  | EngagementDocument
+  | EngagementEmail
+  | EngagementNote
+  | EngagementReminder
 
 type PersonEmail {
   id: Int!
@@ -727,12 +761,16 @@ type Query @isAuthenticated {
   user(teamId: Int!, id: Int!): User @hasTeam
   cases(filter: CaseFilterType): [Case!]! @hasTeam # role filtering handled in resolver
   case(caseId: Int!): Case @hasTeam @hasRole(role: VIEWER)
-  engagementCounts(caseId: Int!): [EngagementCount!]! @hasTeam @hasRole(role: VIEWER)
+  engagementCounts(caseId: Int!): [EngagementCount!]!
+    @hasTeam
+    @hasRole(role: VIEWER)
   caseRoles(caseId: Int!): [CaseRole!]! @hasTeam
   schema: TypeSchemas!
   relationshipsCount(caseId: Int!): Int! @hasTeam @hasRole(role: VIEWER)
   relationships(caseId: Int!): [Relationship!]! @hasTeam @hasRole(role: VIEWER)
-  relationship(caseId: Int!, id: Int!): Relationship @hasTeam @hasRole(role: VIEWER)
+  relationship(caseId: Int!, id: Int!): Relationship
+    @hasTeam
+    @hasRole(role: VIEWER)
   workpads(caseId: Int!): [CaseWorkpad!]! @hasTeam @hasRole(role: VIEWER)
   workpad(caseId: Int!, workpadId: Int!): CaseWorkpad @hasRole(role: VIEWER)
   addressCountries: [AddressCountry!]!
@@ -747,10 +785,18 @@ type Query @isAuthenticated {
   """
   caseExportTask(id: String!): TaskStatus! @hasTeam
 
-  peopleSearch(caseId: Int!, idToken: String!, accessToken: String!, person: JSON!): JSON! @hasTeam @hasRole(role: EDITOR)
-  peopleSearchDetail(caseId: Int!, idToken: String!, accessToken: String!, searchPointerHash: String!): JSON!
-    @hasTeam
-    @hasRole(role: EDITOR)
+  peopleSearch(
+    caseId: Int!
+    idToken: String!
+    accessToken: String!
+    person: JSON!
+  ): JSON! @hasTeam @hasRole(role: EDITOR)
+  peopleSearchDetail(
+    caseId: Int!
+    idToken: String!
+    accessToken: String!
+    searchPointerHash: String!
+  ): JSON! @hasTeam @hasRole(role: EDITOR)
 
   """
   Site Admin / Super user queries. These queries require the calling user have isSiteAdmin.
@@ -764,58 +810,137 @@ type Query @isAuthenticated {
   teamAdmin(id: Int!): Team! @isSiteAdmin
   # query all teams
   teamsAdmin: [Team!]! @isSiteAdmin
+
+  teamAttributes(teamId: Int!): [TeamAttribute!]!
+    @hasTeam
+    @hasRole(role: MANAGER)
 }
 
 type Mutation @isAuthenticated {
   updateMyProfile(value: UpdateProfileInput!): User!
-  updateMyTeam(teamId: Int!, value: UpdateTeamInput!): User! @hasTeam @hasRole(role: MANAGER)
+  updateMyTeam(teamId: Int!, value: UpdateTeamInput!): User!
+    @hasTeam
+    @hasRole(role: MANAGER)
 
-  createUser(teamId: Int!, value: CreateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
-  updateUser(teamId: Int!, userId: Int!, value: UpdateUserInput!): User! @hasTeam @hasRole(role: MANAGER)
-  removeUserFromTeam(teamId: Int!, userId: Int!): User! @hasTeam @hasRole(role: MANAGER)
+  createUser(teamId: Int!, value: CreateUserInput!): User!
+    @hasTeam
+    @hasRole(role: MANAGER)
+  updateUser(teamId: Int!, userId: Int!, value: UpdateUserInput!): User!
+    @hasTeam
+    @hasRole(role: MANAGER)
+  removeUserFromTeam(teamId: Int!, userId: Int!): User!
+    @hasTeam
+    @hasRole(role: MANAGER)
 
   # allows case manager to create a user with team role none
-  createNoPermissionUser(caseId: Int!, value: CreateNoPermissionUserInput!): User! @hasTeam @hasRole(role: MANAGER)
+  createNoPermissionUser(
+    caseId: Int!
+    value: CreateNoPermissionUserInput!
+  ): User! @hasTeam @hasRole(role: MANAGER)
 
   setUserDefaultWorkpadId(caseId: Int!, workpadId: Int!): UserSettings! @hasTeam
 
-  createWorkpad(caseId: Int!, name: String!, diagram: String, svg: String): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
-  updateWorkpad(caseId: Int!, workpadId: Int!, name: String, diagram: String, svg: String): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
-  deleteWorkpad(caseId: Int!, workpadId: Int!): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+  createWorkpad(
+    caseId: Int!
+    name: String!
+    diagram: String
+    svg: String
+  ): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+  updateWorkpad(
+    caseId: Int!
+    workpadId: Int!
+    name: String
+    diagram: String
+    svg: String
+  ): CaseWorkpad! @hasTeam @hasRole(role: EDITOR)
+  deleteWorkpad(caseId: Int!, workpadId: Int!): CaseWorkpad!
+    @hasTeam
+    @hasRole(role: EDITOR)
 
   """
   add an email address to a relationship as the last email address by order hint
   """
-  addEmail(caseId: Int!, relationshipId: Int!, email: String!): Relationship! @hasTeam @hasRole(role: EDITOR)
-  createRelationship(caseId: Int!, value: CreateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
-  updateRelationship(caseId: Int!, relationshipId: Int!, value: UpdateRelationshipInput!): Relationship! @hasTeam @hasRole(role: EDITOR)
-  deleteRelationship(caseId: Int!, relationshipId: Int!): Relationship! @hasTeam @hasRole(role: EDITOR)
-  relationshipPeopleSearch(caseId: Int!, relationshipId: Int!): Relationship! @hasTeam @hasRole(role: EDITOR)
-
-  createCase(teamId: Int, value: CreateCaseInput!): Case! @hasTeam @hasRole(role: CASE_CREATOR)
-  updateCase(caseId: Int!, value: UpdateCaseInput!): Case! @hasTeam @hasRole(role: EDITOR)
-  deleteCase(caseId: Int!): Case! @hasTeam @hasRole(role: MANAGER)
-
-  addCaseRole(caseId: Int!, userId: Int!, role: Roles!): [CaseRole!]! @hasTeam @hasRole(role: MANAGER)
-  removeCaseRole(caseId: Int!, userId: Int!): [CaseRole!]! @hasTeam @hasRole(role: MANAGER)
-
-  # engagement items
-  deleteEngagement(caseId: Int!, engagementId: Int!): Engagement! @hasTeam @hasRole(role: EDITOR)
-  createEngagementCall(caseId: Int!, value: CreateEngagementCall!): EngagementCall! @hasTeam @hasRole(role: EDITOR)
-  updateEngagementCall(caseId: Int!, engagementId: Int!, value: UpdateEngagementCall!): EngagementCall! @hasTeam @hasRole(role: EDITOR)
-  createEngagementDocument(caseId: Int!, value: CreateEngagementDocument!): EngagementDocument! @hasTeam @hasRole(role: EDITOR)
-  updateEngagementDocument(caseId: Int!, engagementId: Int!, value: UpdateEngagementDocument!): EngagementDocument!
+  addEmail(caseId: Int!, relationshipId: Int!, email: String!): Relationship!
     @hasTeam
     @hasRole(role: EDITOR)
-  createEngagementEmail(caseId: Int!, value: CreateEngagementEmail!): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
-  updateEngagementEmail(caseId: Int!, engagementId: Int!, value: UpdateEngagementEmail!): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
-  createEngagementNote(caseId: Int!, value: CreateEngagementNote!): EngagementNote! @hasTeam @hasRole(role: EDITOR)
-  updateEngagementNote(caseId: Int!, engagementId: Int!, value: UpdateEngagementNote!): EngagementNote! @hasTeam @hasRole(role: EDITOR)
+  createRelationship(
+    caseId: Int!
+    value: CreateRelationshipInput!
+  ): Relationship! @hasTeam @hasRole(role: EDITOR)
+  updateRelationship(
+    caseId: Int!
+    relationshipId: Int!
+    value: UpdateRelationshipInput!
+  ): Relationship! @hasTeam @hasRole(role: EDITOR)
+  deleteRelationship(caseId: Int!, relationshipId: Int!): Relationship!
+    @hasTeam
+    @hasRole(role: EDITOR)
+  relationshipPeopleSearch(caseId: Int!, relationshipId: Int!): Relationship!
+    @hasTeam
+    @hasRole(role: EDITOR)
+
+  createCase(teamId: Int, value: CreateCaseInput!): Case!
+    @hasTeam
+    @hasRole(role: CASE_CREATOR)
+  updateCase(caseId: Int!, value: UpdateCaseInput!): Case!
+    @hasTeam
+    @hasRole(role: EDITOR)
+  deleteCase(caseId: Int!): Case! @hasTeam @hasRole(role: MANAGER)
+
+  addCaseRole(caseId: Int!, userId: Int!, role: Roles!): [CaseRole!]!
+    @hasTeam
+    @hasRole(role: MANAGER)
+  removeCaseRole(caseId: Int!, userId: Int!): [CaseRole!]!
+    @hasTeam
+    @hasRole(role: MANAGER)
+
+  # engagement items
+  deleteEngagement(caseId: Int!, engagementId: Int!): Engagement!
+    @hasTeam
+    @hasRole(role: EDITOR)
+  createEngagementCall(
+    caseId: Int!
+    value: CreateEngagementCall!
+  ): EngagementCall! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementCall(
+    caseId: Int!
+    engagementId: Int!
+    value: UpdateEngagementCall!
+  ): EngagementCall! @hasTeam @hasRole(role: EDITOR)
+  createEngagementDocument(
+    caseId: Int!
+    value: CreateEngagementDocument!
+  ): EngagementDocument! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementDocument(
+    caseId: Int!
+    engagementId: Int!
+    value: UpdateEngagementDocument!
+  ): EngagementDocument! @hasTeam @hasRole(role: EDITOR)
+  createEngagementEmail(
+    caseId: Int!
+    value: CreateEngagementEmail!
+  ): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementEmail(
+    caseId: Int!
+    engagementId: Int!
+    value: UpdateEngagementEmail!
+  ): EngagementEmail! @hasTeam @hasRole(role: EDITOR)
+  createEngagementNote(
+    caseId: Int!
+    value: CreateEngagementNote!
+  ): EngagementNote! @hasTeam @hasRole(role: EDITOR)
+  updateEngagementNote(
+    caseId: Int!
+    engagementId: Int!
+    value: UpdateEngagementNote!
+  ): EngagementNote! @hasTeam @hasRole(role: EDITOR)
   """
   Return value is an Export Task ID that can be queryed to see the status of the Task. Use caseExportTask
   to get status.
   """
-  createCaseExportTask(caseId: Int!): CreateTaskResult! @hasTeam @hasRole(role: VIEWER)
+  createCaseExportTask(caseId: Int!): CreateTaskResult!
+    @hasTeam
+    @hasRole(role: VIEWER)
 
   mixpanelTrack(actions: JSON!): Int!
   mixpanelEngage(userInfo: JSON!): Int!
@@ -825,7 +950,8 @@ type Mutation @isAuthenticated {
   User does NOT have to be in a team
   """
   createUserAdmin(value: CreateUserInputAdmin!): User! @isSiteAdmin
-  updateUserAdmin(userId: Int!, value: UpdateUserInputAdmin!): User! @isSiteAdmin
+  updateUserAdmin(userId: Int!, value: UpdateUserInputAdmin!): User!
+    @isSiteAdmin
   createTeamAdmin(value: CreateTeamInput!): Team! @isSiteAdmin
   updateTeamAdmin(id: Int!, value: UpdateTeamInput!): Team! @isSiteAdmin
   deleteTeamAdmin(id: Int!): Team! @isSiteAdmin

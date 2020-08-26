@@ -12,6 +12,10 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { CheckBox } from 'react-native-elements';
 import constants from '../../../helpers/constants';
+import { RelationshipTeamAttribute } from '../../../generated/RelationshipTeamAttribute';
+import { relationshipDetailFull_relationship_teamAttributes, relationshipDetailFull_relationship_teamAttributes_teamAttribute } from '../../../generated/relationshipDetailFull';
+// import { TeamAttributeDetail } from '../../../generated/TeamAttributeDetail';
+// import { getTeamAttributes } from '../../../generated/getTeamAttributes';
 
 const dateOfDeathToDisplay = (
     dateOfDeath: string | null | undefined
@@ -44,6 +48,7 @@ const cityStateZipToString = (
 export default function ConnectionsDetailsView(props: {
     details: RelationshipDetailFullFragment;
     navigation: NavigationScreenProp<NavigationState>;
+    // attributes: TeamAttributeDetail;
 }): JSX.Element {
     const styles = StyleSheet.create({
         rootView: {
@@ -81,11 +86,13 @@ export default function ConnectionsDetailsView(props: {
             justifyContent: 'space-between',
             alignContent: 'flex-start',
             alignItems: 'flex-start',
+            fontWeight: "bold"
         },
         tripleLabelText: {
             width: '50%',
             marginBottom: 10,
             color: '#444444',
+            fontWeight: "bold"
         },
         tripleContent: {
             width: '90%',
@@ -106,10 +113,12 @@ export default function ConnectionsDetailsView(props: {
         tripleText1: {
             width: '30%',
             color: '#444444',
+            fontWeight: "bold"
         },
         tripleText2: {
             width: '65%',
             color: '#444444',
+            fontWeight: "bold"
         },
         tripleLinkText: {
             width: '65%',
@@ -123,11 +132,13 @@ export default function ConnectionsDetailsView(props: {
             width: '25%',
             marginBottom: 25,
             color: '#444444',
+            fontWeight: "bold"
         },
         contactedLabel: {
             width: '25%',
             marginBottom: 15,
             color: '#444444',
+            fontWeight: "bold"
         },
         contentText: {
             // marginHorizontal: 20
@@ -210,6 +221,7 @@ export default function ConnectionsDetailsView(props: {
             return phoneNumber;
         }
     };
+    console.log(props.details)
 
     return (
         <View style={styles.rootView}>
@@ -382,6 +394,24 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
+            {props.details.teamAttributes.length ?
+                (<>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
+                    </View>
+                        {props.details.teamAttributes.map((attribute: relationshipDetailFull_relationship_teamAttributes) => {
+                            return (
+                                <View key={attribute.id} style={styles.textView}>
+                                    <Text style={styles.labelText}>{attribute.teamAttribute.name}</Text>
+                                    <Text style={styles.contentText}>
+                                        {attribute.value}
+                                    </Text>
+                                </View>
+                            )
+                        })}
+                </>)
+
+             : null}
             {props.details.person.addresses.length ||
             props.details.person.telephones.length ||
             props.details.person.emails.length ||
