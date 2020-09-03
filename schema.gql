@@ -118,7 +118,7 @@ type Relationship {
   ppSearchImported: Boolean!
   ppSearchQuery: String
   ppSearchPointerHash: String
-  teamAttributes: [RelationshipTeamAttribute!]!
+  teamAttributes: [RelationshipTeamAttribute!]
 }
 
 type CaseWorkpad {
@@ -150,7 +150,6 @@ type TeamAttribute {
   disabled: Boolean!
   order: Int!
   defaultValue: String!
-  team: Team!
   options: [String!]
 }
 
@@ -165,6 +164,11 @@ type RelationshipTeamAttribute {
   relationship: Relationship!
   teamAttributeId: Int!
   teamAttribute: TeamAttribute!
+}
+
+input RelationshipTeamAttributeInput {
+  teamAttributeId: Int!
+  value: String!
 }
 
 type PersonTelephone {
@@ -453,6 +457,7 @@ input CreateRelationshipInput {
   isContacted: Boolean
 
   ppSearchImported: Boolean
+  teamAttributes: [RelationshipTeamAttributeInput!]
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
@@ -487,6 +492,7 @@ input UpdateRelationshipInput {
   isContacted: Boolean
 
   ppSearchImported: Boolean
+  teamAttributes: [RelationshipTeamAttributeInput!]
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
@@ -811,7 +817,7 @@ type Query @isAuthenticated {
   # query all teams
   teamsAdmin: [Team!]! @isSiteAdmin
 
-  teamAttributes(teamId: Int!): [TeamAttribute!]!
+  teamAttributes(teamId: Int!): [TeamAttribute!]
     @hasTeam
     @hasRole(role: MANAGER)
 }

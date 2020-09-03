@@ -12,8 +12,8 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { CheckBox } from 'react-native-elements';
 import constants from '../../../helpers/constants';
-import { RelationshipTeamAttribute } from '../../../generated/RelationshipTeamAttribute';
-import { relationshipDetailFull_relationship_teamAttributes, relationshipDetailFull_relationship_teamAttributes_teamAttribute } from '../../../generated/relationshipDetailFull';
+// import { RelationshipTeamAttribute } from '../../../generated/RelationshipTeamAttribute';
+import { relationshipDetailFull_relationship_teamAttributes } from '../../../generated/relationshipDetailFull'; //relationshipDetailFull_relationship_teamAttributes_teamAttribute
 // import { TeamAttributeDetail } from '../../../generated/TeamAttributeDetail';
 // import { getTeamAttributes } from '../../../generated/getTeamAttributes';
 
@@ -48,7 +48,6 @@ const cityStateZipToString = (
 export default function ConnectionsDetailsView(props: {
     details: RelationshipDetailFullFragment;
     navigation: NavigationScreenProp<NavigationState>;
-    // attributes: TeamAttributeDetail;
 }): JSX.Element {
     const styles = StyleSheet.create({
         rootView: {
@@ -221,7 +220,6 @@ export default function ConnectionsDetailsView(props: {
             return phoneNumber;
         }
     };
-    console.log(props.details)
 
     return (
         <View style={styles.rootView}>
@@ -394,12 +392,14 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
-            {props.details.teamAttributes.length ?
+            {props.details.teamAttributes?.length ?
                 (<>
                     <View style={styles.header}>
                         <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
                     </View>
-                        {props.details.teamAttributes.map((attribute: relationshipDetailFull_relationship_teamAttributes) => {
+                        {props.details.teamAttributes
+                        .sort((a,b) => a.teamAttribute.order - b.teamAttribute.order)
+                        .map((attribute: relationshipDetailFull_relationship_teamAttributes) => {
                             return (
                                 <View key={attribute.id} style={styles.textView}>
                                     <Text style={styles.labelText}>{attribute.teamAttribute.name}</Text>

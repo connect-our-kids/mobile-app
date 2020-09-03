@@ -20,6 +20,7 @@ import {
     TelephoneInput,
     CreateRelationshipInput,
     AlternateNameInput,
+    RelationshipTeamAttributeInput,
     UploadWrapper,
     IntWrapper,
     DateWrapper,
@@ -50,6 +51,7 @@ import { RELATIONSHIP_DETAIL_FULL_QUERY } from '../store/actions/fragments/relat
 import {
     relationshipDetailFull,
     relationshipDetailFullVariables,
+    relationshipDetailFull_relationship_teamAttributes,
 } from '../generated/relationshipDetailFull';
 import {
     editRelationshipMutation,
@@ -57,6 +59,25 @@ import {
 } from '../generated/editRelationshipMutation';
 import Loader from '../components/Loader';
 import constants from '../helpers/constants';
+import { getTeamAttributes, getTeamAttributesVariables, getTeamAttributes_teamAttributes } from '../generated/getTeamAttributes';
+import { TEAM_ATTRIBUTES_QUERY } from '../store/actions/fragments/teamAttributes';
+// import { TeamAttributeDetail } from '../generated/TeamAttributeDetail';
+// import { getAttributes } from '../store/actions';
+
+// interface ValueWrapper {
+//     value: string | boolean | null;
+// }
+
+export interface AttributesWithValues {
+    teamAttributeId: number;
+    name: string;
+    type: string;
+    order: number;
+    disabled: boolean;
+    defaultValue: string;
+    options: string[] | null;
+    value?: string | boolean | null;
+  }
 
 const schema = yup.object<CreateRelationshipInput>().shape(
     {
@@ -107,6 +128,7 @@ const schema = yup.object<CreateRelationshipInput>().shape(
         isContacted: yup.boolean().nullable(),
         ppSearchImported: yup.boolean().nullable(),
 
+        // teamAttributes: yup.array<RelationshipTeamAttribute>().nullable(),
         addresses: yup
             .array<AddressInput>(
                 yup
@@ -167,6 +189,14 @@ const schema = yup.object<CreateRelationshipInput>().shape(
                     .defined()
             )
             .nullable(),
+        teamAttributes: yup.array<RelationshipTeamAttributeInput>(
+            yup
+                .object<RelationshipTeamAttributeInput>({
+                    teamAttributeId: yup.number().defined(),
+                    value: yup.mixed()
+                })
+                .defined()
+        )
     },
     [
         ['firstName', 'middleName'],
@@ -235,6 +265,13 @@ const convertToUpdateRelationshipInput = (
             return { ...alternateName, id: undefined, __typename: undefined };
         });
     }
+
+    let sanitizedTeamAttributes: RelationshipTeamAttributeInput[] | undefined = undefined;
+    if (input.teamAttributes) {
+        sanitizedTeamAttributes = input.teamAttributes.map(attr => {
+            return {teamAttributeId: attr.teamAttributeId, value: attr.value, __typename: undefined }
+        })
+    }
     const output: UpdateRelationshipInput = {
         firstName: toStringWrapper(input.firstName),
         middleName: toStringWrapper(input.middleName),
@@ -265,6 +302,8 @@ const convertToUpdateRelationshipInput = (
         emails: sanitizedEmails,
         telephones: sanitizedTelephones,
         alternateNames: sanitizedAlternateNames,
+
+        teamAttributes: sanitizedTeamAttributes
     };
 
     console.log(
@@ -317,10 +356,13 @@ export function AddOrEditRelationshipScreen(props: {
         alternateNames: [
             { isHidden: false, isVerified: false, name: '', label: '' },
         ],
+        teamAttributes: []
     });
+    const [attributes, setAttributes] = useState<getTeamAttributes_teamAttributes[]>([])
 
     const [showBirthdayDatePicker, setShowBirthdayDatePicker] = useState(false);
     const [showDateOfDeathPicker, setShowDateOfDeathPicker] = useState(false);
+    const [showTeamAttributeDatePicker, setShowTeamAttributeDatePicker] = useState(false);
     const [image, setImage] = useState<ReactNativeFile | undefined>(undefined);
     const [isBusyModalOpen, setIsBusyModalOpen] = useState(false);
     const [loadingDataError, setLoadingDataError] = useState<
@@ -371,6 +413,19 @@ export function AddOrEditRelationshipScreen(props: {
             }
         },
     });
+
+    const teamAttributesResult = useQuery<
+        getTeamAttributes,
+        getTeamAttributesVariables
+    >(TEAM_ATTRIBUTES_QUERY, {
+        variables: {
+            teamId
+        },
+        errorPolicy: 'all',
+        onError: (error) => {
+            setLoadingDataError(error.message ?? 'Unknown error');
+        },
+    })
 
     // remove empty string from list of genders if present
     // in the future this should be done on the backend
@@ -447,9 +502,18 @@ export function AddOrEditRelationshipScreen(props: {
                 telephones: (
                     getRelationshipResult.data.relationship?.person
                         .telephones ?? []
-                ).map((email) => {
-                    return { ...email, phoneNumber: email.telephone };
+                ).map((telephone) => {
+                    return { ...telephone, phoneNumber: telephone.telephone };
                 }),
+                teamAttributes: (
+                    getRelationshipResult.data.relationship?.teamAttributes ?? []
+                ).map((attr) => {
+                    return {
+                        ...attr,
+                        teamAttributeId: attr.id,
+                        value: attr.value
+                    }
+                })
             };
             // ensure there is at least one address set
             if (
@@ -508,6 +572,15 @@ export function AddOrEditRelationshipScreen(props: {
                         name: '',
                     },
                 ];
+            }
+
+            if (
+                !formDataFromRelationship.teamAttributes ||
+                formDataFromRelationship.teamAttributes.length === 0
+            ) {
+                formDataFromRelationship.teamAttributes = [
+
+                ]
             }
 
             setFormData(formDataFromRelationship);
@@ -608,6 +681,30 @@ export function AddOrEditRelationshipScreen(props: {
         });
     }
 
+    const handleTeamAttributeDatePicker = (date: Date) => {
+        setShowTeamAttributeDatePicker(false);
+        const dayRaw = date.getDate().toString();
+        const day = dayRaw.length === 1 ? `0${dayRaw}` : dayRaw;
+        const monthRaw = (date.getMonth() + 1).toString();
+        const month = monthRaw.length === 1 ? `0${monthRaw}` : monthRaw;
+        const year = date.getFullYear();
+        const utcRaw = `${month}/${day}/${year}`;
+        console.log(utcRaw)
+        // const iso = new Date(utcRaw).toISOString();
+        // attributesData[idx].value = utcRaw
+        // setAttributes([...attributesData])
+        // setFormData({
+        //     ...formData,
+        //     dateOfDeath: iso,
+        // });
+    }
+
+    // function formatDatepickerDate(dateString: string | undefined): Date {
+    //     let attributeDate = dateString !== undefined ? Date.parse(dateString) : null
+    //     let finalDate = attributeDate !== null && attributeDate !== undefined ? new Date(attributeDate) : new Date()
+    //     return finalDate
+    // }
+
     function showBirthDatePicker() {
         setShowBirthdayDatePicker(true);
     }
@@ -621,6 +718,30 @@ export function AddOrEditRelationshipScreen(props: {
         formData.picture = image;
         setFormData({ ...formData });
     }, [image]);
+
+    useEffect(() => {
+        if (teamAttributesResult?.data?.teamAttributes !== null) {
+            let attrsTemp: getTeamAttributes_teamAttributes[] = teamAttributesResult.data?.teamAttributes || []
+            // .map((attr) => {
+
+            // return {
+            //         // ...attr,
+            //         teamAttributeId: attr.id,
+            //         name: attr.name,
+            //         type: attr.type,
+            //         order: attr.order,
+            //         disabled: attr.disabled,
+            //         defaultValue: attr.defaultValue,
+            //         options: attr.options,
+            //         value:  getAttributeSavedValue(attr),
+            //     }
+
+            // })
+            attrsTemp?.sort((a,b) => a.order - b.order)
+            console.log('attrsTemp', attrsTemp)
+            setAttributes(attrsTemp)
+        }
+    }, [teamAttributesResult.data])
 
     function handleImage(media: ImageInfo) {
         const fileName = media && media.uri.split('/').pop();
@@ -716,6 +837,37 @@ export function AddOrEditRelationshipScreen(props: {
             };
         });
     };
+
+    const getAttributeSavedValue = (attribute: getTeamAttributes_teamAttributes): string | boolean | null => {
+        const relationshipAttribute = getRelationshipResult?.data?.relationship?.teamAttributes?.find((a) => a.teamAttributeId === attribute.id);
+        return relationshipAttribute
+          ? getAttributeValueByType(relationshipAttribute, attribute.type)
+          : getAttributeDefaultValueByType(attribute);
+      }
+
+    // const getAttributeId = (attribute: getTeamAttributes_teamAttributes): string => {
+    //     return attribute.id.toString();
+    // }
+
+    const getAttributeValueByType = (attribute: relationshipDetailFull_relationship_teamAttributes, type: string): string | boolean | null => {
+        switch (type) {
+          case 'boolean':
+            return attribute.value === 'true';
+          default:
+            return attribute.value;
+        }
+      }
+
+      const getAttributeDefaultValueByType = (attribute: getTeamAttributes_teamAttributes): string | boolean | null => {
+        switch (attribute.type) {
+          case 'boolean':
+            return attribute.defaultValue === 'true';
+          case 'selectList':
+            return attribute.defaultValue.length ? attribute.defaultValue : null;
+          default:
+            return attribute.defaultValue;
+        }
+      }
 
     const saveNewPerson = () => {
         schema
@@ -1136,6 +1288,189 @@ export function AddOrEditRelationshipScreen(props: {
                             </View>
                         </>
                     )}
+
+                    {/* Customized Fields Section*/}
+                    <View>
+                        <Text style={styles.sectionHeader}>Customized Fields</Text>
+                        {/* {console.log('FORM DATA', formData.teamAttributes)}
+                        {console.log('ATTRIBUTES', attributes)} */}
+                        {formData &&
+                        formData?.teamAttributes &&
+                        formData?.teamAttributes?.length > 0
+                        && attributes
+                        && attributes?.filter(attr => attr.disabled === false).map((attr, index) => {
+                            switch (attr.type) {
+                                case 'shortText':
+                                    // console.log('shortText')
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.formContainer}>
+                                                <TextInput
+                                                    style={styles.telephoneInput}
+                                                    placeholder={attr.name}
+                                                    value={String(getAttributeSavedValue(attr))}
+                                                    onChangeText={(text) => {
+                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
+                                                        // attributes[idx].value = text
+                                                        // setAttributes([...attributes])
+                                                        // if (formData.teamAttributes) {
+                                                        //     formData.teamAttributes[idx].teamAttributeId = attr.teamAttributeId
+                                                        //     formData.teamAttributes[
+                                                        //         idx
+                                                        //     ].value = text;
+                                                        //     setFormData({
+                                                        //         ...formData,
+                                                        //     });
+                                                        // }
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>
+                                    )
+
+                                case 'longText':
+                                    // console.log('longText')
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.formContainer}>
+                                                <TextInput
+                                                    style={styles.telephoneInput}
+                                                    placeholder={attr.name}
+                                                    value={String(getAttributeSavedValue(attr))}
+                                                    onChangeText={(text) => {
+                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
+                                                        // attributes[idx].value = text
+                                                        // setAttributes([...attributes])
+                                                        // if (formData.teamAttributes) {
+                                                        //     formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
+                                                        //     formData.teamAttributes![
+                                                        //         idx
+                                                        //     ].value = text;
+                                                        //     setFormData({
+                                                        //         ...formData,
+                                                        //     });
+                                                        // }
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>)
+
+                                case 'boolean':
+                                    // console.log('boolean')
+
+                                    return (
+                                        <View key={index}>
+                                            <CheckBox
+                                                title={attr.name}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={String(getAttributeSavedValue(attr)) === 'false' ? false : true}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderWidth: 0,
+                                                    marginLeft: 0,
+                                                    paddingLeft: 0,
+                                                }}
+                                                onPress={() => {
+                                                    // console.log('BOOLEAN VALUE', attributes[index].value)
+                                                    // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
+                                                    // attributes[idx].value = !attr.value
+                                                    // setAttributes([...attributes])
+                                                    // formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
+                                                    // formData.teamAttributes![idx].value = String(attr.value)
+                                                    // setFormData({ ...formData });
+                                                }}
+                                            />
+                                        </View>
+                                    )
+
+                                case 'selectList':
+                                    // console.log('selectList')
+
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.genderDropdownContainer}>
+                                                <Picker
+
+                                                    selectedValue={String(getAttributeSavedValue(attr)) !== null ? attr.defaultValue : '-'}
+                                                    style={{ height: 50, width: '100%' }}
+                                                    onValueChange={(itemValue: string) => {
+                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
+                                                        // attributes[idx].value = itemValue
+                                                        // setAttributes([...attributes])
+                                                        // formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
+                                                        // formData.teamAttributes![idx].value = itemValue;
+                                                        // setFormData({ ...formData });
+                                                    }}
+                                                >
+                                                    {attr.options?.map((value, index) => (
+                                                        <Picker.Item
+                                                            key={index}
+                                                            label={value}
+                                                            value={value}
+                                                        />
+                                                    ))}
+                                                </Picker>
+                                            </View>
+                                        </View>
+                                    )
+
+                                case 'date':
+                                    // console.log('date')
+
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View style={styles.dateContainer}>
+                                                <TextInput
+                                                    editable={false}
+                                                    style={styles.textInput}
+                                                    placeholder={'MM/DD/YYYY'}
+                                                    value={String(getAttributeSavedValue(attr))}
+                                                />
+                                                <TouchableOpacity
+                                                    style={{ padding: 10 }}
+                                                    onPress={() =>
+                                                        setShowTeamAttributeDatePicker(true)
+                                                    }
+                                                >
+                                                    <FontAwesome5
+                                                        name="calendar-alt"
+                                                        size={24}
+                                                        color="#0279AC"
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                                <DateTimePickerModal
+                                                    isVisible={showTeamAttributeDatePicker}
+                                                    onCancel={() =>
+                                                        setShowTeamAttributeDatePicker(false)
+                                                    }
+                                                    onConfirm={handleTeamAttributeDatePicker}
+                                                />
+                                        </View>
+                                    )
+
+                            }
+
+
+
+                        })}
+                    </View>
+
                     <Text style={styles.textPadding}>Status</Text>
                     <View style={styles.genderDropdownContainer}>
                         <Picker

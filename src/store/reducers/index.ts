@@ -6,6 +6,7 @@ import { caseReducer } from './caseReducer';
 import { relationshipReducer } from './relationshipReducer';
 import { schemaReducer } from './schemaReducer';
 import { meReducer } from './meReducer';
+import { teamAttributesReducer } from './teamAttributesReducer'
 
 export const rootReducer = combineReducers({
     auth,
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
     relationship: relationshipReducer,
     schema: schemaReducer,
     me: meReducer,
+    teamAttributes: teamAttributesReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -18,25 +18,15 @@ export const RELATIONSHIP_STATUS_DETAIL = gql`
 export const RELATIONSHIP_TEAM_ATTRIBUTE = gql`
     fragment RelationshipTeamAttribute on RelationshipTeamAttribute {
         id
-        createdAt
-        updatedAt
-        createdBy {
-            id
-        }
-        modifiedBy {
-            id
-        }
-        value
-        relationshipId
-        relationship {
-            id
-        }
         teamAttributeId
+        value
         teamAttribute {
             id
             name
             order
             disabled
+            defaultValue
+            options
         }
     }
 `;
