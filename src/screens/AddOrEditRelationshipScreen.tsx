@@ -68,16 +68,10 @@ import { TEAM_ATTRIBUTES_QUERY } from '../store/actions/fragments/teamAttributes
 //     value: string | boolean | null;
 // }
 
-export interface AttributesWithValues {
-    teamAttributeId: number;
-    name: string;
-    type: string;
-    order: number;
-    disabled: boolean;
-    defaultValue: string;
-    options: string[] | null;
-    value?: string | boolean | null;
-  }
+// input R {
+//     teamAttributeId: number;
+//     value?: string; // | boolean | null
+//   }
 
 const schema = yup.object<CreateRelationshipInput>().shape(
     {
@@ -359,7 +353,7 @@ export function AddOrEditRelationshipScreen(props: {
         teamAttributes: []
     });
     const [attributes, setAttributes] = useState<getTeamAttributes_teamAttributes[]>([])
-
+    const [attributeValues, setAttributeValues] = useState<RelationshipTeamAttributeInput[]>([])
     const [showBirthdayDatePicker, setShowBirthdayDatePicker] = useState(false);
     const [showDateOfDeathPicker, setShowDateOfDeathPicker] = useState(false);
     const [showTeamAttributeDatePicker, setShowTeamAttributeDatePicker] = useState(false);
@@ -738,8 +732,15 @@ export function AddOrEditRelationshipScreen(props: {
 
             // })
             attrsTemp?.sort((a,b) => a.order - b.order)
+
             console.log('attrsTemp', attrsTemp)
             setAttributes(attrsTemp)
+            let valsTemp = attrsTemp.filter(attr => attr.disabled === false).map(attr => {
+                return {
+                    teamAttributeId: attr.id,
+                    value: getAttributeSavedValue(attr) ? getAttributeSavedValue(attr)?.toString() : ''} as RelationshipTeamAttributeInput
+            })
+            setAttributeValues(valsTemp)
         }
     }, [teamAttributesResult.data])
 
@@ -845,9 +846,10 @@ export function AddOrEditRelationshipScreen(props: {
           : getAttributeDefaultValueByType(attribute);
       }
 
-    // const getAttributeId = (attribute: getTeamAttributes_teamAttributes): string => {
-    //     return attribute.id.toString();
-    // }
+    const getRelationshipAttributeId = (attribute: getTeamAttributes_teamAttributes): number | undefined => {
+        const relationshipAttribute = getRelationshipResult?.data?.relationship?.teamAttributes?.find((a) => a.teamAttributeId === attribute.id);
+        return relationshipAttribute?.teamAttributeId || 0
+    }
 
     const getAttributeValueByType = (attribute: relationshipDetailFull_relationship_teamAttributes, type: string): string | boolean | null => {
         switch (type) {
@@ -1292,8 +1294,8 @@ export function AddOrEditRelationshipScreen(props: {
                     {/* Customized Fields Section*/}
                     <View>
                         <Text style={styles.sectionHeader}>Customized Fields</Text>
-                        {/* {console.log('FORM DATA', formData.teamAttributes)}
-                        {console.log('ATTRIBUTES', attributes)} */}
+                        {/* {console.log('FORM DATA', formData.teamAttributes)} */}
+                        {console.log('ATTRIBUTES', attributeValues)}
                         {formData &&
                         formData?.teamAttributes &&
                         formData?.teamAttributes?.length > 0
@@ -1311,20 +1313,17 @@ export function AddOrEditRelationshipScreen(props: {
                                                 <TextInput
                                                     style={styles.telephoneInput}
                                                     placeholder={attr.name}
-                                                    value={String(getAttributeSavedValue(attr))}
+                                                    value={attributeValues[attr.order].value}
                                                     onChangeText={(text) => {
-                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
-                                                        // attributes[idx].value = text
-                                                        // setAttributes([...attributes])
-                                                        // if (formData.teamAttributes) {
-                                                        //     formData.teamAttributes[idx].teamAttributeId = attr.teamAttributeId
-                                                        //     formData.teamAttributes[
-                                                        //         idx
-                                                        //     ].value = text;
-                                                        //     setFormData({
-                                                        //         ...formData,
-                                                        //     });
-                                                        // }
+                                                        attributeValues[attr.order].value = text
+                                                        attributeValues[attr.order].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
                                                     }}
                                                 />
                                             </View>
@@ -1342,20 +1341,17 @@ export function AddOrEditRelationshipScreen(props: {
                                                 <TextInput
                                                     style={styles.telephoneInput}
                                                     placeholder={attr.name}
-                                                    value={String(getAttributeSavedValue(attr))}
+                                                    value={attributeValues[attr.order].value}
                                                     onChangeText={(text) => {
-                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
-                                                        // attributes[idx].value = text
-                                                        // setAttributes([...attributes])
-                                                        // if (formData.teamAttributes) {
-                                                        //     formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
-                                                        //     formData.teamAttributes![
-                                                        //         idx
-                                                        //     ].value = text;
-                                                        //     setFormData({
-                                                        //         ...formData,
-                                                        //     });
-                                                        // }
+                                                        attributeValues[attr.order].value = text
+                                                        attributeValues[attr.order].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
                                                     }}
                                                 />
                                             </View>
@@ -1369,7 +1365,7 @@ export function AddOrEditRelationshipScreen(props: {
                                             <CheckBox
                                                 title={attr.name}
                                                 textStyle={styles.checkboxLabel}
-                                                checked={String(getAttributeSavedValue(attr)) === 'false' ? false : true}
+                                                checked={attributeValues[attr.order].value === 'false' ? false : true}
                                                 size={24}
                                                 checkedColor={'#0279AC'}
                                                 uncheckedColor={'lightgray'}
@@ -1380,13 +1376,15 @@ export function AddOrEditRelationshipScreen(props: {
                                                     paddingLeft: 0,
                                                 }}
                                                 onPress={() => {
-                                                    // console.log('BOOLEAN VALUE', attributes[index].value)
-                                                    // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
-                                                    // attributes[idx].value = !attr.value
-                                                    // setAttributes([...attributes])
-                                                    // formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
-                                                    // formData.teamAttributes![idx].value = String(attr.value)
-                                                    // setFormData({ ...formData });
+                                                    attributeValues[attr.order].value = attributeValues[attr.order].value === 'false' ? 'false' : 'true'
+                                                    attributeValues[attr.order].teamAttributeId = attr.id
+                                                    setAttributeValues([...attributeValues])
+                                                    if (formData.teamAttributes) {
+                                                        formData.teamAttributes = attributeValues
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
                                                 }}
                                             />
                                         </View>
@@ -1403,15 +1401,18 @@ export function AddOrEditRelationshipScreen(props: {
                                             <View  style={styles.genderDropdownContainer}>
                                                 <Picker
 
-                                                    selectedValue={String(getAttributeSavedValue(attr)) !== null ? attr.defaultValue : '-'}
+                                                    selectedValue={attributeValues[attr.order].value}
                                                     style={{ height: 50, width: '100%' }}
                                                     onValueChange={(itemValue: string) => {
-                                                        // let idx = attributes?.findIndex(attribute => attribute.teamAttributeId === attr.teamAttributeId)
-                                                        // attributes[idx].value = itemValue
-                                                        // setAttributes([...attributes])
-                                                        // formData.teamAttributes![idx].teamAttributeId = attr.teamAttributeId
-                                                        // formData.teamAttributes![idx].value = itemValue;
-                                                        // setFormData({ ...formData });
+                                                        attributeValues[attr.order].value = itemValue
+                                                        attributeValues[attr.order].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
                                                     }}
                                                 >
                                                     {attr.options?.map((value, index) => (
