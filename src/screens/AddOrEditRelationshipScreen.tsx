@@ -61,17 +61,6 @@ import Loader from '../components/Loader';
 import constants from '../helpers/constants';
 import { getTeamAttributes, getTeamAttributesVariables, getTeamAttributes_teamAttributes } from '../generated/getTeamAttributes';
 import { TEAM_ATTRIBUTES_QUERY } from '../store/actions/fragments/teamAttributes';
-// import { TeamAttributeDetail } from '../generated/TeamAttributeDetail';
-// import { getAttributes } from '../store/actions';
-
-// interface ValueWrapper {
-//     value: string | boolean | null;
-// }
-
-// input R {
-//     teamAttributeId: number;
-//     value?: string; // | boolean | null
-//   }
 
 const schema = yup.object<CreateRelationshipInput>().shape(
     {
@@ -122,7 +111,6 @@ const schema = yup.object<CreateRelationshipInput>().shape(
         isContacted: yup.boolean().nullable(),
         ppSearchImported: yup.boolean().nullable(),
 
-        // teamAttributes: yup.array<RelationshipTeamAttribute>().nullable(),
         addresses: yup
             .array<AddressInput>(
                 yup
@@ -190,7 +178,7 @@ const schema = yup.object<CreateRelationshipInput>().shape(
                     value: yup.mixed()
                 })
                 .defined()
-        )
+        ).nullable()
     },
     [
         ['firstName', 'middleName'],
@@ -262,10 +250,11 @@ const convertToUpdateRelationshipInput = (
 
     let sanitizedTeamAttributes: RelationshipTeamAttributeInput[] | undefined = undefined;
     if (input.teamAttributes) {
-        sanitizedTeamAttributes = input.teamAttributes.map(attr => {
-            return {teamAttributeId: attr.teamAttributeId, value: attr.value, __typename: undefined }
+        sanitizedTeamAttributes = input.teamAttributes.map((attr: RelationshipTeamAttributeInput) => {
+            return {...attr, teamAttributeId: attr.teamAttributeId, value: attr.value}
         })
     }
+
     const output: UpdateRelationshipInput = {
         firstName: toStringWrapper(input.firstName),
         middleName: toStringWrapper(input.middleName),
@@ -357,6 +346,7 @@ export function AddOrEditRelationshipScreen(props: {
     const [showBirthdayDatePicker, setShowBirthdayDatePicker] = useState(false);
     const [showDateOfDeathPicker, setShowDateOfDeathPicker] = useState(false);
     const [showTeamAttributeDatePicker, setShowTeamAttributeDatePicker] = useState(false);
+    const [currentAttrData, setCurrentAttrData] = useState({index: -1, teamAttributeId: -1})
     const [image, setImage] = useState<ReactNativeFile | undefined>(undefined);
     const [isBusyModalOpen, setIsBusyModalOpen] = useState(false);
     const [loadingDataError, setLoadingDataError] = useState<
@@ -683,21 +673,17 @@ export function AddOrEditRelationshipScreen(props: {
         const month = monthRaw.length === 1 ? `0${monthRaw}` : monthRaw;
         const year = date.getFullYear();
         const utcRaw = `${month}/${day}/${year}`;
-        console.log(utcRaw)
-        // const iso = new Date(utcRaw).toISOString();
-        // attributesData[idx].value = utcRaw
-        // setAttributes([...attributesData])
-        // setFormData({
-        //     ...formData,
-        //     dateOfDeath: iso,
-        // });
-    }
 
-    // function formatDatepickerDate(dateString: string | undefined): Date {
-    //     let attributeDate = dateString !== undefined ? Date.parse(dateString) : null
-    //     let finalDate = attributeDate !== null && attributeDate !== undefined ? new Date(attributeDate) : new Date()
-    //     return finalDate
-    // }
+        attributeValues[currentAttrData.index].value = utcRaw
+        attributeValues[currentAttrData.index].teamAttributeId = currentAttrData.teamAttributeId
+        setAttributeValues([...attributeValues])
+        if (formData.teamAttributes) {
+            formData.teamAttributes = attributeValues
+            setFormData({
+                ...formData,
+            });
+        }
+    }
 
     function showBirthDatePicker() {
         setShowBirthdayDatePicker(true);
@@ -716,24 +702,8 @@ export function AddOrEditRelationshipScreen(props: {
     useEffect(() => {
         if (teamAttributesResult?.data?.teamAttributes !== null) {
             let attrsTemp: getTeamAttributes_teamAttributes[] = teamAttributesResult.data?.teamAttributes || []
-            // .map((attr) => {
-
-            // return {
-            //         // ...attr,
-            //         teamAttributeId: attr.id,
-            //         name: attr.name,
-            //         type: attr.type,
-            //         order: attr.order,
-            //         disabled: attr.disabled,
-            //         defaultValue: attr.defaultValue,
-            //         options: attr.options,
-            //         value:  getAttributeSavedValue(attr),
-            //     }
-
-            // })
             attrsTemp?.sort((a,b) => a.order - b.order)
 
-            console.log('attrsTemp', attrsTemp)
             setAttributes(attrsTemp)
             let valsTemp = attrsTemp.filter(attr => attr.disabled === false).map(attr => {
                 return {
@@ -742,7 +712,7 @@ export function AddOrEditRelationshipScreen(props: {
             })
             setAttributeValues(valsTemp)
         }
-    }, [teamAttributesResult.data])
+    }, [teamAttributesResult.data, getRelationshipResult.data])
 
     function handleImage(media: ImageInfo) {
         const fileName = media && media.uri.split('/').pop();
@@ -845,11 +815,6 @@ export function AddOrEditRelationshipScreen(props: {
           ? getAttributeValueByType(relationshipAttribute, attribute.type)
           : getAttributeDefaultValueByType(attribute);
       }
-
-    const getRelationshipAttributeId = (attribute: getTeamAttributes_teamAttributes): number | undefined => {
-        const relationshipAttribute = getRelationshipResult?.data?.relationship?.teamAttributes?.find((a) => a.teamAttributeId === attribute.id);
-        return relationshipAttribute?.teamAttributeId || 0
-    }
 
     const getAttributeValueByType = (attribute: relationshipDetailFull_relationship_teamAttributes, type: string): string | boolean | null => {
         switch (type) {
@@ -1291,187 +1256,6 @@ export function AddOrEditRelationshipScreen(props: {
                         </>
                     )}
 
-                    {/* Customized Fields Section*/}
-                    <View>
-                        <Text style={styles.sectionHeader}>Customized Fields</Text>
-                        {/* {console.log('FORM DATA', formData.teamAttributes)} */}
-                        {console.log('ATTRIBUTES', attributeValues)}
-                        {formData &&
-                        formData?.teamAttributes &&
-                        formData?.teamAttributes?.length > 0
-                        && attributes
-                        && attributes?.filter(attr => attr.disabled === false).map((attr, index) => {
-                            switch (attr.type) {
-                                case 'shortText':
-                                    // console.log('shortText')
-                                    return (
-                                        <View key={index}>
-                                            <Text style={styles.textPadding}>
-                                                {attr.name}
-                                            </Text>
-                                            <View  style={styles.formContainer}>
-                                                <TextInput
-                                                    style={styles.telephoneInput}
-                                                    placeholder={attr.name}
-                                                    value={attributeValues[attr.order].value}
-                                                    onChangeText={(text) => {
-                                                        attributeValues[attr.order].value = text
-                                                        attributeValues[attr.order].teamAttributeId = attr.id
-                                                        setAttributeValues([...attributeValues])
-                                                        if (formData.teamAttributes) {
-                                                            formData.teamAttributes = attributeValues
-                                                            setFormData({
-                                                                ...formData,
-                                                            });
-                                                        }
-                                                    }}
-                                                />
-                                            </View>
-                                        </View>
-                                    )
-
-                                case 'longText':
-                                    // console.log('longText')
-                                    return (
-                                        <View key={index}>
-                                            <Text style={styles.textPadding}>
-                                                {attr.name}
-                                            </Text>
-                                            <View  style={styles.formContainer}>
-                                                <TextInput
-                                                    style={styles.telephoneInput}
-                                                    placeholder={attr.name}
-                                                    value={attributeValues[attr.order].value}
-                                                    onChangeText={(text) => {
-                                                        attributeValues[attr.order].value = text
-                                                        attributeValues[attr.order].teamAttributeId = attr.id
-                                                        setAttributeValues([...attributeValues])
-                                                        if (formData.teamAttributes) {
-                                                            formData.teamAttributes = attributeValues
-                                                            setFormData({
-                                                                ...formData,
-                                                            });
-                                                        }
-                                                    }}
-                                                />
-                                            </View>
-                                        </View>)
-
-                                case 'boolean':
-                                    // console.log('boolean')
-
-                                    return (
-                                        <View key={index}>
-                                            <CheckBox
-                                                title={attr.name}
-                                                textStyle={styles.checkboxLabel}
-                                                checked={attributeValues[attr.order].value === 'false' ? false : true}
-                                                size={24}
-                                                checkedColor={'#0279AC'}
-                                                uncheckedColor={'lightgray'}
-                                                containerStyle={{
-                                                    backgroundColor: 'white',
-                                                    borderWidth: 0,
-                                                    marginLeft: 0,
-                                                    paddingLeft: 0,
-                                                }}
-                                                onPress={() => {
-                                                    attributeValues[attr.order].value = attributeValues[attr.order].value === 'false' ? 'false' : 'true'
-                                                    attributeValues[attr.order].teamAttributeId = attr.id
-                                                    setAttributeValues([...attributeValues])
-                                                    if (formData.teamAttributes) {
-                                                        formData.teamAttributes = attributeValues
-                                                        setFormData({
-                                                            ...formData,
-                                                        });
-                                                    }
-                                                }}
-                                            />
-                                        </View>
-                                    )
-
-                                case 'selectList':
-                                    // console.log('selectList')
-
-                                    return (
-                                        <View key={index}>
-                                            <Text style={styles.textPadding}>
-                                                {attr.name}
-                                            </Text>
-                                            <View  style={styles.genderDropdownContainer}>
-                                                <Picker
-
-                                                    selectedValue={attributeValues[attr.order].value}
-                                                    style={{ height: 50, width: '100%' }}
-                                                    onValueChange={(itemValue: string) => {
-                                                        attributeValues[attr.order].value = itemValue
-                                                        attributeValues[attr.order].teamAttributeId = attr.id
-                                                        setAttributeValues([...attributeValues])
-                                                        if (formData.teamAttributes) {
-                                                            formData.teamAttributes = attributeValues
-                                                            setFormData({
-                                                                ...formData,
-                                                            });
-                                                        }
-                                                    }}
-                                                >
-                                                    {attr.options?.map((value, index) => (
-                                                        <Picker.Item
-                                                            key={index}
-                                                            label={value}
-                                                            value={value}
-                                                        />
-                                                    ))}
-                                                </Picker>
-                                            </View>
-                                        </View>
-                                    )
-
-                                case 'date':
-                                    // console.log('date')
-
-                                    return (
-                                        <View key={index}>
-                                            <Text style={styles.textPadding}>
-                                                {attr.name}
-                                            </Text>
-                                            <View style={styles.dateContainer}>
-                                                <TextInput
-                                                    editable={false}
-                                                    style={styles.textInput}
-                                                    placeholder={'MM/DD/YYYY'}
-                                                    value={String(getAttributeSavedValue(attr))}
-                                                />
-                                                <TouchableOpacity
-                                                    style={{ padding: 10 }}
-                                                    onPress={() =>
-                                                        setShowTeamAttributeDatePicker(true)
-                                                    }
-                                                >
-                                                    <FontAwesome5
-                                                        name="calendar-alt"
-                                                        size={24}
-                                                        color="#0279AC"
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                                <DateTimePickerModal
-                                                    isVisible={showTeamAttributeDatePicker}
-                                                    onCancel={() =>
-                                                        setShowTeamAttributeDatePicker(false)
-                                                    }
-                                                    onConfirm={handleTeamAttributeDatePicker}
-                                                />
-                                        </View>
-                                    )
-
-                            }
-
-
-
-                        })}
-                    </View>
-
                     <Text style={styles.textPadding}>Status</Text>
                     <View style={styles.genderDropdownContainer}>
                         <Picker
@@ -1533,6 +1317,177 @@ export function AddOrEditRelationshipScreen(props: {
                                 />
                             ))}
                         </Picker>
+                    </View>
+
+                    {/* Customized Fields Section*/}
+                    <View>
+                        <Text style={styles.sectionHeader}>Customized Fields</Text>
+                        {formData &&
+                        formData?.teamAttributes &&
+                        formData?.teamAttributes?.length > 0
+                        && attributes
+                        && attributes?.filter(attr => attr.disabled === false).map((attr, index) => {
+                            switch (attr.type) {
+                                case 'shortText':
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.formContainer}>
+                                                <TextInput
+                                                    style={styles.telephoneInput}
+                                                    placeholder={attr.name}
+                                                    value={attributeValues[index].value}
+                                                    onChangeText={(text) => {
+                                                        attributeValues[index].value = text
+                                                        attributeValues[index].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>
+                                    )
+
+                                case 'longText':
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.formContainer}>
+                                                <TextInput
+                                                    style={styles.telephoneInput}
+                                                    placeholder={attr.name}
+                                                    value={attributeValues[index].value}
+                                                    onChangeText={(text) => {
+                                                        attributeValues[index].value = text
+                                                        attributeValues[index].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </View>
+                                        </View>)
+
+                                case 'boolean':
+                                    return (
+                                        <View key={index}>
+                                            <CheckBox
+                                                title={attr.name}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={attributeValues[index].value === "false" ? false : true}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={{
+                                                    backgroundColor: 'white',
+                                                    borderWidth: 0,
+                                                    marginLeft: 0,
+                                                    paddingLeft: 0,
+                                                }}
+                                                onPress={() => {
+                                                    attributeValues[index].value = attributeValues[index].value === 'false' ? "true" : "false"
+                                                    attributeValues[index].teamAttributeId = attr.id
+                                                    setAttributeValues([...attributeValues])
+                                                    if (formData.teamAttributes) {
+                                                        formData.teamAttributes = attributeValues
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+                                    )
+
+                                case 'selectList':
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View  style={styles.genderDropdownContainer}>
+                                                <Picker
+
+                                                    selectedValue={attributeValues[index].value}
+                                                    style={{ height: 50, width: '100%' }}
+                                                    onValueChange={(itemValue: string) => {
+                                                        attributeValues[index].value = itemValue
+                                                        attributeValues[index].teamAttributeId = attr.id
+                                                        setAttributeValues([...attributeValues])
+                                                        if (formData.teamAttributes) {
+                                                            formData.teamAttributes = attributeValues
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
+                                                        }
+                                                    }}
+                                                >
+                                                    {attr.options?.map((value, index) => (
+                                                        <Picker.Item
+                                                            key={index}
+                                                            label={value}
+                                                            value={value}
+                                                        />
+                                                    ))}
+                                                </Picker>
+                                            </View>
+                                        </View>
+                                    )
+
+                                case 'date':
+                                    return (
+                                        <View key={index}>
+                                            <Text style={styles.textPadding}>
+                                                {attr.name}
+                                            </Text>
+                                            <View style={styles.dateContainer}>
+                                                <TextInput
+                                                    editable={false}
+                                                    style={styles.textInput}
+                                                    placeholder={'MM/DD/YYYY'}
+                                                    value={attributeValues[index].value}
+                                                />
+                                                <TouchableOpacity
+                                                    style={{ padding: 10 }}
+                                                    onPress={() => {
+
+                                                        setShowTeamAttributeDatePicker(true)
+                                                        setCurrentAttrData({index: index, teamAttributeId: attr.id})
+                                                    }
+                                                    }
+                                                >
+                                                    <FontAwesome5
+                                                        name="calendar-alt"
+                                                        size={24}
+                                                        color="#0279AC"
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                                <DateTimePickerModal
+                                                    isVisible={showTeamAttributeDatePicker}
+                                                    onCancel={() =>
+                                                        setShowTeamAttributeDatePicker(false)
+                                                    }
+                                                    onConfirm={handleTeamAttributeDatePicker}
+
+                                                />
+                                        </View>
+                                    )
+                            }
+                        })}
                     </View>
 
                     <CheckBox

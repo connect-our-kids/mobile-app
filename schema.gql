@@ -118,7 +118,7 @@ type Relationship {
   ppSearchImported: Boolean!
   ppSearchQuery: String
   ppSearchPointerHash: String
-  teamAttributes: [RelationshipTeamAttribute!]
+  teamAttributes: [RelationshipTeamAttribute!]!
 }
 
 type CaseWorkpad {
@@ -457,12 +457,12 @@ input CreateRelationshipInput {
   isContacted: Boolean
 
   ppSearchImported: Boolean
-  teamAttributes: [RelationshipTeamAttributeInput!]
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
   telephones: [TelephoneInput!]
   alternateNames: [AlternateNameInput!]
+  teamAttributes: [RelationshipTeamAttributeInput!]
 }
 
 input UpdateRelationshipInput {
@@ -492,12 +492,12 @@ input UpdateRelationshipInput {
   isContacted: Boolean
 
   ppSearchImported: Boolean
-  teamAttributes: [RelationshipTeamAttributeInput!]
 
   addresses: [AddressInput!]
   emails: [EmailInput!]
   telephones: [TelephoneInput!]
   alternateNames: [AlternateNameInput!]
+  teamAttributes: [RelationshipTeamAttributeInput!]
 }
 
 input CreateCaseInput {

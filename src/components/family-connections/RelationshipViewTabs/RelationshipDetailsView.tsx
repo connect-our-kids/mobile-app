@@ -7,13 +7,13 @@ import {
     Linking,
     Platform,
 } from 'react-native';
-import { RelationshipDetailFullFragment } from '../../../generated/RelationshipDetailFullFragment';
+import { RelationshipDetailFullFragment, RelationshipDetailFullFragment_teamAttributes } from '../../../generated/RelationshipDetailFullFragment';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { CheckBox } from 'react-native-elements';
 import constants from '../../../helpers/constants';
 // import { RelationshipTeamAttribute } from '../../../generated/RelationshipTeamAttribute';
-import { relationshipDetailFull_relationship_teamAttributes } from '../../../generated/relationshipDetailFull'; //relationshipDetailFull_relationship_teamAttributes_teamAttribute
+// import {RelationshipDetailFullFragment_teamAttributes } from '../../../generated/relationshipDetailFull';
 // import { TeamAttributeDetail } from '../../../generated/TeamAttributeDetail';
 // import { getTeamAttributes } from '../../../generated/getTeamAttributes';
 
@@ -399,7 +399,7 @@ export default function ConnectionsDetailsView(props: {
                     </View>
                         {props.details.teamAttributes
                         .sort((a,b) => a.teamAttribute.order - b.teamAttribute.order)
-                        .map((attribute: relationshipDetailFull_relationship_teamAttributes) => {
+                        .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
                             return (
                                 <View key={attribute.id} style={styles.textView}>
                                     <Text style={styles.labelText}>{attribute.teamAttribute.name}</Text>
