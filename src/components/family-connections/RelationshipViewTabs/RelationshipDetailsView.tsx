@@ -392,6 +392,7 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
+            {console.log(props.details.teamAttributes)}
             {props.details.teamAttributes?.length ?
                 (<>
                     <View style={styles.header}>
@@ -399,6 +400,7 @@ export default function ConnectionsDetailsView(props: {
                     </View>
                         {props.details.teamAttributes
                         .sort((a,b) => a.teamAttribute.order - b.teamAttribute.order)
+                        .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => attribute.value !== null && attribute.value !== "")
                         .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
                             return (
                                 <View key={attribute.id} style={styles.textView}>

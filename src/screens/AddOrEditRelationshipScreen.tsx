@@ -1335,10 +1335,7 @@ export function AddOrEditRelationshipScreen(props: {
                     {/* Customized Fields Section*/}
                     <View>
                         <Text style={styles.sectionHeader}>Customized Fields</Text>
-                        {formData &&
-                        formData?.teamAttributes &&
-                        formData?.teamAttributes?.length > 0
-                        && attributes
+                        {attributes
                         && attributes?.filter(attr => attr.disabled === false).map((attr, index) => {
                             switch (attr.type) {
                                 case 'shortText':
