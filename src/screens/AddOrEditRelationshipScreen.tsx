@@ -836,6 +836,19 @@ export function AddOrEditRelationshipScreen(props: {
         }
       }
 
+      const getAttributeRemainingCharacters = (index: number, attribute: getTeamAttributes_teamAttributes): number | void =>  {
+        if (attribute.type === 'longText')
+          return 10000 - attributeValues[index].value.length > 0
+            ? 10000 - attributeValues[index].value.length
+            : 0;
+        if (attribute.type === 'shortText')
+          return 255 - attributeValues[index].value.length > 0
+            ? 255 - attributeValues[index].value.length
+            : 0;
+
+        return;
+      }
+
     const saveNewPerson = () => {
         schema
             .validate(formData, { abortEarly: false })
@@ -1351,6 +1364,9 @@ export function AddOrEditRelationshipScreen(props: {
                                                         }
                                                     }}
                                                 />
+                                                {<Text style={styles.charactersRemainingText}>
+                                                    {getAttributeRemainingCharacters(index, attr)} characters remaining
+                                                </Text>}
                                             </View>
                                         </View>
                                     )
@@ -1378,6 +1394,7 @@ export function AddOrEditRelationshipScreen(props: {
                                                         }
                                                     }}
                                                 />
+                                                {<Text style={styles.charactersRemainingText}>{getAttributeRemainingCharacters(index, attr)} characters remaining</Text>}
                                             </View>
                                         </View>)
 
