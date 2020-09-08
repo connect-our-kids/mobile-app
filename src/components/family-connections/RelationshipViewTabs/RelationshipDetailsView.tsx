@@ -7,15 +7,14 @@ import {
     Linking,
     Platform,
 } from 'react-native';
-import { RelationshipDetailFullFragment, RelationshipDetailFullFragment_teamAttributes } from '../../../generated/RelationshipDetailFullFragment';
+import {
+    RelationshipDetailFullFragment,
+    RelationshipDetailFullFragment_teamAttributes
+} from '../../../generated/RelationshipDetailFullFragment';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { CheckBox } from 'react-native-elements';
 import constants from '../../../helpers/constants';
-// import { RelationshipTeamAttribute } from '../../../generated/RelationshipTeamAttribute';
-// import {RelationshipDetailFullFragment_teamAttributes } from '../../../generated/relationshipDetailFull';
-// import { TeamAttributeDetail } from '../../../generated/TeamAttributeDetail';
-// import { getTeamAttributes } from '../../../generated/getTeamAttributes';
 
 const dateOfDeathToDisplay = (
     dateOfDeath: string | null | undefined
@@ -85,13 +84,13 @@ export default function ConnectionsDetailsView(props: {
             justifyContent: 'space-between',
             alignContent: 'flex-start',
             alignItems: 'flex-start',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         tripleLabelText: {
             width: '50%',
             marginBottom: 10,
             color: '#444444',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         tripleContent: {
             width: '90%',
@@ -112,12 +111,12 @@ export default function ConnectionsDetailsView(props: {
         tripleText1: {
             width: '30%',
             color: '#444444',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         tripleText2: {
             width: '65%',
             color: '#444444',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         tripleLinkText: {
             width: '65%',
@@ -131,13 +130,13 @@ export default function ConnectionsDetailsView(props: {
             width: '25%',
             marginBottom: 25,
             color: '#444444',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         contactedLabel: {
             width: '25%',
             marginBottom: 15,
             color: '#444444',
-            fontWeight: "bold"
+            fontWeight: 'bold',
         },
         contentText: {
             // marginHorizontal: 20
@@ -392,7 +391,6 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
-            {console.log(props.details.teamAttributes)}
             {props.details.teamAttributes?.length ?
                 (<>
                     <View style={styles.header}>
