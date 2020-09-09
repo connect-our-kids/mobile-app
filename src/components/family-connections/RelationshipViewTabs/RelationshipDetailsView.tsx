@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {
     RelationshipDetailFullFragment,
-    RelationshipDetailFullFragment_teamAttributes
+    RelationshipDetailFullFragment_teamAttributes,
 } from '../../../generated/RelationshipDetailFullFragment';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
@@ -391,12 +391,12 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
-            {props.details.teamAttributes?.length ?
-                (<>
+            {props.details.teamAttributes?.length ? (
+                <>
                     <View style={styles.header}>
                         <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
                     </View>
-                        {props.details.teamAttributes
+                    {props.details.teamAttributes
                         .sort((a,b) => a.teamAttribute.order - b.teamAttribute.order)
                         .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => attribute.value !== null && attribute.value !== "")
                         .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
@@ -408,10 +408,10 @@ export default function ConnectionsDetailsView(props: {
                                     </Text>
                                 </View>
                             )
-                        })}
-                </>)
-
-             : null}
+                        })
+                    }
+                </>
+            ) : null}
             {props.details.person.addresses.length ||
             props.details.person.telephones.length ||
             props.details.person.emails.length ||
