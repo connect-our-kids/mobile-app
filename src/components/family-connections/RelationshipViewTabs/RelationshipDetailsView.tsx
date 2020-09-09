@@ -397,11 +397,16 @@ export default function ConnectionsDetailsView(props: {
                         <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
                     </View>
                     {props.details.teamAttributes
-                        .sort((a,b) => {
-                            return a.teamAttribute.order - b.teamAttribute.order;
+                        .sort((a, b) => {
+                            return (
+                                a.teamAttribute.order - b.teamAttribute.order
+                            );
                         })
                         .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => {
-                            return attribute.value !== null && attribute.value !== "";
+                            return (
+                                attribute.value !== null &&
+                                attribute.value !== ""
+                            );
                         })
                         .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
                             return (
