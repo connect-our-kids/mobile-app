@@ -51,7 +51,7 @@ export const getAttributes = (teamId: number): ThunkResult<void> => (
     client
         .query<getTeamAttributes>({
             query: TEAM_ATTRIBUTES_QUERY,
-            variables: {teamId}
+            variables: { teamId },
         })
         .then(
             (result) => {
@@ -66,7 +66,11 @@ export const getAttributes = (teamId: number): ThunkResult<void> => (
             },
             (error: GraphQLError | Error) => {
                 console.log(
-                    `Loading team attributes: error: ${JSON.stringify(error, null, 2)}`
+                    `Loading team attributes: error: ${JSON.stringify(
+                        error,
+                        null,
+                        2
+                    )}`
                 );
 
                 dispatch({
@@ -77,7 +81,9 @@ export const getAttributes = (teamId: number): ThunkResult<void> => (
         );
 };
 
-export const clearTeamAttributes = (): ThunkResult<void> => (dispatch): void => {
+export const clearTeamAttributes = (): ThunkResult<void> => (
+    dispatch
+): void => {
     dispatch({ type: TeamAttributeTypes.CLEAR_TEAM_ATTRIBUTES });
     // TODO actually clear data
 };

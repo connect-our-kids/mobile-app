@@ -438,7 +438,6 @@ function RelationshipScreen(props: Props): JSX.Element {
         if (props.caseId) {
             props.getRelationship(props.caseId, props.relationshipId);
         }
-        console.log('updating relationship from useEffect in RelationshipScreen')
     }, [props.relationship]);
     useEffect(() => {
         if (props.documentSuccess) {

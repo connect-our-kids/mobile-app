@@ -179,7 +179,7 @@ export default StyleSheet.create({
     },
     charactersRemainingText: {
         color: 'rgba(24,23,21,.25)',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
     addressInput: {
         borderColor: 'rgba(24,23,21,.5)',
