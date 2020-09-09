@@ -397,12 +397,21 @@ export default function ConnectionsDetailsView(props: {
                         <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
                     </View>
                     {props.details.teamAttributes
-                        .sort((a,b) => a.teamAttribute.order - b.teamAttribute.order)
-                        .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => attribute.value !== null && attribute.value !== "")
+                        .sort((a,b) => {
+                            return a.teamAttribute.order - b.teamAttribute.order;
+                        })
+                        .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => {
+                            return attribute.value !== null && attribute.value !== "";
+                        })
                         .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
                             return (
-                                <View key={attribute.id} style={styles.textView}>
-                                    <Text style={styles.labelText}>{attribute.teamAttribute.name}</Text>
+                                <View
+                                    key={attribute.id}
+                                    style={styles.textView}
+                                >
+                                    <Text style={styles.labelText}>
+                                        {attribute.teamAttribute.name}
+                                    </Text>
                                     <Text style={styles.contentText}>
                                         {attribute.value}
                                     </Text>
