@@ -402,28 +402,35 @@ export default function ConnectionsDetailsView(props: {
                                 a.teamAttribute.order - b.teamAttribute.order
                             );
                         })
-                        .filter((attribute: RelationshipDetailFullFragment_teamAttributes) => {
-                            return (
-                                attribute.value !== null &&
-                                attribute.value !== ""
-                            );
-                        })
-                        .map((attribute: RelationshipDetailFullFragment_teamAttributes) => {
-                            return (
-                                <View
-                                    key={attribute.id}
-                                    style={styles.textView}
-                                >
-                                    <Text style={styles.labelText}>
-                                        {attribute.teamAttribute.name}
-                                    </Text>
-                                    <Text style={styles.contentText}>
-                                        {attribute.value}
-                                    </Text>
-                                </View>
-                            )
-                        })
-                    }
+                        .filter(
+                            (
+                                attribute: RelationshipDetailFullFragment_teamAttributes
+                            ) => {
+                                return (
+                                    attribute.value !== null &&
+                                    attribute.value !== ''
+                                );
+                            }
+                        )
+                        .map(
+                            (
+                                attribute: RelationshipDetailFullFragment_teamAttributes
+                            ) => {
+                                return (
+                                    <View
+                                        key={attribute.id}
+                                        style={styles.textView}
+                                    >
+                                        <Text style={styles.labelText}>
+                                            {attribute.teamAttribute.name}
+                                        </Text>
+                                        <Text style={styles.contentText}>
+                                            {attribute.value}
+                                        </Text>
+                                    </View>
+                                );
+                            }
+                        )}
                 </>
             ) : null}
             {props.details.person.addresses.length ||
