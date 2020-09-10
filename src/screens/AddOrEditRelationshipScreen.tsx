@@ -20,6 +20,7 @@ import {
     TelephoneInput,
     CreateRelationshipInput,
     AlternateNameInput,
+    RelationshipTeamAttributeInput,
     UploadWrapper,
     IntWrapper,
     DateWrapper,
@@ -50,6 +51,7 @@ import { RELATIONSHIP_DETAIL_FULL_QUERY } from '../store/actions/fragments/relat
 import {
     relationshipDetailFull,
     relationshipDetailFullVariables,
+    relationshipDetailFull_relationship_teamAttributes,
 } from '../generated/relationshipDetailFull';
 import {
     editRelationshipMutation,
@@ -57,6 +59,12 @@ import {
 } from '../generated/editRelationshipMutation';
 import Loader from '../components/Loader';
 import constants from '../helpers/constants';
+import {
+    getTeamAttributes,
+    getTeamAttributesVariables,
+    getTeamAttributes_teamAttributes,
+} from '../generated/getTeamAttributes';
+import { TEAM_ATTRIBUTES_QUERY } from '../store/actions/fragments/teamAttributes';
 
 const schema = yup.object<CreateRelationshipInput>().shape(
     {
@@ -167,6 +175,16 @@ const schema = yup.object<CreateRelationshipInput>().shape(
                     .defined()
             )
             .nullable(),
+        teamAttributes: yup
+            .array<RelationshipTeamAttributeInput>(
+                yup
+                    .object<RelationshipTeamAttributeInput>({
+                        teamAttributeId: yup.number().defined(),
+                        value: yup.mixed(),
+                    })
+                    .defined()
+            )
+            .nullable(),
     },
     [
         ['firstName', 'middleName'],
@@ -235,6 +253,22 @@ const convertToUpdateRelationshipInput = (
             return { ...alternateName, id: undefined, __typename: undefined };
         });
     }
+
+    let sanitizedTeamAttributes:
+        | RelationshipTeamAttributeInput[]
+        | undefined = undefined;
+    if (input.teamAttributes) {
+        sanitizedTeamAttributes = input.teamAttributes.map(
+            (attr: RelationshipTeamAttributeInput) => {
+                return {
+                    ...attr,
+                    teamAttributeId: attr.teamAttributeId,
+                    value: attr.value,
+                };
+            }
+        );
+    }
+
     const output: UpdateRelationshipInput = {
         firstName: toStringWrapper(input.firstName),
         middleName: toStringWrapper(input.middleName),
@@ -265,6 +299,8 @@ const convertToUpdateRelationshipInput = (
         emails: sanitizedEmails,
         telephones: sanitizedTelephones,
         alternateNames: sanitizedAlternateNames,
+
+        teamAttributes: sanitizedTeamAttributes,
     };
 
     console.log(
@@ -317,10 +353,24 @@ export function AddOrEditRelationshipScreen(props: {
         alternateNames: [
             { isHidden: false, isVerified: false, name: '', label: '' },
         ],
+        teamAttributes: [],
     });
-
+    const [attributes, setAttributes] = useState<
+        getTeamAttributes_teamAttributes[]
+    >([]);
+    const [attributeValues, setAttributeValues] = useState<
+        RelationshipTeamAttributeInput[]
+    >([]);
     const [showBirthdayDatePicker, setShowBirthdayDatePicker] = useState(false);
     const [showDateOfDeathPicker, setShowDateOfDeathPicker] = useState(false);
+    const [
+        showTeamAttributeDatePicker,
+        setShowTeamAttributeDatePicker,
+    ] = useState(false);
+    const [currentAttrData, setCurrentAttrData] = useState({
+        index: -1,
+        teamAttributeId: -1,
+    });
     const [image, setImage] = useState<ReactNativeFile | undefined>(undefined);
     const [isBusyModalOpen, setIsBusyModalOpen] = useState(false);
     const [loadingDataError, setLoadingDataError] = useState<
@@ -369,6 +419,19 @@ export function AddOrEditRelationshipScreen(props: {
             if (!data || !data.relationship) {
                 setLoadingDataError('Failed to get person data');
             }
+        },
+    });
+
+    const teamAttributesResult = useQuery<
+        getTeamAttributes,
+        getTeamAttributesVariables
+    >(TEAM_ATTRIBUTES_QUERY, {
+        variables: {
+            teamId,
+        },
+        errorPolicy: 'all',
+        onError: (error) => {
+            setLoadingDataError(error.message ?? 'Unknown error');
         },
     });
 
@@ -447,8 +510,18 @@ export function AddOrEditRelationshipScreen(props: {
                 telephones: (
                     getRelationshipResult.data.relationship?.person
                         .telephones ?? []
-                ).map((email) => {
-                    return { ...email, phoneNumber: email.telephone };
+                ).map((telephone) => {
+                    return { ...telephone, phoneNumber: telephone.telephone };
+                }),
+                teamAttributes: (
+                    getRelationshipResult.data.relationship?.teamAttributes ??
+                    []
+                ).map((attr) => {
+                    return {
+                        ...attr,
+                        teamAttributeId: attr.id,
+                        value: attr.value,
+                    };
                 }),
             };
             // ensure there is at least one address set
@@ -508,6 +581,13 @@ export function AddOrEditRelationshipScreen(props: {
                         name: '',
                     },
                 ];
+            }
+
+            if (
+                !formDataFromRelationship.teamAttributes ||
+                formDataFromRelationship.teamAttributes.length === 0
+            ) {
+                formDataFromRelationship.teamAttributes = [];
             }
 
             setFormData(formDataFromRelationship);
@@ -608,6 +688,27 @@ export function AddOrEditRelationshipScreen(props: {
         });
     }
 
+    const handleTeamAttributeDatePicker = (date: Date) => {
+        setShowTeamAttributeDatePicker(false);
+        const dayRaw = date.getDate().toString();
+        const day = dayRaw.length === 1 ? `0${dayRaw}` : dayRaw;
+        const monthRaw = (date.getMonth() + 1).toString();
+        const month = monthRaw.length === 1 ? `0${monthRaw}` : monthRaw;
+        const year = date.getFullYear();
+        const utcRaw = `${month}/${day}/${year}`;
+
+        attributeValues[currentAttrData.index].value = utcRaw;
+        attributeValues[currentAttrData.index].teamAttributeId =
+            currentAttrData.teamAttributeId;
+        setAttributeValues([...attributeValues]);
+        if (formData.teamAttributes) {
+            formData.teamAttributes = attributeValues;
+            setFormData({
+                ...formData,
+            });
+        }
+    };
+
     function showBirthDatePicker() {
         setShowBirthdayDatePicker(true);
     }
@@ -621,6 +722,81 @@ export function AddOrEditRelationshipScreen(props: {
         formData.picture = image;
         setFormData({ ...formData });
     }, [image]);
+
+    const getAttributeValueByType = (
+        attribute: relationshipDetailFull_relationship_teamAttributes,
+        type: string
+    ): string | boolean | null => {
+        switch (type) {
+            case 'boolean':
+                return attribute.value === 'true';
+            default:
+                return attribute.value;
+        }
+    };
+
+    const getAttributeDefaultValueByType = (
+        attribute: getTeamAttributes_teamAttributes
+    ): string | boolean | null => {
+        switch (attribute.type) {
+            case 'boolean':
+                return attribute.defaultValue === 'true';
+            case 'selectList':
+                return attribute.defaultValue.length
+                    ? attribute.defaultValue
+                    : null;
+            default:
+                return attribute.defaultValue;
+        }
+    };
+
+    const getAttributeSavedValue = (
+        attribute: getTeamAttributes_teamAttributes
+    ): string | boolean | null => {
+        const relationshipAttribute = getRelationshipResult?.data?.relationship?.teamAttributes?.find(
+            (a) => a.teamAttributeId === attribute.id
+        );
+        return relationshipAttribute
+            ? getAttributeValueByType(relationshipAttribute, attribute.type)
+            : getAttributeDefaultValueByType(attribute);
+    };
+
+    const getAttributeRemainingCharacters = (
+        index: number,
+        attribute: getTeamAttributes_teamAttributes
+    ): number | void => {
+        if (attribute.type === 'longText')
+            return 10000 - attributeValues[index].value.length > 0
+                ? 10000 - attributeValues[index].value.length
+                : 0;
+        if (attribute.type === 'shortText')
+            return 255 - attributeValues[index].value.length > 0
+                ? 255 - attributeValues[index].value.length
+                : 0;
+
+        return;
+    };
+
+    useEffect(() => {
+        if (teamAttributesResult?.data?.teamAttributes !== null) {
+            const attrsTemp: getTeamAttributes_teamAttributes[] =
+                teamAttributesResult.data?.teamAttributes || [];
+            attrsTemp?.sort((a, b) => a.order - b.order);
+
+            setAttributes(attrsTemp);
+            const valsTemp = attrsTemp
+                .filter((attr) => attr.disabled === false)
+                .map((attr) => {
+                    return {
+                        teamAttributeId: attr.id,
+                        value: getAttributeSavedValue(attr)
+                            ? getAttributeSavedValue(attr)?.toString()
+                            : '',
+                    } as RelationshipTeamAttributeInput;
+                });
+            setAttributeValues(valsTemp);
+        }
+    }, [teamAttributesResult.data, getRelationshipResult.data]);
 
     function handleImage(media: ImageInfo) {
         const fileName = media && media.uri.split('/').pop();
@@ -1136,6 +1312,7 @@ export function AddOrEditRelationshipScreen(props: {
                             </View>
                         </>
                     )}
+
                     <Text style={styles.textPadding}>Status</Text>
                     <View style={styles.genderDropdownContainer}>
                         <Picker
@@ -1197,6 +1374,364 @@ export function AddOrEditRelationshipScreen(props: {
                                 />
                             ))}
                         </Picker>
+                    </View>
+
+                    {/* Customized Fields Section*/}
+                    <View>
+                        <Text style={styles.sectionHeader}>
+                            Customized Fields
+                        </Text>
+                        {attributes &&
+                            attributes
+                                ?.filter((attr) => attr.disabled === false)
+                                .map((attr, index) => {
+                                    switch (attr.type) {
+                                        case 'shortText':
+                                            return (
+                                                <View key={index}>
+                                                    <Text
+                                                        style={
+                                                            styles.textPadding
+                                                        }
+                                                    >
+                                                        {attr.name}
+                                                    </Text>
+                                                    <View
+                                                        style={
+                                                            styles.formContainer
+                                                        }
+                                                    >
+                                                        <TextInput
+                                                            style={
+                                                                styles.telephoneInput
+                                                            }
+                                                            placeholder={
+                                                                attr.name
+                                                            }
+                                                            value={
+                                                                attributeValues[
+                                                                    index
+                                                                ].value
+                                                            }
+                                                            onChangeText={(
+                                                                text
+                                                            ) => {
+                                                                attributeValues[
+                                                                    index
+                                                                ].value = text;
+                                                                attributeValues[
+                                                                    index
+                                                                ].teamAttributeId =
+                                                                    attr.id;
+                                                                setAttributeValues(
+                                                                    [
+                                                                        ...attributeValues,
+                                                                    ]
+                                                                );
+                                                                if (
+                                                                    formData.teamAttributes
+                                                                ) {
+                                                                    formData.teamAttributes = attributeValues;
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                        }
+                                                                    );
+                                                                }
+                                                            }}
+                                                        />
+                                                        {
+                                                            <Text
+                                                                style={
+                                                                    styles.charactersRemainingText
+                                                                }
+                                                            >
+                                                                {getAttributeRemainingCharacters(
+                                                                    index,
+                                                                    attr
+                                                                )}{' '}
+                                                                characters
+                                                                remaining
+                                                            </Text>
+                                                        }
+                                                    </View>
+                                                </View>
+                                            );
+
+                                        case 'longText':
+                                            return (
+                                                <View key={index}>
+                                                    <Text
+                                                        style={
+                                                            styles.textPadding
+                                                        }
+                                                    >
+                                                        {attr.name}
+                                                    </Text>
+                                                    <View
+                                                        style={
+                                                            styles.formContainer
+                                                        }
+                                                    >
+                                                        <TextInput
+                                                            style={
+                                                                styles.telephoneInput
+                                                            }
+                                                            placeholder={
+                                                                attr.name
+                                                            }
+                                                            value={
+                                                                attributeValues[
+                                                                    index
+                                                                ].value
+                                                            }
+                                                            onChangeText={(
+                                                                text
+                                                            ) => {
+                                                                attributeValues[
+                                                                    index
+                                                                ].value = text;
+                                                                attributeValues[
+                                                                    index
+                                                                ].teamAttributeId =
+                                                                    attr.id;
+                                                                setAttributeValues(
+                                                                    [
+                                                                        ...attributeValues,
+                                                                    ]
+                                                                );
+                                                                if (
+                                                                    formData.teamAttributes
+                                                                ) {
+                                                                    formData.teamAttributes = attributeValues;
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                        }
+                                                                    );
+                                                                }
+                                                            }}
+                                                        />
+                                                        {
+                                                            <Text
+                                                                style={
+                                                                    styles.charactersRemainingText
+                                                                }
+                                                            >
+                                                                {getAttributeRemainingCharacters(
+                                                                    index,
+                                                                    attr
+                                                                )}{' '}
+                                                                characters
+                                                                remaining
+                                                            </Text>
+                                                        }
+                                                    </View>
+                                                </View>
+                                            );
+
+                                        case 'boolean':
+                                            return (
+                                                <View key={index}>
+                                                    <CheckBox
+                                                        title={attr.name}
+                                                        textStyle={
+                                                            styles.checkboxLabel
+                                                        }
+                                                        checked={
+                                                            attributeValues[
+                                                                index
+                                                            ].value === 'false'
+                                                                ? false
+                                                                : true
+                                                        }
+                                                        size={24}
+                                                        checkedColor={'#0279AC'}
+                                                        uncheckedColor={
+                                                            'lightgray'
+                                                        }
+                                                        containerStyle={{
+                                                            backgroundColor:
+                                                                'white',
+                                                            borderWidth: 0,
+                                                            marginLeft: 0,
+                                                            paddingLeft: 0,
+                                                        }}
+                                                        onPress={() => {
+                                                            attributeValues[
+                                                                index
+                                                            ].value =
+                                                                attributeValues[
+                                                                    index
+                                                                ].value ===
+                                                                'false'
+                                                                    ? 'true'
+                                                                    : 'false';
+                                                            attributeValues[
+                                                                index
+                                                            ].teamAttributeId =
+                                                                attr.id;
+                                                            setAttributeValues([
+                                                                ...attributeValues,
+                                                            ]);
+                                                            if (
+                                                                formData.teamAttributes
+                                                            ) {
+                                                                formData.teamAttributes = attributeValues;
+                                                                setFormData({
+                                                                    ...formData,
+                                                                });
+                                                            }
+                                                        }}
+                                                    />
+                                                </View>
+                                            );
+
+                                        case 'selectList':
+                                            return (
+                                                <View key={index}>
+                                                    <Text
+                                                        style={
+                                                            styles.textPadding
+                                                        }
+                                                    >
+                                                        {attr.name}
+                                                    </Text>
+                                                    <View
+                                                        style={
+                                                            styles.genderDropdownContainer
+                                                        }
+                                                    >
+                                                        <Picker
+                                                            selectedValue={
+                                                                attributeValues[
+                                                                    index
+                                                                ].value
+                                                            }
+                                                            style={{
+                                                                height: 50,
+                                                                width: '100%',
+                                                            }}
+                                                            onValueChange={(
+                                                                itemValue: string
+                                                            ) => {
+                                                                attributeValues[
+                                                                    index
+                                                                ].value = itemValue;
+                                                                attributeValues[
+                                                                    index
+                                                                ].teamAttributeId =
+                                                                    attr.id;
+                                                                setAttributeValues(
+                                                                    [
+                                                                        ...attributeValues,
+                                                                    ]
+                                                                );
+                                                                if (
+                                                                    formData.teamAttributes
+                                                                ) {
+                                                                    formData.teamAttributes = attributeValues;
+                                                                    setFormData(
+                                                                        {
+                                                                            ...formData,
+                                                                        }
+                                                                    );
+                                                                }
+                                                            }}
+                                                        >
+                                                            {attr.options?.map(
+                                                                (
+                                                                    value,
+                                                                    index
+                                                                ) => (
+                                                                    <Picker.Item
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        label={
+                                                                            value
+                                                                        }
+                                                                        value={
+                                                                            value
+                                                                        }
+                                                                    />
+                                                                )
+                                                            )}
+                                                        </Picker>
+                                                    </View>
+                                                </View>
+                                            );
+
+                                        case 'date':
+                                            return (
+                                                <View key={index}>
+                                                    <Text
+                                                        style={
+                                                            styles.textPadding
+                                                        }
+                                                    >
+                                                        {attr.name}
+                                                    </Text>
+                                                    <View
+                                                        style={
+                                                            styles.dateContainer
+                                                        }
+                                                    >
+                                                        <TextInput
+                                                            editable={false}
+                                                            style={
+                                                                styles.textInput
+                                                            }
+                                                            placeholder={
+                                                                'MM/DD/YYYY'
+                                                            }
+                                                            value={
+                                                                attributeValues[
+                                                                    index
+                                                                ].value
+                                                            }
+                                                        />
+                                                        <TouchableOpacity
+                                                            style={{
+                                                                padding: 10,
+                                                            }}
+                                                            onPress={() => {
+                                                                setShowTeamAttributeDatePicker(
+                                                                    true
+                                                                );
+                                                                setCurrentAttrData(
+                                                                    {
+                                                                        index: index,
+                                                                        teamAttributeId:
+                                                                            attr.id,
+                                                                    }
+                                                                );
+                                                            }}
+                                                        >
+                                                            <FontAwesome5
+                                                                name="calendar-alt"
+                                                                size={24}
+                                                                color="#0279AC"
+                                                            />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <DateTimePickerModal
+                                                        isVisible={
+                                                            showTeamAttributeDatePicker
+                                                        }
+                                                        onCancel={() =>
+                                                            setShowTeamAttributeDatePicker(
+                                                                false
+                                                            )
+                                                        }
+                                                        onConfirm={
+                                                            handleTeamAttributeDatePicker
+                                                        }
+                                                    />
+                                                </View>
+                                            );
+                                    }
+                                })}
                     </View>
 
                     <CheckBox

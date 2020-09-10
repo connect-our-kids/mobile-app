@@ -15,6 +15,22 @@ export const RELATIONSHIP_STATUS_DETAIL = gql`
     }
 `;
 
+export const RELATIONSHIP_TEAM_ATTRIBUTE = gql`
+    fragment RelationshipTeamAttribute on RelationshipTeamAttribute {
+        id
+        teamAttributeId
+        value
+        teamAttribute {
+            id
+            name
+            order
+            disabled
+            defaultValue
+            options
+        }
+    }
+`;
+
 export const RELATIONSHIP_DETAIL_FULL_FRAGMENT = gql`
     fragment RelationshipDetailFullFragment on Relationship {
         id
@@ -43,10 +59,14 @@ export const RELATIONSHIP_DETAIL_FULL_FRAGMENT = gql`
         ppSearchImported
         ppSearchQuery
         ppSearchPointerHash
+        teamAttributes {
+            ...RelationshipTeamAttribute
+        }
     }
 
     ${PERSON_FUll_FRAGMENT}
     ${RELATIONSHIP_STATUS_DETAIL}
+    ${RELATIONSHIP_TEAM_ATTRIBUTE}
 `;
 
 export const RELATIONSHIP_DETAIL_FULL_QUERY = gql`

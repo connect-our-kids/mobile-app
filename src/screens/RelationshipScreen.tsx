@@ -438,7 +438,7 @@ function RelationshipScreen(props: Props): JSX.Element {
         if (props.caseId) {
             props.getRelationship(props.caseId, props.relationshipId);
         }
-    }, []);
+    }, [props.relationship]);
     useEffect(() => {
         if (props.documentSuccess) {
             setTimeout(() => {

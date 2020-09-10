@@ -7,7 +7,10 @@ import {
     Linking,
     Platform,
 } from 'react-native';
-import { RelationshipDetailFullFragment } from '../../../generated/RelationshipDetailFullFragment';
+import {
+    RelationshipDetailFullFragment,
+    RelationshipDetailFullFragment_teamAttributes,
+} from '../../../generated/RelationshipDetailFullFragment';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import { CheckBox } from 'react-native-elements';
@@ -81,11 +84,13 @@ export default function ConnectionsDetailsView(props: {
             justifyContent: 'space-between',
             alignContent: 'flex-start',
             alignItems: 'flex-start',
+            fontWeight: 'bold',
         },
         tripleLabelText: {
             width: '50%',
             marginBottom: 10,
             color: '#444444',
+            fontWeight: 'bold',
         },
         tripleContent: {
             width: '90%',
@@ -106,10 +111,12 @@ export default function ConnectionsDetailsView(props: {
         tripleText1: {
             width: '30%',
             color: '#444444',
+            fontWeight: 'bold',
         },
         tripleText2: {
             width: '65%',
             color: '#444444',
+            fontWeight: 'bold',
         },
         tripleLinkText: {
             width: '65%',
@@ -123,11 +130,13 @@ export default function ConnectionsDetailsView(props: {
             width: '25%',
             marginBottom: 25,
             color: '#444444',
+            fontWeight: 'bold',
         },
         contactedLabel: {
             width: '25%',
             marginBottom: 15,
             color: '#444444',
+            fontWeight: 'bold',
         },
         contentText: {
             // marginHorizontal: 20
@@ -382,6 +391,48 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
+            {props.details.teamAttributes?.length ? (
+                <>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>
+                    </View>
+                    {props.details.teamAttributes
+                        .sort((a, b) => {
+                            return (
+                                a.teamAttribute.order - b.teamAttribute.order
+                            );
+                        })
+                        .filter(
+                            (
+                                attribute: RelationshipDetailFullFragment_teamAttributes
+                            ) => {
+                                return (
+                                    attribute.value !== null &&
+                                    attribute.value !== ''
+                                );
+                            }
+                        )
+                        .map(
+                            (
+                                attribute: RelationshipDetailFullFragment_teamAttributes
+                            ) => {
+                                return (
+                                    <View
+                                        key={attribute.id}
+                                        style={styles.textView}
+                                    >
+                                        <Text style={styles.labelText}>
+                                            {attribute.teamAttribute.name}
+                                        </Text>
+                                        <Text style={styles.contentText}>
+                                            {attribute.value}
+                                        </Text>
+                                    </View>
+                                );
+                            }
+                        )}
+                </>
+            ) : null}
             {props.details.person.addresses.length ||
             props.details.person.telephones.length ||
             props.details.person.emails.length ||

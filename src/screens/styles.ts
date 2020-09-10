@@ -177,6 +177,10 @@ export default StyleSheet.create({
         borderRadius: 5,
         flexGrow: 1,
     },
+    charactersRemainingText: {
+        color: 'rgba(24,23,21,.25)',
+        fontStyle: 'italic',
+    },
     addressInput: {
         borderColor: 'rgba(24,23,21,.5)',
         borderWidth: 0.5,
