@@ -1403,7 +1403,7 @@ export function AddOrEditRelationshipScreen(props: {
                                                     >
                                                         <TextInput
                                                             style={
-                                                                styles.telephoneInput
+                                                                styles.textInput
                                                             }
                                                             placeholder={
                                                                 attr.name
@@ -1474,8 +1474,10 @@ export function AddOrEditRelationshipScreen(props: {
                                                         }
                                                     >
                                                         <TextInput
+                                                            multiline
+                                                            numberOfLines={3}
                                                             style={
-                                                                styles.telephoneInput
+                                                                styles.longTextInput
                                                             }
                                                             placeholder={
                                                                 attr.name

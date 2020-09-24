@@ -169,6 +169,15 @@ export default StyleSheet.create({
         borderRadius: 5,
         flexGrow: 1,
     },
+    longTextInput: {
+        borderColor: 'rgba(24,23,21,.5)',
+        borderWidth: 0.5,
+        minHeight: 75,
+        maxHeight: 150,
+        paddingLeft: 5,
+        borderRadius: 5,
+        flexGrow: 1,
+    },
     textInputRequired: {
         borderColor: 'red',
         borderWidth: 0.5,
