@@ -2175,7 +2175,7 @@ export function AddOrEditRelationshipScreen(props: {
             {/* Social Media Section */}
             <View style={styles.sectionPadding}>
                 <View style={styles.highlightContainer}>
-                    <View>
+                    <View style={styles.sectionHeader}>
                         <Text style={styles.headerText}>Social Media</Text>
                     </View>
 
@@ -2220,7 +2220,7 @@ export function AddOrEditRelationshipScreen(props: {
             {/* Highlight Section */}
             <View style={styles.sectionPadding}>
                 <View style={styles.highlightContainer}>
-                    <View>
+                    <View style={styles.sectionHeader}>
                         <Text style={styles.headerText}>Highlights</Text>
                     </View>
                     <TextInput
