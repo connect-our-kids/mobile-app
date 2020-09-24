@@ -110,9 +110,15 @@ export default StyleSheet.create({
         paddingLeft: 0,
     },
     sectionHeader: {
+        marginTop: 20,
+        marginBottom: 1,
+        paddingBottom: 2,
+        borderBottomColor: 'rgba(24,23,21,.3)',
+        borderBottomWidth: 1,
+    },
+    headerText: {
         fontSize: 20,
-        borderBottomColor: 'rgba(24,23,21,.5)',
-        borderBottomWidth: 0.5,
+        fontWeight: 'bold',
         color: '#0279AC',
     },
     dropdownContainer: {

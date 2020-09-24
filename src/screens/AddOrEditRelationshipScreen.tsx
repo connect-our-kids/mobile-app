@@ -981,8 +981,8 @@ export function AddOrEditRelationshipScreen(props: {
             {/* Information Section */}
             <View>
                 <View style={styles.sectionPadding}>
-                    <View>
-                        <Text style={styles.sectionHeader}>Information</Text>
+                    <View style={styles.sectionHeader}>
+                        <Text style={styles.headerText}>Information</Text>
                     </View>
                     <CheckBox
                         title={'Contacted'}
@@ -1378,9 +1378,11 @@ export function AddOrEditRelationshipScreen(props: {
 
                     {/* Customized Fields Section*/}
                     <View>
-                        <Text style={styles.sectionHeader}>
-                            Customized Fields
-                        </Text>
+                        <View style={styles.sectionHeader}>
+                            <Text style={styles.headerText}>
+                                Customized Fields
+                            </Text>
+                        </View>
                         {attributes &&
                             attributes
                                 ?.filter((attr) => attr.disabled === false)
@@ -1736,206 +1738,14 @@ export function AddOrEditRelationshipScreen(props: {
                                 })}
                     </View>
 
-                    <CheckBox
-                        title="Add Residence"
-                        textStyle={{ fontWeight: 'normal' }}
-                        containerStyle={styles.addCheckboxContainer}
-                        iconType="material"
-                        checkedIcon="add"
-                        checkedColor="#0279AC"
-                        checked={true}
-                        onPress={() => {
-                            formData.addresses?.push({
-                                isHidden: false,
-                                isVerified: false,
-                                locality: '',
-                                route: '',
-                                streetNumber: '',
-                            });
-                            setFormData({ ...formData });
-                        }}
-                    />
-                    {formData.addresses?.map((address, index) => (
-                        <View key={index}>
-                            <Text style={styles.textPadding}>{`Residence ${
-                                index + 1
-                            }`}</Text>
-                            <View style={styles.addressContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'Label'}
-                                    value={address.label ?? undefined}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].label = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.addressContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'Address'}
-                                    value={addressToStreetNumberAndRoute(
-                                        address
-                                    )}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            // parse out the street number from the route
-                                            const matches = text.match(
-                                                /(\s*[\da-zA-Z-]+)\s+\+(.+)/
-                                            );
-                                            if (
-                                                matches &&
-                                                matches.length === 3
-                                            ) {
-                                                formData.addresses[
-                                                    index
-                                                ].streetNumber = matches[1];
-                                                formData.addresses[
-                                                    index
-                                                ].route = matches[2];
-                                            } else {
-                                                // street number not found, set whole string as route
-                                                formData.addresses[
-                                                    index
-                                                ].streetNumber = '';
-                                                formData.addresses[
-                                                    index
-                                                ].route = text;
-                                            }
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.addressContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'Address 2'}
-                                    value={address.routeTwo ?? undefined}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].routeTwo = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.formContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'City'}
-                                    value={address.locality}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].locality = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.formContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'State'}
-                                    value={address.state ?? undefined}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].state = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.formContainer}>
-                                <TextInput
-                                    maxLength={10}
-                                    keyboardType="numeric"
-                                    style={styles.addressInput}
-                                    placeholder={'Postal Code'}
-                                    value={address.postalCode ?? undefined}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].postalCode = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.formContainer}>
-                                <TextInput
-                                    style={styles.addressInput}
-                                    placeholder={'Country'}
-                                    value={address.country ?? undefined}
-                                    onChangeText={(text) => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].country = text;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
-
-                            <View style={{ flexDirection: 'row' }}>
-                                <CheckBox
-                                    title={'Verified'}
-                                    textStyle={styles.checkboxLabel}
-                                    checked={address.isVerified}
-                                    size={24}
-                                    checkedColor={'#0279AC'}
-                                    uncheckedColor={'lightgray'}
-                                    containerStyle={styles.checkboxContainer}
-                                    onPress={() => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].isVerified = !formData.addresses[
-                                                index
-                                            ].isVerified;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-
-                                <CheckBox
-                                    title={'Hidden'}
-                                    textStyle={styles.checkboxLabel}
-                                    checked={address.isHidden}
-                                    size={24}
-                                    checkedColor={'#0279AC'}
-                                    uncheckedColor={'lightgray'}
-                                    containerStyle={styles.checkboxContainer}
-                                    onPress={() => {
-                                        if (formData.addresses) {
-                                            formData.addresses[
-                                                index
-                                            ].isHidden = !formData.addresses[
-                                                index
-                                            ].isHidden;
-                                            setFormData({ ...formData });
-                                        }
-                                    }}
-                                />
-                            </View>
+                    <View style={styles.sectionPadding}>
+                        <View style={styles.sectionHeader}>
+                            <Text style={styles.headerText}>
+                                Contact Details
+                            </Text>
                         </View>
-                    ))}
-                    <View>
                         <CheckBox
-                            title="Add Telephone"
+                            title="Add Residence"
                             textStyle={{ fontWeight: 'normal' }}
                             containerStyle={styles.addCheckboxContainer}
                             iconType="material"
@@ -1943,180 +1753,344 @@ export function AddOrEditRelationshipScreen(props: {
                             checkedColor="#0279AC"
                             checked={true}
                             onPress={() => {
-                                formData.telephones?.push({
+                                formData.addresses?.push({
                                     isHidden: false,
                                     isVerified: false,
-                                    phoneNumber: '',
+                                    locality: '',
+                                    route: '',
+                                    streetNumber: '',
                                 });
                                 setFormData({ ...formData });
                             }}
                         />
-                        {formData.telephones?.map((telephone, index) => (
+                        {formData.addresses?.map((address, index) => (
                             <View key={index}>
-                                <Text style={styles.textPadding}>
-                                    {`Telephone ${index + 1}`}
-                                </Text>
-                                <View style={styles.formContainer}>
+                                <Text style={styles.textPadding}>{`Residence ${
+                                    index + 1
+                                }`}</Text>
+                                <View style={styles.addressContainer}>
                                     <TextInput
-                                        keyboardType="numeric"
-                                        style={styles.telephoneInput}
-                                        placeholder={'Telephone #'}
-                                        value={telephone.phoneNumber}
+                                        style={styles.addressInput}
+                                        placeholder={'Label'}
+                                        value={address.label ?? undefined}
                                         onChangeText={(text) => {
-                                            if (formData.telephones) {
-                                                formData.telephones[
+                                            if (formData.addresses) {
+                                                formData.addresses[
                                                     index
-                                                ].phoneNumber = text;
+                                                ].label = text;
                                                 setFormData({ ...formData });
                                             }
                                         }}
                                     />
-
-                                    <View style={styles.formContainer}>
-                                        <TextInput
-                                            style={styles.telephoneInput}
-                                            placeholder={'Label'}
-                                            value={telephone.label ?? undefined}
-                                            onChangeText={(text) => {
-                                                if (formData.telephones) {
-                                                    formData.telephones[
-                                                        index
-                                                    ].label = text;
-                                                    setFormData({
-                                                        ...formData,
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                    </View>
-
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <CheckBox
-                                            title={'Verified'}
-                                            textStyle={styles.checkboxLabel}
-                                            checked={telephone.isVerified}
-                                            size={24}
-                                            checkedColor={'#0279AC'}
-                                            uncheckedColor={'lightgray'}
-                                            containerStyle={
-                                                styles.checkboxContainer
-                                            }
-                                            onPress={() => {
-                                                if (formData.telephones) {
-                                                    formData.telephones[
-                                                        index
-                                                    ].isVerified = !formData
-                                                        .telephones[index]
-                                                        .isVerified;
-                                                    setFormData({
-                                                        ...formData,
-                                                    });
-                                                }
-                                            }}
-                                        />
-
-                                        <CheckBox
-                                            title={'Hidden'}
-                                            textStyle={styles.checkboxLabel}
-                                            checked={telephone.isHidden}
-                                            size={24}
-                                            checkedColor={'#0279AC'}
-                                            uncheckedColor={'lightgray'}
-                                            containerStyle={
-                                                styles.checkboxContainer
-                                            }
-                                            onPress={() => {
-                                                if (formData.telephones) {
-                                                    formData.telephones[
-                                                        index
-                                                    ].isHidden = !formData
-                                                        .telephones[index]
-                                                        .isHidden;
-                                                    setFormData({
-                                                        ...formData,
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                    </View>
                                 </View>
-                            </View>
-                        ))}
-                    </View>
-                    <View>
-                        <CheckBox
-                            title="Add Email"
-                            textStyle={{ fontWeight: 'normal' }}
-                            containerStyle={styles.addCheckboxContainer}
-                            iconType="material"
-                            checkedIcon="add"
-                            checkedColor="#0279AC"
-                            checked={true}
-                            onPress={() => {
-                                formData.emails?.push({
-                                    isHidden: false,
-                                    isVerified: false,
-                                    emailAddress: '',
-                                });
-                                setFormData({ ...formData });
-                            }}
-                        />
-                        {formData.emails?.map((email, index) => (
-                            <View key={index}>
-                                <Text style={styles.textPadding}>{`Email ${
-                                    index + 1
-                                }`}</Text>
+                                <View style={styles.addressContainer}>
+                                    <TextInput
+                                        style={styles.addressInput}
+                                        placeholder={'Address'}
+                                        value={addressToStreetNumberAndRoute(
+                                            address
+                                        )}
+                                        onChangeText={(text) => {
+                                            if (formData.addresses) {
+                                                // parse out the street number from the route
+                                                const matches = text.match(
+                                                    /(\s*[\da-zA-Z-]+)\s+\+(.+)/
+                                                );
+                                                if (
+                                                    matches &&
+                                                    matches.length === 3
+                                                ) {
+                                                    formData.addresses[
+                                                        index
+                                                    ].streetNumber = matches[1];
+                                                    formData.addresses[
+                                                        index
+                                                    ].route = matches[2];
+                                                } else {
+                                                    // street number not found, set whole string as route
+                                                    formData.addresses[
+                                                        index
+                                                    ].streetNumber = '';
+                                                    formData.addresses[
+                                                        index
+                                                    ].route = text;
+                                                }
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.addressContainer}>
+                                    <TextInput
+                                        style={styles.addressInput}
+                                        placeholder={'Address 2'}
+                                        value={address.routeTwo ?? undefined}
+                                        onChangeText={(text) => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].routeTwo = text;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
                                 <View style={styles.formContainer}>
                                     <TextInput
                                         style={styles.addressInput}
-                                        placeholder={'Email'}
-                                        value={email.emailAddress}
+                                        placeholder={'City'}
+                                        value={address.locality}
                                         onChangeText={(text) => {
-                                            if (formData.emails) {
-                                                formData.emails[
+                                            if (formData.addresses) {
+                                                formData.addresses[
                                                     index
-                                                ].emailAddress = text;
+                                                ].locality = text;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.formContainer}>
+                                    <TextInput
+                                        style={styles.addressInput}
+                                        placeholder={'State'}
+                                        value={address.state ?? undefined}
+                                        onChangeText={(text) => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].state = text;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.formContainer}>
+                                    <TextInput
+                                        maxLength={10}
+                                        keyboardType="numeric"
+                                        style={styles.addressInput}
+                                        placeholder={'Postal Code'}
+                                        value={address.postalCode ?? undefined}
+                                        onChangeText={(text) => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].postalCode = text;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+                                <View style={styles.formContainer}>
+                                    <TextInput
+                                        style={styles.addressInput}
+                                        placeholder={'Country'}
+                                        value={address.country ?? undefined}
+                                        onChangeText={(text) => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].country = text;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+
+                                <View style={{ flexDirection: 'row' }}>
+                                    <CheckBox
+                                        title={'Verified'}
+                                        textStyle={styles.checkboxLabel}
+                                        checked={address.isVerified}
+                                        size={24}
+                                        checkedColor={'#0279AC'}
+                                        uncheckedColor={'lightgray'}
+                                        containerStyle={
+                                            styles.checkboxContainer
+                                        }
+                                        onPress={() => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].isVerified = !formData
+                                                    .addresses[index]
+                                                    .isVerified;
                                                 setFormData({ ...formData });
                                             }
                                         }}
                                     />
 
+                                    <CheckBox
+                                        title={'Hidden'}
+                                        textStyle={styles.checkboxLabel}
+                                        checked={address.isHidden}
+                                        size={24}
+                                        checkedColor={'#0279AC'}
+                                        uncheckedColor={'lightgray'}
+                                        containerStyle={
+                                            styles.checkboxContainer
+                                        }
+                                        onPress={() => {
+                                            if (formData.addresses) {
+                                                formData.addresses[
+                                                    index
+                                                ].isHidden = !formData
+                                                    .addresses[index].isHidden;
+                                                setFormData({ ...formData });
+                                            }
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        ))}
+                        <View>
+                            <CheckBox
+                                title="Add Telephone"
+                                textStyle={{ fontWeight: 'normal' }}
+                                containerStyle={styles.addCheckboxContainer}
+                                iconType="material"
+                                checkedIcon="add"
+                                checkedColor="#0279AC"
+                                checked={true}
+                                onPress={() => {
+                                    formData.telephones?.push({
+                                        isHidden: false,
+                                        isVerified: false,
+                                        phoneNumber: '',
+                                    });
+                                    setFormData({ ...formData });
+                                }}
+                            />
+                            {formData.telephones?.map((telephone, index) => (
+                                <View key={index}>
+                                    <Text style={styles.textPadding}>
+                                        {`Telephone ${index + 1}`}
+                                    </Text>
+                                    <View style={styles.formContainer}>
+                                        <TextInput
+                                            keyboardType="numeric"
+                                            style={styles.telephoneInput}
+                                            placeholder={'Telephone #'}
+                                            value={telephone.phoneNumber}
+                                            onChangeText={(text) => {
+                                                if (formData.telephones) {
+                                                    formData.telephones[
+                                                        index
+                                                    ].phoneNumber = text;
+                                                    setFormData({
+                                                        ...formData,
+                                                    });
+                                                }
+                                            }}
+                                        />
+
+                                        <View style={styles.formContainer}>
+                                            <TextInput
+                                                style={styles.telephoneInput}
+                                                placeholder={'Label'}
+                                                value={
+                                                    telephone.label ?? undefined
+                                                }
+                                                onChangeText={(text) => {
+                                                    if (formData.telephones) {
+                                                        formData.telephones[
+                                                            index
+                                                        ].label = text;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <CheckBox
+                                                title={'Verified'}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={telephone.isVerified}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={
+                                                    styles.checkboxContainer
+                                                }
+                                                onPress={() => {
+                                                    if (formData.telephones) {
+                                                        formData.telephones[
+                                                            index
+                                                        ].isVerified = !formData
+                                                            .telephones[index]
+                                                            .isVerified;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+
+                                            <CheckBox
+                                                title={'Hidden'}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={telephone.isHidden}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={
+                                                    styles.checkboxContainer
+                                                }
+                                                onPress={() => {
+                                                    if (formData.telephones) {
+                                                        formData.telephones[
+                                                            index
+                                                        ].isHidden = !formData
+                                                            .telephones[index]
+                                                            .isHidden;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
+                        <View>
+                            <CheckBox
+                                title="Add Email"
+                                textStyle={{ fontWeight: 'normal' }}
+                                containerStyle={styles.addCheckboxContainer}
+                                iconType="material"
+                                checkedIcon="add"
+                                checkedColor="#0279AC"
+                                checked={true}
+                                onPress={() => {
+                                    formData.emails?.push({
+                                        isHidden: false,
+                                        isVerified: false,
+                                        emailAddress: '',
+                                    });
+                                    setFormData({ ...formData });
+                                }}
+                            />
+                            {formData.emails?.map((email, index) => (
+                                <View key={index}>
+                                    <Text style={styles.textPadding}>{`Email ${
+                                        index + 1
+                                    }`}</Text>
                                     <View style={styles.formContainer}>
                                         <TextInput
                                             style={styles.addressInput}
-                                            placeholder={'Label'}
-                                            value={email.label ?? undefined}
+                                            placeholder={'Email'}
+                                            value={email.emailAddress}
                                             onChangeText={(text) => {
                                                 if (formData.emails) {
                                                     formData.emails[
                                                         index
-                                                    ].label = text;
-                                                    setFormData({
-                                                        ...formData,
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                    </View>
-
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <CheckBox
-                                            title={'Verified'}
-                                            textStyle={styles.checkboxLabel}
-                                            checked={email.isVerified}
-                                            size={24}
-                                            checkedColor={'#0279AC'}
-                                            uncheckedColor={'lightgray'}
-                                            containerStyle={
-                                                styles.checkboxContainer
-                                            }
-                                            onPress={() => {
-                                                if (formData.emails) {
-                                                    formData.emails[
-                                                        index
-                                                    ].isVerified = !formData
-                                                        .emails[index]
-                                                        .isVerified;
+                                                    ].emailAddress = text;
                                                     setFormData({
                                                         ...formData,
                                                     });
@@ -2124,39 +2098,86 @@ export function AddOrEditRelationshipScreen(props: {
                                             }}
                                         />
 
-                                        <CheckBox
-                                            title={'Hidden'}
-                                            textStyle={styles.checkboxLabel}
-                                            checked={email.isHidden}
-                                            size={24}
-                                            checkedColor={'#0279AC'}
-                                            uncheckedColor={'lightgray'}
-                                            containerStyle={
-                                                styles.checkboxContainer
-                                            }
-                                            onPress={() => {
-                                                if (formData.emails) {
-                                                    formData.emails[
-                                                        index
-                                                    ].isHidden = !formData
-                                                        .emails[index].isHidden;
-                                                    setFormData({
-                                                        ...formData,
-                                                    });
+                                        <View style={styles.formContainer}>
+                                            <TextInput
+                                                style={styles.addressInput}
+                                                placeholder={'Label'}
+                                                value={email.label ?? undefined}
+                                                onChangeText={(text) => {
+                                                    if (formData.emails) {
+                                                        formData.emails[
+                                                            index
+                                                        ].label = text;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <CheckBox
+                                                title={'Verified'}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={email.isVerified}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={
+                                                    styles.checkboxContainer
                                                 }
-                                            }}
-                                        />
+                                                onPress={() => {
+                                                    if (formData.emails) {
+                                                        formData.emails[
+                                                            index
+                                                        ].isVerified = !formData
+                                                            .emails[index]
+                                                            .isVerified;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+
+                                            <CheckBox
+                                                title={'Hidden'}
+                                                textStyle={styles.checkboxLabel}
+                                                checked={email.isHidden}
+                                                size={24}
+                                                checkedColor={'#0279AC'}
+                                                uncheckedColor={'lightgray'}
+                                                containerStyle={
+                                                    styles.checkboxContainer
+                                                }
+                                                onPress={() => {
+                                                    if (formData.emails) {
+                                                        formData.emails[
+                                                            index
+                                                        ].isHidden = !formData
+                                                            .emails[index]
+                                                            .isHidden;
+                                                        setFormData({
+                                                            ...formData,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        ))}
+                            ))}
+                        </View>
                     </View>
                 </View>
             </View>
             {/* Social Media Section */}
             <View style={styles.sectionPadding}>
                 <View style={styles.highlightContainer}>
-                    <Text style={styles.sectionHeader}>Social Media</Text>
+                    <View>
+                        <Text style={styles.headerText}>Social Media</Text>
+                    </View>
 
                     <Text style={styles.textPadding}>Facebook</Text>
                     <View style={styles.formContainer}>
@@ -2199,7 +2220,9 @@ export function AddOrEditRelationshipScreen(props: {
             {/* Highlight Section */}
             <View style={styles.sectionPadding}>
                 <View style={styles.highlightContainer}>
-                    <Text style={styles.sectionHeader}>Highlights</Text>
+                    <View>
+                        <Text style={styles.headerText}>Highlights</Text>
+                    </View>
                     <TextInput
                         multiline
                         numberOfLines={5}
