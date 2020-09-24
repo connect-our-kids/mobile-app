@@ -1217,21 +1217,22 @@ export function AddOrEditRelationshipScreen(props: {
                     </View>
                     <Text style={styles.textPadding}>Date of Birth</Text>
                     <View style={styles.dateContainer}>
-                        <TextInput
-                            editable={false}
-                            style={styles.textInput}
-                            placeholder={'MM/DD/YYYY'}
-                            value={formData.birthdayRaw ?? undefined}
-                        />
                         <TouchableOpacity
-                            style={{ padding: 10 }}
+                            style={{ width: '100%' }}
                             onPress={showBirthDatePicker}
                         >
-                            <FontAwesome5
-                                name="calendar-alt"
-                                size={24}
-                                color="#0279AC"
-                            />
+                            <View style={styles.dateInput}>
+                                <TextInput
+                                    editable={false}
+                                    placeholder={'MM/DD/YYYY'}
+                                    value={formData.birthdayRaw ?? undefined}
+                                />
+                                <FontAwesome5
+                                    name="calendar-alt"
+                                    size={24}
+                                    color="#0279AC"
+                                />
+                            </View>
                         </TouchableOpacity>
                         <DateTimePickerModal
                             isVisible={showBirthdayDatePicker}
@@ -1282,25 +1283,26 @@ export function AddOrEditRelationshipScreen(props: {
                                 Date of Death
                             </Text>
                             <View style={styles.dateContainer}>
-                                <TextInput
-                                    editable={false}
-                                    style={styles.textInput}
-                                    placeholder={'MM/DD/YYYY'}
-                                    value={dateOfDeathToDisplay(
-                                        formData.dateOfDeath
-                                    )}
-                                />
                                 <TouchableOpacity
-                                    style={{ padding: 10 }}
+                                    style={{ width: '100%' }}
                                     onPress={() =>
                                         setShowDateOfDeathPicker(true)
                                     }
                                 >
-                                    <FontAwesome5
-                                        name="calendar-alt"
-                                        size={24}
-                                        color="#0279AC"
-                                    />
+                                    <View style={styles.dateInput}>
+                                        <TextInput
+                                            editable={false}
+                                            placeholder={'MM/DD/YYYY'}
+                                            value={dateOfDeathToDisplay(
+                                                formData.dateOfDeath
+                                            )}
+                                        />
+                                        <FontAwesome5
+                                            name="calendar-alt"
+                                            size={24}
+                                            color="#0279AC"
+                                        />
+                                    </View>
                                 </TouchableOpacity>
                                 <DateTimePickerModal
                                     isVisible={showDateOfDeathPicker}
@@ -1676,49 +1678,44 @@ export function AddOrEditRelationshipScreen(props: {
                                                     >
                                                         {attr.name}
                                                     </Text>
-                                                    <View
-                                                        style={
-                                                            styles.dateContainer
-                                                        }
+                                                    <TouchableOpacity
+                                                        style={{
+                                                            width: '100%',
+                                                            paddingTop: 10,
+                                                        }}
+                                                        onPress={() => {
+                                                            setShowTeamAttributeDatePicker(
+                                                                true
+                                                            );
+                                                            setCurrentAttrData({
+                                                                index: index,
+                                                                teamAttributeId:
+                                                                    attr.id,
+                                                            });
+                                                        }}
                                                     >
-                                                        <TextInput
-                                                            editable={false}
+                                                        <View
                                                             style={
-                                                                styles.textInput
+                                                                styles.dateInput
                                                             }
-                                                            placeholder={
-                                                                'MM/DD/YYYY'
-                                                            }
-                                                            value={
-                                                                attributeValues[
-                                                                    index
-                                                                ].value
-                                                            }
-                                                        />
-                                                        <TouchableOpacity
-                                                            style={{
-                                                                padding: 10,
-                                                            }}
-                                                            onPress={() => {
-                                                                setShowTeamAttributeDatePicker(
-                                                                    true
-                                                                );
-                                                                setCurrentAttrData(
-                                                                    {
-                                                                        index: index,
-                                                                        teamAttributeId:
-                                                                            attr.id,
-                                                                    }
-                                                                );
-                                                            }}
                                                         >
+                                                            <TextInput
+                                                                placeholder={
+                                                                    'MM/DD/YYYY'
+                                                                }
+                                                                value={
+                                                                    attributeValues[
+                                                                        index
+                                                                    ].value
+                                                                }
+                                                            />
                                                             <FontAwesome5
                                                                 name="calendar-alt"
                                                                 size={24}
                                                                 color="#0279AC"
                                                             />
-                                                        </TouchableOpacity>
-                                                    </View>
+                                                        </View>
+                                                    </TouchableOpacity>
                                                     <DateTimePickerModal
                                                         isVisible={
                                                             showTeamAttributeDatePicker
