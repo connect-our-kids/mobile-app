@@ -777,6 +777,14 @@ export function AddOrEditRelationshipScreen(props: {
         return;
     };
 
+    const isChecked = (value: string): boolean => {
+        if (value === 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     useEffect(() => {
         if (teamAttributesResult?.data?.teamAttributes !== null) {
             const attrsTemp: getTeamAttributes_teamAttributes[] =
@@ -789,9 +797,10 @@ export function AddOrEditRelationshipScreen(props: {
                 .map((attr) => {
                     return {
                         teamAttributeId: attr.id,
-                        value: getAttributeSavedValue(attr)
-                            ? getAttributeSavedValue(attr)?.toString()
-                            : '',
+                        value:
+                            getAttributeSavedValue(attr) !== null
+                                ? getAttributeSavedValue(attr)?.toString()
+                                : '',
                     } as RelationshipTeamAttributeInput;
                 });
             setAttributeValues(valsTemp);
@@ -1544,13 +1553,11 @@ export function AddOrEditRelationshipScreen(props: {
                                                         textStyle={
                                                             styles.checkboxLabel
                                                         }
-                                                        checked={
+                                                        checked={isChecked(
                                                             attributeValues[
                                                                 index
-                                                            ].value === 'false'
-                                                                ? false
-                                                                : true
-                                                        }
+                                                            ].value
+                                                        )}
                                                         size={24}
                                                         checkedColor={'#0279AC'}
                                                         uncheckedColor={
@@ -1569,7 +1576,7 @@ export function AddOrEditRelationshipScreen(props: {
                                                             ].value =
                                                                 attributeValues[
                                                                     index
-                                                                ].value ===
+                                                                ].value ==
                                                                 'false'
                                                                     ? 'true'
                                                                     : 'false';
@@ -1580,14 +1587,10 @@ export function AddOrEditRelationshipScreen(props: {
                                                             setAttributeValues([
                                                                 ...attributeValues,
                                                             ]);
-                                                            if (
-                                                                formData.teamAttributes
-                                                            ) {
-                                                                formData.teamAttributes = attributeValues;
-                                                                setFormData({
-                                                                    ...formData,
-                                                                });
-                                                            }
+                                                            formData.teamAttributes = attributeValues;
+                                                            setFormData({
+                                                                ...formData,
+                                                            });
                                                         }}
                                                     />
                                                 </View>
