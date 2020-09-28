@@ -89,7 +89,12 @@ let relationshipsListViewRef2: SwipeListView<
 const DetailsView = (props: { case?: caseDetailFull }): JSX.Element =>
     props.case?.details ? (
         <ListItem
-            title={props.case.details?.person.fullName}
+            title={
+                props.case.details.person.fullName ||
+                (props.case.details.caseFileNumber
+                    ? 'Case ' + props.case.details.caseFileNumber
+                    : '')
+            }
             titleStyle={{ fontSize: 18 }}
             subtitle={
                 <View>
