@@ -320,7 +320,12 @@ const FamilyConnectionsScreen = (props: Props): JSX.Element => {
         <View>
             <ListItem
                 key={itemInfo.index}
-                title={itemInfo.item.person.fullName}
+                title={
+                    itemInfo.item.person.fullName ||
+                    (itemInfo.item.caseFileNumber
+                        ? 'Case ' + itemInfo.item.caseFileNumber
+                        : '')
+                }
                 titleStyle={{ color: '#5A6064' }}
                 subtitle={createPersonSubtitle(itemInfo.item.person)}
                 subtitleStyle={{ color: '#9FABB3' }}
