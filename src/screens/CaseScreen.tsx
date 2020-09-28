@@ -50,7 +50,6 @@ import {
     deleteRelationshipMutationVariables,
 } from '../generated/deleteRelationshipMutation';
 import { Roles } from '../generated/globalTypes';
-import { parentPort } from 'worker_threads';
 
 interface StateProps {
     caseId: number;
