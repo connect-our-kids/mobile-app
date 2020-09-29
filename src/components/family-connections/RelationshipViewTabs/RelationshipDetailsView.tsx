@@ -391,7 +391,7 @@ export default function ConnectionsDetailsView(props: {
                     </>
                 )}
             </View>
-            {props.details.teamAttributes?.length ? (
+            {props.details.teamAttributes.length > 0 ? (
                 <>
                     <View style={styles.header}>
                         <Text style={styles.headerText}>CUSTOMIZED FIELDS</Text>

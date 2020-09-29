@@ -1,56 +1,53 @@
 {
-  "react-native.packager.port": 19001,
-  /***************************************
+    "react-native.packager.port": 19001,
+    /***************************************
     ESLint
-  ***************************************/
-  "eslint.enable": true,
-  "eslint.format.enable": true,
-  "eslint.lintTask.enable": true,
-  "eslint.codeAction.showDocumentation": {
-    "enable": true,
-  },
-  "eslint.codeAction.disableRuleComment": {
-    "enable": true,
-    "location": "separateLine",
-  },
-  /***************************************
+    ***************************************/
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "eslint.codeAction.showDocumentation": {
+        "enable": true
+    },
+    "eslint.codeAction.disableRuleComment": {
+        "enable": true,
+        "location": "separateLine"
+    },
+    /***************************************
     Editor
-  ***************************************/
-  /* files */
-  // "files.eol": "\n",
-  "files.trimTrailingWhitespace": true,
-  "files.trimFinalNewlines": true,
-  "files.insertFinalNewline": true,
-  /* editing */
-  "editor.detectIndentation": true,
-  /* formatting */
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.markdownlint": true
-  },
-  "[javascript]": {
-    /* protect from other formatting extensions */
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false,
-  },
-  "[javascriptreact]": {
-    /* protect from other formatting extensions */
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false,
-  },
-  "[typescript]": {
-    /* protect from other formatting extensions */
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false,
-  },
-  "[typescriptreact]": {
-    /* protect from other formatting extensions */
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false,
-  },
-  "cSpell.words": [
-    "Ionicons",
-    "openid"
-  ],
-  /**************************************/
+    ***************************************/
+    /* files */
+    // "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    /* editing */
+    "editor.detectIndentation": true,
+    /* formatting */
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.fixAll.markdownlint": true
+    },
+    "[javascript]": {
+        /* protect from other formatting extensions */
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": false
+    },
+    "[javascriptreact]": {
+        /* protect from other formatting extensions */
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": false
+    },
+    "[typescript]": {
+        /* protect from other formatting extensions */
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": false
+    },
+    "[typescriptreact]": {
+        /* protect from other formatting extensions */
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": false
+    },
+    "cSpell.words": ["Ionicons", "openid"]
+    /**************************************/
 }
