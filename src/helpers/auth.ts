@@ -1,7 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
-import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 import Axios from 'axios';
 import { getEnvVars } from '../../environment';
