@@ -8,6 +8,7 @@ import { getEnvVars } from '../../environment';
 import Constants from 'expo-constants';
 import AuthSessionCustom from './AuthSessionCustom';
 import { sendEvent } from './createEvent';
+import { Linking } from 'expo';
 
 export interface IdToken {
     given_name?: string;
@@ -262,7 +263,7 @@ async function refreshAccessTokenInternal(): Promise<
             audience: auth0Audience,
             redirect_uri:
                 Platform.OS != 'ios'
-                    ? AuthSession.getRedirectUrl()
+                    ? Linking.makeUrl('expo-auth-session')
                     : auth0RedirectScheme,
         };
 
@@ -395,9 +396,10 @@ export async function loginInternal(): Promise<
     LoginResultError | LoginResultCancelled | LoginResultSuccess
 > {
     try {
+        console.log(Platform.OS);
         const redirectUri =
             Platform.OS != 'ios'
-                ? AuthSession.getRedirectUrl()
+                ? Linking.makeUrl('expo-auth-session')
                 : auth0RedirectScheme;
         const authorizeParams = toQueryString({
             client_id: auth0ClientId,
@@ -420,7 +422,7 @@ export async function loginInternal(): Promise<
         // If you clear Safari cache or other browser cache, you lose this session and will need to fully login with username and password
         const authorizeResponse =
             Platform.OS !== 'ios'
-                ? await AuthSession.startAsync({ authUrl: authUrl })
+                ? await AuthSessionCustom.startAsync({ authUrl: authUrl })
                 : await AuthSessionCustom.startAsync({ authUrl: authUrl });
 
         console.debug('AuthSession Response:');
@@ -456,7 +458,7 @@ export async function loginInternal(): Promise<
             audience: auth0Audience,
             redirect_uri:
                 Platform.OS != 'ios'
-                    ? AuthSession.getRedirectUrl()
+                    ? Linking.makeUrl('expo-auth-session')
                     : auth0RedirectScheme,
         };
 
