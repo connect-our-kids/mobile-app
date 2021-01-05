@@ -33,7 +33,7 @@
         "apollo-link-context": "^1.0.20",
         "apollo-link-http": "^1.5.17",
         "apollo-upload-client": "^13.0.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "expo": "37.0.12",
         "expo-auth-session": "^1.0.1",
         "expo-constants": "~9.0.0",
